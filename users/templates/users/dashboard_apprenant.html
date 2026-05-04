@@ -1,0 +1,449 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon Espace — Groupe La Certitude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0b1c3d; --navy2: #152848; --navy3: #1e3a5f;
+      --gold: #c9922a; --gold-lt: #e8b84b; --gold-pale: rgba(201,146,42,.1);
+      --cream: #fdf6ec; --white: #ffffff;
+      --muted: #6b7280; --muted2: #9ca3af;
+      --success: #2a7f6f; --success-pale: rgba(42,127,111,.1);
+      --error: #e53e3e; --error-pale: rgba(229,62,62,.08);
+      --pending: #c9922a; --pending-pale: rgba(201,146,42,.1);
+      --radius: 16px; --radius-sm: 10px;
+      --shadow: 0 4px 24px rgba(11,28,61,.08);
+      --shadow-md: 0 8px 32px rgba(11,28,61,.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy2) 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    .sb-logo {
+      display: flex; align-items: center; gap: .7rem;
+      margin-bottom: 2.5rem; position: relative;
+    }
+    .sb-logo img {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: white; padding: 3px; object-fit: contain;
+    }
+    .sb-logo strong { font-family: 'Playfair Display', serif; font-size: .95rem; color: white; display: block; }
+    .sb-logo span { font-size: .65rem; color: rgba(255,255,255,.4); letter-spacing: .08em; text-transform: uppercase; }
+
+    .sb-user {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .sb-user-name { font-weight: 700; color: white; font-size: .95rem; }
+    .sb-user-level {
+      font-size: .75rem; color: var(--gold-lt);
+      margin-top: .2rem;
+    }
+    .sb-badge {
+      display: inline-block; margin-top: .5rem;
+      padding: .2rem .7rem; border-radius: 20px;
+      background: var(--gold-pale); border: 1px solid rgba(201,146,42,.3);
+      font-size: .7rem; color: var(--gold-lt); font-weight: 700;
+      letter-spacing: .05em; text-transform: uppercase;
+    }
+
+    .sb-nav { list-style: none; display: flex; flex-direction: column; gap: .3rem; position: relative; }
+    .sb-nav a {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .7rem 1rem; border-radius: var(--radius-sm);
+      color: rgba(255,255,255,.55); font-size: .88rem; font-weight: 500;
+      text-decoration: none; transition: all .2s;
+    }
+    .sb-nav a:hover, .sb-nav a.active {
+      background: rgba(255,255,255,.08);
+      color: white;
+    }
+    .sb-nav a.active { border-left: 3px solid var(--gold); padding-left: calc(1rem - 3px); }
+    .sb-nav .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+    .sb-bottom { margin-top: auto; position: relative; }
+    .sb-logout {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .7rem 1rem; border-radius: var(--radius-sm);
+      color: rgba(255,255,255,.35); font-size: .85rem;
+      text-decoration: none; transition: all .2s;
+      cursor: pointer; background: none; border: none; width: 100%; font-family: inherit;
+    }
+    .sb-logout:hover { color: var(--error); background: var(--error-pale); }
+
+    /* ── MAIN ── */
+    .main { flex: 1; overflow-y: auto; padding: 2.5rem 2.5rem; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .topbar h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem; font-weight: 900; color: var(--navy);
+    }
+    .topbar h1 em { color: var(--gold); font-style: italic; }
+    .topbar-date { font-size: .82rem; color: var(--muted); }
+
+    /* ── MESSAGES ── */
+    .messages { margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
+    .msg {
+      padding: .8rem 1.2rem; border-radius: var(--radius-sm);
+      font-size: .88rem; font-weight: 500;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .msg.success { background: var(--success-pale); color: var(--success); border: 1px solid rgba(42,127,111,.2); }
+    .msg.info    { background: rgba(11,28,61,.06); color: var(--navy); border: 1px solid rgba(11,28,61,.1); }
+    .msg.error   { background: var(--error-pale); color: var(--error); border: 1px solid rgba(229,62,62,.2); }
+
+    /* ── STAT CARDS ── */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(11,28,61,.07);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .stat-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .stat-icon.gold  { background: var(--gold-pale); }
+    .stat-icon.green { background: var(--success-pale); }
+    .stat-icon.navy  { background: rgba(11,28,61,.07); }
+    .stat-val { font-size: 1.6rem; font-weight: 700; color: var(--navy); line-height: 1; }
+    .stat-lbl { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ── SECTIONS ── */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 700; color: var(--navy);
+      margin-bottom: 1rem; display: flex; align-items: center; gap: .6rem;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: rgba(11,28,61,.08);
+    }
+
+    /* ── ENROLLMENTS ── */
+    .enrollments { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+    .enrollment-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.8rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(11,28,61,.07);
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .enr-level {
+      width: 54px; height: 54px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy3) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: .8rem; font-weight: 700;
+      color: var(--gold-lt); text-align: center; line-height: 1.2;
+      flex-shrink: 0;
+    }
+    .enr-info { flex: 1; min-width: 0; }
+    .enr-name { font-weight: 700; font-size: 1rem; color: var(--navy); }
+    .enr-subjects { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+    .enr-price { font-size: .85rem; color: var(--navy); font-weight: 600; margin-top: .3rem; }
+
+    .status-badge {
+      padding: .3rem .9rem; border-radius: 20px;
+      font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .status-active  { background: var(--success-pale); color: var(--success); }
+    .status-pending { background: var(--pending-pale); color: var(--pending); }
+    .status-cancelled { background: var(--error-pale); color: var(--error); }
+
+    .progress-wrap { margin-top: .6rem; }
+    .progress-label { display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); margin-bottom: .3rem; }
+    .progress-bar { height: 6px; border-radius: 3px; background: rgba(11,28,61,.08); overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--gold) 0%, var(--gold-lt) 100%); transition: width .6s ease; }
+
+    /* ── WHATSAPP CARD ── */
+    .whatsapp-card {
+      background: linear-gradient(135deg, #128c7e 0%, #075e54 100%);
+      border-radius: var(--radius); padding: 1.8rem 2rem;
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+      margin-bottom: 2rem; box-shadow: 0 8px 24px rgba(7,94,84,.25);
+    }
+    .wa-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .wa-info { flex: 1; }
+    .wa-info h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: white; font-weight: 700; }
+    .wa-info p { color: rgba(255,255,255,.7); font-size: .85rem; margin-top: .3rem; }
+    .wa-info strong { color: rgba(255,255,255,.9); }
+    .wa-btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .7rem 1.4rem; border-radius: 50px;
+      background: white; color: #075e54;
+      font-weight: 700; font-size: .88rem;
+      text-decoration: none; transition: all .2s;
+      flex-shrink: 0;
+    }
+    .wa-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      text-align: center;
+      border: 2px dashed rgba(11,28,61,.1);
+      margin-bottom: 2rem;
+    }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .empty h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: .5rem; }
+    .empty p { color: var(--muted); font-size: .88rem; max-width: 320px; margin: 0 auto 1.2rem; line-height: 1.6; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .75rem 1.8rem; border-radius: 50px;
+      background: var(--gold); color: white;
+      font-weight: 700; font-size: .9rem; text-decoration: none;
+      transition: all .2s;
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(201,146,42,.3); }
+
+    /* ── INFOS BOX ── */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .info-item {
+      background: var(--white); border-radius: var(--radius-sm);
+      padding: 1.2rem 1.4rem; box-shadow: var(--shadow);
+      border: 1px solid rgba(11,28,61,.07);
+    }
+    .info-item label { font-size: .72rem; color: var(--muted); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; display: block; margin-bottom: .3rem; }
+    .info-item span { font-size: .95rem; font-weight: 600; color: var(--navy); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { padding: 1.5rem 1.2rem; }
+      .info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <img src="/images/logo_certitude.png" alt="Logo" />
+      <div>
+        <strong>La Certitude</strong>
+        <span>Discipline · Travail · Excellence</span>
+      </div>
+    </div>
+
+    <div class="sb-user">
+      <div class="sb-user-name">{{ user.full_name }}</div>
+      <div class="sb-user-level">{{ user.get_level_display }}</div>
+      <span class="sb-badge">Apprenant</span>
+    </div>
+
+    <ul class="sb-nav">
+      <li><a href="{% url 'users:dashboard' %}" class="active"><span class="icon">🏠</span> Mon espace</a></li>
+      <li><a href="#"><span class="icon">📚</span> Mes formations</a></li>
+      <li><a href="#"><span class="icon">💳</span> Mes paiements</a></li>
+      <li><a href="#"><span class="icon">👤</span> Mon profil</a></li>
+    </ul>
+
+    <div class="sb-bottom">
+      <form method="post" action="{% url 'users:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="sb-logout">
+          <span class="icon">🚪</span> Se déconnecter
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h1>Bon retour, <em>{{ user.first_name }}</em> !</h1>
+        <div class="topbar-date">Cours intensifs · Juillet – Août 2026</div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <div class="msg {% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
+        {% if 'success' in message.tags %}✅{% elif 'error' in message.tags %}⚠️{% else %}ℹ️{% endif %}
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-icon gold">📚</div>
+        <div>
+          <div class="stat-val">{{ enrollments|length }}</div>
+          <div class="stat-lbl">Formation(s) inscrite(s)</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">✅</div>
+        <div>
+          <div class="stat-val">
+            {% with active_count=0 %}
+              {% for e in enrollments %}{% if e.status == 'active' %}{% with active_count=active_count|add:1 %}{% endwith %}{% endif %}{% endfor %}
+              {{ enrollments|length }}
+            {% endwith %}
+          </div>
+          <div class="stat-lbl">Inscription(s) active(s)</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon navy">🏫</div>
+        <div>
+          <div class="stat-val" style="font-size:1rem;">{{ user.school|default:"—"|truncatechars:16 }}</div>
+          <div class="stat-lbl">Établissement</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHATSAPP (si disponible) -->
+    {% if whatsapp_info %}
+    <div class="whatsapp-card">
+      <div class="wa-icon">💬</div>
+      <div class="wa-info">
+        <h3>Groupe WhatsApp — {{ user.get_level_display }}</h3>
+        <p>Prof : <strong>{{ whatsapp_info.prof_name }}</strong> · Tél : <strong>{{ whatsapp_info.prof_phone }}</strong></p>
+        <p style="margin-top:.4rem;font-size:.78rem;opacity:.7;">Rejoignez le groupe pour recevoir les cours, devoirs et annonces.</p>
+      </div>
+      <a href="{{ whatsapp_info.group_link }}" target="_blank" class="wa-btn">
+        Rejoindre →
+      </a>
+    </div>
+    {% endif %}
+
+    <!-- FORMATIONS -->
+    <div class="section-title">📋 Mes formations</div>
+
+    {% if enrollments %}
+      <div class="enrollments">
+        {% for enrollment in enrollments %}
+        <div class="enrollment-card">
+          <div class="enr-level">{{ enrollment.course.get_level_display }}</div>
+          <div class="enr-info">
+            <div class="enr-name">{{ enrollment.course.title }}</div>
+            <div class="enr-subjects">{{ enrollment.course.subjects }}</div>
+            <div class="enr-price">{{ enrollment.course.price|floatformat:0 }} FCFA</div>
+
+            <!-- Barre de paiement -->
+            {% with total_paid=0 %}
+            <div class="progress-wrap">
+              <div class="progress-label">
+                <span>Paiement</span>
+                <span>
+                  {% for p in enrollment.payments.all %}{% if p.status == 'confirmed' %}{{ p.amount|floatformat:0 }} FCFA versé(s){% endif %}{% empty %}0 FCFA versé{% endfor %}
+                  / {{ enrollment.course.price|floatformat:0 }} FCFA
+                </span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: {% for p in enrollment.payments.all %}{% if p.status == 'confirmed' %}{% widthratio p.amount enrollment.course.price 100 %}{% endif %}{% empty %}0{% endfor %}%"></div>
+              </div>
+            </div>
+            {% endwith %}
+          </div>
+
+          <span class="status-badge status-{{ enrollment.status }}">
+            {% if enrollment.status == 'active' %}✓ Active
+            {% elif enrollment.status == 'pending' %}⏳ En attente
+            {% else %}✗ Annulée{% endif %}
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="empty">
+        <div class="empty-icon">📭</div>
+        <h3>Aucune inscription pour le moment</h3>
+        <p>Vous n'êtes inscrit à aucune formation. Découvrez nos cours de renforcement et inscrivez-vous dès maintenant !</p>
+        <a href="#" class="btn-primary">✦ Voir les formations</a>
+      </div>
+    {% endif %}
+
+    <!-- INFOS PERSONNELLES -->
+    <div class="section-title">👤 Mes informations</div>
+    <div class="info-grid">
+      <div class="info-item">
+        <label>Nom complet</label>
+        <span>{{ user.full_name }}</span>
+      </div>
+      <div class="info-item">
+        <label>Nom d'utilisateur</label>
+        <span>{{ user.username }}</span>
+      </div>
+      <div class="info-item">
+        <label>Téléphone</label>
+        <span>{{ user.phone|default:"Non renseigné" }}</span>
+      </div>
+      <div class="info-item">
+        <label>Email</label>
+        <span>{{ user.email|default:"Non renseigné" }}</span>
+      </div>
+      <div class="info-item">
+        <label>Niveau</label>
+        <span>{{ user.get_level_display|default:"—" }}</span>
+      </div>
+      <div class="info-item">
+        <label>Établissement</label>
+        <span>{{ user.school|default:"Non renseigné" }}</span>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

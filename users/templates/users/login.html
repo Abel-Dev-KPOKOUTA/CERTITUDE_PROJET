@@ -1,0 +1,506 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connexion — Groupe La Certitude</title>
+  <link rel="icon" href="/images/logo_certitude.png" type="image/png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0b1b3a;
+      --navy2:  #112347;
+      --gold:   #c9a84c;
+      --gold2:  #e8c96a;
+      --cream:  #fdf6e3;
+      --white:  #ffffff;
+      --muted:  #8a99b5;
+      --danger: #e05c5c;
+      --radius: 14px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── LEFT PANEL ── */
+    .left {
+      position: relative;
+      background: var(--navy2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2.5rem;
+      overflow: hidden;
+    }
+
+    /* Decorative circles */
+    .left::before {
+      content: '';
+      position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      border: 60px solid rgba(201,168,76,.07);
+      top: -120px; left: -120px;
+    }
+    .left::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      border: 40px solid rgba(201,168,76,.1);
+      bottom: -80px; right: -80px;
+    }
+
+    .left-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 340px;
+    }
+
+    .logo-wrap {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.8rem;
+      box-shadow: 0 8px 32px rgba(201,168,76,.35);
+      overflow: hidden;
+    }
+    .logo-wrap img { width: 82px; height: 82px; object-fit: contain; }
+
+    .left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      line-height: 1.2;
+      color: var(--gold2);
+      margin-bottom: .6rem;
+    }
+    .left .tagline {
+      font-size: .9rem;
+      color: var(--muted);
+      letter-spacing: .04em;
+      margin-bottom: 2.4rem;
+    }
+
+    .info-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(201,168,76,.2);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.4rem;
+      text-align: left;
+    }
+    .info-card p {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .info-card strong { color: var(--gold); }
+
+    .divider-line {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      border-radius: 99px;
+      margin: 1.6rem auto;
+    }
+
+    .stars {
+      font-size: .8rem;
+      color: var(--gold);
+      letter-spacing: .2em;
+      margin-bottom: .5rem;
+    }
+
+    /* ── RIGHT PANEL ── */
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2rem;
+      background: var(--white);
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .form-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      color: var(--navy);
+      margin-bottom: .35rem;
+    }
+    .form-box .sub {
+      font-size: .88rem;
+      color: #6b7a9a;
+      margin-bottom: 2rem;
+    }
+    .form-box .sub a {
+      color: var(--gold);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .form-box .sub a:hover { text-decoration: underline; }
+
+    /* Messages */
+    .alert {
+      padding: .85rem 1rem;
+      border-radius: 8px;
+      font-size: .85rem;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: .6rem;
+    }
+    .alert-error  { background: #fdf0f0; border-left: 3px solid var(--danger); color: #c0392b; }
+    .alert-success{ background: #f0fdf4; border-left: 3px solid #27ae60; color: #1a6e3c; }
+    .alert-info   { background: #eef4ff; border-left: 3px solid #3a7bd5; color: #1a3a70; }
+    .alert-icon { font-size: 1rem; margin-top: .05rem; flex-shrink: 0; }
+
+    /* Fields */
+    .field { margin-bottom: 1.3rem; }
+    .field label {
+      display: block;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: .45rem;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    .input-wrap { position: relative; }
+    .input-wrap .icon {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      color: #a0aec0;
+      pointer-events: none;
+    }
+
+    .field input[type="text"],
+    .field input[type="password"] {
+      width: 100%;
+      padding: .82rem 1rem .82rem 2.7rem;
+      border: 1.5px solid #dde3ef;
+      border-radius: 9px;
+      font-size: .95rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--navy);
+      background: #f8fafd;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .field input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,.15);
+      background: var(--white);
+    }
+    .field input.is-invalid { border-color: var(--danger); }
+
+    .field .toggle-pw {
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      cursor: pointer; padding: 0;
+      color: #a0aec0; font-size: .95rem;
+    }
+    .field .toggle-pw:hover { color: var(--navy); }
+
+    .field-errors {
+      margin-top: .4rem;
+      font-size: .78rem;
+      color: var(--danger);
+    }
+
+    /* Extras row */
+    .extras {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.6rem;
+      font-size: .83rem;
+    }
+    .extras label { display: flex; align-items: center; gap: .4rem; color: #6b7a9a; cursor: pointer; }
+    .extras input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: var(--gold);
+    }
+    .extras a { color: var(--gold); text-decoration: none; font-weight: 500; }
+    .extras a:hover { text-decoration: underline; }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      padding: .95rem;
+      background: linear-gradient(135deg, #c9a84c, #e8c96a);
+      color: var(--navy);
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      letter-spacing: .04em;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 16px rgba(201,168,76,.4);
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(201,168,76,.5);
+    }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* Separator */
+    .sep {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.6rem 0;
+      color: #c0ccd8; font-size: .8rem;
+    }
+    .sep::before, .sep::after {
+      content: ''; flex: 1;
+      height: 1px; background: #dde3ef;
+    }
+
+    /* Register link */
+    .register-cta {
+      text-align: center;
+    }
+    .register-cta p { font-size: .88rem; color: #6b7a9a; margin-bottom: .7rem; }
+    .btn-outline {
+      display: block;
+      width: 100%;
+      padding: .85rem;
+      border: 2px solid var(--navy);
+      border-radius: 9px;
+      color: var(--navy);
+      font-size: .95rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      text-align: center;
+      text-decoration: none;
+      transition: background .18s, color .18s;
+    }
+    .btn-outline:hover { background: var(--navy); color: var(--white); }
+
+    /* Back link */
+    .back-home {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .82rem; color: #8a99b5;
+      text-decoration: none;
+      margin-top: 1.8rem;
+      justify-content: center;
+      transition: color .15s;
+    }
+    .back-home:hover { color: var(--navy); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .page { grid-template-columns: 1fr; }
+      .left  { display: none; }
+      .right { padding: 2.5rem 1.4rem; min-height: 100vh; }
+      .form-box { max-width: 100%; }
+
+      /* Mobile top bar */
+      .mobile-header {
+        display: flex !important;
+        align-items: center;
+        gap: .8rem;
+        margin-bottom: 2rem;
+      }
+      .mobile-header img { width: 44px; height: 44px; border-radius: 50%; }
+      .mobile-header span {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1rem;
+        color: var(--navy);
+        font-weight: 700;
+      }
+    }
+    .mobile-header { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══ LEFT ═══════════════════════════════════════════ -->
+  <aside class="left">
+    <div class="left-inner">
+      <div class="stars">✦ ✦ ✦</div>
+      <div class="logo-wrap">
+        <img src="/images/logo_certitude.png" alt="Logo La Certitude"/>
+      </div>
+      <h1>Groupe<br/>La Certitude</h1>
+      <p class="tagline">Discipline · Travail · Excellence</p>
+      <div class="divider-line"></div>
+
+      <div class="info-card">
+        <p>📅 <strong>Cours intensifs</strong><br/>1er juillet – 31 août 2026</p>
+        <p style="margin-top:.7rem">📍 <strong>Lieu</strong><br/>EPP Gbégamey Sud, Cotonou</p>
+        <p style="margin-top:.7rem">⏰ <strong>Horaires</strong><br/>Lun–Ven · 08h30 à 13h00</p>
+        <p style="margin-top:.7rem">📲 <strong>Contact</strong><br/>01 96 38 92 49</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ RIGHT ══════════════════════════════════════════ -->
+  <main class="right">
+    <div class="form-box">
+
+      <!-- Mobile only header -->
+      <div class="mobile-header">
+        <img src="/images/logo_certitude.png" alt="Logo"/>
+        <span>Groupe La Certitude</span>
+      </div>
+
+      <h2>Bon retour 👋</h2>
+      <p class="sub">
+        Pas encore de compte ?
+        <a href="{% url 'users:register' %}">S'inscrire maintenant</a>
+      </p>
+
+      <!-- Django messages -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            <span class="alert-icon">
+              {% if message.tags == 'error' %}⚠️
+              {% elif message.tags == 'success' %}✅
+              {% else %}ℹ️{% endif %}
+            </span>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <!-- Non-field errors -->
+      {% if form.non_field_errors %}
+        <div class="alert alert-error">
+          <span class="alert-icon">⚠️</span>
+          <div>
+            {% for error in form.non_field_errors %}
+              <div>{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <!-- ?next redirect -->
+        {% if request.GET.next %}
+          <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
+
+        <!-- Username -->
+        <div class="field">
+          <label for="{{ form.username.id_for_label }}">Nom d'utilisateur</label>
+          <div class="input-wrap">
+            <span class="icon">👤</span>
+            <input
+              type="text"
+              id="{{ form.username.id_for_label }}"
+              name="{{ form.username.html_name }}"
+              value="{{ form.username.value|default:'' }}"
+              placeholder="Votre nom d'utilisateur"
+              autocomplete="username"
+              {% if form.username.errors %}class="is-invalid"{% endif %}
+              autofocus
+            />
+          </div>
+          {% if form.username.errors %}
+            <div class="field-errors">
+              {% for err in form.username.errors %}{{ err }}{% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label for="{{ form.password.id_for_label }}">Mot de passe</label>
+          <div class="input-wrap">
+            <span class="icon">🔒</span>
+            <input
+              type="password"
+              id="{{ form.password.id_for_label }}"
+              name="{{ form.password.html_name }}"
+              placeholder="Votre mot de passe"
+              autocomplete="current-password"
+              {% if form.password.errors %}class="is-invalid"{% endif %}
+            />
+            <button type="button" class="toggle-pw" onclick="togglePw(this)" aria-label="Voir le mot de passe">
+              👁
+            </button>
+          </div>
+          {% if form.password.errors %}
+            <div class="field-errors">
+              {% for err in form.password.errors %}{{ err }}{% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Remember me + forgot -->
+        <div class="extras">
+          <label>
+            <input type="checkbox" name="remember_me"/> Se souvenir de moi
+          </label>
+          <a href="#">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          Se connecter →
+        </button>
+      </form>
+
+      <div class="sep">ou</div>
+
+      <div class="register-cta">
+        <p>Première fois sur la plateforme ?</p>
+        <a href="{% url 'users:register' %}" class="btn-outline">
+          Créer mon compte
+        </a>
+      </div>
+
+      <a href="{% url 'core:index' %}" class="back-home">
+        ← Retour à l'accueil
+      </a>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  function togglePw(btn) {
+    const input = btn.previousElementSibling;
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      btn.textContent = '👁';
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -14,7 +14,6 @@ User = get_user_model()
 #  PAGE DE CHOIX : apprenant ou parent ?
 # ─────────────────────────────────────────────────────────
 def register_choice_view(request):
-    """Page intermédiaire : choisir son profil avant de s'inscrire."""
     if request.user.is_authenticated:
         return redirect('users:dashboard')
     return render(request, 'users/register_choice.html')
@@ -29,10 +28,12 @@ def register_apprenant_view(request):
 
     form = ApprenantRegisterForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
-        user = form.save()
-        login(request, user)
-        messages.success(request, f"Bienvenue {user.first_name} ! Votre compte apprenant a été créé.")
-        return redirect('users:dashboard')
+        form.save()
+        messages.success(
+            request,
+            "✅ Compte créé avec succès ! Connectez-vous maintenant pour accéder à votre espace."
+        )
+        return redirect('users:login')  # ← redirige vers login, pas dashboard
 
     return render(request, 'users/register_apprenant.html', {'form': form})
 
@@ -46,10 +47,12 @@ def register_parent_view(request):
 
     form = ParentRegisterForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
-        user = form.save()
-        login(request, user)
-        messages.success(request, f"Bienvenue {user.first_name} ! Ajoutez maintenant votre (vos) enfant(s).")
-        return redirect('users:add_child')
+        form.save()
+        messages.success(
+            request,
+            "✅ Compte parent créé ! Connectez-vous pour ajouter votre (vos) enfant(s)."
+        )
+        return redirect('users:login')  # ← redirige vers login, pas add_child
 
     return render(request, 'users/register_parent.html', {'form': form})
 
@@ -67,9 +70,8 @@ def add_child_view(request):
         child = form.save(commit=False)
         child.parent = request.user
         child.save()
-        messages.success(request, f"{child.full_name} a été ajouté(e) avec succès.")
+        messages.success(request, f"✅ {child.full_name} a été ajouté(e) avec succès.")
 
-        # Continuer à ajouter ou aller au dashboard
         if 'add_another' in request.POST:
             return redirect('users:add_child')
         return redirect('users:dashboard')
@@ -88,9 +90,11 @@ def login_view(request):
     form = LoginForm(request, data=request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.get_user()
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        messages.success(request, f"Bon retour, {user.first_name} !")
-        return redirect(request.GET.get('next', 'users:dashboard'))
+        messages.success(request, f"Bon retour, {user.first_name} ! 👋")
+        next_url = request.GET.get('next') or request.POST.get('next')
+        return redirect(next_url if next_url else 'users:dashboard')
 
     return render(request, 'users/login.html', {'form': form})
 
@@ -102,7 +106,7 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         messages.info(request, "Vous avez été déconnecté.")
-    return redirect('home')
+    return redirect('core:index')
 
 
 # ─────────────────────────────────────────────────────────
@@ -158,18 +162,19 @@ def _dashboard_apprenant(request, user):
 
 # ── Dashboard parent ─────────────────────────────────────
 def _dashboard_parent(request, user):
-    children = user.children.prefetch_related('enrollments__course', 'enrollments__payments').all()
+    children = user.children.prefetch_related(
+        'enrollments__course', 'enrollments__payments'
+    ).all()
     return render(request, 'users/dashboard_parent.html', {
         'user': user,
         'children': children,
     })
 
 
-# # ── Dashboard prof ───────────────────────────────────────
+# ── Dashboard prof ───────────────────────────────────────
 def _dashboard_prof(request, user):
-    # Récupérer les apprenants du même niveau que la matière du prof
     try:
-        from apps.enrollments.models import Enrollment
+        from enrollments.models import Enrollment
         enrollments = Enrollment.objects.filter(
             status='active'
         ).select_related('student', 'course')

@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscription — Groupe La Certitude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0b1c3d; --navy2: #152848;
+      --gold: #c9922a; --gold-lt: #e8b84b;
+      --cream: #fdf6ec; --white: #ffffff; --muted: #6b7280;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(201,146,42,.18) 0%, transparent 60%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy2) 100%);
+      padding: 2rem;
+    }
+    .wrapper { width: 100%; max-width: 640px; }
+
+    .top { text-align: center; margin-bottom: 2.5rem; }
+    .logo { width: 70px; height: 70px; border-radius: 50%; object-fit: contain; background: white; padding: 5px; margin: 0 auto 1.2rem; display: block; box-shadow: 0 4px 20px rgba(0,0,0,.3); }
+    .top h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--white); }
+    .top p  { color: rgba(255,255,255,.6); margin-top: .5rem; font-size: .95rem; }
+
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+    .choice-card {
+      background: rgba(255,255,255,.06);
+      border: 2px solid rgba(255,255,255,.12);
+      border-radius: 20px; padding: 2.2rem 1.8rem;
+      text-align: center; text-decoration: none;
+      transition: border-color .25s, background .25s, transform .25s;
+      display: block;
+    }
+    .choice-card:hover {
+      border-color: var(--gold);
+      background: rgba(201,146,42,.1);
+      transform: translateY(-4px);
+    }
+    .choice-icon {
+      font-size: 3rem; margin-bottom: 1rem; display: block;
+    }
+    .choice-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--white); margin-bottom: .6rem;
+    }
+    .choice-desc { color: rgba(255,255,255,.55); font-size: .88rem; line-height: 1.6; }
+    .choice-btn {
+      display: inline-block; margin-top: 1.3rem;
+      padding: .6rem 1.5rem; border-radius: 50px;
+      background: var(--gold); color: var(--white);
+      font-size: .85rem; font-weight: 700;
+      transition: background .2s;
+    }
+    .choice-card:hover .choice-btn { background: var(--gold-lt); }
+
+    .login-link {
+      text-align: center; margin-top: 2rem;
+      color: rgba(255,255,255,.4); font-size: .88rem;
+    }
+    .login-link a { color: var(--gold-lt); font-weight: 600; }
+
+    .back { display: inline-flex; align-items: center; gap: .4rem; color: rgba(255,255,255,.4); font-size: .82rem; text-decoration: none; margin-bottom: 1.5rem; transition: color .2s; }
+    .back:hover { color: var(--gold-lt); }
+
+    @media (max-width: 540px) {
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <a href="{% url 'core:index' %}" class="back">← Retour à l'accueil</a>
+
+    <div class="top">
+      <img src="/images/logo_certitude.png" alt="Logo" class="logo" />
+      <h1>Qui êtes-vous ?</h1>
+      <p>Choisissez votre profil pour créer votre compte</p>
+    </div>
+
+    <div class="cards">
+
+      <a href="{% url 'users:register_apprenant' %}" class="choice-card">
+        <span class="choice-icon">🎒</span>
+        <div class="choice-title">Je suis un apprenant</div>
+        <p class="choice-desc">
+          Je veux m'inscrire moi-même aux cours de renforcement et gérer mon espace personnellement.
+        </p>
+        <span class="choice-btn">S'inscrire →</span>
+      </a>
+
+      <a href="{% url 'users:register_parent' %}" class="choice-card">
+        <span class="choice-icon">👨‍👩‍👦</span>
+        <div class="choice-title">Je suis un parent</div>
+        <p class="choice-desc">
+          Je veux inscrire mon enfant (ou mes enfants) aux cours de renforcement et suivre leurs paiements.
+        </p>
+        <span class="choice-btn">S'inscrire →</span>
+      </a>
+
+    </div>
+
+    <p class="login-link">
+      Déjà un compte ? <a href="{% url 'users:login' %}">Se connecter</a>
+    </p>
+  </div>
+</body>
+</html>

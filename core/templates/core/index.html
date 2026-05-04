@@ -358,7 +358,12 @@
           <li><a href="#offres">Offres</a></li>
           <li><a href="#modalites">Modalités</a></li>
         </ul>
-        <a href="{% url 'users:register' %}" class="btn btn-gold desktop-cta">S'inscrire</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'users:logout' %}" class="btn btn-gold desktop-cta">Se déconnecter</a>
+        {% else %}
+            <a href="{% url 'users:login' %}" class="btn btn-gold desktop-cta">Se connecter</a>
+            <a href="{% url 'users:register' %}" class="btn btn-gold desktop-cta">S'inscrire</a>
+        {% endif %}
         <!-- Hamburger (mobile uniquement) -->
         <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
           <span></span><span></span><span></span>
@@ -379,6 +384,11 @@
       <a href="#galerie"    class="menu-link">🖼️ Galerie</a>
       <a href="#offres"     class="menu-link">⭐ Offres</a>
       <a href="#modalites"  class="menu-link">📋 Modalités</a>
+    </div>
+    <div class="mobile-menu-cta">
+      <a href="{% url 'users:login' %}" class="btn btn-gold menu-link" style="font-size:1.05rem;padding:1rem 2.5rem">
+        ✦ Se connecter
+      </a>
     </div>
     <div class="mobile-menu-cta">
       <a href="{% url 'users:register' %}" class="btn btn-gold menu-link" style="font-size:1.05rem;padding:1rem 2.5rem">

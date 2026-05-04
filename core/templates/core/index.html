@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -357,7 +358,7 @@
           <li><a href="#offres">Offres</a></li>
           <li><a href="#modalites">Modalités</a></li>
         </ul>
-        <a href="#cta-banner" class="btn btn-gold desktop-cta">S'inscrire</a>
+        <a href="{% url 'users:register' %}" class="btn btn-gold desktop-cta">S'inscrire</a>
         <!-- Hamburger (mobile uniquement) -->
         <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
           <span></span><span></span><span></span>
@@ -380,7 +381,7 @@
       <a href="#modalites"  class="menu-link">📋 Modalités</a>
     </div>
     <div class="mobile-menu-cta">
-      <a href="#cta-banner" class="btn btn-gold menu-link" style="font-size:1.05rem;padding:1rem 2.5rem">
+      <a href="{% url 'users:register' %}" class="btn btn-gold menu-link" style="font-size:1.05rem;padding:1rem 2.5rem">
         ✦ S'inscrire maintenant
       </a>
     </div>
@@ -408,7 +409,7 @@
             EPP Gbégamey Sud, Cotonou.
           </p>
           <div class="hero-actions">
-            <a href="#cta-banner" class="btn btn-gold">✦ S'inscrire en ligne</a>
+            <a href="{% url 'users:register' %}" class="btn btn-gold">✦ S'inscrire en ligne</a>
             <a href="#formations" class="btn btn-outline">Voir les formations</a>
           </div>
           <div class="hero-stats">
@@ -453,7 +454,7 @@
           <h2 class="section-title" style="margin-top:.8rem">Choisissez votre niveau</h2>
           <p class="section-sub">Des cours adaptés à chaque classe, avec des enseignants qualifiés pour vous accompagner vers l'excellence.</p>
         </div>
-        <a href="#cta-banner" class="btn btn-gold">S'inscrire →</a>
+        <a href="{% url 'users:register' %}" class="btn btn-gold">S'inscrire →</a>
       </div>
       <div class="cards-grid">
 
@@ -470,7 +471,7 @@
             Consolidez les bases fondamentales et abordez le BEPC avec confiance.
           </p>
           <div class="card-price"><span class="price-amount">11 500</span><span class="price-currency">FCFA</span></div>
-          <a href="users:login" class="card-cta">S'inscrire maintenant</a>
+          <a href="{% url 'users:register' %}" class="card-cta">S'inscrire maintenant</a>
         </div>
 
         <div class="level-card navy">
@@ -486,7 +487,7 @@
             Approfondissez les notions avancées pour préparer sereinement la Terminale.
           </p>
           <div class="card-price"><span class="price-amount">12 500</span><span class="price-currency">FCFA</span></div>
-          <a href="#cta-banner" class="card-cta">S'inscrire maintenant</a>
+          <a href="{% url 'users:register' %}" class="card-cta">S'inscrire maintenant</a>
         </div>
 
         <div class="level-card teal">
@@ -502,7 +503,7 @@
             Maximisez vos chances au BAC avec une révision complète et intensive.
           </p>
           <div class="card-price"><span class="price-amount">15 500</span><span class="price-currency">FCFA</span></div>
-          <a href="#cta-banner" class="card-cta">S'inscrire maintenant</a>
+          <a href="{% url 'users:register' %}" class="card-cta">S'inscrire maintenant</a>
         </div>
 
       </div>
@@ -613,7 +614,7 @@
           <div class="modal-icon">💻</div>
           <h4>En ligne</h4>
           <p>Via ce site : formulaire + paiement Mobile Money<br>(MTN : 01 96 38 92 49 | MOOV : 01 95 51 17 61)</p>
-          <a href="#cta-banner" class="btn btn-gold" style="margin-top:1.3rem;font-size:.85rem">S'inscrire →</a>
+          <a href="{% url 'users:register' %}" class="btn btn-gold" style="margin-top:1.3rem;font-size:.85rem">S'inscrire →</a>
         </div>
         <div class="modal-card">
           <div class="modal-icon">📍</div>
@@ -637,7 +638,7 @@
       <h2 class="section-title">Prêt à rejoindre<br>La Certitude ?</h2>
       <p>Inscrivez-vous maintenant et rejoignez les élèves qui choisissent l'excellence. Les places sont limitées !</p>
       <div class="cta-actions">
-        <a href="#" class="btn btn-gold" style="font-size:1rem;padding:1rem 2.2rem">✦ Inscription en ligne</a>
+        <a href="{% url 'users:register' %}" class="btn btn-gold" style="font-size:1rem;padding:1rem 2.2rem">✦ Inscription en ligne</a>
         <a href="tel:+22996389249" class="btn btn-outline" style="font-size:1rem;padding:1rem 2.2rem">📞 Nous appeler</a>
       </div>
       <p style="margin-top:2rem;color:rgba(255,255,255,.4);font-size:.85rem">

@@ -33,4 +33,11 @@ db.sqlite3-journal
 
 # fichiers temporaires
 *.swp
-*.swo
+*.swo*
+
+# Static files collectées
+staticfiles/
+
+# Media upload
+media/
+images/

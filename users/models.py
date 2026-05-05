@@ -16,9 +16,11 @@ class User(AbstractUser):
     ]
 
     LEVEL_CHOICES = [
-        ('3eme', '3ème'),
-        ('1ere', '1ères C & D'),
-        ('tle',  'Terminales C & D'),
+        ('3eme',  '3ème'),
+        ('1ereC', '1ère C'),
+        ('1ereD', '1ère D'),
+        ('tleC',  'Terminale C'),
+        ('tleD',  'Terminale D'),
     ]
 
     MATIERE_CHOICES = [
@@ -79,9 +81,11 @@ class Student(models.Model):
     """
 
     LEVEL_CHOICES = [
-        ('3eme', '3ème'),
-        ('1ere', '1ères C & D'),
-        ('tle',  'Terminales C & D'),
+        ('3eme',  '3ème'),
+        ('1ereC', '1ère C'),
+        ('1ereD', '1ère D'),
+        ('tleC',  'Terminale C'),
+        ('tleD',  'Terminale D'),
     ]
 
     # Lien vers le parent

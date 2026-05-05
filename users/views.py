@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -21,6 +21,7 @@ def register_choice_view(request):
 
 # ─────────────────────────────────────────────────────────
 #  INSCRIPTION APPRENANT
+#  → Après inscription : redirection vers LOGIN (pas auto-login)
 # ─────────────────────────────────────────────────────────
 def register_apprenant_view(request):
     if request.user.is_authenticated:
@@ -28,18 +29,20 @@ def register_apprenant_view(request):
 
     form = ApprenantRegisterForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
-        form.save()
+        user = form.save()
         messages.success(
             request,
-            "✅ Compte créé avec succès ! Connectez-vous maintenant pour accéder à votre espace."
+            f"✅ Compte créé avec succès ! "
+            f"Connectez-vous maintenant pour accéder à votre espace, {user.first_name}."
         )
-        return redirect('users:login')  # ← redirige vers login, pas dashboard
+        return redirect('users:login')
 
     return render(request, 'users/register_apprenant.html', {'form': form})
 
 
 # ─────────────────────────────────────────────────────────
 #  INSCRIPTION PARENT
+#  → Après inscription : redirection vers LOGIN (pas auto-login)
 # ─────────────────────────────────────────────────────────
 def register_parent_view(request):
     if request.user.is_authenticated:
@@ -47,18 +50,19 @@ def register_parent_view(request):
 
     form = ParentRegisterForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
-        form.save()
+        user = form.save()
         messages.success(
             request,
-            "✅ Compte parent créé ! Connectez-vous pour ajouter votre (vos) enfant(s)."
+            f"✅ Compte parent créé avec succès ! "
+            f"Connectez-vous pour ajouter vos enfants, {user.first_name}."
         )
-        return redirect('users:login')  # ← redirige vers login, pas add_child
+        return redirect('users:login')
 
     return render(request, 'users/register_parent.html', {'form': form})
 
 
 # ─────────────────────────────────────────────────────────
-#  AJOUTER UN ENFANT (parent uniquement)
+#  AJOUTER UN ENFANT (parent uniquement, après connexion)
 # ─────────────────────────────────────────────────────────
 @login_required
 def add_child_view(request):
@@ -90,10 +94,9 @@ def login_view(request):
     form = LoginForm(request, data=request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.get_user()
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
         messages.success(request, f"Bon retour, {user.first_name} ! 👋")
-        next_url = request.GET.get('next') or request.POST.get('next')
+        next_url = request.GET.get('next', '')
         return redirect(next_url if next_url else 'users:dashboard')
 
     return render(request, 'users/login.html', {'form': form})
@@ -106,7 +109,7 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         messages.info(request, "Vous avez été déconnecté.")
-    return redirect('core:index')
+    return redirect('users:login')
 
 
 # ─────────────────────────────────────────────────────────
@@ -124,7 +127,7 @@ def dashboard_view(request):
         return _dashboard_prof(request, user)
     elif user.is_admin_role or user.is_staff:
         return redirect('/admin/')
-    return redirect('home')
+    return redirect('core:index')
 
 
 # ── Dashboard apprenant ──────────────────────────────────
@@ -135,15 +138,25 @@ def _dashboard_apprenant(request, user):
             'prof_name':  'M. AGOSSOU Kévin',
             'prof_phone': '+22997000001',
         },
-        '1ere': {
-            'group_link': 'https://chat.whatsapp.com/LIEN_GROUPE_1ERE',
+        '1ereC': {
+            'group_link': 'https://chat.whatsapp.com/LIEN_GROUPE_1ERE_C',
             'prof_name':  'M. HOUNKPATIN Théodore',
             'prof_phone': '+22997000002',
         },
-        'tle': {
-            'group_link': 'https://chat.whatsapp.com/LIEN_GROUPE_TLE',
-            'prof_name':  'M. AHOUANSOU Martial',
+        '1ereD': {
+            'group_link': 'https://chat.whatsapp.com/LIEN_GROUPE_1ERE_D',
+            'prof_name':  'M. AZONHIHO Serge',
             'prof_phone': '+22997000003',
+        },
+        'tleC': {
+            'group_link': 'https://chat.whatsapp.com/LIEN_GROUPE_TLE_C',
+            'prof_name':  'M. AHOUANSOU Martial',
+            'prof_phone': '+22997000004',
+        },
+        'tleD': {
+            'group_link': 'https://chat.whatsapp.com/LIEN_GROUPE_TLE_D',
+            'prof_name':  'M. GBENOU Patrick',
+            'prof_phone': '+22997000005',
         },
     }
     whatsapp_info = WHATSAPP_LINKS.get(user.level, {})
@@ -154,8 +167,8 @@ def _dashboard_apprenant(request, user):
         enrollments = []
 
     return render(request, 'users/dashboard_apprenant.html', {
-        'user': user,
-        'enrollments': enrollments,
+        'user':          user,
+        'enrollments':   enrollments,
         'whatsapp_info': whatsapp_info,
     })
 
@@ -163,10 +176,11 @@ def _dashboard_apprenant(request, user):
 # ── Dashboard parent ─────────────────────────────────────
 def _dashboard_parent(request, user):
     children = user.children.prefetch_related(
-        'enrollments__course', 'enrollments__payments'
+        'enrollments__course',
+        'enrollments__payments'
     ).all()
     return render(request, 'users/dashboard_parent.html', {
-        'user': user,
+        'user':     user,
         'children': children,
     })
 
@@ -174,7 +188,7 @@ def _dashboard_parent(request, user):
 # ── Dashboard prof ───────────────────────────────────────
 def _dashboard_prof(request, user):
     try:
-        from enrollments.models import Enrollment
+        from apps.enrollments.models import Enrollment
         enrollments = Enrollment.objects.filter(
             status='active'
         ).select_related('student', 'course')
@@ -182,6 +196,6 @@ def _dashboard_prof(request, user):
         enrollments = []
 
     return render(request, 'users/dashboard_prof.html', {
-        'user': user,
+        'user':        user,
         'enrollments': enrollments,
     })

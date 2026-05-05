@@ -1,9 +1,38 @@
+import re
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
 from .models import Student
 
 User = get_user_model()
+
+
+# ─────────────────────────────────────────────────────────
+#  VALIDATION MOT DE PASSE — règles communes
+# ─────────────────────────────────────────────────────────
+def validate_password_strength(password):
+    """
+    Règles :
+      - 8 caractères minimum
+      - Au moins 1 majuscule
+      - Au moins 1 chiffre
+      - Au moins 1 caractère spécial
+    """
+    if not password:
+        return
+    errors = []
+    if len(password) < 8:
+        errors.append("au moins 8 caractères")
+    if not re.search(r'[A-Z]', password):
+        errors.append("au moins une lettre majuscule (A-Z)")
+    if not re.search(r'[0-9]', password):
+        errors.append("au moins un chiffre (0-9)")
+    if not re.search(r'[!@#$%^&*()_\-+=\[\]{};:\'",.<>?/\\|`~]', password):
+        errors.append("au moins un caractère spécial (!@#$%...)")
+    if errors:
+        raise forms.ValidationError(
+            "Mot de passe trop faible. Il doit contenir : " + ", ".join(errors) + "."
+        )
 
 
 # ─────────────────────────────────────────────────────────
@@ -14,11 +43,17 @@ class ApprenantRegisterForm(forms.ModelForm):
 
     password1 = forms.CharField(
         label="Mot de passe",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Choisissez un mot de passe'}),
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Ex : MonPass@2026',
+            'id': 'id_password1',
+        }),
     )
     password2 = forms.CharField(
         label="Confirmer le mot de passe",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Répétez le mot de passe'}),
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Répétez le mot de passe',
+            'id': 'id_password2',
+        }),
     )
 
     class Meta:
@@ -43,10 +78,17 @@ class ApprenantRegisterForm(forms.ModelForm):
             'username':   "Nom d'utilisateur",
         }
 
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        validate_password_strength(password)
+        return password
+
     def clean(self):
         cleaned = super().clean()
-        if cleaned.get('password1') != cleaned.get('password2'):
-            raise forms.ValidationError("Les mots de passe ne correspondent pas.")
+        p1 = cleaned.get('password1')
+        p2 = cleaned.get('password2')
+        if p1 and p2 and p1 != p2:
+            self.add_error('password2', "Les mots de passe ne correspondent pas.")
         return cleaned
 
     def save(self, commit=True):
@@ -66,11 +108,17 @@ class ParentRegisterForm(forms.ModelForm):
 
     password1 = forms.CharField(
         label="Mot de passe",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Choisissez un mot de passe'}),
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Ex : MonPass@2026',
+            'id': 'id_password1',
+        }),
     )
     password2 = forms.CharField(
         label="Confirmer le mot de passe",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Répétez le mot de passe'}),
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Répétez le mot de passe',
+            'id': 'id_password2',
+        }),
     )
 
     class Meta:
@@ -91,10 +139,17 @@ class ParentRegisterForm(forms.ModelForm):
             'username':   "Nom d'utilisateur",
         }
 
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        validate_password_strength(password)
+        return password
+
     def clean(self):
         cleaned = super().clean()
-        if cleaned.get('password1') != cleaned.get('password2'):
-            raise forms.ValidationError("Les mots de passe ne correspondent pas.")
+        p1 = cleaned.get('password1')
+        p2 = cleaned.get('password2')
+        if p1 and p2 and p1 != p2:
+            self.add_error('password2', "Les mots de passe ne correspondent pas.")
         return cleaned
 
     def save(self, commit=True):
@@ -110,14 +165,12 @@ class ParentRegisterForm(forms.ModelForm):
 #  FICHE ENFANT (utilisée par le parent)
 # ─────────────────────────────────────────────────────────
 class StudentForm(forms.ModelForm):
-    """Formulaire pour ajouter un enfant (depuis le dashboard parent)."""
-
     class Meta:
         model  = Student
         fields = ['last_name', 'first_name', 'school', 'level']
         widgets = {
-            'last_name':  forms.TextInput(attrs={'placeholder': 'Nom de l\'enfant'}),
-            'first_name': forms.TextInput(attrs={'placeholder': 'Prénom(s) de l\'enfant'}),
+            'last_name':  forms.TextInput(attrs={'placeholder': "Nom de l'enfant"}),
+            'first_name': forms.TextInput(attrs={'placeholder': "Prénom(s) de l'enfant"}),
             'school':     forms.TextInput(attrs={'placeholder': 'Ex : CEG Gbégamey'}),
             'level':      forms.Select(),
         }
@@ -135,9 +188,14 @@ class StudentForm(forms.ModelForm):
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
         label="Nom d'utilisateur",
-        widget=forms.TextInput(attrs={'placeholder': "Votre nom d'utilisateur", 'autofocus': True}),
+        widget=forms.TextInput(attrs={
+            'placeholder': "Votre nom d'utilisateur",
+            'autofocus': True,
+        }),
     )
     password = forms.CharField(
         label="Mot de passe",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Votre mot de passe'}),
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Votre mot de passe',
+        }),
     )

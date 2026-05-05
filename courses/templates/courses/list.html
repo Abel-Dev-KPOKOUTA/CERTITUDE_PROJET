@@ -1,0 +1,370 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formations — Groupe La Certitude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:#0b1c3d; --navy2:#152848; --navy3:#1e3a5f;
+      --gold:#c9922a; --gold-lt:#e8b84b; --gold-pale:rgba(201,146,42,.12);
+      --cream:#fdf6ec; --white:#ffffff; --muted:#6b7280;
+      --success:#2a7f6f; --success-pale:rgba(42,127,111,.1);
+      --error:#e53e3e; --error-pale:rgba(229,62,62,.08);
+      --radius:14px; --shadow:0 4px 20px rgba(11,28,61,.08);
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--navy); min-height:100vh; }
+    .layout { display:flex; min-height:100vh; }
+
+    /* SIDEBAR */
+    .sidebar { width:250px; flex-shrink:0; background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%); display:none; flex-direction:column; padding:1.8rem 1.4rem; position:sticky; top:0; height:100vh; overflow-y:auto; }
+    .sidebar::before { content:''; position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:40px 40px; }
+    .sb-logo { display:flex; align-items:center; gap:.7rem; margin-bottom:2rem; position:relative; }
+    .sb-logo img { width:40px; height:40px; border-radius:50%; background:white; padding:3px; object-fit:contain; }
+    .sb-logo strong { font-family:'Playfair Display',serif; font-size:.9rem; color:white; display:block; }
+    .sb-logo span { font-size:.6rem; color:rgba(255,255,255,.4); letter-spacing:.08em; text-transform:uppercase; }
+    .sb-user { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:.9rem; margin-bottom:1.8rem; position:relative; }
+    .sb-user-name { font-weight:700; color:white; font-size:.9rem; }
+    .sb-user-level { font-size:.72rem; color:var(--gold-lt); margin-top:.15rem; }
+    .sb-badge { display:inline-block; margin-top:.4rem; padding:.18rem .65rem; border-radius:20px; background:var(--gold-pale); border:1px solid rgba(201,146,42,.3); font-size:.68rem; color:var(--gold-lt); font-weight:700; letter-spacing:.05em; text-transform:uppercase; }
+    .sb-nav { list-style:none; display:flex; flex-direction:column; gap:.25rem; position:relative; flex:1; }
+    .sb-nav a { display:flex; align-items:center; gap:.7rem; padding:.65rem .9rem; border-radius:10px; color:rgba(255,255,255,.55); font-size:.86rem; font-weight:500; text-decoration:none; transition:all .2s; }
+    .sb-nav a:hover { background:rgba(255,255,255,.07); color:white; }
+    .sb-nav a.active { background:rgba(255,255,255,.09); color:white; border-left:3px solid var(--gold); padding-left:calc(.9rem - 3px); }
+    .ni { font-size:.95rem; width:20px; text-align:center; flex-shrink:0; }
+    .sb-bottom { margin-top:auto; padding-top:.9rem; border-top:1px solid rgba(255,255,255,.08); position:relative; }
+    .sb-logout { display:flex; align-items:center; gap:.7rem; padding:.65rem .9rem; border-radius:10px; color:rgba(255,255,255,.35); font-size:.84rem; cursor:pointer; background:none; border:none; width:100%; font-family:inherit; transition:all .2s; text-align:left; }
+    .sb-logout:hover { color:var(--error); background:var(--error-pale); }
+
+    /* MAIN */
+    .main { flex:1; min-width:0; padding:72px 1rem 80px; }
+
+    .page-header { margin-bottom:1.8rem; }
+    .page-header h1 { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:900; color:var(--navy); }
+    .page-header h1 em { color:var(--gold); font-style:italic; }
+    .page-header p { font-size:.82rem; color:var(--muted); margin-top:.3rem; }
+
+    /* INFO BANNER */
+    .info-banner {
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+      border-radius:var(--radius); padding:1.4rem 1.5rem;
+      margin-bottom:1.8rem; display:flex; align-items:center; gap:1rem;
+      flex-wrap:wrap;
+    }
+    .info-banner .ib-icon { font-size:2rem; flex-shrink:0; }
+    .info-banner h3 { font-family:'Playfair Display',serif; color:white; font-size:1rem; margin-bottom:.2rem; }
+    .info-banner p { color:rgba(255,255,255,.65); font-size:.8rem; line-height:1.5; }
+    .info-banner .ib-tag { display:inline-block; background:rgba(201,146,42,.25); border:1px solid rgba(201,146,42,.4); color:var(--gold-lt); border-radius:20px; padding:.2rem .8rem; font-size:.72rem; font-weight:700; margin-top:.4rem; }
+
+    /* ALREADY ENROLLED */
+    .enrolled-banner {
+      background:var(--success-pale); border:1px solid rgba(42,127,111,.3);
+      border-radius:var(--radius); padding:1rem 1.2rem;
+      margin-bottom:1.5rem; font-size:.88rem; color:var(--success);
+      display:flex; align-items:center; gap:.6rem;
+    }
+
+    /* COURS GRID */
+    .courses-grid { display:grid; grid-template-columns:1fr; gap:1.2rem; }
+
+    .course-card {
+      background:var(--white); border-radius:var(--radius);
+      border:1px solid rgba(11,28,61,.08); box-shadow:var(--shadow);
+      overflow:hidden; transition:transform .2s, box-shadow .2s;
+    }
+    .course-card:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(11,28,61,.13); }
+    .course-card.recommended { border:2px solid var(--gold); }
+
+    .card-top {
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%);
+      padding:1.2rem 1.4rem; display:flex; align-items:center; gap:1rem;
+      position:relative;
+    }
+    .card-top.recommended-bg { background:linear-gradient(135deg,#8a6010 0%,var(--gold) 100%); }
+
+    .level-badge {
+      width:52px; height:52px; border-radius:12px;
+      background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.2);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Playfair Display',serif; font-size:.72rem; font-weight:700;
+      color:var(--gold-lt); text-align:center; line-height:1.2; flex-shrink:0;
+    }
+    .card-top-info { flex:1; }
+    .card-top-info h3 { font-family:'Playfair Display',serif; font-size:1.1rem; color:white; font-weight:700; }
+    .card-top-info .subjects { font-size:.75rem; color:rgba(255,255,255,.65); margin-top:.3rem; }
+
+    .recommended-pill {
+      position:absolute; top:.8rem; right:.8rem;
+      background:var(--gold); color:var(--navy);
+      border-radius:20px; padding:.2rem .75rem;
+      font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+    }
+
+    .card-body { padding:1.2rem 1.4rem; }
+
+    .price-row { display:flex; align-items:baseline; gap:.5rem; margin-bottom:1rem; }
+    .price-main { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:var(--navy); }
+    .price-curr { font-size:.85rem; color:var(--muted); }
+
+    .tranches { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-bottom:1rem; }
+    .tranche-item {
+      background:rgba(11,28,61,.04); border:1px solid rgba(11,28,61,.1);
+      border-radius:10px; padding:.7rem .9rem; text-align:center;
+    }
+    .tranche-item .t-lbl { font-size:.65rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+    .tranche-item .t-val { font-size:1rem; font-weight:700; color:var(--navy); margin-top:.15rem; }
+
+    .card-dates { display:flex; gap:1rem; font-size:.75rem; color:var(--muted); margin-bottom:1rem; flex-wrap:wrap; }
+    .card-dates span { display:flex; align-items:center; gap:.3rem; }
+
+    .btn-enroll {
+      display:block; text-align:center; width:100%;
+      padding:.85rem; border-radius:50px;
+      background:var(--gold); color:white;
+      font-weight:700; font-size:.9rem; text-decoration:none;
+      transition:background .2s, transform .2s;
+      border:none; cursor:pointer; font-family:inherit;
+    }
+    .btn-enroll:hover { background:var(--gold-lt); transform:translateY(-1px); }
+    .btn-enrolled {
+      display:block; text-align:center; width:100%;
+      padding:.85rem; border-radius:50px;
+      background:var(--success-pale); color:var(--success);
+      border:2px solid rgba(42,127,111,.3);
+      font-weight:700; font-size:.9rem;
+    }
+
+    /* MOBILE TOPBAR */
+    .mobile-topbar { display:flex; position:fixed; top:0; left:0; right:0; z-index:500; height:56px; background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); align-items:center; justify-content:space-between; padding:0 1rem; box-shadow:0 2px 12px rgba(11,28,61,.3); }
+    .mtb-logo { display:flex; align-items:center; gap:.55rem; }
+    .mtb-logo img { width:32px; height:32px; border-radius:50%; background:white; padding:2px; object-fit:contain; }
+    .mtb-logo strong { font-family:'Playfair Display',serif; font-size:.88rem; color:white; }
+    .hbg { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:7px; padding:.38rem .48rem; cursor:pointer; display:flex; flex-direction:column; gap:4px; }
+    .hbg span { display:block; width:18px; height:2px; background:white; border-radius:2px; transition:all .28s; }
+    .hbg.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); }
+    .hbg.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .hbg.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); }
+
+    /* OVERLAY & DRAWER */
+    .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:600; opacity:0; transition:opacity .28s; }
+    .overlay.show { opacity:1; }
+    .drawer { position:fixed; top:0; left:0; width:min(76vw,280px); height:100vh; background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%); z-index:700; transform:translateX(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; padding:1.2rem; overflow-y:auto; }
+    .drawer.open { transform:translateX(0); }
+    .drawer::before { content:''; position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:40px 40px; }
+    .drw-close { position:absolute; top:.8rem; right:.8rem; background:rgba(255,255,255,.1); border:none; border-radius:7px; width:30px; height:30px; color:white; font-size:.95rem; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:1; }
+    .drw-logo { display:flex; align-items:center; gap:.6rem; margin-bottom:1.5rem; position:relative; }
+    .drw-logo img { width:38px; height:38px; border-radius:50%; background:white; padding:3px; object-fit:contain; }
+    .drw-logo strong { font-family:'Playfair Display',serif; font-size:.88rem; color:white; display:block; }
+    .drw-logo span { font-size:.6rem; color:rgba(255,255,255,.4); letter-spacing:.08em; text-transform:uppercase; }
+    .drw-user { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:.85rem; margin-bottom:1.4rem; position:relative; }
+    .drw-user-name { font-weight:700; color:white; font-size:.9rem; }
+    .drw-user-level { font-size:.7rem; color:var(--gold-lt); margin-top:.12rem; }
+    .drw-badge { display:inline-block; margin-top:.35rem; padding:.15rem .6rem; border-radius:20px; background:var(--gold-pale); border:1px solid rgba(201,146,42,.3); font-size:.66rem; color:var(--gold-lt); font-weight:700; letter-spacing:.05em; text-transform:uppercase; }
+    .drw-nav { list-style:none; display:flex; flex-direction:column; gap:.22rem; position:relative; flex:1; }
+    .drw-nav a { display:flex; align-items:center; gap:.65rem; padding:.7rem .85rem; border-radius:10px; color:rgba(255,255,255,.6); font-size:.88rem; font-weight:500; text-decoration:none; transition:all .18s; }
+    .drw-nav a:hover { background:rgba(255,255,255,.07); color:white; }
+    .drw-nav a.active { background:rgba(255,255,255,.09); color:white; border-left:3px solid var(--gold); padding-left:calc(.85rem - 3px); }
+    .drw-bottom { margin-top:auto; padding-top:.9rem; border-top:1px solid rgba(255,255,255,.08); position:relative; }
+    .drw-logout { display:flex; align-items:center; gap:.65rem; padding:.7rem .85rem; border-radius:10px; color:rgba(255,255,255,.4); font-size:.86rem; cursor:pointer; background:none; border:none; width:100%; font-family:inherit; transition:all .18s; text-align:left; }
+    .drw-logout:hover { color:var(--error); background:var(--error-pale); }
+
+    /* BOTTOM NAV */
+    .bottom-nav { display:flex; position:fixed; bottom:0; left:0; right:0; z-index:500; height:64px; background:var(--white); border-top:1px solid rgba(11,28,61,.1); box-shadow:0 -3px 16px rgba(11,28,61,.1); align-items:stretch; }
+    .bn-link, .bn-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; text-decoration:none; color:var(--muted); font-size:.6rem; font-weight:600; border:none; background:none; font-family:inherit; cursor:pointer; padding:.3rem .1rem; border-top:2.5px solid transparent; transition:all .18s; }
+    .bn-link.active { color:var(--navy); border-top-color:var(--gold); }
+    .bn-ico { font-size:1.2rem; line-height:1; }
+
+    /* DESKTOP */
+    @media(min-width:900px) {
+      .mobile-topbar { display:none; }
+      .bottom-nav { display:none; }
+      .overlay { display:none !important; }
+      .drawer { display:none !important; }
+      .sidebar { display:flex; }
+      .main { padding:2.5rem; }
+      .page-header h1 { font-size:1.8rem; }
+      .courses-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media(min-width:1200px) {
+      .courses-grid { grid-template-columns:repeat(3,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <button class="drw-close" onclick="closeDrawer()">✕</button>
+  <div class="drw-logo">
+    <img src="/images/logo_certitude.png" alt="Logo" />
+    <div><strong>La Certitude</strong><span>Discipline · Travail · Excellence</span></div>
+  </div>
+  <div class="drw-user">
+    <div class="drw-user-name">{{ request.user.full_name }}</div>
+    <div class="drw-user-level">{{ request.user.get_level_display }}</div>
+    <span class="drw-badge">Apprenant</span>
+  </div>
+  <ul class="drw-nav">
+    <li><a href="{% url 'users:dashboard' %}"><span class="ni">🏠</span> Mon espace</a></li>
+    <li><a href="{% url 'courses:list' %}" class="active"><span class="ni">📚</span> Formations</a></li>
+    <li><a href="#"><span class="ni">💳</span> Paiements</a></li>
+    <li><a href="#"><span class="ni">👤</span> Profil</a></li>
+  </ul>
+  <div class="drw-bottom">
+    <form method="post" action="{% url 'users:logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="drw-logout"><span class="ni">🚪</span> Se déconnecter</button>
+    </form>
+  </div>
+</div>
+
+<!-- MOBILE TOPBAR -->
+<div class="mobile-topbar">
+  <div class="mtb-logo">
+    <img src="/images/logo_certitude.png" alt="Logo" />
+    <strong>La Certitude</strong>
+  </div>
+  <button class="hbg" id="hbg" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <img src="/images/logo_certitude.png" alt="Logo" />
+      <div><strong>La Certitude</strong><span>Discipline · Travail · Excellence</span></div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-user-name">{{ request.user.full_name }}</div>
+      <div class="sb-user-level">{{ request.user.get_level_display }}</div>
+      <span class="sb-badge">{{ request.user.get_role_display }}</span>
+    </div>
+    <ul class="sb-nav">
+      <li><a href="{% url 'users:dashboard' %}"><span class="ni">🏠</span> Mon espace</a></li>
+      <li><a href="{% url 'courses:list' %}" class="active"><span class="ni">📚</span> Formations</a></li>
+      <li><a href="#"><span class="ni">💳</span> Paiements</a></li>
+      <li><a href="#"><span class="ni">👤</span> Profil</a></li>
+    </ul>
+    <div class="sb-bottom">
+      <form method="post" action="{% url 'users:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="sb-logout"><span class="ni">🚪</span> Se déconnecter</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="page-header">
+      <h1>Nos <em>formations</em> 2026</h1>
+      <p>Cours intensifs · 1er Juillet – 31 Août 2026 · EPP Gbégamey Sud, Cotonou</p>
+    </div>
+
+    <!-- Bannière info -->
+    <div class="info-banner">
+      <div class="ib-icon">📅</div>
+      <div>
+        <h3>Inscriptions ouvertes jusqu'au 22 Juin 2026</h3>
+        <p>Lundi au Vendredi · 08h30 à 13h00 · Repos le mercredi</p>
+        <span class="ib-tag">Paiement complet ou par tranche disponible</span>
+      </div>
+    </div>
+
+    <!-- Liste des cours -->
+    <div class="courses-grid">
+      {% for course in courses %}
+      {% with is_recommended=course.level|stringformat:"s" == user_level %}
+      <div class="course-card {% if is_recommended %}recommended{% endif %}">
+
+        <div class="card-top {% if is_recommended %}recommended-bg{% endif %}">
+          <div class="level-badge">{{ course.get_level_display }}</div>
+          <div class="card-top-info">
+            <h3>{{ course.title }}</h3>
+            <div class="subjects">📖 {{ course.subjects }}</div>
+          </div>
+          {% if is_recommended %}
+          <div class="recommended-pill">⭐ Votre niveau</div>
+          {% endif %}
+        </div>
+
+        <div class="card-body">
+          <!-- Prix -->
+          <div class="price-row">
+            <span class="price-main">{{ course.price|floatformat:0 }}</span>
+            <span class="price-curr">FCFA</span>
+          </div>
+
+          <!-- Tranches -->
+          <div class="tranches">
+            <div class="tranche-item">
+              <div class="t-lbl">1ère tranche</div>
+              <div class="t-val">{{ course.first_tranche|floatformat:0 }} F</div>
+            </div>
+            <div class="tranche-item">
+              <div class="t-lbl">2ème tranche</div>
+              <div class="t-val">{{ course.second_tranche|floatformat:0 }} F</div>
+            </div>
+          </div>
+
+          <!-- Dates -->
+          <div class="card-dates">
+            <span>📅 Du {{ course.start_date|date:"d/m/Y" }}</span>
+            <span>🏁 Au {{ course.end_date|date:"d/m/Y" }}</span>
+          </div>
+
+          <!-- Bouton -->
+          {% if course in enrolled_courses %}
+            <div class="btn-enrolled">✓ Déjà inscrit</div>
+          {% else %}
+            <a href="{% url 'enrollments:checkout' course.id %}" class="btn-enroll">
+              ✦ S'inscrire à cette formation
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endwith %}
+      {% empty %}
+        <p style="color:var(--muted);text-align:center;padding:2rem">Aucune formation disponible pour le moment.</p>
+      {% endfor %}
+    </div>
+
+  </main>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="{% url 'users:dashboard' %}" class="bn-link"><span class="bn-ico">🏠</span>Accueil</a>
+  <a href="{% url 'courses:list' %}" class="bn-link active"><span class="bn-ico">📚</span>Formations</a>
+  <a href="#" class="bn-link"><span class="bn-ico">💳</span>Paiements</a>
+  <a href="#" class="bn-link"><span class="bn-ico">👤</span>Profil</a>
+  <form method="post" action="{% url 'users:logout' %}" style="flex:1;display:contents;">
+    {% csrf_token %}
+    <button type="submit" class="bn-btn"><span class="bn-ico">🚪</span>Quitter</button>
+  </form>
+</nav>
+
+<script>
+  var drawerOpen = false;
+  function toggleDrawer() {
+    drawerOpen = !drawerOpen;
+    var d=document.getElementById('drawer'), o=document.getElementById('overlay'), h=document.getElementById('hbg');
+    if(drawerOpen){ d.classList.add('open'); o.style.display='block'; setTimeout(function(){o.classList.add('show');},10); h.classList.add('open'); }
+    else closeDrawer();
+  }
+  function closeDrawer() {
+    drawerOpen=false;
+    var d=document.getElementById('drawer'), o=document.getElementById('overlay'), h=document.getElementById('hbg');
+    d.classList.remove('open'); o.classList.remove('show'); h.classList.remove('open');
+    setTimeout(function(){o.style.display='none';},280);
+  }
+</script>
+</body>
+</html>

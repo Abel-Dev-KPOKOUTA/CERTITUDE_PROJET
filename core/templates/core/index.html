@@ -5,726 +5,1585 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Groupe La Certitude — Cours Intensifs 2026</title>
-  {% load static %}
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
+    /* ══════════════════════════════════════════════
+       TOKENS
+    ══════════════════════════════════════════════ */
     :root {
-      --navy:   #0b1c3d;
-      --gold:   #c9922a;
-      --gold-lt:#e8b84b;
-      --cream:  #fdf6ec;
+      --ink:    #0a0f1e;
+      --ink2:   #111827;
+      --navy:   #0d1f40;
+      --gold:   #c8891f;
+      --gold2:  #e4a830;
+      --gold3:  #f5c96a;
+      --cream:  #faf5ec;
       --white:  #ffffff;
-      --text:   #1a1a2e;
-      --muted:  #6b7280;
-      --radius: 14px;
-      --shadow: 0 20px 60px rgba(11,28,61,.12);
+      --muted:  #64748b;
+      --border: rgba(200,137,31,.18);
+      --glass:  rgba(255,255,255,.04);
+      --r:      16px;
     }
 
+    /* ══════════════════════════════════════════════
+       RESET & BASE
+    ══════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--ink);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: default;
+    }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
+    img { display: block; max-width: 100%; }
 
-    .container { width: 92%; max-width: 1140px; margin: 0 auto; }
+    .wrap { width: min(92%, 1180px); margin: 0 auto; }
 
-    .btn {
-      display: inline-flex; align-items: center; gap: .5rem;
-      padding: .85rem 2rem; border-radius: 50px; font-weight: 600;
-      font-size: .95rem; cursor: pointer; border: none;
-      transition: transform .2s, box-shadow .2s, background .2s;
+    /* ══════════════════════════════════════════════
+       DECORATIVE GRAIN OVERLAY
+    ══════════════════════════════════════════════ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .025;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
-    .btn-gold   { background: var(--gold); color: var(--white); }
-    .btn-gold:hover { background: var(--gold-lt); }
-    .btn-outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,.6); }
-    .btn-outline:hover { background: rgba(255,255,255,.12); border-color: var(--white); }
 
-    .tag {
-      display: inline-block; background: rgba(201,146,42,.15);
-      color: var(--gold); border: 1px solid rgba(201,146,42,.35);
-      border-radius: 50px; padding: .3rem 1rem;
-      font-size: .8rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    /* ══════════════════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 900;
+      padding: 1.4rem 0;
+      transition: padding .4s, background .4s, backdrop-filter .4s;
     }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-      font-weight: 900; line-height: 1.2; color: var(--navy);
+    #nav.scrolled {
+      padding: .9rem 0;
+      background: rgba(10,15,30,.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200,137,31,.12);
     }
-    .section-sub { margin-top: .8rem; color: var(--muted); font-size: 1.05rem; max-width: 560px; line-height: 1.7; }
-
-    /* ── NAVBAR ────────────────────────────────────── */
-    header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; transition: background .35s, box-shadow .35s; }
-    header.scrolled { background: rgba(11,28,61,.97); box-shadow: 0 2px 20px rgba(0,0,0,.3); }
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
-
-    .logo { display: flex; align-items: center; gap: .7rem; }
-    .logo img {
-      width: 54px; height: 54px; border-radius: 50%;
-      object-fit: contain; background: white; padding: 3px;
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
     }
-    .logo-text strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--white); line-height: 1.1; }
-    .logo-text span { font-size: .7rem; color: rgba(255,255,255,.5); letter-spacing: .08em; text-transform: uppercase; }
 
-    .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-links a { color: rgba(255,255,255,.8); font-size: .92rem; font-weight: 500; transition: color .2s; }
-    .nav-links a:hover { color: var(--gold-lt); }
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      flex-shrink: 0;
+    }
+    .logo-ring {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .logo-ring img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      background: white;
+      border-radius: 50%;
+      padding: 3px;
+    }
+    .logo-text {
+      line-height: 1.2;
+    }
+    .logo-text strong {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--white);
+      display: block;
+      letter-spacing: .02em;
+    }
+    .logo-text small {
+      font-size: .6rem;
+      color: rgba(255,255,255,.35);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
 
-    /* ── HAMBURGER ─────────────────────────────────── */
-    .hamburger {
+    /* Desktop links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    .nav-links a {
+      font-size: .82rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.55);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: color .2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold2);
+      transition: width .3s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* CTA buttons nav */
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      flex-shrink: 0;
+    }
+    .btn-ghost {
+      padding: .55rem 1.3rem;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 50px;
+      font-size: .8rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.75);
+      letter-spacing: .04em;
+      transition: all .2s;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,.5);
+      color: var(--white);
+      background: rgba(255,255,255,.06);
+    }
+    .btn-primary {
+      padding: .55rem 1.4rem;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      border-radius: 50px;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: .04em;
+      transition: all .22s;
+      box-shadow: 0 4px 20px rgba(200,137,31,.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(200,137,31,.5);
+      background: linear-gradient(135deg, var(--gold2) 0%, var(--gold3) 100%);
+    }
+
+    /* Hamburger */
+    .hbg {
       display: none;
-      flex-direction: column; justify-content: center; align-items: center;
-      gap: 5px; width: 44px; height: 44px;
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-      border-radius: 10px; cursor: pointer; z-index: 1100;
-      transition: background .2s;
+      flex-direction: column;
+      gap: 5px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      padding: .5rem .6rem;
+      cursor: pointer;
     }
-    .hamburger:hover { background: rgba(201,146,42,.3); }
-    .hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--white); border-radius: 2px;
-      transition: transform .35s, opacity .35s;
+    .hbg span {
+      display: block;
+      width: 20px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all .3s;
     }
-    /* Animation X quand ouvert */
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .hbg.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hbg.open span:nth-child(2) { opacity: 0; }
+    .hbg.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* ── MENU MOBILE ───────────────────────────────── */
-    .mobile-menu {
+    /* ══════════════════════════════════════════════
+       MOBILE MENU (fullscreen)
+    ══════════════════════════════════════════════ */
+    .mob-menu {
       display: none;
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(7,15,31,.97);
-      backdrop-filter: blur(16px);
-      z-index: 1050;
-      flex-direction: column; align-items: center; justify-content: center;
+      position: fixed;
+      inset: 0;
+      z-index: 950;
+      background: rgba(8,12,24,.97);
+      backdrop-filter: blur(24px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 0;
-      opacity: 0; pointer-events: none;
+      opacity: 0;
+      pointer-events: none;
       transition: opacity .35s;
     }
-    .mobile-menu.open {
-      opacity: 1; pointer-events: all;
+    .mob-menu.open { opacity: 1; pointer-events: all; }
+    .mob-menu-close {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 50%;
+      color: white; font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
     }
-    .mobile-menu-links {
-      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    .mob-menu nav {
+      display: flex; flex-direction: column; align-items: center;
+      gap: .4rem; width: 85%; max-width: 360px;
+    }
+    .mob-menu nav a {
+      display: block;
       width: 100%;
+      text-align: center;
+      padding: 1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.7);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      transition: color .2s;
     }
-    .mobile-menu-links a {
-      color: rgba(255,255,255,.85); font-size: 1.4rem; font-weight: 600;
-      font-family: 'Playfair Display', serif;
-      padding: 1rem 2rem; width: 85%; text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-      transition: color .2s, background .2s;
-      border-radius: 12px;
+    .mob-menu nav a:hover { color: var(--gold2); }
+    .mob-menu-btns {
+      display: flex; flex-direction: column; gap: .8rem; margin-top: 2rem; width: 85%; max-width: 360px;
     }
-    .mobile-menu-links a:hover { color: var(--gold-lt); background: rgba(201,146,42,.08); }
-    .mobile-menu-cta {
-      margin-top: 2rem;
+    .mob-menu-btns a {
+      display: block; text-align: center;
+      padding: .9rem; border-radius: 50px;
+      font-weight: 600; font-size: .95rem;
     }
-    .mobile-menu-close {
-      position: absolute; top: 1.2rem; right: 1.2rem;
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
-      color: white; font-size: 1.4rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background .2s;
-    }
-    .mobile-menu-close:hover { background: rgba(201,146,42,.4); }
-    /* Logo dans le menu mobile */
-    .mobile-menu-logo {
-      position: absolute; top: 1.1rem; left: 1.2rem;
-      display: flex; align-items: center; gap: .6rem;
-    }
-    .mobile-menu-logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: contain; background: white; padding: 2px; }
-    .mobile-menu-logo span { font-family: 'Playfair Display', serif; font-size: .95rem; color: var(--white); font-weight: 700; }
+    .mob-btn-p { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: var(--ink); }
+    .mob-btn-g { border: 1px solid rgba(255,255,255,.2); color: var(--white); }
 
-    /* ── HERO ──────────────────────────────────────── */
+    /* ══════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════ */
     #hero {
-      min-height: 100vh; position: relative;
-      display: flex; align-items: center;
-      padding: 7rem 0 4rem; overflow: hidden;
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 9rem 0 6rem;
+      overflow: hidden;
     }
-    .hero-bg {
+
+    /* Background layers */
+    .hero-photo {
       position: absolute; inset: 0;
-      background-image: url('/images/1.jpg');
-      background-size: cover; background-position: center top;
-      filter: brightness(.32);
-      z-index: 0;
+      background: url('/images/1.jpg') center top / cover no-repeat;
+      filter: brightness(.22) saturate(.8);
     }
-    .hero-overlay {
+    .hero-grad {
       position: absolute; inset: 0;
-      background: linear-gradient(160deg, rgba(11,28,61,.75) 0%, rgba(11,28,61,.45) 60%, rgba(201,146,42,.1) 100%);
-      z-index: 1;
+      background:
+        radial-gradient(ellipse 70% 80% at 30% 60%, rgba(200,137,31,.08) 0%, transparent 60%),
+        linear-gradient(165deg, rgba(13,31,64,.9) 0%, rgba(10,15,30,.6) 100%);
     }
-    #hero::before {
-      content: ''; position: absolute; inset: 0; z-index: 2;
+    /* Grid lines */
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-      background-size: 60px 60px; pointer-events: none;
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 80px 80px;
     }
+    /* Decorative vertical gold line */
+    .hero-line {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent 0%, rgba(200,137,31,.12) 40%, rgba(200,137,31,.06) 100%);
+      pointer-events: none;
+    }
+
     .hero-inner {
-      position: relative; z-index: 3;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 3rem; align-items: center;
+      position: relative; z-index: 2;
+      display: grid;
+      grid-template-columns: 58% 1fr;
+      gap: 4rem;
+      align-items: center;
     }
 
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: rgba(201,146,42,.2); border: 1px solid rgba(201,146,42,.5);
-      border-radius: 50px; padding: .45rem 1.1rem;
-      color: var(--gold-lt); font-size: .82rem; font-weight: 600;
-      letter-spacing: .05em; text-transform: uppercase; margin-bottom: 1.5rem;
+    /* Live badge */
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      background: rgba(200,137,31,.12);
+      border: 1px solid rgba(200,137,31,.35);
+      border-radius: 50px;
+      padding: .4rem 1rem .4rem .7rem;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 2rem;
     }
-    .hero-badge .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--gold-lt); animation: pulse 1.5s infinite;
+    .live-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold2);
+      box-shadow: 0 0 0 3px rgba(200,137,31,.25);
+      animation: blink 2s ease-in-out infinite;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: .5; transform: scale(.8); }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .3; }
     }
 
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
-      font-weight: 900; color: var(--white); line-height: 1.12;
+    /* Headline */
+    .hero-h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 6vw, 5.4rem);
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--white);
+      letter-spacing: -.01em;
     }
-    .hero-title .accent { color: var(--gold-lt); font-style: italic; }
-    .hero-desc { margin: 1.4rem 0 2.2rem; color: rgba(255,255,255,.8); font-size: 1.05rem; line-height: 1.75; max-width: 480px; }
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-h1 .ital {
+      color: var(--gold2);
+      font-style: italic;
+      font-weight: 300;
+    }
+    .hero-h1 .under {
+      position: relative;
+      display: inline-block;
+    }
+    .hero-h1 .under::after {
+      content: '';
+      position: absolute;
+      bottom: .06em; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
 
-    .hero-stats {
-      display: flex; gap: 2.5rem; margin-top: 3rem; padding-top: 2rem;
-      border-top: 1px solid rgba(255,255,255,.15);
+    .hero-sub {
+      margin-top: 1.8rem;
+      font-size: 1.02rem;
+      color: rgba(255,255,255,.6);
+      line-height: 1.8;
+      max-width: 480px;
+      font-weight: 300;
     }
-    .stat-val { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold-lt); }
-    .stat-lbl { font-size: .8rem; color: rgba(255,255,255,.55); margin-top: .15rem; }
 
-    /* info card */
-    .hero-card-wrap { display: flex; justify-content: center; align-items: center; }
-    .info-card {
-      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15);
-      backdrop-filter: blur(18px); border-radius: 20px; padding: 2rem;
-      width: 100%; max-width: 360px;
-      animation: floatCard 4s ease-in-out infinite;
+    .hero-actions {
+      margin-top: 2.4rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
-    @keyframes floatCard {
+    .h-btn-p {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .9rem 2rem;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: .92rem;
+      color: var(--ink);
+      transition: all .22s;
+      box-shadow: 0 6px 28px rgba(200,137,31,.4);
+    }
+    .h-btn-p:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(200,137,31,.55);
+    }
+    .h-btn-s {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .9rem 2rem;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: .92rem;
+      color: rgba(255,255,255,.8);
+      transition: all .22s;
+    }
+    .h-btn-s:hover {
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.4);
+      color: var(--white);
+    }
+
+    /* Hero metrics row */
+    .hero-metrics {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .metric-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--gold2);
+      line-height: 1;
+    }
+    .metric-lbl {
+      font-size: .72rem;
+      color: rgba(255,255,255,.4);
+      margin-top: .3rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    /* Info card */
+    .hero-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+      animation: levitate 5s ease-in-out infinite;
+    }
+    @keyframes levitate {
       0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-10px); }
+      50% { transform: translateY(-12px); }
     }
-    .info-card h3 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 1.1rem; margin-bottom: 1.2rem; }
-    .info-row { display: flex; align-items: flex-start; gap: .9rem; padding: .8rem 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .card-label {
+      font-size: .66rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .card-label::before {
+      content: '';
+      display: inline-block;
+      width: 20px; height: 1px;
+      background: var(--gold2);
+    }
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: .9rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
     .info-row:last-child { border-bottom: none; }
-    .info-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(201,146,42,.25); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-    .info-lbl { font-size: .72rem; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .05em; }
-    .info-val { color: var(--white); font-size: .9rem; font-weight: 500; margin-top: .1rem; }
-
-    /* ── FORMATIONS ────────────────────────────────── */
-    #formations { padding: 6rem 0; }
-    .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem; }
-    .cards-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.8rem; }
-    .level-card { background: var(--white); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); border-top: 5px solid transparent; transition: transform .25s, box-shadow .25s; }
-    .level-card:hover { transform: translateY(-6px); box-shadow: 0 30px 70px rgba(11,28,61,.16); }
-    .level-card.gold { border-color: var(--gold); }
-    .level-card.navy { border-color: var(--navy); }
-    .level-card.teal { border-color: #2a7f6f; }
-    .card-level { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
-    .card-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--navy); }
-    .card-subjects { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1.2rem 0; }
-    .subject-chip { background: var(--cream); border: 1px solid rgba(11,28,61,.12); border-radius: 6px; padding: .3rem .7rem; font-size: .78rem; font-weight: 500; }
-    .card-price { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(11,28,61,.08); display: flex; align-items: baseline; gap: .5rem; }
-    .price-amount { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--navy); }
-    .price-currency { font-size: .9rem; color: var(--muted); font-weight: 500; }
-    .card-cta { display: block; text-align: center; margin-top: 1.3rem; padding: .8rem; border-radius: 10px; background: var(--navy); color: var(--white); font-weight: 600; font-size: .9rem; transition: background .2s, transform .2s; }
-    .card-cta:hover { background: var(--gold); transform: translateY(-1px); }
-
-    /* ── CAROUSEL ──────────────────────────────────── */
-    #galerie { padding: 6rem 0; background: var(--navy); overflow: hidden; }
-    #galerie .section-title { color: var(--white); }
-    #galerie .section-sub   { color: rgba(255,255,255,.6); }
-
-    .carousel-wrapper { position: relative; margin-top: 3rem; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
-    .carousel-track { position: relative; width: 100%; height: 520px; }
-
-    .slide { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease; }
-    .slide.active { opacity: 1; z-index: 1; }
-    .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .slide-caption {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      background: linear-gradient(to top, rgba(11,28,61,.9) 0%, transparent 100%);
-      color: var(--white); padding: 2.5rem 1.8rem 1.5rem;
-      font-size: 1rem; font-weight: 500;
+    .info-ico {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(200,137,31,.15);
+      border: 1px solid rgba(200,137,31,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .info-lbl {
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(255,255,255,.35);
+    }
+    .info-val {
+      font-size: .88rem;
+      color: rgba(255,255,255,.85);
+      margin-top: .15rem;
+      line-height: 1.4;
     }
 
-    .carousel-btn {
-      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(255,255,255,.15); border: 2px solid rgba(255,255,255,.3);
-      color: white; font-size: 1.3rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background .2s; backdrop-filter: blur(6px);
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      color: rgba(255,255,255,.25);
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
     }
-    .carousel-btn:hover { background: rgba(201,146,42,.75); border-color: var(--gold); }
-    .carousel-btn.prev { left: 1rem; }
-    .carousel-btn.next { right: 1rem; }
+    .scroll-hint .arrow {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(200,137,31,.5), transparent);
+      animation: scrollpulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollpulse {
+      0%, 100% { opacity: .3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
 
-    .carousel-dots { display: flex; justify-content: center; gap: .6rem; margin-top: 1.5rem; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.25); border: none; cursor: pointer; transition: background .2s, transform .2s; }
-    .dot.active { background: var(--gold-lt); transform: scale(1.3); }
-
-    /* ── OFFRES ────────────────────────────────────── */
-    #offres { padding: 6rem 0; background: linear-gradient(135deg, var(--navy) 0%, #152848 100%); position: relative; overflow: hidden; }
-    .offres-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
-    .offre-item { display: flex; gap: 1.2rem; align-items: flex-start; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius); padding: 1.5rem; transition: background .2s; }
-    .offre-item:hover { background: rgba(255,255,255,.1); }
-    .offre-icon { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
-    .offre-item h4 { color: var(--gold-lt); font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
-    .offre-item p  { color: rgba(255,255,255,.65); font-size: .9rem; line-height: 1.6; }
-
-    /* ── MODALITÉS ─────────────────────────────────── */
-    #modalites { padding: 6rem 0; }
-    .modalites-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
-    .modal-card { border-radius: var(--radius); padding: 2rem; text-align: center; border: 1px solid rgba(11,28,61,.1); background: var(--white); box-shadow: 0 8px 30px rgba(11,28,61,.07); transition: transform .25s; }
-    .modal-card:hover { transform: translateY(-4px); }
-    .modal-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .modal-card h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--navy); margin-bottom: .6rem; }
-    .modal-card p  { color: var(--muted); font-size: .9rem; line-height: 1.65; }
-
-    /* ── CTA ───────────────────────────────────────── */
-    #cta-banner { padding: 5rem 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,146,42,.2) 0%, transparent 70%), var(--navy); text-align: center; }
-    #cta-banner .section-title { color: var(--white); }
-    #cta-banner p { color: rgba(255,255,255,.65); font-size: 1.05rem; margin: 1rem auto 2rem; max-width: 500px; line-height: 1.7; }
-    .cta-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .deadline-badge { display: inline-flex; align-items: center; gap: .5rem; background: rgba(201,146,42,.2); border: 1px solid rgba(201,146,42,.4); border-radius: 50px; padding: .5rem 1.2rem; color: var(--gold-lt); font-size: .85rem; font-weight: 600; margin-bottom: 1.5rem; }
-
-    /* ── FOOTER ────────────────────────────────────── */
-    footer { background: #070f1f; padding: 3rem 0; text-align: center; color: rgba(255,255,255,.35); font-size: .85rem; }
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold-lt); margin-bottom: .5rem; }
-    footer a { color: var(--gold-lt); transition: color .2s; }
-    footer a:hover { color: var(--white); }
-
-    /* ── ANIMATIONS ────────────────────────────────── */
+    /* Fade-in animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      animation: fadeUp .8s forwards;
+    }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .hero-left > * { animation: fadeUp .7s both; }
-    .hero-left > *:nth-child(1) { animation-delay: .1s; }
-    .hero-left > *:nth-child(2) { animation-delay: .25s; }
-    .hero-left > *:nth-child(3) { animation-delay: .4s; }
-    .hero-left > *:nth-child(4) { animation-delay: .55s; }
-    .hero-left > *:nth-child(5) { animation-delay: .7s; }
-    .hero-card-wrap { animation: fadeUp .8s .4s both; }
+    .d1 { animation-delay: .1s; }
+    .d2 { animation-delay: .25s; }
+    .d3 { animation-delay: .4s; }
+    .d4 { animation-delay: .55s; }
+    .d5 { animation-delay: .7s; }
+    .d6 { animation-delay: .85s; }
 
-    /* ── RESPONSIVE ────────────────────────────────── */
-    @media (max-width: 900px) {
-      .hero-inner     { grid-template-columns: 1fr; text-align: center; }
-      .hero-desc      { margin: 1rem auto 2rem; }
-      .hero-actions   { justify-content: center; }
-      .hero-stats     { justify-content: center; }
-      .hero-card-wrap { display: none; }
-      .cards-grid     { grid-template-columns: 1fr; }
-      .offres-grid    { grid-template-columns: 1fr; }
-      .modalites-grid { grid-template-columns: 1fr; }
-      .section-header { flex-direction: column; align-items: flex-start; }
-      /* cacher nav desktop, montrer hamburger */
-      .nav-links   { display: none; }
-      .desktop-cta { display: none; }
-      .hamburger   { display: flex; }
-      /* menu mobile visible quand .open */
-      .mobile-menu { display: flex; }
-      .carousel-track { height: 260px; }
+    /* ══════════════════════════════════════════════
+       SECTION SHARED
+    ══════════════════════════════════════════════ */
+    .sec-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 1rem;
+    }
+    .sec-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 1px;
+      background: var(--gold2);
+    }
+    .sec-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .sec-sub {
+      margin-top: .8rem;
+      font-size: .95rem;
+      color: rgba(255,255,255,.5);
+      line-height: 1.75;
+      font-weight: 300;
+      max-width: 520px;
+    }
+    .sec-sub.dark { color: var(--muted); }
+
+    /* Scroll reveal */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s, transform .7s;
+    }
+    [data-reveal].visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══════════════════════════════════════════════
+       FORMATIONS
+    ══════════════════════════════════════════════ */
+    #formations {
+      padding: 8rem 0;
+      background: var(--cream);
+    }
+    .formations-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .formations-head .sec-title { color: var(--ink); }
+    .formations-head .sec-sub   { color: var(--muted); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1.6rem;
+    }
+
+    .level-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.2rem;
+      border: 1px solid rgba(11,28,61,.07);
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .level-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent-c, var(--gold));
+    }
+    .level-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 32px 64px rgba(11,28,61,.13);
+    }
+    .level-card.c1 { --accent-c: var(--gold); }
+    .level-card.c2 { --accent-c: var(--navy); }
+    .level-card.c3 { --accent-c: #2a7f6f; }
+
+    /* Decorative watermark number */
+    .card-num {
+      position: absolute;
+      top: 1.2rem; right: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      font-weight: 700;
+      color: rgba(11,28,61,.04);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .card-klass {
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: .3rem;
+      line-height: 1.1;
+    }
+    .card-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin: 1.4rem 0;
+    }
+    .chip {
+      background: var(--cream);
+      border: 1px solid rgba(11,28,61,.1);
+      border-radius: 6px;
+      padding: .28rem .7rem;
+      font-size: .74rem;
+      font-weight: 500;
+      color: var(--ink2);
+    }
+    .card-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .card-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: .4rem;
+      margin-top: 1.8rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(11,28,61,.07);
+    }
+    .card-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .card-cur { font-size: .85rem; color: var(--muted); }
+    .card-btn {
+      display: block;
+      text-align: center;
+      margin-top: 1.2rem;
+      padding: .8rem;
+      border-radius: 10px;
+      background: var(--ink);
+      color: var(--white);
+      font-size: .85rem;
+      font-weight: 600;
+      letter-spacing: .03em;
+      transition: all .2s;
+    }
+    .card-btn:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    /* ══════════════════════════════════════════════
+       GALERIE / CAROUSEL
+    ══════════════════════════════════════════════ */
+    #galerie {
+      padding: 8rem 0;
+      background: var(--ink2);
+      overflow: hidden;
+    }
+    .galerie-head {
+      margin-bottom: 3.5rem;
+    }
+
+    .carousel-frame {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,.6);
+    }
+    .carousel-track {
+      position: relative;
+      width: 100%;
+      height: 560px;
+    }
+    .slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity .9s ease;
+    }
+    .slide.active { opacity: 1; z-index: 1; }
+    .slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    /* Caption */
+    .slide-cap {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 3rem 2rem 1.8rem;
+      background: linear-gradient(to top, rgba(10,15,30,.95) 0%, transparent 100%);
+    }
+    .cap-tag {
+      display: inline-block;
+      background: rgba(200,137,31,.25);
+      border: 1px solid rgba(200,137,31,.4);
+      color: var(--gold2);
+      border-radius: 4px;
+      padding: .15rem .6rem;
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+    .cap-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    /* Carousel controls */
+    .c-btn {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      z-index: 10;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: rgba(10,15,30,.6);
+      border: 1px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(10px);
+      color: var(--white);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    .c-btn:hover {
+      background: rgba(200,137,31,.6);
+      border-color: var(--gold2);
+    }
+    .c-btn.prev { left: 1.2rem; }
+    .c-btn.next { right: 1.2rem; }
+
+    /* Dots */
+    .c-dots {
+      display: flex;
+      justify-content: center;
+      gap: .6rem;
+      margin-top: 1.8rem;
+    }
+    .c-dot {
+      height: 3px;
+      border-radius: 3px;
+      background: rgba(255,255,255,.2);
+      border: none;
+      cursor: pointer;
+      transition: all .3s;
+      width: 24px;
+    }
+    .c-dot.active {
+      background: var(--gold2);
+      width: 48px;
+    }
+
+    /* ══════════════════════════════════════════════
+       OFFRES
+    ══════════════════════════════════════════════ */
+    #offres {
+      padding: 8rem 0;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Background decorative circle */
+    #offres::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,137,31,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .offres-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+      margin-top: 3.5rem;
+    }
+    .offre-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 18px;
+      padding: 1.8rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      transition: background .25s, border-color .25s, transform .25s;
+    }
+    .offre-card:hover {
+      background: rgba(200,137,31,.06);
+      border-color: rgba(200,137,31,.2);
+      transform: translateY(-3px);
+    }
+    .offre-ico {
+      width: 50px; height: 50px;
+      border-radius: 14px;
+      background: rgba(200,137,31,.12);
+      border: 1px solid rgba(200,137,31,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .offre-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--gold2);
+      margin-bottom: .4rem;
+    }
+    .offre-card p {
+      font-size: .86rem;
+      color: rgba(255,255,255,.5);
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════════════
+       MODALITÉS
+    ══════════════════════════════════════════════ */
+    #modalites {
+      padding: 8rem 0;
+      background: var(--cream);
+    }
+    .modal-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1.6rem;
+      margin-top: 3.5rem;
+    }
+    .modal-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.2rem;
+      border: 1px solid rgba(11,28,61,.07);
+      text-align: center;
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .modal-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .modal-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(11,28,61,.1);
+    }
+    .modal-card:hover::after { opacity: 1; }
+    .modal-ico {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .modal-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: .7rem;
+    }
+    .modal-card p {
+      font-size: .86rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .modal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: 1.4rem;
+      padding: .65rem 1.5rem;
+      border-radius: 50px;
+      font-size: .8rem;
+      font-weight: 600;
+      transition: all .2s;
+    }
+    .modal-btn.gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--ink);
+      box-shadow: 0 4px 16px rgba(200,137,31,.3);
+    }
+    .modal-btn.gold:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,137,31,.45); }
+    .modal-btn.green {
+      background: #25D366;
+      color: white;
+    }
+    .modal-btn.green:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+    /* ══════════════════════════════════════════════
+       CTA BANNER
+    ══════════════════════════════════════════════ */
+    #cta {
+      padding: 8rem 0;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    #cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 50% 50%, rgba(200,137,31,.12) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .04;
+      pointer-events: none;
+    }
+    .deadline-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(200,137,31,.15);
+      border: 1px solid rgba(200,137,31,.35);
+      border-radius: 50px;
+      padding: .45rem 1.1rem;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      color: var(--gold2);
+      margin-bottom: 1.8rem;
+    }
+    #cta .sec-title { color: var(--white); }
+    #cta p {
+      color: rgba(255,255,255,.55);
+      font-size: .98rem;
+      line-height: 1.75;
+      max-width: 480px;
+      margin: 1.2rem auto 2.4rem;
+    }
+    .cta-btns {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .cta-btn-p {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: 1rem 2.2rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--ink);
+      box-shadow: 0 8px 28px rgba(200,137,31,.45);
+      transition: all .22s;
+    }
+    .cta-btn-p:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(200,137,31,.6); }
+    .cta-btn-s {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: 1rem 2.2rem;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: .95rem;
+      color: rgba(255,255,255,.8);
+      transition: all .22s;
+    }
+    .cta-btn-s:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.4); color: white; }
+    .pay-line {
+      margin-top: 2.5rem;
+      font-size: .8rem;
+      color: rgba(255,255,255,.3);
+    }
+    .pay-line strong { color: rgba(255,255,255,.55); }
+
+    /* ══════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════ */
+    footer {
+      background: #060b18;
+      padding: 3rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(200,137,31,.1);
+    }
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold2);
+      letter-spacing: .03em;
+    }
+    .footer-motto {
+      font-size: .75rem;
+      font-style: italic;
+      color: rgba(255,255,255,.2);
+      margin-top: .3rem;
+      letter-spacing: .06em;
+    }
+    footer p {
+      margin-top: 1.2rem;
+      font-size: .8rem;
+      color: rgba(255,255,255,.25);
+    }
+    footer a { color: rgba(200,137,31,.7); transition: color .2s; }
+    footer a:hover { color: var(--gold2); }
+    .footer-divider {
+      width: 40px; height: 1px;
+      background: rgba(200,137,31,.3);
+      margin: 1rem auto;
+    }
+
+    /* ══════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════ */
+    @media (max-width: 960px) {
+      .hero-inner         { grid-template-columns: 1fr; text-align: center; }
+      .hero-sub           { margin-left: auto; margin-right: auto; }
+      .hero-actions       { justify-content: center; }
+      .hero-metrics       { justify-content: center; }
+      .hero-card          { display: none; }
+      .cards-grid         { grid-template-columns: 1fr; }
+      .carousel-track     { height: 280px; }
+      .offres-layout      { grid-template-columns: 1fr; }
+      .modal-grid         { grid-template-columns: 1fr; }
+      .formations-head    { flex-direction: column; align-items: flex-start; }
+      .nav-links          { display: none; }
+      .nav-cta            { display: none; }
+      .hbg                { display: flex; }
+      .mob-menu           { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .hero-metrics       { flex-wrap: wrap; gap: 1.5rem; }
+      .hero-h1            { font-size: 2.6rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ══════════════ HEADER ══════════════ -->
-  <header id="header">
-    <div class="container">
-      <nav>
-        <a href="#" class="logo">
-          <img src="/images/logo_certitude.png" alt="Logo Groupe La Certitude" />
-          <div class="logo-text">
-            <strong>La Certitude</strong>
-            <span>Discipline · Travail · Excellence</span>
-          </div>
-        </a>
-        <ul class="nav-links">
-          <li><a href="#formations">Formations</a></li>
-          <li><a href="#galerie">Galerie</a></li>
-          <li><a href="#offres">Offres</a></li>
-          <li><a href="#modalites">Modalités</a></li>
-        </ul>
-        {% if user.is_authenticated %}
-            <a href="{% url 'users:logout' %}" class="btn btn-gold desktop-cta">Se déconnecter</a>
-        {% else %}
-            <a href="{% url 'users:login' %}" class="btn btn-gold desktop-cta">Se connecter</a>
-            <a href="{% url 'users:register' %}" class="btn btn-gold desktop-cta">S'inscrire</a>
-        {% endif %}
-        <!-- Hamburger (mobile uniquement) -->
-        <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-      </nav>
-    </div>
-  </header>
+<!-- ══════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════ -->
+<header id="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-ring">
+          <img src="/images/logo_certitude.png" alt="Logo" />
+        </div>
+        <div class="logo-text">
+          <strong>La Certitude</strong>
+          <small>Discipline · Travail · Excellence</small>
+        </div>
+      </a>
 
-  <!-- ══════════════ MENU MOBILE ════════ -->
-  <div class="mobile-menu" id="mobileMenu">
-    <div class="mobile-menu-logo">
-      <img src="/images/logo_certitude.png" alt="Logo" />
-      <span>La Certitude</span>
+      <ul class="nav-links">
+        <li><a href="#formations">Formations</a></li>
+        <li><a href="#galerie">Galerie</a></li>
+        <li><a href="#offres">Offres</a></li>
+        <li><a href="#modalites">Modalités</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        {% if user.is_authenticated %}
+          <a href="{% url 'users:dashboard' %}" class="btn-ghost">Mon espace</a>
+          <a href="{% url 'users:logout' %}" class="btn-primary">Se déconnecter</a>
+        {% else %}
+          <a href="{% url 'users:login' %}" class="btn-ghost">Se connecter</a>
+          <a href="{% url 'users:register' %}" class="btn-primary">S'inscrire</a>
+        {% endif %}
+      </div>
+
+      <button class="hbg" id="hbg" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <button class="mobile-menu-close" id="menuClose">&#10005;</button>
-    <div class="mobile-menu-links">
-      <a href="#formations" class="menu-link">📚 Formations</a>
-      <a href="#galerie"    class="menu-link">🖼️ Galerie</a>
-      <a href="#offres"     class="menu-link">⭐ Offres</a>
-      <a href="#modalites"  class="menu-link">📋 Modalités</a>
-    </div>
-    <div class="mobile-menu-cta">
-      <a href="{% url 'users:login' %}" class="btn btn-gold menu-link" style="font-size:1.05rem;padding:1rem 2.5rem">
-        ✦ Se connecter
-      </a>
-    </div>
-    <div class="mobile-menu-cta">
-      <a href="{% url 'users:register' %}" class="btn btn-gold menu-link" style="font-size:1.05rem;padding:1rem 2.5rem">
-        ✦ S'inscrire maintenant
-      </a>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════
+     MENU MOBILE
+══════════════════════════════════════════════ -->
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-menu-close" id="mobClose">✕</button>
+  <nav>
+    <a href="#formations" class="mob-link">Formations</a>
+    <a href="#galerie"    class="mob-link">Galerie</a>
+    <a href="#offres"     class="mob-link">Offres</a>
+    <a href="#modalites"  class="mob-link">Modalités</a>
+  </nav>
+  <div class="mob-menu-btns">
+    {% if user.is_authenticated %}
+      <a href="{% url 'users:dashboard' %}" class="mob-btn-p">Mon espace →</a>
+    {% else %}
+      <a href="{% url 'users:register' %}" class="mob-btn-p">✦ S'inscrire maintenant</a>
+      <a href="{% url 'users:login' %}" class="mob-btn-g">Se connecter</a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-photo"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-line"></div>
+
+  <div class="wrap">
+    <div class="hero-inner">
+
+      <div class="hero-left">
+        <div class="live-pill fade-up d1">
+          <span class="live-dot"></span>
+          Inscriptions ouvertes — Juillet &amp; Août 2026
+        </div>
+
+        <h1 class="hero-h1 fade-up d2">
+          Maîtrisez <span class="ital">100&nbsp;%</span><br>
+          de votre <span class="under">programme</span><br>
+          en 2 mois.
+        </h1>
+
+        <p class="hero-sub fade-up d3">
+          Cours intensifs de renforcement pour les élèves du secondaire.
+          Maths, PCT, SVT, Anglais — tous niveaux.
+          EPP Gbégamey Sud, Cotonou.
+        </p>
+
+        <div class="hero-actions fade-up d4">
+          <a href="{% url 'users:register' %}" class="h-btn-p">✦ S'inscrire en ligne</a>
+          <a href="#formations" class="h-btn-s">Voir les formations ↓</a>
+        </div>
+
+        <div class="hero-metrics fade-up d5">
+          <div>
+            <div class="metric-val">9</div>
+            <div class="metric-lbl">Semaines</div>
+          </div>
+          <div>
+            <div class="metric-val">3</div>
+            <div class="metric-lbl">Niveaux</div>
+          </div>
+          <div>
+            <div class="metric-val">22 Juin</div>
+            <div class="metric-lbl">Date limite</div>
+          </div>
+          <div>
+            <div class="metric-val">4</div>
+            <div class="metric-lbl">Matières</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card fade-up d3">
+        <div class="card-label">Informations pratiques</div>
+        <div class="info-row">
+          <div class="info-ico">📅</div>
+          <div>
+            <div class="info-lbl">Période</div>
+            <div class="info-val">1er Juillet — 31 Août 2026</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-ico">🕘</div>
+          <div>
+            <div class="info-lbl">Horaires</div>
+            <div class="info-val">Lun–Ven · 08h30 – 13h00<br><span style="opacity:.5;font-size:.8em">Repos le mercredi</span></div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-ico">📍</div>
+          <div>
+            <div class="info-lbl">Lieu</div>
+            <div class="info-val">EPP Gbégamey Sud<br><span style="opacity:.5;font-size:.8em">Face au Collège Notre-Dame des Apôtres</span></div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-ico">📞</div>
+          <div>
+            <div class="info-lbl">Contact</div>
+            <div class="info-val">01 96 38 92 49 · 96 38 92 49</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- ══════════════ HERO ════════════════ -->
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <div class="container">
-      <div class="hero-inner">
+  <div class="scroll-hint">
+    <span>Défiler</span>
+    <div class="arrow"></div>
+  </div>
+</section>
 
-        <div class="hero-left">
-          <div class="hero-badge">
-            <span class="dot"></span>
-            Inscriptions ouvertes — Juillet &amp; Août 2026
-          </div>
-          <h1 class="hero-title">
-            Maîtrisez <span class="accent">100&nbsp;%</span><br>
-            de votre programme<br>en 2 mois.
-          </h1>
-          <p class="hero-desc">
-            Cours intensifs de renforcement pour les élèves du secondaire.
-            Maths, PCT, SVT, Anglais — tous niveaux confondus.
-            EPP Gbégamey Sud, Cotonou.
-          </p>
-          <div class="hero-actions">
-            <a href="{% url 'users:register' %}" class="btn btn-gold">✦ S'inscrire en ligne</a>
-            <a href="#formations" class="btn btn-outline">Voir les formations</a>
-          </div>
-          <div class="hero-stats">
-            <div><div class="stat-val">9</div><div class="stat-lbl">Semaines de formation</div></div>
-            <div><div class="stat-val">3</div><div class="stat-lbl">Niveaux disponibles</div></div>
-            <div><div class="stat-val">22 Juin</div><div class="stat-lbl">Date limite inscription</div></div>
-          </div>
+<!-- ══════════════════════════════════════════════
+     FORMATIONS
+══════════════════════════════════════════════ -->
+<section id="formations">
+  <div class="wrap">
+    <div class="formations-head" data-reveal>
+      <div>
+        <span class="sec-eyebrow">Nos formations</span>
+        <h2 class="sec-title">Choisissez<br>votre niveau</h2>
+        <p class="sec-sub dark">Des cours adaptés à chaque classe, avec des enseignants qualifiés pour vous accompagner vers l'excellence.</p>
+      </div>
+      <a href="{% url 'users:register' %}" class="btn-primary" style="padding:.85rem 2rem;font-size:.88rem">S'inscrire →</a>
+    </div>
+
+    <div class="cards-grid" data-reveal>
+      <div class="level-card c1">
+        <div class="card-num">01</div>
+        <div class="card-klass">Classe de</div>
+        <div class="card-name">3<sup style="font-size:.6em">ème</sup></div>
+        <div class="card-chips">
+          <span class="chip">📐 Maths</span>
+          <span class="chip">⚗️ PCT</span>
+          <span class="chip">🌿 SVT</span>
+          <span class="chip">🇬🇧 Anglais</span>
         </div>
-
-        <div class="hero-card-wrap">
-          <div class="info-card">
-            <h3>ℹ Informations pratiques</h3>
-            <div class="info-row">
-              <div class="info-icon">📅</div>
-              <div><div class="info-lbl">Période</div><div class="info-val">1er Juillet — 31 Août 2026</div></div>
-            </div>
-            <div class="info-row">
-              <div class="info-icon">🕘</div>
-              <div><div class="info-lbl">Horaires</div><div class="info-val">Lun–Ven · 08h30 à 13h00<br><small style="opacity:.6">(repos le mercredi)</small></div></div>
-            </div>
-            <div class="info-row">
-              <div class="info-icon">📍</div>
-              <div><div class="info-lbl">Lieu</div><div class="info-val">EPP Gbégamey Sud<br><small style="opacity:.6">Face au Collège Notre-Dame des Apôtres</small></div></div>
-            </div>
-            <div class="info-row">
-              <div class="info-icon">📞</div>
-              <div><div class="info-lbl">Contact</div><div class="info-val">01 96 38 92 49 · 96 38 92 49</div></div>
-            </div>
-          </div>
+        <p class="card-desc">Consolidez les bases fondamentales et abordez le BEPC avec confiance et sérénité.</p>
+        <div class="card-price-row">
+          <span class="card-price">11 500</span>
+          <span class="card-cur">FCFA</span>
         </div>
+        <a href="{% url 'users:register' %}" class="card-btn">S'inscrire maintenant</a>
+      </div>
 
+      <div class="level-card c2">
+        <div class="card-num">02</div>
+        <div class="card-klass">Classe de</div>
+        <div class="card-name">1<sup style="font-size:.6em">ères</sup> C &amp; D</div>
+        <div class="card-chips">
+          <span class="chip">📐 Maths</span>
+          <span class="chip">⚗️ PCT</span>
+          <span class="chip">🌿 SVT</span>
+          <span class="chip">🇬🇧 Anglais</span>
+        </div>
+        <p class="card-desc">Approfondissez les notions avancées pour préparer sereinement l'année de Terminale.</p>
+        <div class="card-price-row">
+          <span class="card-price">12 500</span>
+          <span class="card-cur">FCFA</span>
+        </div>
+        <a href="{% url 'users:register' %}" class="card-btn">S'inscrire maintenant</a>
+      </div>
+
+      <div class="level-card c3">
+        <div class="card-num">03</div>
+        <div class="card-klass">Classe de</div>
+        <div class="card-name">Tles C &amp; D</div>
+        <div class="card-chips">
+          <span class="chip">📐 Maths</span>
+          <span class="chip">⚗️ PCT</span>
+          <span class="chip">🌿 SVT</span>
+          <span class="chip">🇬🇧 Anglais</span>
+        </div>
+        <p class="card-desc">Maximisez vos chances au BAC avec une révision complète, intensive et ciblée.</p>
+        <div class="card-price-row">
+          <span class="card-price">15 500</span>
+          <span class="card-cur">FCFA</span>
+        </div>
+        <a href="{% url 'users:register' %}" class="card-btn">S'inscrire maintenant</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ══════════════ FORMATIONS ══════════ -->
-  <section id="formations">
-    <div class="container">
-      <div class="section-header">
+<!-- ══════════════════════════════════════════════
+     GALERIE
+══════════════════════════════════════════════ -->
+<section id="galerie">
+  <div class="wrap">
+    <div class="galerie-head" data-reveal>
+      <span class="sec-eyebrow">Éditions passées</span>
+      <h2 class="sec-title">Ils ont vécu <em style="color:var(--gold2);font-style:italic">La Certitude</em></h2>
+      <p class="sec-sub">Revivez les moments forts de nos précédentes sessions de cours intensifs.</p>
+    </div>
+
+    <div class="carousel-frame" data-reveal>
+      <div class="carousel-track">
+        <div class="slide active">
+          <img src="/images/1.jpg" alt="Session 1" loading="lazy" />
+          <div class="slide-cap">
+            <span class="cap-tag">Édition passée</span>
+            <div class="cap-text">Remise des prix aux meilleurs élèves</div>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="/images/2.jpg" alt="Session 2" loading="lazy" />
+          <div class="slide-cap">
+            <span class="cap-tag">En cours</span>
+            <div class="cap-text">Nos élèves en pleine session de Maths</div>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="/images/3.jpg" alt="Session 3" loading="lazy" />
+          <div class="slide-cap">
+            <span class="cap-tag">Terminales C&D</span>
+            <div class="cap-text">Les terminales C&D en action</div>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="/images/4.jpg" alt="Session 4" loading="lazy" />
+          <div class="slide-cap">
+            <span class="cap-tag">PCT</span>
+            <div class="cap-text">Cours au tableau — PCT</div>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="/images/5.jpg" alt="Session 5" loading="lazy" />
+          <div class="slide-cap">
+            <span class="cap-tag">Groupe</span>
+            <div class="cap-text">Photo de famille — Édition passée</div>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="/images/6.jpg" alt="Session 6" loading="lazy" />
+          <div class="slide-cap">
+            <span class="cap-tag">Récompenses</span>
+            <div class="cap-text">Remise de livres aux meilleurs</div>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="/images/7.jpg" alt="Session 7" loading="lazy" />
+          <div class="slide-cap">
+            <span class="cap-tag">Prix</span>
+            <div class="cap-text">Récompense au meilleur élève</div>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="/images/8.jpg" alt="Session 8" loading="lazy" />
+          <div class="slide-cap">
+            <span class="cap-tag">Édition 2025</span>
+            <div class="cap-text">Nos élèves récompensés</div>
+          </div>
+        </div>
+      </div>
+      <button class="c-btn prev" id="prevBtn">&#8592;</button>
+      <button class="c-btn next" id="nextBtn">&#8594;</button>
+    </div>
+
+    <div class="c-dots" id="dots"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     OFFRES
+══════════════════════════════════════════════ -->
+<section id="offres">
+  <div class="wrap">
+    <div data-reveal>
+      <span class="sec-eyebrow">Offres exclusives</span>
+      <h2 class="sec-title">Pack Privilège —<br><em style="color:var(--gold2);font-style:italic">Premiers inscrits</em></h2>
+      <p class="sec-sub">Les 10 premiers inscrits par classe bénéficient d'avantages exceptionnels.</p>
+    </div>
+
+    <div class="offres-layout" data-reveal>
+      <div class="offre-card">
+        <div class="offre-ico">📚</div>
         <div>
-          <span class="tag">Nos Formations</span>
-          <h2 class="section-title" style="margin-top:.8rem">Choisissez votre niveau</h2>
-          <p class="section-sub">Des cours adaptés à chaque classe, avec des enseignants qualifiés pour vous accompagner vers l'excellence.</p>
+          <h4>+50 épreuves corrigées</h4>
+          <p>Pack complet par matière scientifique avec des devoirs de prestigieux établissements.</p>
         </div>
-        <a href="{% url 'users:register' %}" class="btn btn-gold">S'inscrire →</a>
       </div>
-      <div class="cards-grid">
-
-        <div class="level-card gold">
-          <div class="card-level">Classe de</div>
-          <div class="card-name">3<sup>ème</sup></div>
-          <div class="card-subjects">
-            <span class="subject-chip">📐 Maths</span>
-            <span class="subject-chip">⚗️ PCT</span>
-            <span class="subject-chip">🌿 SVT</span>
-            <span class="subject-chip">🇬🇧 Anglais</span>
-          </div>
-          <p style="color:var(--muted);font-size:.88rem;line-height:1.6">
-            Consolidez les bases fondamentales et abordez le BEPC avec confiance.
-          </p>
-          <div class="card-price"><span class="price-amount">11 500</span><span class="price-currency">FCFA</span></div>
-          <a href="{% url 'users:register' %}" class="card-cta">S'inscrire maintenant</a>
+      <div class="offre-card">
+        <div class="offre-ico">📝</div>
+        <div>
+          <h4>Sujets d'examens blancs</h4>
+          <p>Accès exclusif aux sujets d'examens blancs départementaux de 2023 à 2026.</p>
         </div>
-
-        <div class="level-card navy">
-          <div class="card-level">Classe de</div>
-          <div class="card-name">1<sup>ères</sup> C &amp; D</div>
-          <div class="card-subjects">
-            <span class="subject-chip">📐 Maths</span>
-            <span class="subject-chip">⚗️ PCT</span>
-            <span class="subject-chip">🌿 SVT</span>
-            <span class="subject-chip">🇬🇧 Anglais</span>
-          </div>
-          <p style="color:var(--muted);font-size:.88rem;line-height:1.6">
-            Approfondissez les notions avancées pour préparer sereinement la Terminale.
-          </p>
-          <div class="card-price"><span class="price-amount">12 500</span><span class="price-currency">FCFA</span></div>
-          <a href="{% url 'users:register' %}" class="card-cta">S'inscrire maintenant</a>
-        </div>
-
-        <div class="level-card teal">
-          <div class="card-level">Classe de</div>
-          <div class="card-name">Tles C &amp; D</div>
-          <div class="card-subjects">
-            <span class="subject-chip">📐 Maths</span>
-            <span class="subject-chip">⚗️ PCT</span>
-            <span class="subject-chip">🌿 SVT</span>
-            <span class="subject-chip">🇬🇧 Anglais</span>
-          </div>
-          <p style="color:var(--muted);font-size:.88rem;line-height:1.6">
-            Maximisez vos chances au BAC avec une révision complète et intensive.
-          </p>
-          <div class="card-price"><span class="price-amount">15 500</span><span class="price-currency">FCFA</span></div>
-          <a href="{% url 'users:register' %}" class="card-cta">S'inscrire maintenant</a>
-        </div>
-
       </div>
-    </div>
-  </section>
-
-  <!-- ══════════════ GALERIE / CAROUSEL ══ -->
-  <section id="galerie">
-    <div class="container">
-      <span class="tag" style="border-color:rgba(201,146,42,.5);background:rgba(201,146,42,.1)">Éditions Passées</span>
-      <h2 class="section-title" style="margin-top:.8rem">Ils ont vécu <em style="color:var(--gold-lt)">La Certitude</em></h2>
-      <p class="section-sub">Revivez les moments forts de nos précédentes sessions de cours intensifs.</p>
-
-      <div class="carousel-wrapper">
-        <div class="carousel-track">
-          
-        <div class="slide active" data-index="0">
-          <img src="/images/1.jpg" alt="Edition passée 1" loading="lazy" />
-          <div class="slide-caption">Remise des prix aux meilleurs élèves</div>
+      <div class="offre-card">
+        <div class="offre-ico">🏆</div>
+        <div>
+          <h4>Récompenses meilleurs élèves</h4>
+          <p>Cadeaux et récompenses offerts aux meilleurs élèves en fin de session.</p>
         </div>
-        <div class="slide " data-index="1">
-          <img src="/images/2.jpg" alt="Edition passée 2" loading="lazy" />
-          <div class="slide-caption">Nos élèves en pleine session de Maths</div>
-        </div>
-        <div class="slide " data-index="2">
-          <img src="/images/3.jpg" alt="Edition passée 3" loading="lazy" />
-          <div class="slide-caption">Les terminales C&D en action</div>
-        </div>
-        <div class="slide " data-index="3">
-          <img src="/images/4.jpg" alt="Edition passée 4" loading="lazy" />
-          <div class="slide-caption">Cours au tableau — PCT</div>
-        </div>
-        <div class="slide " data-index="4">
-          <img src="/images/5.jpg" alt="Edition passée 5" loading="lazy" />
-          <div class="slide-caption">Photo de famille — Édition passée</div>
-        </div>
-        <div class="slide " data-index="5">
-          <img src="/images/6.jpg" alt="Edition passée 6" loading="lazy" />
-          <div class="slide-caption">Remise de livres aux meilleurs</div>
-        </div>
-        <div class="slide " data-index="6">
-          <img src="/images/7.jpg" alt="Edition passée 7" loading="lazy" />
-          <div class="slide-caption">Récompense au meilleur élève</div>
-        </div>
-        <div class="slide " data-index="7">
-          <img src="/images/8.jpg" alt="Edition passée 8" loading="lazy" />
-          <div class="slide-caption">Nos élèves récompensés — Édition 2025</div>
-        </div>
-        </div>
-        <button class="carousel-btn prev" id="prevBtn">&#8592;</button>
-        <button class="carousel-btn next" id="nextBtn">&#8594;</button>
       </div>
-      <div class="carousel-dots">
-        <button class="dot active" data-index="0"></button>
-        <button class="dot " data-index="1"></button>
-        <button class="dot " data-index="2"></button>
-        <button class="dot " data-index="3"></button>
-        <button class="dot " data-index="4"></button>
-        <button class="dot " data-index="5"></button>
-        <button class="dot " data-index="6"></button>
-        <button class="dot " data-index="7"></button>
-        
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════ OFFRES ══════════════ -->
-  <section id="offres">
-    <div class="container">
-      <span class="tag" style="border-color:rgba(201,146,42,.5);background:rgba(201,146,42,.1)">Offres Exclusives</span>
-      <h2 class="section-title" style="color:var(--white);margin-top:.8rem">
-        Pack Privilège — <em style="color:var(--gold-lt)">Premiers inscrits</em>
-      </h2>
-      <p class="section-sub" style="color:rgba(255,255,255,.6)">
-        Les 10 premiers inscrits par classe bénéficient d'avantages exceptionnels. Ne ratez pas cette opportunité !
-      </p>
-      <div class="offres-grid">
-        <div class="offre-item">
-          <div class="offre-icon">📚</div>
-          <div><h4>+50 épreuves corrigées</h4><p>Pack complet par matière scientifique avec des devoirs de prestigieux établissements.</p></div>
-        </div>
-        <div class="offre-item">
-          <div class="offre-icon">📝</div>
-          <div><h4>Sujets d'examens blancs</h4><p>Accès exclusif aux sujets d'examens blancs départementaux de 2023 à 2026.</p></div>
-        </div>
-        <div class="offre-item">
-          <div class="offre-icon">🏆</div>
-          <div><h4>Récompenses meilleurs élèves</h4><p>Cadeaux et récompenses offerts aux meilleurs élèves en fin de session.</p></div>
-        </div>
-        <div class="offre-item">
-          <div class="offre-icon">🚗</div>
-          <div><h4>Code de la Route GRATUIT</h4><p>Bonus spécial : cours de code de la route offert aux premiers inscrits !</p></div>
+      <div class="offre-card">
+        <div class="offre-ico">🚗</div>
+        <div>
+          <h4>Code de la Route GRATUIT</h4>
+          <p>Bonus spécial : cours de code de la route offert aux premiers inscrits !</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ══════════════ MODALITÉS ══════════ -->
-  <section id="modalites">
-    <div class="container">
-      <div style="text-align:center;margin-bottom:3rem">
-        <span class="tag">Comment s'inscrire</span>
-        <h2 class="section-title" style="margin-top:.8rem">3 façons de s'inscrire</h2>
-        <p class="section-sub" style="margin:0 auto">Paiement possible en totalité ou par tranche — MTN &amp; MOOV Money acceptés.</p>
+<!-- ══════════════════════════════════════════════
+     MODALITÉS
+══════════════════════════════════════════════ -->
+<section id="modalites">
+  <div class="wrap">
+    <div style="text-align:center;margin-bottom:1rem" data-reveal>
+      <span class="sec-eyebrow">Comment s'inscrire</span>
+      <h2 class="sec-title" style="color:var(--ink)">3 façons de s'inscrire</h2>
+      <p class="sec-sub dark" style="margin:0 auto">Paiement possible en totalité ou par tranche — MTN &amp; MOOV Money acceptés.</p>
+    </div>
+
+    <div class="modal-grid" data-reveal>
+      <div class="modal-card">
+        <span class="modal-ico">💻</span>
+        <h4>En ligne</h4>
+        <p>Via ce site : formulaire + paiement Mobile Money.<br>MTN : <strong>01 96 38 92 49</strong><br>MOOV : <strong>01 95 51 17 61</strong></p>
+        <a href="{% url 'users:register' %}" class="modal-btn gold">S'inscrire →</a>
       </div>
-      <div class="modalites-grid">
-        <div class="modal-card">
-          <div class="modal-icon">💻</div>
-          <h4>En ligne</h4>
-          <p>Via ce site : formulaire + paiement Mobile Money<br>(MTN : 01 96 38 92 49 | MOOV : 01 95 51 17 61)</p>
-          <a href="{% url 'users:register' %}" class="btn btn-gold" style="margin-top:1.3rem;font-size:.85rem">S'inscrire →</a>
-        </div>
-        <div class="modal-card">
-          <div class="modal-icon">📍</div>
-          <h4>Sur place</h4>
-          <p>Tous les <strong>samedis de 14h00 à 18h30</strong> à l'EPP Gbégamey Sud, face au Collège Notre-Dame des Apôtres.</p>
-        </div>
-        <div class="modal-card">
-          <div class="modal-icon">💬</div>
-          <h4>Via WhatsApp</h4>
-          <p>Envoyez Nom, Prénoms, Établissement et Contacts au <strong>01 96 38 92 49</strong> après paiement.</p>
-          <a href="https://wa.me/22996389249" target="_blank" class="btn" style="background:#25D366;color:white;margin-top:1.3rem;font-size:.85rem">WhatsApp →</a>
-        </div>
+      <div class="modal-card">
+        <span class="modal-ico">📍</span>
+        <h4>Sur place</h4>
+        <p>Tous les <strong>samedis de 14h00 à 18h30</strong> à l'EPP Gbégamey Sud, face au Collège Notre-Dame des Apôtres, Cotonou.</p>
+      </div>
+      <div class="modal-card">
+        <span class="modal-ico">💬</span>
+        <h4>Via WhatsApp</h4>
+        <p>Envoyez Nom, Prénoms, Établissement et Contacts au <strong>01 96 38 92 49</strong> après paiement.</p>
+        <a href="https://wa.me/22996389249" target="_blank" class="modal-btn green">WhatsApp →</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ══════════════ CTA ═════════════════ -->
-  <section id="cta-banner">
-    <div class="container">
-      <div class="deadline-badge">⏳ Clôture des inscriptions : 22 Juin 2026</div>
-      <h2 class="section-title">Prêt à rejoindre<br>La Certitude ?</h2>
-      <p>Inscrivez-vous maintenant et rejoignez les élèves qui choisissent l'excellence. Les places sont limitées !</p>
-      <div class="cta-actions">
-        <a href="{% url 'users:register' %}" class="btn btn-gold" style="font-size:1rem;padding:1rem 2.2rem">✦ Inscription en ligne</a>
-        <a href="tel:+22996389249" class="btn btn-outline" style="font-size:1rem;padding:1rem 2.2rem">📞 Nous appeler</a>
-      </div>
-      <p style="margin-top:2rem;color:rgba(255,255,255,.4);font-size:.85rem">
-        MTN MoMo : <strong style="color:rgba(255,255,255,.6)">01 96 38 92 49</strong> &nbsp;|&nbsp;
-        MOOV Money : <strong style="color:rgba(255,255,255,.6)">01 95 51 17 61</strong>
-      </p>
+<!-- ══════════════════════════════════════════════
+     CTA
+══════════════════════════════════════════════ -->
+<section id="cta">
+  <div class="wrap" data-reveal>
+    <div class="deadline-pill">⏳ Clôture des inscriptions : 22 Juin 2026</div>
+    <h2 class="sec-title">Prêt à rejoindre<br><em style="color:var(--gold2);font-style:italic">La Certitude ?</em></h2>
+    <p>Inscrivez-vous maintenant et rejoignez les élèves qui choisissent l'excellence. Les places sont limitées !</p>
+    <div class="cta-btns">
+      <a href="{% url 'users:register' %}" class="cta-btn-p">✦ Inscription en ligne</a>
+      <a href="tel:+22996389249" class="cta-btn-s">📞 Nous appeler</a>
     </div>
-  </section>
+    <p class="pay-line">
+      MTN MoMo : <strong>01 96 38 92 49</strong> &nbsp;·&nbsp;
+      MOOV Money : <strong>01 95 51 17 61</strong>
+    </p>
+  </div>
+</section>
 
-  <!-- ══════════════ FOOTER ══════════════ -->
-  <footer>
-    <div class="container">
-      <div class="footer-logo">Groupe La Certitude</div>
-      <p style="font-style:italic;color:rgba(255,255,255,.25);font-size:.82rem;margin-top:.3rem">
-        « Discipline · Travail · Excellence »
-      </p>
-      <p style="margin-top:1rem">
-        EPP Gbégamey Sud, Cotonou — Bénin &nbsp;|&nbsp;
-        <a href="tel:+22996389249">01 96 38 92 49</a>
-      </p>
-      <p style="margin-top:.5rem">&copy; 2026 Groupe La Certitude. Tous droits réservés.</p>
-    </div>
-  </footer>
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">Groupe La Certitude</div>
+    <div class="footer-motto">« Discipline · Travail · Excellence »</div>
+    <div class="footer-divider"></div>
+    <p>EPP Gbégamey Sud, Cotonou — Bénin &nbsp;·&nbsp; <a href="tel:+22996389249">01 96 38 92 49</a></p>
+    <p style="margin-top:.5rem">&copy; 2026 Groupe La Certitude. Tous droits réservés.</p>
+  </div>
+</footer>
 
-  <script>
-    // Navbar scroll
-    const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 60);
-    });
+<script>
+/* ── Navbar scroll ── */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
 
-    // Hamburger / Menu mobile
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileMenu   = document.getElementById('mobileMenu');
-    const menuClose    = document.getElementById('menuClose');
-    const menuLinks    = document.querySelectorAll('.menu-link');
+/* ── Hamburger / Mobile menu ── */
+const hbg     = document.getElementById('hbg');
+const mobMenu = document.getElementById('mobMenu');
+const mobClose= document.getElementById('mobClose');
+const mobLinks= document.querySelectorAll('.mob-link');
 
-    function openMenu() {
-      mobileMenu.classList.add('open');
-      hamburgerBtn.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeMenu() {
-      mobileMenu.classList.remove('open');
-      hamburgerBtn.classList.remove('open');
-      document.body.style.overflow = '';
-    }
+function openMob()  { mobMenu.classList.add('open');  hbg.classList.add('open');  document.body.style.overflow='hidden'; }
+function closeMob() { mobMenu.classList.remove('open'); hbg.classList.remove('open'); document.body.style.overflow=''; }
 
-    hamburgerBtn.addEventListener('click', openMenu);
-    menuClose.addEventListener('click', closeMenu);
-    // Fermer quand on clique un lien
-    menuLinks.forEach(link => link.addEventListener('click', closeMenu));
+hbg.addEventListener('click', openMob);
+mobClose.addEventListener('click', closeMob);
+mobLinks.forEach(l => l.addEventListener('click', closeMob));
 
-    // Carousel
-    const slides = document.querySelectorAll('.slide');
-    const dots   = document.querySelectorAll('.dot');
-    let current  = 0;
-    let timer;
+/* ── Carousel ── */
+const slides = document.querySelectorAll('.slide');
+const dotsWrap = document.getElementById('dots');
+let cur = 0, timer;
 
-    function goTo(n) {
-      slides[current].classList.remove('active');
-      dots[current].classList.remove('active');
-      current = (n + slides.length) % slides.length;
-      slides[current].classList.add('active');
-      dots[current].classList.add('active');
-    }
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'c-dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => { goTo(i); resetTimer(); });
+  dotsWrap.appendChild(d);
+});
+const dots = dotsWrap.querySelectorAll('.c-dot');
 
-    function startAuto() { timer = setInterval(() => goTo(current + 1), 4000); }
-    function resetAuto()  { clearInterval(timer); startAuto(); }
+function goTo(n) {
+  slides[cur].classList.remove('active');
+  dots[cur].classList.remove('active');
+  cur = (n + slides.length) % slides.length;
+  slides[cur].classList.add('active');
+  dots[cur].classList.add('active');
+}
+function resetTimer() { clearInterval(timer); timer = setInterval(() => goTo(cur + 1), 4500); }
 
-    document.getElementById('prevBtn').addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-    document.getElementById('nextBtn').addEventListener('click', () => { goTo(current + 1); resetAuto(); });
-    dots.forEach((d, i) => d.addEventListener('click', () => { goTo(i); resetAuto(); }));
+document.getElementById('prevBtn').addEventListener('click', () => { goTo(cur - 1); resetTimer(); });
+document.getElementById('nextBtn').addEventListener('click', () => { goTo(cur + 1); resetTimer(); });
+resetTimer();
 
-    startAuto();
-  </script>
+/* ── Scroll reveal ── */
+const revealEls = document.querySelectorAll('[data-reveal]');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => obs.observe(el));
+</script>
 
 </body>
 </html>

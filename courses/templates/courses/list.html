@@ -281,16 +281,15 @@
     <!-- Liste des cours -->
     <div class="courses-grid">
       {% for course in courses %}
-      {% with is_recommended=course.level|stringformat:"s" == user_level %}
-      <div class="course-card {% if is_recommended %}recommended{% endif %}">
-
-        <div class="card-top {% if is_recommended %}recommended-bg{% endif %}">
+      <div class="course-card {% if course.is_recommended %}recommended{% endif %}">
+        <div class="card-top {% if course.is_recommended %}recommended-bg{% endif %}">
+            
           <div class="level-badge">{{ course.get_level_display }}</div>
           <div class="card-top-info">
             <h3>{{ course.title }}</h3>
             <div class="subjects">📖 {{ course.subjects }}</div>
           </div>
-          {% if is_recommended %}
+          {% if course.is_recommended %}
           <div class="recommended-pill">⭐ Votre niveau</div>
           {% endif %}
         </div>
@@ -321,16 +320,16 @@
           </div>
 
           <!-- Bouton -->
-          {% if course in enrolled_courses %}
+          {% if course.id in enrolled_courses %}
             <div class="btn-enrolled">✓ Déjà inscrit</div>
           {% else %}
-            <a href="{% url 'enrollments:checkout' course.id %}" class="btn-enroll">
+            <a href="{% url 'enrollments:checkout' course.id  %}" class="btn-enroll">
               ✦ S'inscrire à cette formation
             </a>
           {% endif %}
         </div>
       </div>
-      {% endwith %}
+      {% comment %} {% endwith %} {% endcomment %}
       {% empty %}
         <p style="color:var(--muted);text-align:center;padding:2rem">Aucune formation disponible pour le moment.</p>
       {% endfor %}

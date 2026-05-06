@@ -591,7 +591,7 @@
 
   <ul class="drw-nav">
     <li><a href="{% url 'users:dashboard' %}" class="active"><span class="ni">🏠</span> Mon espace</a></li>
-    <li><a href="#"><span class="ni">📚</span> Mes formations</a></li>
+    <li><a href="{% url 'courses:list' %}"><span class="ni">📚</span> Mes formations</a></li>
     <li><a href="#"><span class="ni">💳</span> Mes paiements</a></li>
     <li><a href="#"><span class="ni">👤</span> Mon profil</a></li>
   </ul>
@@ -638,7 +638,7 @@
 
     <ul class="sb-nav">
       <li><a href="{% url 'users:dashboard' %}" class="active"><span class="ni">🏠</span> Mon espace</a></li>
-      <li><a href="#"><span class="ni">📚</span> Mes formations</a></li>
+      <li><a href="{% url 'courses:list' %}"><span class="ni">📚</span> Mes formations</a></li>
       <li><a href="#"><span class="ni">💳</span> Mes paiements</a></li>
       <li><a href="#"><span class="ni">👤</span> Mon profil</a></li>
     </ul>
@@ -729,7 +729,7 @@
       <div class="empty-icon">📭</div>
       <h3>Aucune inscription</h3>
       <p>Découvrez nos cours de renforcement et inscrivez-vous dès maintenant !</p>
-      <a href="#" class="btn-gold">✦ Voir les formations</a>
+      <a href="{% url 'courses:list' %}" class="btn-gold">✦ Voir les formations</a>
     </div>
     {% endif %}
 

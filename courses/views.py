@@ -5,13 +5,19 @@ from .models import Course
 
 @login_required
 def course_list_view(request):
-    """Liste de toutes les formations actives."""
     courses = Course.objects.filter(is_active=True)
-
-    # Mettre en avant le cours correspondant au niveau de l'utilisateur
     user_level = getattr(request.user, 'level', None)
 
+    for course in courses:
+        course.is_recommended = (course.level == user_level)
+
+    # Cours où l'utilisateur est déjà inscrit
+    try:
+        enrolled_ids = request.user.enrollments.values_list('course_id', flat=True)
+    except Exception:
+        enrolled_ids = []
+
     return render(request, 'courses/list.html', {
-        'courses':    courses,
-        'user_level': user_level,
+        'courses':         courses,
+        'enrolled_courses': enrolled_ids,
     })

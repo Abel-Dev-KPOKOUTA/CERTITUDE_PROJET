@@ -2,1587 +2,1120 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Groupe La Certitude — Cours Intensifs 2026</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/images/logo_certitude.png" type="image/png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
   <style>
-    /* ══════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════
        TOKENS
-    ══════════════════════════════════════════════ */
+    ═══════════════════════════════════════════════ */
     :root {
-      --ink:    #0a0f1e;
-      --ink2:   #111827;
-      --navy:   #0d1f40;
-      --gold:   #c8891f;
-      --gold2:  #e4a830;
-      --gold3:  #f5c96a;
-      --cream:  #faf5ec;
-      --white:  #ffffff;
-      --muted:  #64748b;
-      --border: rgba(200,137,31,.18);
-      --glass:  rgba(255,255,255,.04);
-      --r:      16px;
+      --blue:       #1a56db;
+      --blue-dk:    #1040a8;
+      --blue-lt:    #e8f0fe;
+      --blue-mid:   #3b82f6;
+      --sky:        #dbeafe;
+      --gold:       #f59e0b;
+      --gold-lt:    #fef3c7;
+      --white:      #ffffff;
+      --gray-50:    #f8fafc;
+      --gray-100:   #f1f5f9;
+      --gray-200:   #e2e8f0;
+      --gray-500:   #64748b;
+      --gray-700:   #334155;
+      --navy:       #0f172a;
+      --green:      #10b981;
+      --r: 16px;
+      --r-lg: 24px;
+      --shadow-sm: 0 2px 8px rgba(15,23,42,.06);
+      --shadow:    0 4px 24px rgba(15,23,42,.10);
+      --shadow-lg: 0 12px 48px rgba(15,23,42,.14);
     }
 
-    /* ══════════════════════════════════════════════
-       RESET & BASE
-    ══════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Outfit', sans-serif;
-      background: var(--ink);
-      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--navy);
+      line-height: 1.6;
       overflow-x: hidden;
-      cursor: default;
-    }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-    img { display: block; max-width: 100%; }
-
-    .wrap { width: min(92%, 1180px); margin: 0 auto; }
-
-    /* ══════════════════════════════════════════════
-       DECORATIVE GRAIN OVERLAY
-    ══════════════════════════════════════════════ */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: .025;
     }
 
-    /* ══════════════════════════════════════════════
+    img { max-width: 100%; display: block; }
+    a   { text-decoration: none; color: inherit; }
+
+    /* ═══════════════════════════════════════════════
        NAVBAR
-    ══════════════════════════════════════════════ */
-    #nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 900;
-      padding: 1.4rem 0;
-      transition: padding .4s, background .4s, backdrop-filter .4s;
+    ═══════════════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 1.5rem;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: box-shadow .3s;
     }
-    #nav.scrolled {
-      padding: .9rem 0;
-      background: rgba(10,15,30,.88);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(200,137,31,.12);
-    }
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
+    .nav.scrolled { box-shadow: var(--shadow); }
 
-    /* Logo */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      flex-shrink: 0;
+    .nav-brand {
+      display: flex; align-items: center; gap: .7rem;
     }
-    .logo-ring {
-      width: 46px; height: 46px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
+    .nav-brand img {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: contain;
+      background: var(--blue-lt); padding: 3px;
     }
-    .logo-ring img {
-      width: 100%; height: 100%;
-      object-fit: contain;
-      background: white;
-      border-radius: 50%;
-      padding: 3px;
+    .nav-brand span {
+      font-family: 'Sora', sans-serif;
+      font-weight: 700; font-size: 1rem; color: var(--navy);
     }
-    .logo-text {
-      line-height: 1.2;
-    }
-    .logo-text strong {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--white);
-      display: block;
-      letter-spacing: .02em;
-    }
-    .logo-text small {
-      font-size: .6rem;
-      color: rgba(255,255,255,.35);
-      letter-spacing: .14em;
-      text-transform: uppercase;
-    }
+    .nav-brand span em { color: var(--blue); font-style: normal; }
 
-    /* Desktop links */
     .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2.5rem;
+      display: flex; align-items: center; gap: 1.8rem;
+      font-size: .88rem; font-weight: 500; color: var(--gray-700);
     }
-    .nav-links a {
-      font-size: .82rem;
-      font-weight: 500;
-      color: rgba(255,255,255,.55);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      transition: color .2s;
-      position: relative;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 0; height: 1px;
-      background: var(--gold2);
-      transition: width .3s;
-    }
-    .nav-links a:hover { color: var(--white); }
-    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover { color: var(--blue); }
 
-    /* CTA buttons nav */
     .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      flex-shrink: 0;
-    }
-    .btn-ghost {
-      padding: .55rem 1.3rem;
-      border: 1px solid rgba(255,255,255,.2);
-      border-radius: 50px;
-      font-size: .8rem;
-      font-weight: 500;
-      color: rgba(255,255,255,.75);
-      letter-spacing: .04em;
-      transition: all .2s;
-    }
-    .btn-ghost:hover {
-      border-color: rgba(255,255,255,.5);
+      background: var(--blue);
       color: var(--white);
-      background: rgba(255,255,255,.06);
-    }
-    .btn-primary {
-      padding: .55rem 1.4rem;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      padding: .5rem 1.3rem;
       border-radius: 50px;
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: .04em;
-      transition: all .22s;
-      box-shadow: 0 4px 20px rgba(200,137,31,.35);
+      font-size: .88rem; font-weight: 600;
+      font-family: 'Sora', sans-serif;
+      transition: background .2s, transform .15s;
+      white-space: nowrap;
     }
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 28px rgba(200,137,31,.5);
-      background: linear-gradient(135deg, var(--gold2) 0%, var(--gold3) 100%);
-    }
+    .nav-cta:hover { background: var(--blue-dk); transform: translateY(-1px); }
 
     /* Hamburger */
-    .hbg {
+    .hamburger {
       display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 10px;
-      padding: .5rem .6rem;
-      cursor: pointer;
+      flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 6px; background: none; border: none;
     }
-    .hbg span {
-      display: block;
-      width: 20px; height: 2px;
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--navy); border-radius: 99px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed; inset: 0; z-index: 99;
       background: var(--white);
-      border-radius: 2px;
-      transition: all .3s;
+      padding: 80px 2rem 2rem;
+      flex-direction: column; gap: 1.2rem;
     }
-    .hbg.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hbg.open span:nth-child(2) { opacity: 0; }
-    .hbg.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.2rem; font-weight: 600;
+      color: var(--navy); padding: .8rem 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .mobile-menu .m-cta {
+      margin-top: 1rem;
+      background: var(--blue); color: var(--white);
+      text-align: center; padding: 1rem; border-radius: var(--r);
+      font-size: 1rem; font-weight: 700;
+    }
 
-    /* ══════════════════════════════════════════════
-       MOBILE MENU (fullscreen)
-    ══════════════════════════════════════════════ */
-    .mob-menu {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 950;
-      background: rgba(8,12,24,.97);
-      backdrop-filter: blur(24px);
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .35s;
-    }
-    .mob-menu.open { opacity: 1; pointer-events: all; }
-    .mob-menu-close {
-      position: absolute;
-      top: 1.2rem; right: 1.2rem;
-      width: 40px; height: 40px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 50%;
-      color: white; font-size: 1.1rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .mob-menu nav {
-      display: flex; flex-direction: column; align-items: center;
-      gap: .4rem; width: 85%; max-width: 360px;
-    }
-    .mob-menu nav a {
-      display: block;
-      width: 100%;
-      text-align: center;
-      padding: 1rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: rgba(255,255,255,.7);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      transition: color .2s;
-    }
-    .mob-menu nav a:hover { color: var(--gold2); }
-    .mob-menu-btns {
-      display: flex; flex-direction: column; gap: .8rem; margin-top: 2rem; width: 85%; max-width: 360px;
-    }
-    .mob-menu-btns a {
-      display: block; text-align: center;
-      padding: .9rem; border-radius: 50px;
-      font-weight: 600; font-size: .95rem;
-    }
-    .mob-btn-p { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: var(--ink); }
-    .mob-btn-g { border: 1px solid rgba(255,255,255,.2); color: var(--white); }
-
-    /* ══════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════
        HERO
-    ══════════════════════════════════════════════ */
-    #hero {
+    ═══════════════════════════════════════════════ */
+    .hero {
       min-height: 100vh;
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 9rem 0 6rem;
-      overflow: hidden;
+      padding-top: 64px;
+      background:
+        linear-gradient(135deg, #1040a8 0%, #1a56db 45%, #3b82f6 100%);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
     }
 
-    /* Background layers */
-    .hero-photo {
-      position: absolute; inset: 0;
-      background: url('/images/1.jpg') center top / cover no-repeat;
-      filter: brightness(.22) saturate(.8);
+    /* Decorative blobs */
+    .hero::before {
+      content: '';
+      position: absolute; width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.12) 0%, transparent 70%);
+      top: -200px; right: -150px;
     }
-    .hero-grad {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 70% 80% at 30% 60%, rgba(200,137,31,.08) 0%, transparent 60%),
-        linear-gradient(165deg, rgba(13,31,64,.9) 0%, rgba(10,15,30,.6) 100%);
+    .hero::after {
+      content: '';
+      position: absolute; width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,.15) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
     }
-    /* Grid lines */
+
+    /* Grid pattern overlay */
     .hero-grid {
-      position: absolute; inset: 0; pointer-events: none;
+      position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: 80px 80px;
-    }
-    /* Decorative vertical gold line */
-    .hero-line {
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 1px; height: 100%;
-      background: linear-gradient(to bottom, transparent 0%, rgba(200,137,31,.12) 40%, rgba(200,137,31,.06) 100%);
-      pointer-events: none;
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 60px 60px;
     }
 
     .hero-inner {
-      position: relative; z-index: 2;
-      display: grid;
-      grid-template-columns: 58% 1fr;
-      gap: 4rem;
-      align-items: center;
+      position: relative; z-index: 1;
+      width: 100%; max-width: 1200px; margin: 0 auto;
+      padding: 4rem 1.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
     }
 
-    /* Live badge */
-    .live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .55rem;
-      background: rgba(200,137,31,.12);
-      border: 1px solid rgba(200,137,31,.35);
-      border-radius: 50px;
-      padding: .4rem 1rem .4rem .7rem;
-      font-size: .72rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--gold2);
-      margin-bottom: 2rem;
-    }
-    .live-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--gold2);
-      box-shadow: 0 0 0 3px rgba(200,137,31,.25);
-      animation: blink 2s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: .3; }
-    }
-
-    /* Headline */
-    .hero-h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 6vw, 5.4rem);
-      font-weight: 700;
-      line-height: 1.05;
-      color: var(--white);
-      letter-spacing: -.01em;
-    }
-    .hero-h1 .ital {
-      color: var(--gold2);
-      font-style: italic;
-      font-weight: 300;
-    }
-    .hero-h1 .under {
-      position: relative;
-      display: inline-block;
-    }
-    .hero-h1 .under::after {
-      content: '';
-      position: absolute;
-      bottom: .06em; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--gold), transparent);
-    }
-
-    .hero-sub {
-      margin-top: 1.8rem;
-      font-size: 1.02rem;
-      color: rgba(255,255,255,.6);
-      line-height: 1.8;
-      max-width: 480px;
-      font-weight: 300;
-    }
-
-    .hero-actions {
-      margin-top: 2.4rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .h-btn-p {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .9rem 2rem;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: .92rem;
-      color: var(--ink);
-      transition: all .22s;
-      box-shadow: 0 6px 28px rgba(200,137,31,.4);
-    }
-    .h-btn-p:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 36px rgba(200,137,31,.55);
-    }
-    .h-btn-s {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .9rem 2rem;
-      border: 1px solid rgba(255,255,255,.22);
-      border-radius: 50px;
-      font-weight: 500;
-      font-size: .92rem;
-      color: rgba(255,255,255,.8);
-      transition: all .22s;
-    }
-    .h-btn-s:hover {
-      background: rgba(255,255,255,.07);
-      border-color: rgba(255,255,255,.4);
-      color: var(--white);
-    }
-
-    /* Hero metrics row */
-    .hero-metrics {
-      display: flex;
-      gap: 2.5rem;
-      margin-top: 3.5rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid rgba(255,255,255,.1);
-    }
-    .metric-val {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: var(--gold2);
-      line-height: 1;
-    }
-    .metric-lbl {
-      font-size: .72rem;
-      color: rgba(255,255,255,.4);
-      margin-top: .3rem;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-
-    /* Info card */
-    .hero-card {
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 20px;
-      padding: 2rem;
-      backdrop-filter: blur(12px);
-      animation: levitate 5s ease-in-out infinite;
-    }
-    @keyframes levitate {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-    .card-label {
-      font-size: .66rem;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--gold2);
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      color: var(--white); padding: .4rem 1rem;
+      border-radius: 50px; font-size: .82rem; font-weight: 500;
       margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
     }
-    .card-label::before {
-      content: '';
-      display: inline-block;
-      width: 20px; height: 1px;
-      background: var(--gold2);
+    .hero-badge::before {
+      content: ''; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold); display: block;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .6; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800; line-height: 1.15;
+      color: var(--white); margin-bottom: 1.2rem;
+    }
+    .hero h1 span {
+      color: var(--gold);
+      position: relative;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem; color: rgba(255,255,255,.8);
+      line-height: 1.7; margin-bottom: 2rem; max-width: 480px;
+    }
+
+    .hero-btns {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--white);
+      color: var(--blue);
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-family: 'Sora', sans-serif;
+      font-size: .95rem; font-weight: 700;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,.25); }
+
+    .btn-outline-white {
+      border: 2px solid rgba(255,255,255,.5);
+      color: var(--white);
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-family: 'Sora', sans-serif;
+      font-size: .95rem; font-weight: 600;
+      transition: background .2s, border-color .2s;
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,.1); border-color: white; }
+
+    /* Stats row */
+    .hero-stats {
+      display: flex; gap: 1.5rem; margin-top: 2.5rem; flex-wrap: wrap;
+    }
+    .stat {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--r);
+      padding: .9rem 1.2rem;
+      text-align: center;
+    }
+    .stat-n {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.6rem; font-weight: 800; color: var(--gold);
+      display: block; line-height: 1;
+    }
+    .stat-l {
+      font-size: .75rem; color: rgba(255,255,255,.7);
+      display: block; margin-top: .3rem;
+    }
+
+    /* Hero right — Info card */
+    .hero-card {
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: var(--r-lg);
+      padding: 2rem;
+      color: var(--white);
+    }
+    .hero-card h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: .6rem;
     }
     .info-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: .9rem 0;
-      border-bottom: 1px solid rgba(255,255,255,.06);
+      display: flex; align-items: flex-start; gap: .9rem;
+      padding: .85rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.12);
     }
     .info-row:last-child { border-bottom: none; }
-    .info-ico {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      background: rgba(200,137,31,.15);
-      border: 1px solid rgba(200,137,31,.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
+    .info-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
     }
-    .info-lbl {
-      font-size: .65rem;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: rgba(255,255,255,.35);
-    }
-    .info-val {
-      font-size: .88rem;
-      color: rgba(255,255,255,.85);
-      margin-top: .15rem;
-      line-height: 1.4;
+    .info-label { font-size: .75rem; color: rgba(255,255,255,.6); }
+    .info-val   { font-size: .9rem; font-weight: 600; margin-top: .15rem; }
+
+    .deadline-badge {
+      margin-top: 1.5rem;
+      background: rgba(245,158,11,.2);
+      border: 1px solid rgba(245,158,11,.4);
+      border-radius: var(--r);
+      padding: .8rem 1rem;
+      display: flex; align-items: center; gap: .7rem;
+      font-size: .88rem; font-weight: 600; color: #fde68a;
     }
 
-    /* Scroll hint */
-    .scroll-hint {
-      position: absolute;
-      bottom: 2.5rem; left: 50%;
-      transform: translateX(-50%);
-      z-index: 3;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: .4rem;
-      color: rgba(255,255,255,.25);
-      font-size: .65rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-    .scroll-hint .arrow {
-      width: 1px; height: 40px;
-      background: linear-gradient(to bottom, rgba(200,137,31,.5), transparent);
-      animation: scrollpulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollpulse {
-      0%, 100% { opacity: .3; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.2); }
-    }
+    /* ═══════════════════════════════════════════════
+       SECTION LAYOUT
+    ═══════════════════════════════════════════════ */
+    .section { padding: 5rem 1.5rem; }
+    .section-alt { background: var(--gray-50); }
+    .container { max-width: 1100px; margin: 0 auto; }
 
-    /* Fade-in animations */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(28px);
-      animation: fadeUp .8s forwards;
-    }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .d1 { animation-delay: .1s; }
-    .d2 { animation-delay: .25s; }
-    .d3 { animation-delay: .4s; }
-    .d4 { animation-delay: .55s; }
-    .d5 { animation-delay: .7s; }
-    .d6 { animation-delay: .85s; }
-
-    /* ══════════════════════════════════════════════
-       SECTION SHARED
-    ══════════════════════════════════════════════ */
-    .sec-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: .6rem;
-      font-size: .68rem;
-      font-weight: 600;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--gold2);
+    .sec-label {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--blue-lt);
+      color: var(--blue);
+      padding: .35rem .9rem; border-radius: 50px;
+      font-size: .78rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
       margin-bottom: 1rem;
     }
-    .sec-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 24px; height: 1px;
-      background: var(--gold2);
-    }
     .sec-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
-      line-height: 1.15;
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800; line-height: 1.2;
+      color: var(--navy); margin-bottom: .8rem;
     }
     .sec-sub {
-      margin-top: .8rem;
-      font-size: .95rem;
-      color: rgba(255,255,255,.5);
-      line-height: 1.75;
-      font-weight: 300;
-      max-width: 520px;
+      color: var(--gray-500); font-size: 1rem;
+      max-width: 540px; line-height: 1.7;
+      margin-bottom: 3rem;
     }
-    .sec-sub.dark { color: var(--muted); }
+    .text-center { text-align: center; }
+    .text-center .sec-sub { margin-left: auto; margin-right: auto; }
 
-    /* Scroll reveal */
-    [data-reveal] {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity .7s, transform .7s;
-    }
-    [data-reveal].visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ══════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════
        FORMATIONS
-    ══════════════════════════════════════════════ */
-    #formations {
-      padding: 8rem 0;
-      background: var(--cream);
-    }
-    .formations-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 4rem;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-    .formations-head .sec-title { color: var(--ink); }
-    .formations-head .sec-sub   { color: var(--muted); }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 1.6rem;
+    ═══════════════════════════════════════════════ */
+    .formations-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
     }
 
-    .level-card {
+    .formation-card {
       background: var(--white);
-      border-radius: 20px;
-      padding: 2.2rem;
-      border: 1px solid rgba(11,28,61,.07);
-      position: relative;
-      overflow: hidden;
-      transition: transform .3s, box-shadow .3s;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--r-lg);
+      padding: 2rem;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+      position: relative; overflow: hidden;
     }
-    .level-card::before {
+    .formation-card::before {
       content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--accent-c, var(--gold));
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-mid));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s;
     }
-    .level-card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 32px 64px rgba(11,28,61,.13);
+    .formation-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
     }
-    .level-card.c1 { --accent-c: var(--gold); }
-    .level-card.c2 { --accent-c: var(--navy); }
-    .level-card.c3 { --accent-c: #2a7f6f; }
+    .formation-card:hover::before { transform: scaleX(1); }
+    .formation-card.featured {
+      border-color: var(--blue);
+      background: linear-gradient(135deg, #eff6ff 0%, #fff 100%);
+    }
+    .formation-card.featured::before { transform: scaleX(1); }
 
-    /* Decorative watermark number */
-    .card-num {
-      position: absolute;
-      top: 1.2rem; right: 1.5rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 5rem;
-      font-weight: 700;
-      color: rgba(11,28,61,.04);
-      line-height: 1;
-      pointer-events: none;
-    }
-
-    .card-klass {
-      font-size: .68rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 500;
-    }
-    .card-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-top: .3rem;
-      line-height: 1.1;
-    }
-    .card-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .4rem;
-      margin: 1.4rem 0;
-    }
-    .chip {
-      background: var(--cream);
-      border: 1px solid rgba(11,28,61,.1);
-      border-radius: 6px;
-      padding: .28rem .7rem;
-      font-size: .74rem;
-      font-weight: 500;
-      color: var(--ink2);
-    }
-    .card-desc {
-      font-size: .85rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-    .card-price-row {
-      display: flex;
-      align-items: baseline;
-      gap: .4rem;
-      margin-top: 1.8rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(11,28,61,.07);
-    }
-    .card-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-    .card-cur { font-size: .85rem; color: var(--muted); }
-    .card-btn {
-      display: block;
-      text-align: center;
-      margin-top: 1.2rem;
-      padding: .8rem;
-      border-radius: 10px;
-      background: var(--ink);
-      color: var(--white);
-      font-size: .85rem;
-      font-weight: 600;
-      letter-spacing: .03em;
-      transition: all .2s;
-    }
-    .card-btn:hover {
-      background: var(--gold);
-      color: var(--ink);
+    .badge-featured {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: var(--blue);
+      color: var(--white); font-size: .7rem; font-weight: 700;
+      padding: .25rem .65rem; border-radius: 50px;
+      text-transform: uppercase; letter-spacing: .05em;
     }
 
-    /* ══════════════════════════════════════════════
-       GALERIE / CAROUSEL
-    ══════════════════════════════════════════════ */
-    #galerie {
-      padding: 8rem 0;
-      background: var(--ink2);
-      overflow: hidden;
+    .level-tag {
+      display: inline-block;
+      background: var(--blue-lt); color: var(--blue);
+      font-family: 'Sora', sans-serif;
+      font-size: .78rem; font-weight: 700;
+      padding: .3rem .8rem; border-radius: 50px;
+      text-transform: uppercase; letter-spacing: .05em;
+      margin-bottom: 1rem;
     }
-    .galerie-head {
-      margin-bottom: 3.5rem;
+    .formation-card h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--navy); margin-bottom: .5rem;
+    }
+    .formation-desc {
+      font-size: .88rem; color: var(--gray-500);
+      margin-bottom: 1.2rem; line-height: 1.6;
     }
 
-    .carousel-frame {
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 40px 100px rgba(0,0,0,.6);
+    .subjects {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      margin-bottom: 1.5rem;
+    }
+    .subject-tag {
+      background: var(--gray-100); color: var(--gray-700);
+      font-size: .78rem; font-weight: 500;
+      padding: .3rem .7rem; border-radius: 8px;
+    }
+
+    .price-row {
+      display: flex; align-items: baseline; gap: .4rem;
+      margin-bottom: 1.5rem;
+    }
+    .price {
+      font-family: 'Sora', sans-serif;
+      font-size: 2rem; font-weight: 800; color: var(--blue);
+    }
+    .price-unit { font-size: .85rem; color: var(--gray-500); font-weight: 500; }
+
+    .btn-card {
+      display: block; width: 100%;
+      text-align: center; padding: .8rem;
+      background: var(--blue-lt); color: var(--blue);
+      border-radius: var(--r); font-weight: 700;
+      font-family: 'Sora', sans-serif; font-size: .9rem;
+      transition: background .2s, color .2s;
+    }
+    .btn-card:hover, .formation-card:hover .btn-card {
+      background: var(--blue); color: var(--white);
+    }
+
+    /* ═══════════════════════════════════════════════
+       AVANTAGES
+    ═══════════════════════════════════════════════ */
+    .avantages-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+    }
+    .avantage-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-lg);
+      padding: 1.8rem;
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .avantage-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    .av-icon {
+      width: 52px; height: 52px; flex-shrink: 0;
+      border-radius: var(--r);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .av-icon.blue  { background: var(--blue-lt); }
+    .av-icon.gold  { background: var(--gold-lt); }
+    .av-icon.green { background: #d1fae5; }
+    .av-icon.sky   { background: var(--sky); }
+
+    .av-title { font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+    .av-desc  { font-size: .88rem; color: var(--gray-500); line-height: 1.6; }
+
+    /* ═══════════════════════════════════════════════
+       GALERIE
+    ═══════════════════════════════════════════════ */
+    #galerie { background: var(--navy); color: var(--white); padding: 5rem 1.5rem; }
+    #galerie .sec-label { background: rgba(255,255,255,.1); color: rgba(255,255,255,.8); }
+    #galerie .sec-title { color: var(--white); }
+    #galerie .sec-sub   { color: rgba(255,255,255,.6); }
+
+    .carousel {
+      position: relative; border-radius: var(--r-lg); overflow: hidden;
+      box-shadow: var(--shadow-lg);
     }
     .carousel-track {
-      position: relative;
-      width: 100%;
-      height: 560px;
+      display: flex; transition: transform .5s cubic-bezier(.4,0,.2,1);
     }
-    .slide {
-      position: absolute; inset: 0;
-      opacity: 0;
-      transition: opacity .9s ease;
+    .carousel-slide {
+      min-width: 100%; position: relative;
     }
-    .slide.active { opacity: 1; z-index: 1; }
-    .slide img {
-      width: 100%; height: 100%;
-      object-fit: cover;
+    .carousel-slide img {
+      width: 100%; height: 420px; object-fit: cover;
     }
-    /* Caption */
-    .slide-cap {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 3rem 2rem 1.8rem;
-      background: linear-gradient(to top, rgba(10,15,30,.95) 0%, transparent 100%);
-    }
-    .cap-tag {
-      display: inline-block;
-      background: rgba(200,137,31,.25);
-      border: 1px solid rgba(200,137,31,.4);
-      color: var(--gold2);
-      border-radius: 4px;
-      padding: .15rem .6rem;
-      font-size: .68rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      margin-bottom: .5rem;
-    }
-    .cap-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--white);
+    .slide-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,.7));
+      color: white; font-size: .9rem; font-weight: 500;
     }
 
-    /* Carousel controls */
-    .c-btn {
-      position: absolute;
-      top: 50%; transform: translateY(-50%);
-      z-index: 10;
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: rgba(10,15,30,.6);
-      border: 1px solid rgba(255,255,255,.15);
-      backdrop-filter: blur(10px);
-      color: var(--white);
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all .2s;
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,.9); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: var(--navy);
+      transition: background .2s, transform .2s;
+      z-index: 2;
     }
-    .c-btn:hover {
-      background: rgba(200,137,31,.6);
-      border-color: var(--gold2);
-    }
-    .c-btn.prev { left: 1.2rem; }
-    .c-btn.next { right: 1.2rem; }
+    .carousel-btn:hover { background: white; transform: translateY(-50%) scale(1.1); }
+    .carousel-prev { left: 1rem; }
+    .carousel-next { right: 1rem; }
 
-    /* Dots */
-    .c-dots {
-      display: flex;
-      justify-content: center;
-      gap: .6rem;
-      margin-top: 1.8rem;
+    .carousel-dots {
+      display: flex; justify-content: center; gap: .5rem; margin-top: 1.2rem;
     }
-    .c-dot {
-      height: 3px;
-      border-radius: 3px;
-      background: rgba(255,255,255,.2);
-      border: none;
-      cursor: pointer;
-      transition: all .3s;
-      width: 24px;
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,.3); cursor: pointer;
+      transition: background .25s, transform .25s;
     }
-    .c-dot.active {
-      background: var(--gold2);
-      width: 48px;
-    }
+    .dot.active { background: var(--white); transform: scale(1.3); }
 
-    /* ══════════════════════════════════════════════
-       OFFRES
-    ══════════════════════════════════════════════ */
-    #offres {
-      padding: 8rem 0;
-      background: var(--ink);
-      position: relative;
-      overflow: hidden;
-    }
-    /* Background decorative circle */
-    #offres::before {
-      content: '';
-      position: absolute;
-      top: -200px; right: -200px;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,137,31,.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .offres-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.4rem;
-      margin-top: 3.5rem;
-    }
-    .offre-card {
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: 18px;
-      padding: 1.8rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 1.2rem;
-      transition: background .25s, border-color .25s, transform .25s;
-    }
-    .offre-card:hover {
-      background: rgba(200,137,31,.06);
-      border-color: rgba(200,137,31,.2);
-      transform: translateY(-3px);
-    }
-    .offre-ico {
-      width: 50px; height: 50px;
-      border-radius: 14px;
-      background: rgba(200,137,31,.12);
-      border: 1px solid rgba(200,137,31,.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    .offre-card h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--gold2);
-      margin-bottom: .4rem;
-    }
-    .offre-card p {
-      font-size: .86rem;
-      color: rgba(255,255,255,.5);
-      line-height: 1.65;
-    }
-
-    /* ══════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════
        MODALITÉS
-    ══════════════════════════════════════════════ */
-    #modalites {
-      padding: 8rem 0;
-      background: var(--cream);
+    ═══════════════════════════════════════════════ */
+    .modalites-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
     }
-    .modal-grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 1.6rem;
-      margin-top: 3.5rem;
-    }
-    .modal-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 2.2rem;
-      border: 1px solid rgba(11,28,61,.07);
+    .modalite-card {
+      border-radius: var(--r-lg); padding: 2rem;
       text-align: center;
-      transition: transform .25s, box-shadow .25s;
-      position: relative;
-      overflow: hidden;
     }
-    .modal-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: 0;
-      transition: opacity .3s;
-    }
-    .modal-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 50px rgba(11,28,61,.1);
-    }
-    .modal-card:hover::after { opacity: 1; }
-    .modal-ico {
-      font-size: 2.5rem;
-      margin-bottom: 1.2rem;
-      display: block;
-    }
-    .modal-card h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: .7rem;
-    }
-    .modal-card p {
-      font-size: .86rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-    .modal-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .4rem;
-      margin-top: 1.4rem;
-      padding: .65rem 1.5rem;
-      border-radius: 50px;
-      font-size: .8rem;
-      font-weight: 600;
-      transition: all .2s;
-    }
-    .modal-btn.gold {
-      background: linear-gradient(135deg, var(--gold), var(--gold2));
-      color: var(--ink);
-      box-shadow: 0 4px 16px rgba(200,137,31,.3);
-    }
-    .modal-btn.gold:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,137,31,.45); }
-    .modal-btn.green {
-      background: #25D366;
-      color: white;
-    }
-    .modal-btn.green:hover { transform: translateY(-1px); filter: brightness(1.1); }
+    .modalite-card.blue  { background: var(--blue); color: white; }
+    .modalite-card.light { background: var(--white); border: 2px solid var(--gray-200); }
+    .modalite-card.green-card { background: #10b981; color: white; }
 
-    /* ══════════════════════════════════════════════
+    .modalite-icon {
+      font-size: 2.4rem; margin-bottom: 1rem; display: block;
+    }
+    .modalite-card h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.1rem; font-weight: 700; margin-bottom: .6rem;
+    }
+    .modalite-card p { font-size: .88rem; line-height: 1.7; opacity: .85; }
+    .modalite-card.light h3 { color: var(--navy); }
+    .modalite-card.light p  { color: var(--gray-500); opacity: 1; }
+
+    .modalite-detail {
+      margin-top: 1rem; font-size: .82rem; font-weight: 600;
+      padding: .5rem .9rem; border-radius: 50px; display: inline-block;
+    }
+    .blue .modalite-detail  { background: rgba(255,255,255,.2); color: white; }
+    .green-card .modalite-detail { background: rgba(255,255,255,.2); color: white; }
+    .light .modalite-detail { background: var(--blue-lt); color: var(--blue); }
+
+    /* ═══════════════════════════════════════════════
        CTA BANNER
-    ══════════════════════════════════════════════ */
-    #cta {
-      padding: 8rem 0;
-      background: var(--navy);
-      position: relative;
-      overflow: hidden;
-      text-align: center;
+    ═══════════════════════════════════════════════ */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--blue-dk), var(--blue));
+      padding: 4rem 1.5rem;
+      text-align: center; color: white;
+      position: relative; overflow: hidden;
     }
-    #cta::before {
+    .cta-banner::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 60% at 50% 50%, rgba(200,137,31,.12) 0%, transparent 70%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: .04;
-      pointer-events: none;
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(245,158,11,.15) 0%, transparent 50%);
     }
-    .deadline-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      background: rgba(200,137,31,.15);
-      border: 1px solid rgba(200,137,31,.35);
-      border-radius: 50px;
-      padding: .45rem 1.1rem;
-      font-size: .75rem;
-      font-weight: 600;
-      letter-spacing: .06em;
-      color: var(--gold2);
-      margin-bottom: 1.8rem;
+    .cta-banner-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+    .cta-banner h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800;
+      margin-bottom: .8rem;
     }
-    #cta .sec-title { color: var(--white); }
-    #cta p {
-      color: rgba(255,255,255,.55);
-      font-size: .98rem;
-      line-height: 1.75;
-      max-width: 480px;
-      margin: 1.2rem auto 2.4rem;
+    .cta-banner p { opacity: .85; margin-bottom: 2rem; font-size: 1rem; }
+    .cta-deadline {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(245,158,11,.2); border: 1px solid rgba(245,158,11,.4);
+      color: #fde68a; padding: .45rem 1rem; border-radius: 50px;
+      font-size: .82rem; font-weight: 700; margin-bottom: 1.5rem;
     }
-    .cta-btns {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .cta-btn-p {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: 1rem 2.2rem;
-      background: linear-gradient(135deg, var(--gold), var(--gold2));
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: .95rem;
-      color: var(--ink);
-      box-shadow: 0 8px 28px rgba(200,137,31,.45);
-      transition: all .22s;
-    }
-    .cta-btn-p:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(200,137,31,.6); }
-    .cta-btn-s {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: 1rem 2.2rem;
-      border: 1px solid rgba(255,255,255,.2);
-      border-radius: 50px;
-      font-weight: 500;
-      font-size: .95rem;
-      color: rgba(255,255,255,.8);
-      transition: all .22s;
-    }
-    .cta-btn-s:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.4); color: white; }
-    .pay-line {
-      margin-top: 2.5rem;
-      font-size: .8rem;
-      color: rgba(255,255,255,.3);
-    }
-    .pay-line strong { color: rgba(255,255,255,.55); }
 
-    /* ══════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════════════ */
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;
+    }
+    .contact-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-lg); padding: 1.8rem;
+      display: flex; align-items: center; gap: 1.2rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s;
+    }
+    .contact-card:hover { box-shadow: var(--shadow); }
+    .contact-icon {
+      width: 52px; height: 52px; border-radius: var(--r); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+    }
+    .ci-blue  { background: var(--blue-lt); }
+    .ci-green { background: #d1fae5; }
+    .contact-label { font-size: .78rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+    .contact-val   { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--navy); }
+
+    /* ═══════════════════════════════════════════════
        FOOTER
-    ══════════════════════════════════════════════ */
+    ═══════════════════════════════════════════════ */
     footer {
-      background: #060b18;
-      padding: 3rem 0;
+      background: var(--navy);
+      color: rgba(255,255,255,.6);
+      padding: 3rem 1.5rem 2rem;
       text-align: center;
-      border-top: 1px solid rgba(200,137,31,.1);
     }
     .footer-brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--gold2);
-      letter-spacing: .03em;
+      display: flex; align-items: center; justify-content: center; gap: .8rem;
+      margin-bottom: 1.2rem;
     }
-    .footer-motto {
-      font-size: .75rem;
-      font-style: italic;
-      color: rgba(255,255,255,.2);
-      margin-top: .3rem;
-      letter-spacing: .06em;
+    .footer-brand img {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: white; padding: 3px; object-fit: contain;
     }
-    footer p {
-      margin-top: 1.2rem;
-      font-size: .8rem;
-      color: rgba(255,255,255,.25);
+    .footer-brand span {
+      font-family: 'Sora', sans-serif;
+      font-weight: 700; font-size: 1.05rem; color: white;
     }
-    footer a { color: rgba(200,137,31,.7); transition: color .2s; }
-    footer a:hover { color: var(--gold2); }
-    .footer-divider {
-      width: 40px; height: 1px;
-      background: rgba(200,137,31,.3);
-      margin: 1rem auto;
+    footer p { font-size: .85rem; line-height: 1.8; }
+    footer .stars {
+      color: var(--gold); letter-spacing: .3em; font-size: .8rem; margin: 1rem 0;
     }
+    footer .copy { font-size: .78rem; margin-top: 1.5rem; opacity: .4; }
 
-    /* ══════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════
+       FLOATING WHATSAPP BTN
+    ═══════════════════════════════════════════════ */
+    .wa-float {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #25d366;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,.5);
+      transition: transform .2s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+    /* ═══════════════════════════════════════════════
        RESPONSIVE
-    ══════════════════════════════════════════════ */
-    @media (max-width: 960px) {
-      .hero-inner         { grid-template-columns: 1fr; text-align: center; }
-      .hero-sub           { margin-left: auto; margin-right: auto; }
-      .hero-actions       { justify-content: center; }
-      .hero-metrics       { justify-content: center; }
-      .hero-card          { display: none; }
-      .cards-grid         { grid-template-columns: 1fr; }
-      .carousel-track     { height: 280px; }
-      .offres-layout      { grid-template-columns: 1fr; }
-      .modal-grid         { grid-template-columns: 1fr; }
-      .formations-head    { flex-direction: column; align-items: flex-start; }
-      .nav-links          { display: none; }
-      .nav-cta            { display: none; }
-      .hbg                { display: flex; }
-      .mob-menu           { display: flex; }
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-card  { display: none; }
+      .formations-grid { grid-template-columns: 1fr; }
+      .avantages-grid  { grid-template-columns: 1fr; }
+      .modalites-grid  { grid-template-columns: 1fr; }
+      .contact-grid    { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
-      .hero-metrics       { flex-wrap: wrap; gap: 1.5rem; }
-      .hero-h1            { font-size: 2.6rem; }
+      .hero h1 { font-size: 2rem; }
+      .hero-stats { gap: .8rem; }
+      .stat { padding: .7rem .9rem; }
+      .carousel-slide img { height: 240px; }
     }
+
+    /* ═══════════════════════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════════════════════ */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════
-     NAVBAR
-══════════════════════════════════════════════ -->
-<header id="nav">
-  <div class="wrap">
-    <div class="nav-inner">
-      <a href="#" class="logo">
-        <div class="logo-ring">
-          <img src="/images/logo_certitude.png" alt="Logo" />
-        </div>
-        <div class="logo-text">
-          <strong>La Certitude</strong>
-          <small>Discipline · Travail · Excellence</small>
-        </div>
-      </a>
+<!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+<nav class="nav" id="navbar">
+  <div class="nav-brand">
+    <img src="/images/logo_certitude.png" alt="La Certitude"/>
+    <span>La <em>Certitude</em></span>
+  </div>
 
-      <ul class="nav-links">
-        <li><a href="#formations">Formations</a></li>
-        <li><a href="#galerie">Galerie</a></li>
-        <li><a href="#offres">Offres</a></li>
-        <li><a href="#modalites">Modalités</a></li>
-      </ul>
+  <div class="nav-links">
+    <a href="#formations">Formations</a>
+    <a href="#galerie">Galerie</a>
+    <a href="#avantages">Avantages</a>
+    <a href="#modalites">Modalités</a>
+    <a href="#contact">Contact</a>
+  </div>
 
-      <div class="nav-cta">
-        {% if user.is_authenticated %}
-          <a href="{% url 'users:dashboard' %}" class="btn-ghost">Mon espace</a>
-          <a href="{% url 'users:logout' %}" class="btn-primary">Se déconnecter</a>
-        {% else %}
-          <a href="{% url 'users:login' %}" class="btn-ghost">Se connecter</a>
-          <a href="{% url 'users:register' %}" class="btn-primary">S'inscrire</a>
-        {% endif %}
+  <a href="#" class="nav-cta">S'inscrire maintenant</a>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#formations" class="mob-link">📚 Formations</a>
+  <a href="#galerie"    class="mob-link">🖼️ Galerie</a>
+  <a href="#avantages"  class="mob-link">🎁 Avantages</a>
+  <a href="#modalites"  class="mob-link">📋 Modalités</a>
+  <a href="#contact"    class="mob-link">📞 Contact</a>
+  <a href="#" class="m-cta">✦ S'inscrire maintenant</a>
+</div>
+
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">Inscriptions ouvertes jusqu'au 22 juin 2026</div>
+      <h1>
+        Maîtrisez 100 % de votre programme en
+        <span>2 mois</span>
+      </h1>
+      <p class="hero-desc">
+        Cours intensifs de renforcement — Juillet &amp; Août 2026.
+        Maths, PCT, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C &amp; D.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#" class="btn-primary">
+          🚀 S'inscrire maintenant
+        </a>
+        <a href="#formations" class="btn-outline-white">Voir les formations</a>
       </div>
 
-      <button class="hbg" id="hbg" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-n">3</span>
+          <span class="stat-l">Niveaux</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">4</span>
+          <span class="stat-l">Matières</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">9</span>
+          <span class="stat-l">Semaines</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">100%</span>
+          <span class="stat-l">Programme</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carte infos pratiques -->
+    <div class="hero-card">
+      <h3>📌 Informations pratiques</h3>
+      <div class="info-row">
+        <div class="info-icon">📅</div>
+        <div>
+          <div class="info-label">Période</div>
+          <div class="info-val">1er juillet — 31 août 2026</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Lieu</div>
+          <div class="info-val">EPP Gbégamey Sud, Cotonou</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">⏰</div>
+        <div>
+          <div class="info-label">Horaires</div>
+          <div class="info-val">Lun–Ven · 08h30 à 13h00</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-label">Contact</div>
+          <div class="info-val">01 96 38 92 49</div>
+        </div>
+      </div>
+      <div class="deadline-badge">
+        ⏳ Date limite d'inscription : <strong>22 juin 2026</strong>
+      </div>
     </div>
   </div>
-</header>
+</section>
 
-<!-- ══════════════════════════════════════════════
-     MENU MOBILE
-══════════════════════════════════════════════ -->
-<div class="mob-menu" id="mobMenu">
-  <button class="mob-menu-close" id="mobClose">✕</button>
-  <nav>
-    <a href="#formations" class="mob-link">Formations</a>
-    <a href="#galerie"    class="mob-link">Galerie</a>
-    <a href="#offres"     class="mob-link">Offres</a>
-    <a href="#modalites"  class="mob-link">Modalités</a>
-  </nav>
-  <div class="mob-menu-btns">
-    {% if user.is_authenticated %}
-      <a href="{% url 'users:dashboard' %}" class="mob-btn-p">Mon espace →</a>
-    {% else %}
-      <a href="{% url 'users:register' %}" class="mob-btn-p">✦ S'inscrire maintenant</a>
-      <a href="{% url 'users:login' %}" class="mob-btn-g">Se connecter</a>
-    {% endif %}
+
+<!-- ═══════════════════════════ FORMATIONS ═══════════════════════════ -->
+<section class="section" id="formations">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="sec-label">📚 Formations</div>
+      <h2 class="sec-title">Choisissez votre niveau</h2>
+      <p class="sec-sub">
+        Un programme complet couvrant SA1, SA2 et SA3 — toutes les matières scientifiques
+        enseignées par des professeurs expérimentés.
+      </p>
+    </div>
+
+    <div class="formations-grid">
+
+      <!-- 3ème -->
+      <div class="formation-card fade-in">
+        <div class="level-tag">3ème</div>
+        <h3>Cours de 3ème</h3>
+        <p class="formation-desc">Programme complet pour réussir le BEPC et intégrer le lycée.</p>
+        <div class="subjects">
+          <span class="subject-tag">📐 Maths</span>
+          <span class="subject-tag">⚗️ PCT</span>
+          <span class="subject-tag">🌿 SVT</span>
+          <span class="subject-tag">🇬🇧 Anglais</span>
+        </div>
+        <div class="price-row">
+          <span class="price">11 500</span>
+          <span class="price-unit">FCFA</span>
+        </div>
+        <a href="#" class="btn-card">S'inscrire →</a>
+      </div>
+
+      <!-- 1ère -->
+      <div class="formation-card featured fade-in">
+        <div class="badge-featured">Populaire</div>
+        <div class="level-tag">1ères C &amp; D</div>
+        <h3>Cours de 1ère</h3>
+        <p class="formation-desc">Maîtrisez les bases de Terminale avec avance.</p>
+        <div class="subjects">
+          <span class="subject-tag">📐 Maths</span>
+          <span class="subject-tag">⚗️ PCT</span>
+          <span class="subject-tag">🌿 SVT</span>
+          <span class="subject-tag">🇬🇧 Anglais</span>
+        </div>
+        <div class="price-row">
+          <span class="price">12 500</span>
+          <span class="price-unit">FCFA</span>
+        </div>
+        <a href="#" class="btn-card">S'inscrire →</a>
+      </div>
+
+      <!-- Tle -->
+      <div class="formation-card fade-in">
+        <div class="level-tag">Terminales C &amp; D</div>
+        <h3>Cours de Terminale</h3>
+        <p class="formation-desc">Préparation intensive au BAC — 100 % du programme.</p>
+        <div class="subjects">
+          <span class="subject-tag">📐 Maths</span>
+          <span class="subject-tag">⚗️ PCT</span>
+          <span class="subject-tag">🌿 SVT</span>
+          <span class="subject-tag">🇬🇧 Anglais</span>
+        </div>
+        <div class="price-row">
+          <span class="price">15 500</span>
+          <span class="price-unit">FCFA</span>
+        </div>
+        <a href="#" class="btn-card">S'inscrire →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════ AVANTAGES ═══════════════════════════ -->
+<section class="section section-alt" id="avantages">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="sec-label">🎁 Pack Privilège</div>
+      <h2 class="sec-title">Les 10 premiers inscrits par classe</h2>
+      <p class="sec-sub">Des avantages exclusifs pour ceux qui s'inscrivent tôt.</p>
+    </div>
+
+    <div class="avantages-grid fade-in">
+      <div class="avantage-card">
+        <div class="av-icon blue">📦</div>
+        <div>
+          <div class="av-title">Pack 50+ épreuves corrigées</div>
+          <p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements du Bénin.</p>
+        </div>
+      </div>
+      <div class="avantage-card">
+        <div class="av-icon gold">📄</div>
+        <div>
+          <div class="av-title">Sujets d'examens blancs</div>
+          <p class="av-desc">Accès exclusif aux sujets départementaux de 2023 à 2026.</p>
+        </div>
+      </div>
+      <div class="avantage-card">
+        <div class="av-icon green">🏆</div>
+        <div>
+          <div class="av-title">Récompenses meilleurs élèves</div>
+          <p class="av-desc">Prix et reconnaissances offerts aux meilleurs élèves en fin de cours.</p>
+        </div>
+      </div>
+      <div class="avantage-card">
+        <div class="av-icon sky">🚗</div>
+        <div>
+          <div class="av-title">Cours de Code de la Route gratuit</div>
+          <p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════ GALERIE ═══════════════════════════ -->
+<section id="galerie">
+  <div class="container">
+    <div class="text-center fade-in" style="margin-bottom:2rem">
+      <div class="sec-label">🖼️ Galerie</div>
+      <h2 class="sec-title">L'édition passée en images</h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,.6)">Des moments de l'édition 2025 — ambiance, cours et réussites.</p>
+    </div>
+
+    <div class="carousel fade-in">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide">
+          <img src="/images/1.jpg" alt="Édition passée 1"/>
+          <div class="slide-caption">📸 Nos apprenants en plein cours — Édition 2025</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="/images/2.jpg" alt="Édition passée 2"/>
+          <div class="slide-caption">📸 Photo de famille — Groupe La Certitude</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="/images/3.jpg" alt="Édition passée 3"/>
+          <div class="slide-caption">📸 Les profs et les élèves — EPP Gbégamey Sud</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="/images/4.jpg" alt="Édition passée 4"/>
+          <div class="slide-caption">📸 Séance de travaux pratiques</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="/images/5.jpg" alt="Édition passée 5"/>
+          <div class="slide-caption">📸 Remise de prix — Meilleurs apprenants</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="/images/6.jpg" alt="Édition passée 6"/>
+          <div class="slide-caption">📸 Cours de mathématiques intensif</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="/images/7.jpg" alt="Édition passée 7"/>
+          <div class="slide-caption">📸 Moment de révision en groupe</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="/images/8.jpg" alt="Édition passée 8"/>
+          <div class="slide-caption">📸 Clôture de l'édition 2025</div>
+        </div>
+      </div>
+
+      <button class="carousel-btn carousel-prev" id="prevBtn">‹</button>
+      <button class="carousel-btn carousel-next" id="nextBtn">›</button>
+    </div>
+
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════ MODALITÉS ═══════════════════════════ -->
+<section class="section" id="modalites">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="sec-label">📋 Modalités</div>
+      <h2 class="sec-title">Comment s'inscrire ?</h2>
+      <p class="sec-sub">3 façons simples pour rejoindre le programme.</p>
+    </div>
+
+    <div class="modalites-grid fade-in">
+      <div class="modalite-card blue">
+        <span class="modalite-icon">🌐</span>
+        <h3>En ligne</h3>
+        <p>Remplissez le formulaire et payez directement via MTN MoMo ou Moov Money.</p>
+        <a href="#" class="modalite-detail">Commencer →</a>
+      </div>
+
+      <div class="modalite-card light">
+        <span class="modalite-icon">🏫</span>
+        <h3>Sur place</h3>
+        <p>Venez directement à l'EPP Gbégamey Sud tous les samedis.</p>
+        <span class="modalite-detail">Samedis 14h00–18h30</span>
+      </div>
+
+      <div class="modalite-card green-card">
+        <span class="modalite-icon">💬</span>
+        <h3>WhatsApp</h3>
+        <p>Envoyez Nom, Prénoms, Établissement &amp; Contact au 01 96 38 92 49 après paiement.</p>
+        <a href="https://wa.me/22996389249" target="_blank" class="modalite-detail">Envoyer →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════ CTA BANNER ═══════════════════════════ -->
+<div class="cta-banner">
+  <div class="cta-banner-inner">
+    <div class="cta-deadline">⏳ Clôture des inscriptions : 22 juin 2026</div>
+    <h2>Prêt à rejoindre La Certitude ?</h2>
+    <p>Réservez votre place dès maintenant — les premières inscriptions bénéficient du Pack Privilège.</p>
+    <a href="#" class="btn-primary" style="font-size:1.05rem; padding:1rem 2.5rem;">
+      🚀 S'inscrire en 2 minutes
+    </a>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     HERO
-══════════════════════════════════════════════ -->
-<section id="hero">
-  <div class="hero-photo"></div>
-  <div class="hero-grad"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-line"></div>
 
-  <div class="wrap">
-    <div class="hero-inner">
-
-      <div class="hero-left">
-        <div class="live-pill fade-up d1">
-          <span class="live-dot"></span>
-          Inscriptions ouvertes — Juillet &amp; Août 2026
-        </div>
-
-        <h1 class="hero-h1 fade-up d2">
-          Maîtrisez <span class="ital">100&nbsp;%</span><br>
-          de votre <span class="under">programme</span><br>
-          en 2 mois.
-        </h1>
-
-        <p class="hero-sub fade-up d3">
-          Cours intensifs de renforcement pour les élèves du secondaire.
-          Maths, PCT, SVT, Anglais — tous niveaux.
-          EPP Gbégamey Sud, Cotonou.
-        </p>
-
-        <div class="hero-actions fade-up d4">
-          <a href="{% url 'users:register' %}" class="h-btn-p">✦ S'inscrire en ligne</a>
-          <a href="#formations" class="h-btn-s">Voir les formations ↓</a>
-        </div>
-
-        <div class="hero-metrics fade-up d5">
-          <div>
-            <div class="metric-val">9</div>
-            <div class="metric-lbl">Semaines</div>
-          </div>
-          <div>
-            <div class="metric-val">3</div>
-            <div class="metric-lbl">Niveaux</div>
-          </div>
-          <div>
-            <div class="metric-val">22 Juin</div>
-            <div class="metric-lbl">Date limite</div>
-          </div>
-          <div>
-            <div class="metric-val">4</div>
-            <div class="metric-lbl">Matières</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-card fade-up d3">
-        <div class="card-label">Informations pratiques</div>
-        <div class="info-row">
-          <div class="info-ico">📅</div>
-          <div>
-            <div class="info-lbl">Période</div>
-            <div class="info-val">1er Juillet — 31 Août 2026</div>
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-ico">🕘</div>
-          <div>
-            <div class="info-lbl">Horaires</div>
-            <div class="info-val">Lun–Ven · 08h30 – 13h00<br><span style="opacity:.5;font-size:.8em">Repos le mercredi</span></div>
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-ico">📍</div>
-          <div>
-            <div class="info-lbl">Lieu</div>
-            <div class="info-val">EPP Gbégamey Sud<br><span style="opacity:.5;font-size:.8em">Face au Collège Notre-Dame des Apôtres</span></div>
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-ico">📞</div>
-          <div>
-            <div class="info-lbl">Contact</div>
-            <div class="info-val">01 96 38 92 49 · 96 38 92 49</div>
-          </div>
-        </div>
-      </div>
-
+<!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
+<section class="section section-alt" id="contact">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="sec-label">📞 Contact</div>
+      <h2 class="sec-title">Nous contacter</h2>
+      <p class="sec-sub">Des questions ? Notre équipe est disponible pour vous aider.</p>
     </div>
-  </div>
 
-  <div class="scroll-hint">
-    <span>Défiler</span>
-    <div class="arrow"></div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     FORMATIONS
-══════════════════════════════════════════════ -->
-<section id="formations">
-  <div class="wrap">
-    <div class="formations-head" data-reveal>
+    <div class="contact-grid fade-in">
       <div>
-        <span class="sec-eyebrow">Nos formations</span>
-        <h2 class="sec-title">Choisissez<br>votre niveau</h2>
-        <p class="sec-sub dark">Des cours adaptés à chaque classe, avec des enseignants qualifiés pour vous accompagner vers l'excellence.</p>
-      </div>
-      <a href="{% url 'users:register' %}" class="btn-primary" style="padding:.85rem 2rem;font-size:.88rem">S'inscrire →</a>
-    </div>
-
-    <div class="cards-grid" data-reveal>
-      <div class="level-card c1">
-        <div class="card-num">01</div>
-        <div class="card-klass">Classe de</div>
-        <div class="card-name">3<sup style="font-size:.6em">ème</sup></div>
-        <div class="card-chips">
-          <span class="chip">📐 Maths</span>
-          <span class="chip">⚗️ PCT</span>
-          <span class="chip">🌿 SVT</span>
-          <span class="chip">🇬🇧 Anglais</span>
-        </div>
-        <p class="card-desc">Consolidez les bases fondamentales et abordez le BEPC avec confiance et sérénité.</p>
-        <div class="card-price-row">
-          <span class="card-price">11 500</span>
-          <span class="card-cur">FCFA</span>
-        </div>
-        <a href="{% url 'users:register' %}" class="card-btn">S'inscrire maintenant</a>
-      </div>
-
-      <div class="level-card c2">
-        <div class="card-num">02</div>
-        <div class="card-klass">Classe de</div>
-        <div class="card-name">1<sup style="font-size:.6em">ères</sup> C &amp; D</div>
-        <div class="card-chips">
-          <span class="chip">📐 Maths</span>
-          <span class="chip">⚗️ PCT</span>
-          <span class="chip">🌿 SVT</span>
-          <span class="chip">🇬🇧 Anglais</span>
-        </div>
-        <p class="card-desc">Approfondissez les notions avancées pour préparer sereinement l'année de Terminale.</p>
-        <div class="card-price-row">
-          <span class="card-price">12 500</span>
-          <span class="card-cur">FCFA</span>
-        </div>
-        <a href="{% url 'users:register' %}" class="card-btn">S'inscrire maintenant</a>
-      </div>
-
-      <div class="level-card c3">
-        <div class="card-num">03</div>
-        <div class="card-klass">Classe de</div>
-        <div class="card-name">Tles C &amp; D</div>
-        <div class="card-chips">
-          <span class="chip">📐 Maths</span>
-          <span class="chip">⚗️ PCT</span>
-          <span class="chip">🌿 SVT</span>
-          <span class="chip">🇬🇧 Anglais</span>
-        </div>
-        <p class="card-desc">Maximisez vos chances au BAC avec une révision complète, intensive et ciblée.</p>
-        <div class="card-price-row">
-          <span class="card-price">15 500</span>
-          <span class="card-cur">FCFA</span>
-        </div>
-        <a href="{% url 'users:register' %}" class="card-btn">S'inscrire maintenant</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     GALERIE
-══════════════════════════════════════════════ -->
-<section id="galerie">
-  <div class="wrap">
-    <div class="galerie-head" data-reveal>
-      <span class="sec-eyebrow">Éditions passées</span>
-      <h2 class="sec-title">Ils ont vécu <em style="color:var(--gold2);font-style:italic">La Certitude</em></h2>
-      <p class="sec-sub">Revivez les moments forts de nos précédentes sessions de cours intensifs.</p>
-    </div>
-
-    <div class="carousel-frame" data-reveal>
-      <div class="carousel-track">
-        <div class="slide active">
-          <img src="/images/1.jpg" alt="Session 1" loading="lazy" />
-          <div class="slide-cap">
-            <span class="cap-tag">Édition passée</span>
-            <div class="cap-text">Remise des prix aux meilleurs élèves</div>
+        <a href="tel:+22996389249" class="contact-card" style="margin-bottom:1rem; display:flex;">
+          <div class="contact-icon ci-blue">📞</div>
+          <div>
+            <div class="contact-label">Téléphone MTN</div>
+            <div class="contact-val">01 96 38 92 49</div>
           </div>
-        </div>
-        <div class="slide">
-          <img src="/images/2.jpg" alt="Session 2" loading="lazy" />
-          <div class="slide-cap">
-            <span class="cap-tag">En cours</span>
-            <div class="cap-text">Nos élèves en pleine session de Maths</div>
+        </a>
+        <a href="tel:+22995511761" class="contact-card" style="display:flex;">
+          <div class="contact-icon ci-blue">📞</div>
+          <div>
+            <div class="contact-label">Téléphone MOOV</div>
+            <div class="contact-val">01 95 51 17 61</div>
           </div>
-        </div>
-        <div class="slide">
-          <img src="/images/3.jpg" alt="Session 3" loading="lazy" />
-          <div class="slide-cap">
-            <span class="cap-tag">Terminales C&D</span>
-            <div class="cap-text">Les terminales C&D en action</div>
-          </div>
-        </div>
-        <div class="slide">
-          <img src="/images/4.jpg" alt="Session 4" loading="lazy" />
-          <div class="slide-cap">
-            <span class="cap-tag">PCT</span>
-            <div class="cap-text">Cours au tableau — PCT</div>
-          </div>
-        </div>
-        <div class="slide">
-          <img src="/images/5.jpg" alt="Session 5" loading="lazy" />
-          <div class="slide-cap">
-            <span class="cap-tag">Groupe</span>
-            <div class="cap-text">Photo de famille — Édition passée</div>
-          </div>
-        </div>
-        <div class="slide">
-          <img src="/images/6.jpg" alt="Session 6" loading="lazy" />
-          <div class="slide-cap">
-            <span class="cap-tag">Récompenses</span>
-            <div class="cap-text">Remise de livres aux meilleurs</div>
-          </div>
-        </div>
-        <div class="slide">
-          <img src="/images/7.jpg" alt="Session 7" loading="lazy" />
-          <div class="slide-cap">
-            <span class="cap-tag">Prix</span>
-            <div class="cap-text">Récompense au meilleur élève</div>
-          </div>
-        </div>
-        <div class="slide">
-          <img src="/images/8.jpg" alt="Session 8" loading="lazy" />
-          <div class="slide-cap">
-            <span class="cap-tag">Édition 2025</span>
-            <div class="cap-text">Nos élèves récompensés</div>
-          </div>
-        </div>
+        </a>
       </div>
-      <button class="c-btn prev" id="prevBtn">&#8592;</button>
-      <button class="c-btn next" id="nextBtn">&#8594;</button>
-    </div>
-
-    <div class="c-dots" id="dots"></div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     OFFRES
-══════════════════════════════════════════════ -->
-<section id="offres">
-  <div class="wrap">
-    <div data-reveal>
-      <span class="sec-eyebrow">Offres exclusives</span>
-      <h2 class="sec-title">Pack Privilège —<br><em style="color:var(--gold2);font-style:italic">Premiers inscrits</em></h2>
-      <p class="sec-sub">Les 10 premiers inscrits par classe bénéficient d'avantages exceptionnels.</p>
-    </div>
-
-    <div class="offres-layout" data-reveal>
-      <div class="offre-card">
-        <div class="offre-ico">📚</div>
-        <div>
-          <h4>+50 épreuves corrigées</h4>
-          <p>Pack complet par matière scientifique avec des devoirs de prestigieux établissements.</p>
-        </div>
-      </div>
-      <div class="offre-card">
-        <div class="offre-ico">📝</div>
-        <div>
-          <h4>Sujets d'examens blancs</h4>
-          <p>Accès exclusif aux sujets d'examens blancs départementaux de 2023 à 2026.</p>
-        </div>
-      </div>
-      <div class="offre-card">
-        <div class="offre-ico">🏆</div>
-        <div>
-          <h4>Récompenses meilleurs élèves</h4>
-          <p>Cadeaux et récompenses offerts aux meilleurs élèves en fin de session.</p>
-        </div>
-      </div>
-      <div class="offre-card">
-        <div class="offre-ico">🚗</div>
-        <div>
-          <h4>Code de la Route GRATUIT</h4>
-          <p>Bonus spécial : cours de code de la route offert aux premiers inscrits !</p>
+      <div>
+        <a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:1rem; display:flex;">
+          <div class="contact-icon ci-green">💬</div>
+          <div>
+            <div class="contact-label">WhatsApp</div>
+            <div class="contact-val">01 96 38 92 49</div>
+          </div>
+        </a>
+        <div class="contact-card">
+          <div class="contact-icon ci-blue">📍</div>
+          <div>
+            <div class="contact-label">Adresse</div>
+            <div class="contact-val">EPP Gbégamey Sud, Cotonou</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════
-     MODALITÉS
-══════════════════════════════════════════════ -->
-<section id="modalites">
-  <div class="wrap">
-    <div style="text-align:center;margin-bottom:1rem" data-reveal>
-      <span class="sec-eyebrow">Comment s'inscrire</span>
-      <h2 class="sec-title" style="color:var(--ink)">3 façons de s'inscrire</h2>
-      <p class="sec-sub dark" style="margin:0 auto">Paiement possible en totalité ou par tranche — MTN &amp; MOOV Money acceptés.</p>
-    </div>
 
-    <div class="modal-grid" data-reveal>
-      <div class="modal-card">
-        <span class="modal-ico">💻</span>
-        <h4>En ligne</h4>
-        <p>Via ce site : formulaire + paiement Mobile Money.<br>MTN : <strong>01 96 38 92 49</strong><br>MOOV : <strong>01 95 51 17 61</strong></p>
-        <a href="{% url 'users:register' %}" class="modal-btn gold">S'inscrire →</a>
-      </div>
-      <div class="modal-card">
-        <span class="modal-ico">📍</span>
-        <h4>Sur place</h4>
-        <p>Tous les <strong>samedis de 14h00 à 18h30</strong> à l'EPP Gbégamey Sud, face au Collège Notre-Dame des Apôtres, Cotonou.</p>
-      </div>
-      <div class="modal-card">
-        <span class="modal-ico">💬</span>
-        <h4>Via WhatsApp</h4>
-        <p>Envoyez Nom, Prénoms, Établissement et Contacts au <strong>01 96 38 92 49</strong> après paiement.</p>
-        <a href="https://wa.me/22996389249" target="_blank" class="modal-btn green">WhatsApp →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     CTA
-══════════════════════════════════════════════ -->
-<section id="cta">
-  <div class="wrap" data-reveal>
-    <div class="deadline-pill">⏳ Clôture des inscriptions : 22 Juin 2026</div>
-    <h2 class="sec-title">Prêt à rejoindre<br><em style="color:var(--gold2);font-style:italic">La Certitude ?</em></h2>
-    <p>Inscrivez-vous maintenant et rejoignez les élèves qui choisissent l'excellence. Les places sont limitées !</p>
-    <div class="cta-btns">
-      <a href="{% url 'users:register' %}" class="cta-btn-p">✦ Inscription en ligne</a>
-      <a href="tel:+22996389249" class="cta-btn-s">📞 Nous appeler</a>
-    </div>
-    <p class="pay-line">
-      MTN MoMo : <strong>01 96 38 92 49</strong> &nbsp;·&nbsp;
-      MOOV Money : <strong>01 95 51 17 61</strong>
-    </p>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     FOOTER
-══════════════════════════════════════════════ -->
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
 <footer>
-  <div class="wrap">
-    <div class="footer-brand">Groupe La Certitude</div>
-    <div class="footer-motto">« Discipline · Travail · Excellence »</div>
-    <div class="footer-divider"></div>
-    <p>EPP Gbégamey Sud, Cotonou — Bénin &nbsp;·&nbsp; <a href="tel:+22996389249">01 96 38 92 49</a></p>
-    <p style="margin-top:.5rem">&copy; 2026 Groupe La Certitude. Tous droits réservés.</p>
+  <div class="footer-brand">
+    <img src="/images/logo_certitude.png" alt="Logo"/>
+    <span>Groupe La Certitude</span>
   </div>
+  <div class="stars">✦ ✦ ✦</div>
+  <p>Discipline · Travail · Excellence</p>
+  <p style="margin-top:.5rem">EPP Gbégamey Sud, Cotonou — Bénin</p>
+  <p style="margin-top:.3rem">📞 01 96 38 92 49 · 01 95 51 17 61</p>
+  <p class="copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
 </footer>
 
+
+<!-- WhatsApp float -->
+<a href="https://wa.me/22996389249" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+
 <script>
-/* ── Navbar scroll ── */
-const navEl = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  navEl.classList.toggle('scrolled', window.scrollY > 60);
-}, { passive: true });
+  // ── Navbar scroll ──
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
 
-/* ── Hamburger / Mobile menu ── */
-const hbg     = document.getElementById('hbg');
-const mobMenu = document.getElementById('mobMenu');
-const mobClose= document.getElementById('mobClose');
-const mobLinks= document.querySelectorAll('.mob-link');
+  // ── Hamburger ──
+  const ham  = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    menu.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mob-link, .m-cta').forEach(a => {
+    a.addEventListener('click', () => {
+      ham.classList.remove('open');
+      menu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
 
-function openMob()  { mobMenu.classList.add('open');  hbg.classList.add('open');  document.body.style.overflow='hidden'; }
-function closeMob() { mobMenu.classList.remove('open'); hbg.classList.remove('open'); document.body.style.overflow=''; }
+  // ── Carousel ──
+  const track  = document.getElementById('carouselTrack');
+  const slides = track.querySelectorAll('.carousel-slide');
+  const dotsEl = document.getElementById('carouselDots');
+  let current = 0;
 
-hbg.addEventListener('click', openMob);
-mobClose.addEventListener('click', closeMob);
-mobLinks.forEach(l => l.addEventListener('click', closeMob));
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
 
-/* ── Carousel ── */
-const slides = document.querySelectorAll('.slide');
-const dotsWrap = document.getElementById('dots');
-let cur = 0, timer;
+  function goTo(n) {
+    current = (n + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  }
 
-// Build dots
-slides.forEach((_, i) => {
-  const d = document.createElement('button');
-  d.className = 'c-dot' + (i === 0 ? ' active' : '');
-  d.addEventListener('click', () => { goTo(i); resetTimer(); });
-  dotsWrap.appendChild(d);
-});
-const dots = dotsWrap.querySelectorAll('.c-dot');
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
 
-function goTo(n) {
-  slides[cur].classList.remove('active');
-  dots[cur].classList.remove('active');
-  cur = (n + slides.length) % slides.length;
-  slides[cur].classList.add('active');
-  dots[cur].classList.add('active');
-}
-function resetTimer() { clearInterval(timer); timer = setInterval(() => goTo(cur + 1), 4500); }
+  let autoSlide = setInterval(() => goTo(current + 1), 4000);
+  track.parentElement.addEventListener('mouseenter', () => clearInterval(autoSlide));
+  track.parentElement.addEventListener('mouseleave', () => { autoSlide = setInterval(() => goTo(current + 1), 4000); });
 
-document.getElementById('prevBtn').addEventListener('click', () => { goTo(cur - 1); resetTimer(); });
-document.getElementById('nextBtn').addEventListener('click', () => { goTo(cur + 1); resetTimer(); });
-resetTimer();
-
-/* ── Scroll reveal ── */
-const revealEls = document.querySelectorAll('[data-reveal]');
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-}, { threshold: 0.12 });
-revealEls.forEach(el => obs.observe(el));
+  // ── Fade-in on scroll ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: .12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 
 </body>

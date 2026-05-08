@@ -9,377 +9,279 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --blue:    #1a56db;
-      --blue-dk: #1040a8;
-      --blue-lt: #e8f0fe;
-      --gold:    #f59e0b;
-      --white:   #ffffff;
-      --gray-50: #f8fafc;
-      --gray-100:#f1f5f9;
-      --gray-200:#e2e8f0;
-      --gray-400:#94a3b8;
-      --gray-600:#475569;
-      --navy:    #0f172a;
-      --green:   #10b981;
-      --red:     #ef4444;
-      --r: 14px;
+      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe;
+      --white:#ffffff; --gray-50:#f8fafc; --gray-100:#f1f5f9;
+      --gray-200:#e2e8f0; --gray-400:#94a3b8; --gray-600:#475569;
+      --navy:#0f172a; --green:#10b981; --red:#ef4444; --r:14px;
     }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
     body {
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #1040a8 0%, #1a56db 50%, #3b82f6 100%);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: flex-start;
-      padding: 2rem 1rem 4rem;
+      font-family:'DM Sans',sans-serif; min-height:100vh;
+      background:linear-gradient(135deg,#1040a8 0%,#1a56db 50%,#3b82f6 100%);
+      display:flex; flex-direction:column; align-items:center;
+      justify-content:flex-start; padding:2rem 1rem 4rem;
     }
 
-    /* ── TOP BAR ── */
+    /* TOP BAR */
     .top-bar {
-      width: 100%; max-width: 560px;
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 1.8rem;
+      width:100%; max-width:560px;
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:1.8rem;
     }
     .back-link {
-      display: flex; align-items: center; gap: .4rem;
-      color: rgba(255,255,255,.75); font-size: .85rem;
-      text-decoration: none; transition: color .2s;
+      display:flex; align-items:center; gap:.4rem;
+      color:rgba(255,255,255,.75); font-size:.85rem;
+      text-decoration:none; transition:color .2s;
     }
-    .back-link:hover { color: white; }
-    .brand {
-      display: flex; align-items: center; gap: .6rem;
-    }
+    .back-link:hover { color:white; }
+    .brand { display:flex; align-items:center; gap:.6rem; }
     .brand img {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: white; padding: 2px; object-fit: contain;
+      width:36px; height:36px; border-radius:50%;
+      background:white; padding:2px; object-fit:contain;
     }
-    .brand span {
-      font-family: 'Sora', sans-serif;
-      font-weight: 700; font-size: .9rem; color: white;
-    }
+    .brand span { font-family:'Sora',sans-serif; font-weight:700; font-size:.9rem; color:white; }
 
-    /* ── PROGRESS ── */
-    .progress-wrap {
-      width: 100%; max-width: 560px; margin-bottom: 1.5rem;
-    }
-    .progress-steps {
-      display: flex; align-items: center; gap: 0;
-      margin-bottom: .6rem;
-    }
-    .ps {
-      flex: 1; display: flex; align-items: center; gap: 0;
-    }
+    /* PROGRESS */
+    .progress-wrap { width:100%; max-width:560px; margin-bottom:1.5rem; }
+    .progress-steps { display:flex; align-items:center; margin-bottom:.6rem; }
+    .ps { flex:1; display:flex; align-items:center; }
     .ps-circle {
-      width: 32px; height: 32px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Sora', sans-serif;
-      font-size: .8rem; font-weight: 700;
-      transition: background .3s, color .3s;
-      flex-shrink: 0;
-      background: rgba(255,255,255,.2);
-      color: rgba(255,255,255,.7);
-      border: 2px solid rgba(255,255,255,.3);
+      width:32px; height:32px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Sora',sans-serif; font-size:.8rem; font-weight:700;
+      flex-shrink:0; transition:background .3s, color .3s;
+      background:rgba(255,255,255,.2); color:rgba(255,255,255,.7);
+      border:2px solid rgba(255,255,255,.3);
     }
     .ps-circle.active {
-      background: white; color: var(--blue);
-      border-color: white;
-      box-shadow: 0 0 0 4px rgba(255,255,255,.2);
+      background:white; color:var(--blue); border-color:white;
+      box-shadow:0 0 0 4px rgba(255,255,255,.2);
     }
-    .ps-circle.done {
-      background: var(--green); color: white;
-      border-color: var(--green);
-    }
-    .ps-line {
-      flex: 1; height: 2px;
-      background: rgba(255,255,255,.2);
-      transition: background .3s;
-    }
-    .ps-line.done { background: var(--green); }
+    .ps-circle.done { background:var(--green); color:white; border-color:var(--green); }
+    .ps-line { flex:1; height:2px; background:rgba(255,255,255,.2); transition:background .3s; }
+    .ps-line.done { background:var(--green); }
+    .progress-labels { display:flex; justify-content:space-between; }
+    .pl { font-size:.72rem; color:rgba(255,255,255,.6); font-weight:500; text-align:center; flex:1; transition:color .3s; }
+    .pl.active { color:white; font-weight:700; }
 
-    .progress-labels {
-      display: flex; justify-content: space-between;
-    }
-    .pl {
-      font-size: .72rem; color: rgba(255,255,255,.6);
-      font-weight: 500; text-align: center; flex: 1;
-      transition: color .3s;
-    }
-    .pl.active { color: white; font-weight: 700; }
-
-    /* ── CARD ── */
+    /* CARD */
     .card {
-      width: 100%; max-width: 560px;
-      background: var(--white);
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.2);
-      overflow: hidden;
+      width:100%; max-width:560px; background:var(--white);
+      border-radius:24px; box-shadow:0 20px 60px rgba(0,0,0,.2); overflow:hidden;
     }
-
-    .card-header {
-      padding: 1.8rem 2rem 1.4rem;
-      border-bottom: 1px solid var(--gray-100);
-    }
+    .card-header { padding:1.8rem 2rem 1.4rem; border-bottom:1px solid var(--gray-100); }
     .step-label {
-      font-size: .75rem; font-weight: 700;
-      color: var(--blue); text-transform: uppercase;
-      letter-spacing: .07em; margin-bottom: .35rem;
+      font-size:.75rem; font-weight:700; color:var(--blue);
+      text-transform:uppercase; letter-spacing:.07em; margin-bottom:.35rem;
     }
-    .card-header h2 {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.35rem; font-weight: 700; color: var(--navy);
-    }
-    .card-header p { font-size: .88rem; color: var(--gray-600); margin-top: .3rem; }
+    .card-header h2 { font-family:'Sora',sans-serif; font-size:1.35rem; font-weight:700; color:var(--navy); }
+    .card-header p  { font-size:.88rem; color:var(--gray-600); margin-top:.3rem; }
 
-    /* ── FORM STEPS ── */
-    .step { display: none; padding: 1.8rem 2rem; }
-    .step.active { display: block; animation: fadeSlide .35s ease; }
+    /* STEPS */
+    .step { display:none; padding:1.8rem 2rem; }
+    .step.active { display:block; animation:fadeSlide .35s ease; }
     @keyframes fadeSlide {
-      from { opacity: 0; transform: translateX(16px); }
-      to   { opacity: 1; transform: none; }
+      from { opacity:0; transform:translateX(16px); }
+      to   { opacity:1; transform:none; }
     }
 
-    /* ── FIELDS ── */
-    .field { margin-bottom: 1.2rem; }
+    /* FIELDS */
+    .field { margin-bottom:1.2rem; }
     .field label {
-      display: block; font-size: .8rem; font-weight: 600;
-      color: var(--navy); margin-bottom: .45rem;
-      text-transform: uppercase; letter-spacing: .04em;
+      display:block; font-size:.8rem; font-weight:600; color:var(--navy);
+      margin-bottom:.45rem; text-transform:uppercase; letter-spacing:.04em;
     }
-    .field label .req { color: var(--red); margin-left: 2px; }
-    .field label .opt { color: var(--gray-400); font-weight: 400; text-transform: none; font-size: .75rem; }
-
+    .field label .req { color:var(--red); margin-left:2px; }
     .field input[type="text"],
     .field input[type="tel"] {
-      width: 100%; padding: .82rem 1rem;
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--r);
-      font-family: 'DM Sans', sans-serif;
-      font-size: .95rem; color: var(--navy);
-      background: var(--gray-50);
-      outline: none; transition: border-color .2s, box-shadow .2s, background .2s;
+      width:100%; padding:.82rem 1rem;
+      border:1.5px solid var(--gray-200); border-radius:var(--r);
+      font-family:'DM Sans',sans-serif; font-size:.95rem; color:var(--navy);
+      background:var(--gray-50); outline:none;
+      transition:border-color .2s, box-shadow .2s, background .2s;
     }
     .field input:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(26,86,219,.12);
-      background: var(--white);
+      border-color:var(--blue);
+      box-shadow:0 0 0 3px rgba(26,86,219,.12);
+      background:var(--white);
     }
-    .field input.error { border-color: var(--red); }
-    .field .ferr {
-      font-size: .76rem; color: var(--red); margin-top: .3rem;
-      display: flex; align-items: center; gap: .3rem;
-    }
+    .field input.error { border-color:var(--red); }
+    .ferr { font-size:.76rem; color:var(--red); margin-top:.3rem; display:flex; align-items:center; gap:.3rem; }
+    .field-hint { font-size:.76rem; color:var(--gray-400); margin-top:.3rem; }
 
-    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
 
-    /* ── RADIO GROUPS ── */
-    .radio-group { display: flex; flex-direction: column; gap: .6rem; }
-    .radio-group.horizontal { flex-direction: row; flex-wrap: wrap; }
-
+    /* RADIO CARDS (type inscrit) */
+    .radio-group { display:flex; flex-direction:column; gap:.6rem; }
     .radio-card {
-      display: flex; align-items: center; gap: .9rem;
-      padding: .9rem 1.1rem;
-      border: 2px solid var(--gray-200);
-      border-radius: var(--r); cursor: pointer;
-      transition: border-color .2s, background .2s;
-      user-select: none;
+      display:flex; align-items:center; gap:.9rem;
+      padding:.9rem 1.1rem; border:2px solid var(--gray-200);
+      border-radius:var(--r); cursor:pointer;
+      transition:border-color .2s, background .2s; user-select:none;
     }
-    .radio-card:hover { border-color: var(--blue); background: var(--blue-lt); }
-    .radio-card input[type="radio"] { display: none; }
-    .radio-card.selected {
-      border-color: var(--blue);
-      background: var(--blue-lt);
-    }
-
+    .radio-card:hover { border-color:var(--blue); background:var(--blue-lt); }
+    .radio-card input[type="radio"] { display:none; }
+    .radio-card.selected { border-color:var(--blue); background:var(--blue-lt); }
     .rc-dot {
-      width: 20px; height: 20px; border-radius: 50%;
-      border: 2px solid var(--gray-400);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: border-color .2s;
+      width:20px; height:20px; border-radius:50%;
+      border:2px solid var(--gray-400);
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; transition:border-color .2s;
     }
-    .radio-card.selected .rc-dot {
-      border-color: var(--blue);
-    }
+    .radio-card.selected .rc-dot { border-color:var(--blue); }
     .rc-dot::after {
-      content: ''; width: 10px; height: 10px; border-radius: 50%;
-      background: var(--blue); opacity: 0; transition: opacity .2s;
+      content:''; width:10px; height:10px; border-radius:50%;
+      background:var(--blue); opacity:0; transition:opacity .2s;
     }
-    .radio-card.selected .rc-dot::after { opacity: 1; }
+    .radio-card.selected .rc-dot::after { opacity:1; }
+    .rc-content { flex:1; }
+    .rc-title { font-weight:600; font-size:.92rem; color:var(--navy); }
+    .rc-desc  { font-size:.78rem; color:var(--gray-600); margin-top:.1rem; }
+    .rc-icon  { font-size:1.5rem; }
 
-    .rc-content { flex: 1; }
-    .rc-title { font-weight: 600; font-size: .92rem; color: var(--navy); }
-    .rc-desc  { font-size: .78rem; color: var(--gray-600); margin-top: .1rem; }
-    .rc-icon  { font-size: 1.5rem; }
-
-    /* Niveau & Série cards (big) */
-    .level-grid {
-      display: grid; grid-template-columns: 1fr; gap: .8rem;
+    /* ── PHONE OWNER BUTTONS ── */
+    .owner-label {
+      font-size:.78rem; font-weight:700; color:var(--gray-600);
+      text-transform:uppercase; letter-spacing:.05em;
+      margin-bottom:.5rem; display:block;
     }
+    .owner-btns {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem;
+    }
+    .owner-btn {
+      padding:.6rem .4rem; text-align:center;
+      border:2px solid var(--gray-200); border-radius:10px;
+      cursor:pointer; transition:border-color .2s, background .2s;
+      user-select:none;
+    }
+    .owner-btn:hover { border-color:var(--blue); background:var(--blue-lt); }
+    .owner-btn.selected { border-color:var(--blue); background:var(--blue-lt); }
+    .owner-btn input { display:none; }
+    .owner-emoji { font-size:1.3rem; display:block; margin-bottom:.25rem; }
+    .owner-text  { font-size:.72rem; font-weight:600; color:var(--navy); line-height:1.2; }
+    .owner-btn.selected .owner-text { color:var(--blue); }
+
+    /* NIVEAU */
+    .level-grid { display:grid; grid-template-columns:1fr; gap:.8rem; }
     .level-card {
-      display: flex; align-items: center; gap: 1rem;
-      padding: 1rem 1.2rem;
-      border: 2px solid var(--gray-200);
-      border-radius: var(--r); cursor: pointer;
-      transition: border-color .2s, background .2s;
+      display:flex; align-items:center; gap:1rem;
+      padding:1rem 1.2rem; border:2px solid var(--gray-200);
+      border-radius:var(--r); cursor:pointer; transition:border-color .2s, background .2s;
     }
-    .level-card:hover { border-color: var(--blue); }
-    .level-card.selected { border-color: var(--blue); background: var(--blue-lt); }
-    .level-card input { display: none; }
+    .level-card:hover { border-color:var(--blue); }
+    .level-card.selected { border-color:var(--blue); background:var(--blue-lt); }
+    .level-card input { display:none; }
     .lc-badge {
-      background: var(--blue-lt); color: var(--blue);
-      font-family: 'Sora', sans-serif;
-      font-size: .72rem; font-weight: 700;
-      padding: .25rem .65rem; border-radius: 50px;
-      text-transform: uppercase; white-space: nowrap;
+      background:var(--blue-lt); color:var(--blue);
+      font-family:'Sora',sans-serif; font-size:.72rem; font-weight:700;
+      padding:.25rem .65rem; border-radius:50px;
+      text-transform:uppercase; white-space:nowrap;
     }
-    .level-card.selected .lc-badge { background: var(--blue); color: white; }
-    .lc-info { flex: 1; }
-    .lc-name { font-weight: 700; font-size: .95rem; color: var(--navy); }
-    .lc-subs { font-size: .78rem; color: var(--gray-600); margin-top: .15rem; }
-    .lc-price {
-      font-family: 'Sora', sans-serif;
-      font-weight: 800; font-size: 1.1rem; color: var(--blue);
-      white-space: nowrap;
-    }
+    .level-card.selected .lc-badge { background:var(--blue); color:white; }
+    .lc-info { flex:1; }
+    .lc-name { font-weight:700; font-size:.95rem; color:var(--navy); }
+    .lc-subs { font-size:.78rem; color:var(--gray-600); margin-top:.15rem; }
+    .lc-price { font-family:'Sora',sans-serif; font-weight:800; font-size:1.1rem; color:var(--blue); white-space:nowrap; }
 
-    .serie-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: .8rem;
-      margin-top: .8rem;
-    }
-    .serie-card {
-      padding: 1rem;
-      border: 2px solid var(--gray-200);
-      border-radius: var(--r); cursor: pointer;
-      text-align: center; transition: border-color .2s, background .2s;
-    }
-    .serie-card:hover { border-color: var(--blue); }
-    .serie-card.selected { border-color: var(--blue); background: var(--blue-lt); }
-    .serie-card input { display: none; }
-    .serie-letter {
-      font-family: 'Sora', sans-serif;
-      font-size: 2rem; font-weight: 800; color: var(--navy);
-      line-height: 1;
-    }
-    .serie-card.selected .serie-letter { color: var(--blue); }
-    .serie-name { font-size: .8rem; color: var(--gray-600); margin-top: .3rem; }
-
-    .serie-section { margin-top: 1.2rem; }
+    /* SÉRIE */
+    .serie-section { margin-top:1.2rem; }
     .serie-section h4 {
-      font-size: .8rem; font-weight: 700; color: var(--navy);
-      text-transform: uppercase; letter-spacing: .04em; margin-bottom: .6rem;
+      font-size:.8rem; font-weight:700; color:var(--navy);
+      text-transform:uppercase; letter-spacing:.04em; margin-bottom:.6rem;
     }
+    .serie-grid { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+    .serie-card {
+      padding:1rem; border:2px solid var(--gray-200); border-radius:var(--r);
+      cursor:pointer; text-align:center; transition:border-color .2s, background .2s;
+    }
+    .serie-card:hover { border-color:var(--blue); }
+    .serie-card.selected { border-color:var(--blue); background:var(--blue-lt); }
+    .serie-card input { display:none; }
+    .serie-letter { font-family:'Sora',sans-serif; font-size:2rem; font-weight:800; color:var(--navy); line-height:1; }
+    .serie-card.selected .serie-letter { color:var(--blue); }
+    .serie-name { font-size:.8rem; color:var(--gray-600); margin-top:.3rem; }
 
-    /* ── RECAP ── */
-    .recap-card {
-      background: var(--gray-50);
-      border: 1px solid var(--gray-200);
-      border-radius: var(--r);
-      padding: 1.2rem;
-      margin-bottom: 1.2rem;
-    }
-    .recap-title {
-      font-size: .78rem; font-weight: 700; color: var(--blue);
-      text-transform: uppercase; letter-spacing: .05em;
-      margin-bottom: .8rem;
-    }
-    .recap-row {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding: .35rem 0;
-      border-bottom: 1px solid var(--gray-200);
-      font-size: .88rem;
-    }
-    .recap-row:last-child { border-bottom: none; }
-    .recap-key   { color: var(--gray-600); }
-    .recap-val   { font-weight: 600; color: var(--navy); }
-    .recap-total {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-top: 1rem; padding: .9rem;
-      background: var(--blue); border-radius: var(--r);
-      color: white;
-    }
-    .recap-total span { font-size: .9rem; opacity: .85; }
-    .recap-total strong {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.4rem; font-weight: 800;
-    }
-
-    /* ── PARENT BLOCK ── */
+    /* PARENT BLOCK */
     .parent-block {
-      background: #fff7ed;
-      border: 1.5px solid #fed7aa;
-      border-radius: var(--r);
-      padding: 1.2rem;
-      margin-bottom: 1.2rem;
+      background:#fff7ed; border:1.5px solid #fed7aa;
+      border-radius:var(--r); padding:1.2rem; margin-bottom:1.2rem;
     }
     .parent-block-title {
-      display: flex; align-items: center; gap: .5rem;
-      font-weight: 700; font-size: .9rem; color: #92400e;
-      margin-bottom: 1rem;
+      display:flex; align-items:center; gap:.5rem;
+      font-weight:700; font-size:.9rem; color:#92400e; margin-bottom:1rem;
     }
 
-    /* ── ERRORS (non-field) ── */
+    /* RECAP */
+    .recap-card {
+      background:var(--gray-50); border:1px solid var(--gray-200);
+      border-radius:var(--r); padding:1.2rem; margin-bottom:1.2rem;
+    }
+    .recap-title {
+      font-size:.78rem; font-weight:700; color:var(--blue);
+      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.8rem;
+    }
+    .recap-row {
+      display:flex; justify-content:space-between; align-items:baseline;
+      padding:.35rem 0; border-bottom:1px solid var(--gray-200); font-size:.88rem;
+    }
+    .recap-row:last-child { border-bottom:none; }
+    .recap-key { color:var(--gray-600); }
+    .recap-val { font-weight:600; color:var(--navy); }
+    .recap-total {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-top:1rem; padding:.9rem; background:var(--blue);
+      border-radius:var(--r); color:white;
+    }
+    .recap-total span { font-size:.9rem; opacity:.85; }
+    .recap-total strong { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:800; }
+
+    /* FORM ERRORS */
     .form-errors {
-      background: #fef2f2; border: 1px solid #fca5a5;
-      border-radius: var(--r); padding: 1rem;
-      margin-bottom: 1.2rem; font-size: .85rem; color: #b91c1c;
+      background:#fef2f2; border:1px solid #fca5a5;
+      border-radius:var(--r); padding:1rem; margin-bottom:1.2rem;
+      font-size:.85rem; color:#b91c1c;
     }
 
-    /* ── NAV BUTTONS ── */
+    /* BUTTONS */
     .btn-row {
-      display: flex; gap: .8rem;
-      padding: 1.4rem 2rem;
-      border-top: 1px solid var(--gray-100);
+      display:flex; gap:.8rem; padding:1.4rem 2rem;
+      border-top:1px solid var(--gray-100);
     }
     .btn-back {
-      flex: 0 0 auto;
-      padding: .82rem 1.4rem;
-      border: 2px solid var(--gray-200);
-      border-radius: 50px;
-      font-family: 'Sora', sans-serif;
-      font-size: .88rem; font-weight: 600;
-      color: var(--gray-600); background: none; cursor: pointer;
-      transition: border-color .2s, color .2s;
+      flex:0 0 auto; padding:.82rem 1.4rem;
+      border:2px solid var(--gray-200); border-radius:50px;
+      font-family:'Sora',sans-serif; font-size:.88rem; font-weight:600;
+      color:var(--gray-600); background:none; cursor:pointer;
+      transition:border-color .2s, color .2s;
     }
-    .btn-back:hover { border-color: var(--navy); color: var(--navy); }
-
+    .btn-back:hover { border-color:var(--navy); color:var(--navy); }
     .btn-next {
-      flex: 1;
-      padding: .9rem;
-      background: var(--blue);
-      color: white;
-      border: none; border-radius: 50px;
-      font-family: 'Sora', sans-serif;
-      font-size: .95rem; font-weight: 700;
-      cursor: pointer;
-      transition: background .2s, transform .15s;
+      flex:1; padding:.9rem; background:var(--blue); color:white;
+      border:none; border-radius:50px; font-family:'Sora',sans-serif;
+      font-size:.95rem; font-weight:700; cursor:pointer;
+      transition:background .2s, transform .15s;
     }
-    .btn-next:hover { background: var(--blue-dk); transform: translateY(-1px); }
-
+    .btn-next:hover { background:var(--blue-dk); transform:translateY(-1px); }
     .btn-submit {
-      flex: 1;
-      padding: .9rem;
-      background: linear-gradient(135deg, var(--blue), #3b82f6);
-      color: white;
-      border: none; border-radius: 50px;
-      font-family: 'Sora', sans-serif;
-      font-size: 1rem; font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(26,86,219,.4);
-      transition: transform .15s, box-shadow .15s;
+      flex:1; padding:.9rem;
+      background:linear-gradient(135deg,var(--blue),#3b82f6);
+      color:white; border:none; border-radius:50px;
+      font-family:'Sora',sans-serif; font-size:1rem; font-weight:700;
+      cursor:pointer; box-shadow:0 4px 20px rgba(26,86,219,.4);
+      transition:transform .15s, box-shadow .15s;
     }
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(26,86,219,.5); }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(26,86,219,.5); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      body { padding: 1.2rem .8rem 3rem; }
-      .card { border-radius: 20px; }
-      .step { padding: 1.4rem 1.2rem; }
-      .btn-row { padding: 1.2rem; }
-      .card-header { padding: 1.4rem 1.2rem 1rem; }
-      .row2 { grid-template-columns: 1fr; }
-      .serie-grid { grid-template-columns: 1fr 1fr; }
+    /* RESPONSIVE */
+    @media (max-width:600px) {
+      body { padding:1.2rem .8rem 3rem; }
+      .card { border-radius:20px; }
+      .step { padding:1.4rem 1.2rem; }
+      .btn-row { padding:1.2rem; }
+      .card-header { padding:1.4rem 1.2rem 1rem; }
+      .row2 { grid-template-columns:1fr; }
+      .owner-btns { grid-template-columns:repeat(4,1fr); }
     }
   </style>
 </head>
@@ -397,21 +299,10 @@
 <!-- PROGRESS -->
 <div class="progress-wrap">
   <div class="progress-steps">
-    <div class="ps">
-      <div class="ps-circle active" id="c1">1</div>
-      <div class="ps-line" id="l1"></div>
-    </div>
-    <div class="ps">
-      <div class="ps-circle" id="c2">2</div>
-      <div class="ps-line" id="l2"></div>
-    </div>
-    <div class="ps">
-      <div class="ps-circle" id="c3">3</div>
-      <div class="ps-line" id="l3"></div>
-    </div>
-    <div class="ps">
-      <div class="ps-circle" id="c4">4</div>
-    </div>
+    <div class="ps"><div class="ps-circle active" id="c1">1</div><div class="ps-line" id="l1"></div></div>
+    <div class="ps"><div class="ps-circle" id="c2">2</div><div class="ps-line" id="l2"></div></div>
+    <div class="ps"><div class="ps-circle" id="c3">3</div><div class="ps-line" id="l3"></div></div>
+    <div class="ps"><div class="ps-circle" id="c4">4</div></div>
   </div>
   <div class="progress-labels">
     <span class="pl active" id="pl1">Profil</span>
@@ -423,9 +314,7 @@
 
 <!-- CARD -->
 <div class="card">
-
-  <!-- HEADER -->
-  <div class="card-header" id="cardHeader">
+  <div class="card-header">
     <div class="step-label" id="stepLabel">Étape 1 sur 4</div>
     <h2 id="stepTitle">Qui effectue cette inscription ?</h2>
     <p id="stepDesc">Sélectionnez votre profil pour commencer</p>
@@ -434,54 +323,43 @@
   <form method="post" id="enrollForm" novalidate>
     {% csrf_token %}
 
-    <!-- Erreurs globales Django (si soumission avec erreurs) -->
     {% if form.non_field_errors %}
     <div style="padding:1rem 2rem 0">
-      <div class="form-errors">
-        ⚠️ {% for e in form.non_field_errors %}{{ e }}{% endfor %}
-      </div>
+      <div class="form-errors">⚠️ {% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
     </div>
     {% endif %}
 
-    <!-- ══════════ STEP 1 — TYPE ══════════ -->
+    <!-- ══ STEP 1 — TYPE ══ -->
     <div class="step active" id="step1">
       <div class="field">
         <div class="radio-group" id="registrantGroup">
-
-          <label class="radio-card {% if form.registrant_type.value == 'eleve' or not form.registrant_type.value %}selected{% endif %}"
-                 data-val="eleve">
-            <input type="radio" name="{{ form.registrant_type.html_name }}"
-                   value="eleve"
+          <label class="radio-card {% if form.registrant_type.value == 'eleve' or not form.registrant_type.value %}selected{% endif %}" data-val="eleve">
+            <input type="radio" name="{{ form.registrant_type.html_name }}" value="eleve"
                    {% if form.registrant_type.value == 'eleve' or not form.registrant_type.value %}checked{% endif %}/>
             <span class="rc-icon">🎒</span>
             <div class="rc-content">
               <div class="rc-title">Je suis l'élève</div>
-              <div class="rc-desc">Je m'inscris moi-même aux cours de renforcement</div>
+              <div class="rc-desc">Je m'inscris moi-même</div>
             </div>
             <div class="rc-dot"></div>
           </label>
-
-          <label class="radio-card {% if form.registrant_type.value == 'parent' %}selected{% endif %}"
-                 data-val="parent">
-            <input type="radio" name="{{ form.registrant_type.html_name }}"
-                   value="parent"
+          <label class="radio-card {% if form.registrant_type.value == 'parent' %}selected{% endif %}" data-val="parent">
+            <input type="radio" name="{{ form.registrant_type.html_name }}" value="parent"
                    {% if form.registrant_type.value == 'parent' %}checked{% endif %}/>
             <span class="rc-icon">👨‍👩‍👦</span>
             <div class="rc-content">
               <div class="rc-title">Je suis un parent / tuteur</div>
-              <div class="rc-desc">J'inscris mon enfant aux cours</div>
+              <div class="rc-desc">J'inscris mon enfant</div>
             </div>
             <div class="rc-dot"></div>
           </label>
         </div>
-        {% if form.registrant_type.errors %}
-          <div class="ferr">⚠ {{ form.registrant_type.errors|join:", " }}</div>
-        {% endif %}
       </div>
     </div>
 
-    <!-- ══════════ STEP 2 — INFOS ÉLÈVE ══════════ -->
+    <!-- ══ STEP 2 — INFOS ÉLÈVE ══ -->
     <div class="step" id="step2">
+
       <div class="row2">
         <div class="field">
           <label>{{ form.last_name.label }} <span class="req">*</span></label>
@@ -489,9 +367,7 @@
                  value="{{ form.last_name.value|default:'' }}"
                  placeholder="Ex : DOSSOU"
                  class="{% if form.last_name.errors %}error{% endif %}"/>
-          {% if form.last_name.errors %}
-            <div class="ferr">⚠ {{ form.last_name.errors|join:", " }}</div>
-          {% endif %}
+          {% if form.last_name.errors %}<div class="ferr">⚠ {{ form.last_name.errors|join:", " }}</div>{% endif %}
         </div>
         <div class="field">
           <label>{{ form.first_name.label }} <span class="req">*</span></label>
@@ -499,21 +375,8 @@
                  value="{{ form.first_name.value|default:'' }}"
                  placeholder="Ex : Koffi Emmanuel"
                  class="{% if form.first_name.errors %}error{% endif %}"/>
-          {% if form.first_name.errors %}
-            <div class="ferr">⚠ {{ form.first_name.errors|join:", " }}</div>
-          {% endif %}
+          {% if form.first_name.errors %}<div class="ferr">⚠ {{ form.first_name.errors|join:", " }}</div>{% endif %}
         </div>
-      </div>
-
-      <div class="field">
-        <label>{{ form.phone.label }} <span class="req">*</span></label>
-        <input type="tel" name="{{ form.phone.html_name }}"
-               value="{{ form.phone.value|default:'' }}"
-               placeholder="Ex : 97 00 00 00"
-               class="{% if form.phone.errors %}error{% endif %}"/>
-        {% if form.phone.errors %}
-          <div class="ferr">⚠ {{ form.phone.errors|join:", " }}</div>
-        {% endif %}
       </div>
 
       <div class="field">
@@ -522,12 +385,58 @@
                value="{{ form.school.value|default:'' }}"
                placeholder="Ex : CEG Zogbo"
                class="{% if form.school.errors %}error{% endif %}"/>
-        {% if form.school.errors %}
-          <div class="ferr">⚠ {{ form.school.errors|join:", " }}</div>
-        {% endif %}
+        {% if form.school.errors %}<div class="ferr">⚠ {{ form.school.errors|join:", " }}</div>{% endif %}
       </div>
 
-      <!-- Bloc parent (affiché si type = parent) -->
+      <!-- NUMÉRO DE CONTACT + PROPRIÉTAIRE -->
+      <div class="field">
+        <label>{{ form.phone.label }} <span class="req">*</span></label>
+        <input type="tel" name="{{ form.phone.html_name }}"
+               value="{{ form.phone.value|default:'' }}"
+               placeholder="Ex : 97 00 00 00"
+               class="{% if form.phone.errors %}error{% endif %}"
+               id="phoneInput"/>
+        <p class="field-hint">Le vôtre, celui de votre père, mère ou tuteur</p>
+        {% if form.phone.errors %}<div class="ferr">⚠ {{ form.phone.errors|join:", " }}</div>{% endif %}
+      </div>
+
+      <!-- BOUTONS PROPRIÉTAIRE DU NUMÉRO -->
+      <div class="field">
+        <span class="owner-label">📱 Ce numéro appartient à :</span>
+        <div class="owner-btns" id="ownerGroup">
+
+          <label class="owner-btn {% if form.phone_owner.value == 'eleve' or not form.phone_owner.value %}selected{% endif %}" data-owner="eleve">
+            <input type="radio" name="{{ form.phone_owner.html_name }}" value="eleve"
+                   {% if form.phone_owner.value == 'eleve' or not form.phone_owner.value %}checked{% endif %}/>
+            <span class="owner-emoji">🎒</span>
+            <span class="owner-text">L'élève</span>
+          </label>
+
+          <label class="owner-btn {% if form.phone_owner.value == 'pere' %}selected{% endif %}" data-owner="pere">
+            <input type="radio" name="{{ form.phone_owner.html_name }}" value="pere"
+                   {% if form.phone_owner.value == 'pere' %}checked{% endif %}/>
+            <span class="owner-emoji">👨</span>
+            <span class="owner-text">Le père</span>
+          </label>
+
+          <label class="owner-btn {% if form.phone_owner.value == 'mere' %}selected{% endif %}" data-owner="mere">
+            <input type="radio" name="{{ form.phone_owner.html_name }}" value="mere"
+                   {% if form.phone_owner.value == 'mere' %}checked{% endif %}/>
+            <span class="owner-emoji">👩</span>
+            <span class="owner-text">La mère</span>
+          </label>
+
+          <label class="owner-btn {% if form.phone_owner.value == 'tuteur' %}selected{% endif %}" data-owner="tuteur">
+            <input type="radio" name="{{ form.phone_owner.html_name }}" value="tuteur"
+                   {% if form.phone_owner.value == 'tuteur' %}checked{% endif %}/>
+            <span class="owner-emoji">🧑‍💼</span>
+            <span class="owner-text">Tuteur</span>
+          </label>
+
+        </div>
+      </div>
+
+      <!-- BLOC PARENT -->
       <div class="parent-block" id="parentBlock" style="display:none">
         <div class="parent-block-title">👨‍👩‍👦 Informations du parent / tuteur</div>
         <div class="field">
@@ -536,9 +445,7 @@
                  value="{{ form.parent_name.value|default:'' }}"
                  placeholder="Nom complet du parent"
                  class="{% if form.parent_name.errors %}error{% endif %}"/>
-          {% if form.parent_name.errors %}
-            <div class="ferr">⚠ {{ form.parent_name.errors|join:", " }}</div>
-          {% endif %}
+          {% if form.parent_name.errors %}<div class="ferr">⚠ {{ form.parent_name.errors|join:", " }}</div>{% endif %}
         </div>
         <div class="field" style="margin-bottom:0">
           <label>{{ form.parent_phone.label }} <span class="req">*</span></label>
@@ -546,16 +453,14 @@
                  value="{{ form.parent_phone.value|default:'' }}"
                  placeholder="Ex : 96 00 00 00"
                  class="{% if form.parent_phone.errors %}error{% endif %}"/>
-          {% if form.parent_phone.errors %}
-            <div class="ferr">⚠ {{ form.parent_phone.errors|join:", " }}</div>
-          {% endif %}
+          {% if form.parent_phone.errors %}<div class="ferr">⚠ {{ form.parent_phone.errors|join:", " }}</div>{% endif %}
         </div>
       </div>
+
     </div>
 
-    <!-- ══════════ STEP 3 — NIVEAU & SÉRIE ══════════ -->
+    <!-- ══ STEP 3 — NIVEAU & SÉRIE ══ -->
     <div class="step" id="step3">
-
       <div class="level-grid" id="levelGroup">
         <label class="level-card {% if form.level.value == '3eme' %}selected{% endif %}" data-level="3eme">
           <input type="radio" name="{{ form.level.html_name }}" value="3eme"
@@ -567,7 +472,6 @@
           </div>
           <div class="lc-price">11 500 <small style="font-size:.65rem;font-weight:500">FCFA</small></div>
         </label>
-
         <label class="level-card {% if form.level.value == '1ere' %}selected{% endif %}" data-level="1ere">
           <input type="radio" name="{{ form.level.html_name }}" value="1ere"
                  {% if form.level.value == '1ere' %}checked{% endif %}/>
@@ -578,7 +482,6 @@
           </div>
           <div class="lc-price">12 500 <small style="font-size:.65rem;font-weight:500">FCFA</small></div>
         </label>
-
         <label class="level-card {% if form.level.value == 'tle' %}selected{% endif %}" data-level="tle">
           <input type="radio" name="{{ form.level.html_name }}" value="tle"
                  {% if form.level.value == 'tle' %}checked{% endif %}/>
@@ -591,7 +494,6 @@
         </label>
       </div>
 
-      <!-- Série (masquée pour 3ème) -->
       <div class="serie-section" id="serieSection">
         <h4>Choisissez votre série</h4>
         <div class="serie-grid" id="serieGroup">
@@ -611,193 +513,162 @@
       </div>
 
       {% if form.level.errors or form.serie.errors %}
-        <div class="ferr" style="margin-top:.5rem">
-          ⚠ Veuillez sélectionner un niveau {% if form.serie.errors %}et une série{% endif %}.
-        </div>
+        <div class="ferr" style="margin-top:.5rem">⚠ Veuillez sélectionner un niveau{% if form.serie.errors %} et une série{% endif %}.</div>
       {% endif %}
     </div>
 
-    <!-- ══════════ STEP 4 — RÉCAP ══════════ -->
+    <!-- ══ STEP 4 — RÉCAP ══ -->
     <div class="step" id="step4">
       <div class="recap-card">
         <div class="recap-title">👤 Informations de l'élève</div>
+        <div class="recap-row"><span class="recap-key">Nom complet</span><span class="recap-val" id="r-name">—</span></div>
+        <div class="recap-row"><span class="recap-key">École</span><span class="recap-val" id="r-school">—</span></div>
         <div class="recap-row">
-          <span class="recap-key">Nom complet</span>
-          <span class="recap-val" id="r-name">—</span>
-        </div>
-        <div class="recap-row">
-          <span class="recap-key">Téléphone</span>
+          <span class="recap-key">Numéro de contact</span>
           <span class="recap-val" id="r-phone">—</span>
         </div>
         <div class="recap-row">
-          <span class="recap-key">Établissement</span>
-          <span class="recap-val" id="r-school">—</span>
+          <span class="recap-key">Ce numéro est</span>
+          <span class="recap-val" id="r-owner">—</span>
         </div>
         <div class="recap-row" id="r-parent-row" style="display:none">
           <span class="recap-key">Parent / Tuteur</span>
           <span class="recap-val" id="r-parent">—</span>
         </div>
       </div>
-
       <div class="recap-card">
         <div class="recap-title">📚 Formation choisie</div>
-        <div class="recap-row">
-          <span class="recap-key">Niveau</span>
-          <span class="recap-val" id="r-level">—</span>
-        </div>
-        <div class="recap-row" id="r-serie-row">
-          <span class="recap-key">Série</span>
-          <span class="recap-val" id="r-serie">—</span>
-        </div>
-        <div class="recap-row">
-          <span class="recap-key">Période</span>
-          <span class="recap-val">1er juillet — 31 août 2026</span>
-        </div>
+        <div class="recap-row"><span class="recap-key">Niveau</span><span class="recap-val" id="r-level">—</span></div>
+        <div class="recap-row" id="r-serie-row"><span class="recap-key">Série</span><span class="recap-val" id="r-serie">—</span></div>
+        <div class="recap-row"><span class="recap-key">Période</span><span class="recap-val">1er juillet — 31 août 2026</span></div>
       </div>
-
       <div class="recap-total">
         <span>💳 Total à payer</span>
         <strong id="r-price">— FCFA</strong>
       </div>
-
       <p style="font-size:.78rem;color:var(--gray-600);margin-top:.8rem;text-align:center;line-height:1.6">
-        En cliquant "Passer au paiement", vous serez redirigé vers notre interface de paiement sécurisée (MTN MoMo / Moov Money).
+        Vous serez redirigé vers notre interface de paiement sécurisée (MTN MoMo / Moov Money).
       </p>
     </div>
 
-    <!-- BOUTONS -->
+    <!-- BOUTONS NAV -->
     <div class="btn-row">
       <button type="button" class="btn-back" id="btnBack" style="display:none">← Retour</button>
       <button type="button" class="btn-next" id="btnNext">Continuer →</button>
-      <button type="submit" class="btn-submit" id="btnSubmit" style="display:none">
-        🚀 Passer au paiement
-      </button>
+      <button type="submit" class="btn-submit" id="btnSubmit" style="display:none">🚀 Passer au paiement</button>
     </div>
-
   </form>
 </div>
 
 <script>
-  // ═══ CONFIG ═══
   const STEPS = [
-    { label: 'Étape 1 sur 4', title: 'Qui effectue cette inscription ?',    desc: 'Sélectionnez votre profil pour commencer' },
-    { label: 'Étape 2 sur 4', title: 'Informations de l\'élève',            desc: 'Renseignez les informations de l\'élève' },
-    { label: 'Étape 3 sur 4', title: 'Niveau &amp; Série',                  desc: 'Choisissez le niveau et la série' },
-    { label: 'Étape 4 sur 4', title: 'Récapitulatif',                       desc: 'Vérifiez avant de passer au paiement' },
+    { label:'Étape 1 sur 4', title:'Qui effectue cette inscription ?',  desc:'Sélectionnez votre profil pour commencer' },
+    { label:'Étape 2 sur 4', title:'Informations de l\'élève',          desc:'Renseignez les coordonnées de l\'élève' },
+    { label:'Étape 3 sur 4', title:'Niveau &amp; Série',                desc:'Choisissez le niveau et la série' },
+    { label:'Étape 4 sur 4', title:'Récapitulatif',                     desc:'Vérifiez avant de passer au paiement' },
   ];
 
-  const TARIFS = { '3eme': '11 500', '1ere': '12 500', 'tle': '15 500' };
-  const LEVEL_LABELS = { '3eme': '3ème', '1ere': '1ères C & D', 'tle': 'Terminales C & D' };
+  const TARIFS       = { '3eme':'11 500', '1ere':'12 500', 'tle':'15 500' };
+  const LEVEL_LABELS = { '3eme':'3ème', '1ere':'1ères C & D', 'tle':'Terminales C & D' };
+  const OWNER_LABELS = { 'eleve':"L'élève", 'pere':'Le père', 'mere':'La mère', 'tuteur':'Un tuteur' };
 
   let currentStep = 0;
-
-  // ═══ ELEMENTS ═══
   const steps   = document.querySelectorAll('.step');
   const btnNext = document.getElementById('btnNext');
   const btnBack = document.getElementById('btnBack');
   const btnSub  = document.getElementById('btnSubmit');
 
-  // ═══ RADIO CARDS : type inscrit ═══
-  document.querySelectorAll('#registrantGroup .radio-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('#registrantGroup .radio-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      card.querySelector('input').checked = true;
-      updateParentBlock();
+  // ── Radio cards : type inscrit ──
+  document.querySelectorAll('#registrantGroup .radio-card').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('#registrantGroup .radio-card').forEach(x => x.classList.remove('selected'));
+      c.classList.add('selected');
+      c.querySelector('input').checked = true;
+      toggleParentBlock();
     });
   });
 
-  // ═══ RADIO CARDS : niveau ═══
-  document.querySelectorAll('#levelGroup .level-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('#levelGroup .level-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      card.querySelector('input').checked = true;
-      const lv = card.dataset.level;
-      document.getElementById('serieSection').style.display = lv === '3eme' ? 'none' : 'block';
+  // ── Boutons propriétaire numéro ──
+  document.querySelectorAll('#ownerGroup .owner-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#ownerGroup .owner-btn').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+      b.querySelector('input').checked = true;
     });
   });
 
-  // ═══ RADIO CARDS : série ═══
-  document.querySelectorAll('#serieGroup .serie-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('#serieGroup .serie-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      card.querySelector('input').checked = true;
+  // ── Niveau ──
+  document.querySelectorAll('#levelGroup .level-card').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('#levelGroup .level-card').forEach(x => x.classList.remove('selected'));
+      c.classList.add('selected');
+      c.querySelector('input').checked = true;
+      document.getElementById('serieSection').style.display = c.dataset.level === '3eme' ? 'none' : 'block';
     });
   });
 
-  // ═══ PARENT BLOCK ═══
-  function updateParentBlock() {
+  // ── Série ──
+  document.querySelectorAll('#serieGroup .serie-card').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('#serieGroup .serie-card').forEach(x => x.classList.remove('selected'));
+      c.classList.add('selected');
+      c.querySelector('input').checked = true;
+    });
+  });
+
+  function toggleParentBlock() {
     const isParent = document.querySelector('input[name="registrant_type"]:checked')?.value === 'parent';
     document.getElementById('parentBlock').style.display = isParent ? 'block' : 'none';
   }
-  updateParentBlock();
+  toggleParentBlock();
 
-  // ═══ PROGRESS UPDATE ═══
   function updateProgress(n) {
     for (let i = 1; i <= 4; i++) {
       const circle = document.getElementById('c' + i);
       const label  = document.getElementById('pl' + i);
-      const line   = document.getElementById('l' + (i));
-
-      circle.classList.remove('active', 'done');
+      const line   = document.getElementById('l' + i);
+      circle.classList.remove('active','done');
       label.classList.remove('active');
-
-      if (i < n + 1)       { circle.classList.add('done'); circle.textContent = '✓'; }
-      else if (i === n + 1){ circle.classList.add('active'); circle.textContent = i; }
-      else                  { circle.textContent = i; }
-
-      if (i === n + 1) label.classList.add('active');
-      if (line && i <= n) line.classList.add('done');
-      else if (line)      line.classList.remove('done');
+      if (i < n+1)      { circle.classList.add('done'); circle.textContent = '✓'; }
+      else if (i===n+1) { circle.classList.add('active'); circle.textContent = i; }
+      else              { circle.textContent = i; }
+      if (i===n+1) label.classList.add('active');
+      if (line) { line.classList.toggle('done', i <= n); }
     }
-
-    // Header
     document.getElementById('stepLabel').textContent = STEPS[n].label;
     document.getElementById('stepTitle').innerHTML   = STEPS[n].title;
     document.getElementById('stepDesc').textContent  = STEPS[n].desc;
-
-    // Buttons
     btnBack.style.display = n > 0 ? 'block' : 'none';
     btnNext.style.display = n < 3 ? 'block' : 'none';
     btnSub.style.display  = n === 3 ? 'block' : 'none';
   }
 
-  // ═══ NAVIGATE ═══
   function showStep(n) {
-    steps.forEach((s, i) => s.classList.toggle('active', i === n));
-    if (n === 3) fillRecap();
+    steps.forEach((s,i) => s.classList.toggle('active', i===n));
+    if (n===3) fillRecap();
     updateProgress(n);
     currentStep = n;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top:0, behavior:'smooth' });
   }
 
-  // ═══ VALIDATION PER STEP ═══
   function validateStep(n) {
-    if (n === 0) {
-      return !!document.querySelector('input[name="registrant_type"]:checked');
-    }
-    if (n === 1) {
+    if (n===0) return !!document.querySelector('input[name="registrant_type"]:checked');
+    if (n===1) {
       const ln = document.querySelector('input[name="last_name"]').value.trim();
       const fn = document.querySelector('input[name="first_name"]').value.trim();
       const ph = document.querySelector('input[name="phone"]').value.trim();
       const sc = document.querySelector('input[name="school"]').value.trim();
-      const isParent = document.querySelector('input[name="registrant_type"]:checked')?.value === 'parent';
-      if (!ln || !fn || !ph || !sc) return false;
-      if (isParent) {
-        const pn = document.querySelector('input[name="parent_name"]').value.trim();
-        const pp = document.querySelector('input[name="parent_phone"]').value.trim();
-        if (!pn || !pp) return false;
+      if (!ln||!fn||!ph||!sc) return false;
+      if (document.querySelector('input[name="registrant_type"]:checked')?.value==='parent') {
+        if (!document.querySelector('input[name="parent_name"]').value.trim()) return false;
+        if (!document.querySelector('input[name="parent_phone"]').value.trim()) return false;
       }
       return true;
     }
-    if (n === 2) {
+    if (n===2) {
       const lv = document.querySelector('input[name="level"]:checked')?.value;
       if (!lv) return false;
-      if (lv !== '3eme') {
-        return !!document.querySelector('input[name="serie"]:checked')?.value;
-      }
+      if (lv!=='3eme') return !!document.querySelector('input[name="serie"]:checked')?.value;
       return true;
     }
     return true;
@@ -808,45 +679,43 @@
       alert('Veuillez remplir tous les champs obligatoires.');
       return;
     }
-    showStep(currentStep + 1);
+    showStep(currentStep+1);
   });
+  btnBack.addEventListener('click', () => showStep(currentStep-1));
 
-  btnBack.addEventListener('click', () => showStep(currentStep - 1));
-
-  // ═══ RECAP FILL ═══
   function fillRecap() {
-    const fn    = document.querySelector('input[name="first_name"]').value.trim();
-    const ln    = document.querySelector('input[name="last_name"]').value.trim();
-    const ph    = document.querySelector('input[name="phone"]').value.trim();
-    const sc    = document.querySelector('input[name="school"]').value.trim();
-    const lv    = document.querySelector('input[name="level"]:checked')?.value || '';
-    const sr    = document.querySelector('input[name="serie"]:checked')?.value || '';
-    const pn    = document.querySelector('input[name="parent_name"]').value.trim();
-    const pp    = document.querySelector('input[name="parent_phone"]').value.trim();
-    const isParent = document.querySelector('input[name="registrant_type"]:checked')?.value === 'parent';
+    const fn  = document.querySelector('input[name="first_name"]').value.trim();
+    const ln  = document.querySelector('input[name="last_name"]').value.trim();
+    const ph  = document.querySelector('input[name="phone"]').value.trim();
+    const sc  = document.querySelector('input[name="school"]').value.trim();
+    const lv  = document.querySelector('input[name="level"]:checked')?.value||'';
+    const sr  = document.querySelector('input[name="serie"]:checked')?.value||'';
+    const own = document.querySelector('input[name="phone_owner"]:checked')?.value||'eleve';
+    const pn  = document.querySelector('input[name="parent_name"]').value.trim();
+    const pp  = document.querySelector('input[name="parent_phone"]').value.trim();
+    const isP = document.querySelector('input[name="registrant_type"]:checked')?.value==='parent';
 
     document.getElementById('r-name').textContent   = `${fn} ${ln}`;
-    document.getElementById('r-phone').textContent  = ph;
     document.getElementById('r-school').textContent = sc;
-    document.getElementById('r-level').textContent  = LEVEL_LABELS[lv] || lv;
-    document.getElementById('r-price').textContent  = (TARIFS[lv] || '—') + ' FCFA';
+    document.getElementById('r-phone').textContent  = ph;
+    document.getElementById('r-owner').textContent  = OWNER_LABELS[own]||own;
+    document.getElementById('r-level').textContent  = LEVEL_LABELS[lv]||lv;
+    document.getElementById('r-price').textContent  = (TARIFS[lv]||'—')+' FCFA';
 
-    // Série
     const serieRow = document.getElementById('r-serie-row');
-    if (lv === '3eme') { serieRow.style.display = 'none'; }
-    else { serieRow.style.display = 'flex'; document.getElementById('r-serie').textContent = 'Série ' + sr; }
+    serieRow.style.display = lv==='3eme' ? 'none' : 'flex';
+    if (lv!=='3eme') document.getElementById('r-serie').textContent = 'Série '+sr;
 
-    // Parent
     const parentRow = document.getElementById('r-parent-row');
-    if (isParent && pn) {
-      parentRow.style.display = 'flex';
-      document.getElementById('r-parent').textContent = `${pn} (${pp})`;
+    if (isP && pn) {
+      parentRow.style.display='flex';
+      document.getElementById('r-parent').textContent=`${pn} (${pp})`;
     } else {
-      parentRow.style.display = 'none';
+      parentRow.style.display='none';
     }
   }
 
-  // ═══ INIT — if Django returned errors, show the right step ═══
+  // Restaurer la bonne étape si Django renvoie des erreurs
   {% if form.errors %}
     {% if form.last_name.errors or form.first_name.errors or form.phone.errors or form.school.errors or form.parent_name.errors or form.parent_phone.errors %}
       showStep(1);
@@ -857,9 +726,9 @@
     {% endif %}
   {% endif %}
 
-  // Initial niveau-serie display
+  // Cacher série si 3ème déjà sélectionné au chargement
   const initLevel = document.querySelector('input[name="level"]:checked')?.value;
-  if (initLevel === '3eme') document.getElementById('serieSection').style.display = 'none';
+  if (initLevel==='3eme') document.getElementById('serieSection').style.display='none';
 </script>
 
 </body>

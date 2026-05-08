@@ -125,3 +125,8 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/connexion/'
 LOGIN_REDIRECT_URL = '/mon-espace/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+FEDAPAY_SECRET_KEY   = 'sk_sandbox_VOTRE_CLE'   # depuis dashboard.fedapay.com
+FEDAPAY_ENVIRONMENT  = 'sandbox'                  # 'live' en production
+FEDAPAY_WEBHOOK_SECRET = 'whsec_VOTRE_SECRET'    # optionnel mais recommandé

@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paiement en attente — La Certitude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --blue:#1a56db; --gold:#f59e0b; --navy:#0f172a; --gray:#64748b; }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:'DM Sans',sans-serif;
+      min-height:100vh;
+      background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
+      display:flex; align-items:center; justify-content:center; padding:2rem 1rem;
+    }
+    .card {
+      background:white; border-radius:24px; max-width:480px; width:100%;
+      padding:2.5rem 2rem; text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,.2);
+    }
+    .icon { font-size:4rem; margin-bottom:1rem; display:block; }
+    h1 { font-family:'Sora',sans-serif; font-size:1.5rem; font-weight:800; color:var(--navy); margin-bottom:.6rem; }
+    p  { color:var(--gray); font-size:.95rem; line-height:1.7; margin-bottom:1.5rem; }
+    .info-box {
+      background:#fff7ed; border:1px solid #fed7aa;
+      border-radius:14px; padding:1.2rem; margin-bottom:1.8rem;
+      text-align:left;
+    }
+    .info-row { display:flex; justify-content:space-between; padding:.35rem 0; font-size:.9rem; border-bottom:1px solid #fde8c8; }
+    .info-row:last-child { border:none; }
+    .info-key { color:#92400e; }
+    .info-val { font-weight:700; color:var(--navy); }
+    .btn {
+      display:block; width:100%; padding:.9rem;
+      border-radius:50px; text-decoration:none;
+      font-family:'Sora',sans-serif; font-weight:700; font-size:.95rem;
+      transition:transform .15s; margin-bottom:.8rem; border:none; cursor:pointer;
+    }
+    .btn-primary { background:var(--blue); color:white; }
+    .btn-primary:hover { transform:translateY(-2px); }
+    .btn-outline { border:2px solid #e2e8f0; color:var(--navy); background:none; }
+    .btn-outline:hover { background:#f8fafc; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <span class="icon">⏳</span>
+  <h1>Paiement en cours de traitement</h1>
+  <p>Votre paiement n'a pas encore été confirmé. Vérifiez votre téléphone et complétez la transaction Mobile Money.</p>
+
+  <div class="info-box">
+    <div class="info-row">
+      <span class="info-key">Élève</span>
+      <span class="info-val">{{ enrollment.full_name }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Formation</span>
+      <span class="info-val">{{ enrollment.level_serie }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Montant</span>
+      <span class="info-val">{{ enrollment.tarif|floatformat:0 }} FCFA</span>
+    </div>
+  </div>
+
+  <a href="{% url 'payments:checkout' pk=enrollment.pk %}" class="btn btn-primary">
+    🔄 Réessayer le paiement
+  </a>
+  <a href="{% url 'core:index' %}" class="btn btn-outline">
+    Retour à l'accueil
+  </a>
+
+  <p style="font-size:.78rem;margin-top:1rem;color:#94a3b8">
+    Un problème ? Contactez-nous au <strong>01 96 38 92 49</strong>
+  </p>
+</div>
+</body>
+</html>

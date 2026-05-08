@@ -1,266 +1,199 @@
-import fedapay
 import json
-import hmac
-import hashlib
-from decimal import Decimal
+import logging
 
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django.http import HttpResponse, FileResponse
-from django.conf import settings
 from django.utils import timezone
-from django.contrib import messages
 
 from enrollments.models import Enrollment
 from .models import Payment
-from .utils import generate_receipt_pdf
 
-
-# ── Configuration FedaPay ─────────────────────────────────
-def _setup_fedapay():
-    fedapay.api_key = settings.FEDAPAY_SECRET_KEY
-    fedapay.api_base = (
-        'https://sandbox-api.fedapay.com'
-        if settings.FEDAPAY_ENV == 'sandbox'
-        else 'https://api.fedapay.com'
-    )
+logger = logging.getLogger(__name__)
 
 
 # ─────────────────────────────────────────────────────────
-#  INITIER LE PAIEMENT FEDAPAY
+#  HELPER : configure FedaPay (import lazy)
 # ─────────────────────────────────────────────────────────
-@login_required
-def initiate_payment_view(request, enrollment_id):
-    """
-    Crée une transaction FedaPay et redirige vers la
-    page de paiement sécurisée.
-    """
-    enrollment = get_object_or_404(
-        Enrollment, id=enrollment_id, student=request.user
+def _get_fedapay():
+    """Importe et configure fedapay à la demande — évite l'erreur au démarrage."""
+    import fedapay
+    fedapay.api_key     = settings.FEDAPAY_SECRET_KEY
+    fedapay.environment = getattr(settings, 'FEDAPAY_ENVIRONMENT', 'sandbox')
+    return fedapay
+
+
+# ─────────────────────────────────────────────────────────
+#  CHECKOUT
+# ─────────────────────────────────────────────────────────
+def checkout_view(request, pk):
+    enrollment = get_object_or_404(Enrollment, pk=pk, status='pending')
+
+    if request.session.get('enrollment_id') != enrollment.pk:
+        return redirect('enrollments:create')
+
+    payment, _ = Payment.objects.get_or_create(
+        enrollment=enrollment,
+        status='pending',
+        defaults={'amount': enrollment.tarif},
     )
-
-    if enrollment.is_fully_paid:
-        messages.info(request, "Cette formation est déjà entièrement payée.")
-        return redirect('users:dashboard')
-
-    payment_mode   = request.GET.get('mode', 'complet')
-    payment_method = request.GET.get('method', 'mtn')
-
-    # Calcul du montant à payer maintenant
-    if payment_mode == 'tranche' and int(enrollment.total_paid) == 0:
-        amount = enrollment.course.first_tranche
-    else:
-        amount = enrollment.remaining
-
-    _setup_fedapay()
 
     try:
-        transaction = fedapay.Transaction.create(
-            description=(
-                f"Cours de renforcement {enrollment.course.get_level_display()} "
-                f"— Groupe La Certitude 2026"
+        feda = _get_fedapay()
+
+        callback_url = request.build_absolute_uri(
+            f'/paiement/callback/{enrollment.pk}/'
+        )
+
+        transaction = feda.Transaction.create({
+            'description': (
+                f'La Certitude — {enrollment.full_name} — {enrollment.level_serie}'
             ),
-            amount=int(amount),
-            currency={'iso': 'XOF'},
-            callback_url=request.build_absolute_uri(
-                f'/paiements/callback/{enrollment.id}/'
-            ),
-            customer={
-                'firstname': request.user.first_name,
-                'lastname':  request.user.last_name,
-                'email':     request.user.email or f'{request.user.username}@lacertitude.bj',
+            'amount':   int(enrollment.tarif),
+            'currency': {'iso': 'XOF'},
+            'callback_url': callback_url,
+            'customer': {
+                'firstname': enrollment.first_name,
+                'lastname':  enrollment.last_name,
                 'phone_number': {
-                    'number':  request.user.phone or '00000000',
+                    'number':  enrollment.contact_phone.replace(' ', ''),
                     'country': 'BJ',
-                },
-            },
-        )
+                }
+            }
+        })
 
-        # Sauvegarder le paiement en pending avec la référence FedaPay
-        Payment.objects.create(
-            enrollment=enrollment,
-            amount=amount,
-            method=payment_method,
-            status='pending',
-            reference=str(transaction.id),
-        )
+        token_data   = transaction.generateToken()
+        redirect_url = token_data['url']
 
-        # Rediriger vers la page de paiement FedaPay
-        token       = transaction.generateToken()
-        payment_url = token['url']
-        return redirect(payment_url)
+        payment.fedapay_transaction_id = str(transaction.id)
+        payment.fedapay_token          = token_data.get('token', '')
+        payment.save()
+
+        return redirect(redirect_url)
 
     except Exception as e:
-        messages.error(request, f"Erreur lors de l'initiation du paiement : {str(e)}")
-        return redirect('enrollments:checkout', course_id=enrollment.course.id)
+        logger.error(f"FedaPay checkout error (enrollment {pk}): {e}")
+        return render(request, 'payments/checkout_error.html', {
+            'enrollment': enrollment,
+            'error':      str(e),
+        })
 
 
 # ─────────────────────────────────────────────────────────
-#  CALLBACK FEDAPAY (retour apprenant après paiement)
+#  CALLBACK — FedaPay redirige l'utilisateur ici
 # ─────────────────────────────────────────────────────────
-@login_required
-def payment_callback_view(request, enrollment_id):
-    """
-    FedaPay redirige l'apprenant ici après paiement.
-    Paramètres GET : ?id=<transaction_id>&status=approved|declined|...
-    """
-    enrollment = get_object_or_404(
-        Enrollment, id=enrollment_id, student=request.user
-    )
+def payment_callback_view(request, pk):
+    enrollment = get_object_or_404(Enrollment, pk=pk)
 
-    transaction_id = request.GET.get('id', '')
-    feda_status    = request.GET.get('status', '')
+    try:
+        feda    = _get_fedapay()
+        payment = enrollment.payments.filter(status='pending').first()
 
-    if transaction_id and feda_status == 'approved':
-        _setup_fedapay()
-        try:
-            transaction = fedapay.Transaction.retrieve(transaction_id)
-            if transaction.status == 'approved':
-                payment = Payment.objects.filter(
-                    enrollment=enrollment,
-                    reference=transaction_id,
-                    status='pending',
-                ).first()
+        if payment and payment.fedapay_transaction_id:
+            transaction = feda.Transaction.retrieve(
+                int(payment.fedapay_transaction_id)
+            )
+            _process_transaction(transaction, enrollment, payment)
 
-                if payment:
-                    payment.status  = 'confirmed'
-                    payment.paid_at = timezone.now()
-                    payment.save()
+    except Exception as e:
+        logger.error(f"FedaPay callback error (enrollment {pk}): {e}")
 
-                    # Activer l'inscription si paiement complet
-                    if enrollment.is_fully_paid:
-                        enrollment.status = 'active'
-                        enrollment.save()
+    if enrollment.status == 'active':
+        request.session.pop('enrollment_id', None)
+        return redirect('enrollments:success', pk=enrollment.pk)
 
-                    messages.success(
-                        request,
-                        "✅ Paiement confirmé avec succès ! "
-                        "Votre inscription est maintenant active."
-                    )
-                    return redirect('payments:confirmation', enrollment_id=enrollment_id)
-
-        except Exception as e:
-            messages.error(request, f"Erreur de vérification : {str(e)}")
-
-    elif feda_status in ('declined', 'canceled'):
-        messages.error(
-            request,
-            "❌ Paiement annulé ou refusé. Veuillez réessayer."
-        )
-
-    return redirect('payments:confirmation', enrollment_id=enrollment_id)
+    return render(request, 'payments/pending.html', {'enrollment': enrollment})
 
 
 # ─────────────────────────────────────────────────────────
-#  WEBHOOK FEDAPAY (notification serveur → serveur)
+#  WEBHOOK — Notification automatique FedaPay
 # ─────────────────────────────────────────────────────────
 @csrf_exempt
 @require_POST
-def fedapay_webhook_view(request):
-    """
-    FedaPay envoie une notification POST à cette URL.
-    À configurer dans le dashboard FedaPay :
-    https://votredomaine.com/paiements/webhook/
-    """
-    payload   = request.body
-    signature = request.headers.get('X-FEDAPAY-SIGNATURE', '')
+def webhook_view(request):
+    payload = request.body
 
-    # Vérification de signature (recommandée en production)
     webhook_secret = getattr(settings, 'FEDAPAY_WEBHOOK_SECRET', '')
     if webhook_secret:
-        expected = hmac.new(
-            webhook_secret.encode(), payload, hashlib.sha256
-        ).hexdigest()
-        if not hmac.compare_digest(expected, signature):
+        try:
+            feda       = _get_fedapay()
+            sig_header = request.META.get('HTTP_X_FEDAPAY_SIGNATURE', '')
+            feda.Webhook.constructEvent(payload, sig_header, webhook_secret)
+        except Exception as e:
+            logger.warning(f"Webhook signature invalide : {e}")
             return HttpResponse(status=400)
 
     try:
-        data  = json.loads(payload)
-        event = data.get('name', '')
-        entity = data.get('entity', {})
+        data       = json.loads(payload)
+        event_name = data.get('name', '')
+        logger.info(f"FedaPay webhook reçu : {event_name}")
 
-        if event == 'transaction.approved':
+        if event_name in ('transaction.approved', 'transaction.completed'):
+            entity         = data.get('data', {}).get('object', {})
             transaction_id = str(entity.get('id', ''))
-            amount         = Decimal(str(entity.get('amount', 0)))
 
-            payment = Payment.objects.filter(
-                reference=transaction_id,
-                status='pending',
-            ).first()
-
+            payment = (
+                Payment.objects
+                .filter(fedapay_transaction_id=transaction_id)
+                .select_related('enrollment')
+                .first()
+            )
             if payment:
-                payment.status  = 'confirmed'
-                payment.paid_at = timezone.now()
-                payment.save()
-
-                enrollment = payment.enrollment
-                if enrollment.is_fully_paid:
-                    enrollment.status = 'active'
-                    enrollment.save()
+                _process_transaction_data(entity, payment.enrollment, payment)
 
         return HttpResponse(status=200)
 
-    except Exception:
+    except Exception as e:
+        logger.error(f"Webhook processing error : {e}")
         return HttpResponse(status=500)
 
 
 # ─────────────────────────────────────────────────────────
-#  PAGE DE CONFIRMATION
+#  HELPERS
 # ─────────────────────────────────────────────────────────
-@login_required
-def confirmation_view(request, enrollment_id):
-    enrollment = get_object_or_404(
-        Enrollment, id=enrollment_id, student=request.user
+def _process_transaction(transaction, enrollment, payment):
+    status = str(getattr(transaction, 'status', '')).lower()
+    if status in ('approved', 'completed'):
+        payment.status  = 'confirmed'
+        payment.paid_at = timezone.now()
+        payment.save()
+        enrollment.activate_if_paid()
+        if enrollment.status == 'active':
+            _send_sms_confirmation(enrollment)
+    elif status == 'declined':
+        payment.status = 'failed'
+        payment.save()
+
+
+def _process_transaction_data(entity, enrollment, payment):
+    status = str(entity.get('status', '')).lower()
+    if status in ('approved', 'completed'):
+        payment.status  = 'confirmed'
+        payment.paid_at = timezone.now()
+        payment.save()
+        enrollment.activate_if_paid()
+        if enrollment.status == 'active':
+            _send_sms_confirmation(enrollment)
+    elif status == 'declined':
+        payment.status = 'failed'
+        payment.save()
+
+
+def _send_sms_confirmation(enrollment):
+    message = (
+        f"Inscription confirmee ! {enrollment.full_name} est inscrit(e) "
+        f"en {enrollment.level_serie} au Groupe La Certitude. "
+        f"RDV le 1er juillet a l'EPP Gbegamey Sud. Tel: 96 38 92 49"
     )
-
-    # Dernier paiement confirmé
-    payment = enrollment.payments.filter(
-        status='confirmed'
-    ).order_by('-created_at').first()
-
-    # Si pas encore confirmé, prendre le dernier en date
-    if not payment:
-        payment = enrollment.payments.order_by('-created_at').first()
-
-    WHATSAPP_LINKS = {
-        '3eme':  {'group_link': 'https://chat.whatsapp.com/LIEN_3EME',  'prof_name': 'M. AGOSSOU Kévin',       'prof_phone': '+22997000001'},
-        '1ereC': {'group_link': 'https://chat.whatsapp.com/LIEN_1EREC', 'prof_name': 'M. HOUNKPATIN Théodore',  'prof_phone': '+22997000002'},
-        '1ereD': {'group_link': 'https://chat.whatsapp.com/LIEN_1ERED', 'prof_name': 'M. AZONHIHO Serge',       'prof_phone': '+22997000003'},
-        'tleC':  {'group_link': 'https://chat.whatsapp.com/LIEN_TLEC',  'prof_name': 'M. AHOUANSOU Martial',    'prof_phone': '+22997000004'},
-        'tleD':  {'group_link': 'https://chat.whatsapp.com/LIEN_TLED',  'prof_name': 'M. GBENOU Patrick',       'prof_phone': '+22997000005'},
-    }
-    whatsapp_info = WHATSAPP_LINKS.get(request.user.level, {})
-
-    return render(request, 'payments/confirmation.html', {
-        'enrollment':    enrollment,
-        'payment':       payment,
-        'whatsapp_info': whatsapp_info,
-    })
+    phones = [enrollment.phone]
+    if enrollment.parent_phone:
+        phones.append(enrollment.parent_phone)
+    for phone in phones:
+        _dispatch_sms(phone, message)
 
 
-# ─────────────────────────────────────────────────────────
-#  TÉLÉCHARGER LE REÇU PDF
-# ─────────────────────────────────────────────────────────
-@login_required
-def download_receipt_view(request, enrollment_id):
-    enrollment = get_object_or_404(
-        Enrollment, id=enrollment_id, student=request.user
-    )
-
-    # Prendre tous les paiements confirmés
-    payments = enrollment.payments.filter(status='confirmed').order_by('created_at')
-
-    if not payments.exists():
-        messages.error(request, "Aucun paiement confirmé pour cette inscription.")
-        return redirect('users:dashboard')
-
-    pdf_buffer = generate_receipt_pdf(enrollment, payments)
-
-    return FileResponse(
-        pdf_buffer,
-        as_attachment=True,
-        filename=f"recu_lacertitude_{enrollment.id}.pdf",
-        content_type='application/pdf',
-    )
+def _dispatch_sms(phone, message):
+    """Point d'entrée SMS — à brancher à l'étape 4."""
+    logger.info(f"[SMS] → {phone} : {message}")

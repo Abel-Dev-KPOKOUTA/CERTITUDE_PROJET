@@ -5,5 +5,5 @@ from django.conf.urls.static import static
 
 app_name = 'core'
 urlpatterns = [
-    path('accueil/', views.accueil, name='index'),
+    path('', views.accueil, name='index'),
 ]

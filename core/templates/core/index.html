@@ -675,7 +675,7 @@
     <a href="#contact">Contact</a>
   </div>
 
-  <a href="#" class="nav-cta">S'inscrire maintenant</a>
+  <a href="{% url 'enrollments:create' %}" class="nav-cta">S'inscrire maintenant</a>
 
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -689,7 +689,7 @@
   <a href="#avantages"  class="mob-link">🎁 Avantages</a>
   <a href="#modalites"  class="mob-link">📋 Modalités</a>
   <a href="#contact"    class="mob-link">📞 Contact</a>
-  <a href="#" class="m-cta">✦ S'inscrire maintenant</a>
+  <a href="{% url 'enrollments:create' %}" class="m-cta">✦ S'inscrire maintenant</a>
 </div>
 
 
@@ -709,7 +709,7 @@
       </p>
 
       <div class="hero-btns">
-        <a href="#" class="btn-primary">
+        <a href="{% url 'enrollments:create' %}" class="btn-primary">
           🚀 S'inscrire maintenant
         </a>
         <a href="#formations" class="btn-outline-white">Voir les formations</a>
@@ -803,7 +803,7 @@
           <span class="price">11 500</span>
           <span class="price-unit">FCFA</span>
         </div>
-        <a href="#" class="btn-card">S'inscrire →</a>
+        <a href="{% url 'enrollments:create' %}?niveau=3eme" class="btn-card">S'inscrire →</a>
       </div>
 
       <!-- 1ère -->
@@ -822,7 +822,7 @@
           <span class="price">12 500</span>
           <span class="price-unit">FCFA</span>
         </div>
-        <a href="#" class="btn-card">S'inscrire →</a>
+        <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-card">S'inscrire →</a>
       </div>
 
       <!-- Tle -->
@@ -840,7 +840,7 @@
           <span class="price">15 500</span>
           <span class="price-unit">FCFA</span>
         </div>
-        <a href="#" class="btn-card">S'inscrire →</a>
+        <a href="{% url 'enrollments:create' %}?niveau=tle" class="btn-card">S'inscrire →</a>
       </div>
 
     </div>
@@ -959,7 +959,7 @@
         <span class="modalite-icon">🌐</span>
         <h3>En ligne</h3>
         <p>Remplissez le formulaire et payez directement via MTN MoMo ou Moov Money.</p>
-        <a href="#" class="modalite-detail">Commencer →</a>
+        <a href="{% url 'enrollments:create' %}" class="modalite-detail">Commencer →</a>
       </div>
 
       <div class="modalite-card light">
@@ -986,7 +986,7 @@
     <div class="cta-deadline">⏳ Clôture des inscriptions : 22 juin 2026</div>
     <h2>Prêt à rejoindre La Certitude ?</h2>
     <p>Réservez votre place dès maintenant — les premières inscriptions bénéficient du Pack Privilège.</p>
-    <a href="#" class="btn-primary" style="font-size:1.05rem; padding:1rem 2.5rem;">
+    <a href="{% url 'enrollments:create' %}" class="btn-primary" style="font-size:1.05rem; padding:1rem 2.5rem;">
       🚀 S'inscrire en 2 minutes
     </a>
   </div>

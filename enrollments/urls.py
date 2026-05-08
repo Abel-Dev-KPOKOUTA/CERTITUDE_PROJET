@@ -4,5 +4,6 @@ from . import views
 app_name = 'enrollments'
 
 urlpatterns = [
-    path('inscription/<int:course_id>/', views.checkout_view, name='checkout'),
+    path('inscription/',            views.enrollment_create_view,  name='create'),
+    path('inscription/<int:pk>/ok/', views.enrollment_success_view, name='success'),
 ]

@@ -1,55 +1,45 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
-from courses.models import Course
+from django.views.decorators.http import require_POST
 from .models import Enrollment
-from payments.models import Payment
+from .forms import EnrollmentForm
 
 
-@login_required
-def checkout_view(request, course_id):
-    course = get_object_or_404(Course, id=course_id, is_active=True)
+# ─────────────────────────────────────────────────────────
+#  FORMULAIRE D'INSCRIPTION
+# ─────────────────────────────────────────────────────────
+def enrollment_create_view(request):
+    """
+    Affiche et traite le formulaire d'inscription.
+    Après soumission valide → crée Enrollment (pending) → redirige vers paiement.
+    """
+    # Pré-remplir le niveau si passé en GET (?niveau=3eme)
+    initial = {}
+    niveau_param = request.GET.get('niveau')
+    if niveau_param in ['3eme', '1ere', 'tle']:
+        initial['level'] = niveau_param
 
-    # Vérifier si déjà inscrit
-    existing = Enrollment.objects.filter(
-        student=request.user, course=course
-    ).first()
-    if existing:
-        messages.info(request, "Vous êtes déjà inscrit à cette formation.")
-        return redirect('payments:confirmation', enrollment_id=existing.id)
+    form = EnrollmentForm(request.POST or None, initial=initial)
 
-    if request.method == 'POST':
-        payment_mode   = request.POST.get('payment_mode', 'complet')
-        payment_method = request.POST.get('payment_method', 'mtn')
+    if request.method == 'POST' and form.is_valid():
+        enrollment = form.save(commit=False)
+        enrollment.status = 'pending'
+        enrollment.save()
 
-        # Calcul du montant
-        if payment_mode == 'tranche':
-            amount = course.first_tranche
-        else:
-            amount = int(course.price)
+        # On stocke l'ID en session pour le récupérer sur la page de paiement
+        request.session['enrollment_id'] = enrollment.pk
 
-        # Créer l'inscription
-        enrollment = Enrollment.objects.create(
-            student=request.user,
-            course=course,
-            status='pending',
-        )
+        return redirect('payments:checkout', pk=enrollment.pk)
 
-        # Créer le paiement
-        Payment.objects.create(
-            enrollment=enrollment,
-            amount=amount,
-            method=payment_method,
-            status='pending',
-        )
-
-        messages.success(
-            request,
-            f"✅ Inscription enregistrée ! Votre paiement est en attente de validation."
-        )
-        return redirect('payments:confirmation', enrollment_id=enrollment.id)
-
-    return render(request, 'enrollments/checkout.html', {
-        'course': course,
+    return render(request, 'enrollments/enroll.html', {
+        'form':   form,
+        'tarifs': {'3eme': 11_500, '1ere': 12_500, 'tle': 15_500},
     })
+
+
+# ─────────────────────────────────────────────────────────
+#  CONFIRMATION (page de succès après webhook FedaPay)
+# ─────────────────────────────────────────────────────────
+def enrollment_success_view(request, pk):
+    enrollment = get_object_or_404(Enrollment, pk=pk)
+    return render(request, 'enrollments/success.html', {'enrollment': enrollment})

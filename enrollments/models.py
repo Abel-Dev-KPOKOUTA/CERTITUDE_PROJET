@@ -1,95 +1,115 @@
 from django.db import models
-from django.conf import settings
 
 
 class Enrollment(models.Model):
+    """
+    Inscription d'un élève aux cours de renforcement.
+    Pas de compte utilisateur requis — juste les infos essentielles.
+    """
+
+    TYPE_CHOICES = [
+        ('eleve',  'L\'élève lui-même'),
+        ('parent', 'Un parent / tuteur'),
+    ]
+
+    LEVEL_CHOICES = [
+        ('3eme', '3ème'),
+        ('1ere', '1ères C & D'),
+        ('tle',  'Terminales C & D'),
+    ]
+
+    SERIE_CHOICES = [
+        ('C', 'Série C'),
+        ('D', 'Série D'),
+    ]
 
     STATUS_CHOICES = [
         ('pending',   'En attente de paiement'),
-        ('active',    'Active'),
-        ('cancelled', 'Annulée'),
+        ('active',    'Inscrit — Paiement confirmé'),
+        ('cancelled', 'Annulé'),
     ]
 
-    # L'apprenant (compte User direct)
-    student    = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='enrollments',
-        limit_choices_to={'role': 'apprenant'},
-        null=True, blank=True,
-        verbose_name="Apprenant (compte)",
+    # ── Qui s'inscrit ───────────────────────────────────────
+    registrant_type = models.CharField(
+        max_length=10, choices=TYPE_CHOICES, default='eleve',
+        verbose_name="Qui s'inscrit"
     )
 
-    # OU l'enfant (fiche Student liée à un parent)
-    student_child = models.ForeignKey(
-        'users.Student',
-        on_delete=models.CASCADE,
-        related_name='enrollments',
-        null=True, blank=True,
-        verbose_name="Apprenant (enfant de parent)",
+    # ── Informations de l'élève ─────────────────────────────
+    last_name  = models.CharField(max_length=100, verbose_name="Nom de l'élève")
+    first_name = models.CharField(max_length=100, verbose_name="Prénom(s) de l'élève")
+    phone      = models.CharField(max_length=20,  verbose_name="Téléphone de l'élève")
+    school     = models.CharField(max_length=200, verbose_name="Établissement scolaire")
+
+    # ── Niveau & Série ──────────────────────────────────────
+    level = models.CharField(
+        max_length=10, choices=LEVEL_CHOICES,
+        verbose_name="Niveau"
+    )
+    serie = models.CharField(
+        max_length=1, choices=SERIE_CHOICES,
+        verbose_name="Série"
     )
 
-    course     = models.ForeignKey(
-        'courses.Course',
-        on_delete=models.CASCADE,
-        related_name='enrollments',
-        verbose_name="Formation",
-    )
+    # ── Informations du parent (optionnel) ──────────────────
+    parent_name  = models.CharField(max_length=200, blank=True, verbose_name="Nom du parent / tuteur")
+    parent_phone = models.CharField(max_length=20,  blank=True, verbose_name="Téléphone du parent")
+
+    # ── Statut & Dates ──────────────────────────────────────
     status     = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='pending',
-        verbose_name="Statut",
+        max_length=20, choices=STATUS_CHOICES, default='pending',
+        verbose_name="Statut"
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date d'inscription")
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name        = "Inscription"
         verbose_name_plural = "Inscriptions"
         ordering            = ['-created_at']
-        # Un apprenant ne peut s'inscrire qu'une fois par cours
-        constraints = [
-            models.UniqueConstraint(
-                fields=['student', 'course'],
-                condition=models.Q(student__isnull=False),
-                name='unique_student_course',
-            ),
-            models.UniqueConstraint(
-                fields=['student_child', 'course'],
-                condition=models.Q(student_child__isnull=False),
-                name='unique_child_course',
-            ),
-        ]
 
     def __str__(self):
-        who = self.student or self.student_child
-        return f"{who} → {self.course}"
+        return f"{self.full_name} — {self.get_level_display()} {self.serie} [{self.get_status_display()}]"
+
+    # ── Propriétés utiles ───────────────────────────────────
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}".strip()
 
     @property
-    def who(self):
-        """Retourne l'apprenant (User ou Student)."""
-        return self.student or self.student_child
+    def level_serie(self):
+        """Ex : '1ère C', 'Terminale D', '3ème' """
+        label = self.get_level_display()
+        if self.level == '3eme':
+            return label
+        return f"{label} — Série {self.serie}"
 
     @property
-    def total_paid(self):
-        """Somme des paiements confirmés."""
-        return self.payments.filter(
-            status='confirmed'
-        ).aggregate(
-            total=models.Sum('amount')
-        )['total'] or 0
+    def contact_phone(self):
+        """Numéro prioritaire pour les SMS : parent si existe, sinon élève."""
+        return self.parent_phone if self.parent_phone else self.phone
 
     @property
-    def remaining(self):
-        """Montant restant à payer."""
-        return int(self.course.price) - int(self.total_paid)
+    def tarif(self):
+        tarifs = {'3eme': 11500, '1ere': 12500, 'tle': 15500}
+        return tarifs.get(self.level, 0)
 
     @property
-    def is_fully_paid(self):
-        return self.remaining <= 0
+    def is_paid(self):
+        """True si au moins un paiement confirmé couvre le tarif total."""
+        try:
+            from django.db.models import Sum
+            total = self.payments.filter(status='confirmed').aggregate(
+                total=Sum('amount')
+            )['total'] or 0
+            return total >= self.tarif
+        except Exception:
+            return False
 
-    @property
-    def payment_percent(self):
-        if not self.course.price:
-            return 0
-        return min(int(self.total_paid * 100 / self.course.price), 100)
+    def activate_if_paid(self):
+        """Active l'inscription si le paiement est complet."""
+        if self.is_paid and self.status == 'pending':
+            self.status = 'active'
+            self.save(update_fields=['status'])
+            return True
+        return False

@@ -5,39 +5,55 @@ from .models import Enrollment
 
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):
-    list_display  = ('who_display', 'course', 'status_badge', 'total_paid_display', 'created_at')
-    list_filter   = ('status', 'course__level', 'created_at')
-    search_fields = ('student__last_name', 'student__first_name', 'course__title')
+    list_display  = ('full_name', 'level_serie_display', 'phone', 'school', 'status_badge', 'created_at')
+    list_filter   = ('status', 'level', 'serie', 'registrant_type')
+    search_fields = ('last_name', 'first_name', 'phone', 'school', 'parent_name', 'parent_phone')
     ordering      = ('-created_at',)
-    actions       = ['activate_enrollments', 'cancel_enrollments']
+    readonly_fields = ('created_at', 'updated_at')
 
-    def who_display(self, obj):
-        return obj.who
-    who_display.short_description = 'Apprenant'
+    fieldsets = (
+        ("👤 Élève", {
+            'fields': ('registrant_type', 'last_name', 'first_name', 'phone', 'school'),
+        }),
+        ("📚 Formation", {
+            'fields': ('level', 'serie'),
+        }),
+        ("👨‍👩‍👦 Parent / Tuteur", {
+            'fields': ('parent_name', 'parent_phone'),
+            'classes': ('collapse',),
+        }),
+        ("📊 Statut", {
+            'fields': ('status', 'created_at', 'updated_at'),
+        }),
+    )
+
+    def level_serie_display(self, obj):
+        if obj.level == '3eme':
+            return obj.get_level_display()
+        return f"{obj.get_level_display()} — Série {obj.serie}"
+    level_serie_display.short_description = 'Niveau / Série'
 
     def status_badge(self, obj):
         colors = {
-            'pending':   ('#c9922a', 'En attente'),
-            'active':    ('#2a7f6f', 'Active'),
-            'cancelled': ('#e53e3e', 'Annulée'),
+            'pending':   ('#f59e0b', '#fff7ed', 'En attente'),
+            'active':    ('#10b981', '#d1fae5', 'Inscrit ✓'),
+            'cancelled': ('#ef4444', '#fef2f2', 'Annulé'),
         }
-        color, label = colors.get(obj.status, ('#999', obj.status))
+        color, bg, label = colors.get(obj.status, ('#999', '#eee', obj.status))
         return format_html(
-            '<span style="background:{};color:white;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">{}</span>',
-            color, label
+            '<span style="background:{};color:{};padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">{}</span>',
+            bg, color, label
         )
     status_badge.short_description = 'Statut'
 
-    def total_paid_display(self, obj):
-        return f"{int(obj.total_paid):,} / {int(obj.course.price):,} FCFA".replace(',', ' ')
-    total_paid_display.short_description = 'Paiement'
+    actions = ['mark_active', 'mark_cancelled']
 
-    def activate_enrollments(self, request, queryset):
+    def mark_active(self, request, queryset):
         queryset.update(status='active')
         self.message_user(request, f"{queryset.count()} inscription(s) activée(s).")
-    activate_enrollments.short_description = "✅ Activer les inscriptions"
+    mark_active.short_description = "✅ Marquer comme inscrit"
 
-    def cancel_enrollments(self, request, queryset):
+    def mark_cancelled(self, request, queryset):
         queryset.update(status='cancelled')
         self.message_user(request, f"{queryset.count()} inscription(s) annulée(s).")
-    cancel_enrollments.short_description = "❌ Annuler les inscriptions"
+    mark_cancelled.short_description = "❌ Annuler les inscriptions"

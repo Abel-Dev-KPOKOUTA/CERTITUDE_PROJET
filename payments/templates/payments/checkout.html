@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paiement — La Certitude</title>
+
+  <!-- FeexPay JS SDK -->
+  <script src="https://api-v2.feexpay.me/feexpay-javascript-sdk/index.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe;
+      --white:#fff; --navy:#0f172a; --gray-50:#f8fafc;
+      --gray-100:#f1f5f9; --gray-200:#e2e8f0; --gray-500:#64748b;
+      --green:#10b981; --r:14px;
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:'DM Sans',sans-serif; min-height:100vh;
+      background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:flex-start;
+      padding:2rem 1rem 4rem;
+    }
+
+    /* TOP */
+    .top-bar {
+      width:100%; max-width:500px;
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:1.5rem;
+    }
+    .back-link { color:rgba(255,255,255,.75); font-size:.85rem; text-decoration:none; }
+    .back-link:hover { color:white; }
+    .brand { display:flex; align-items:center; gap:.6rem; }
+    .brand img { width:34px; height:34px; border-radius:50%; background:white; padding:2px; object-fit:contain; }
+    .brand span { font-family:'Sora',sans-serif; font-weight:700; font-size:.88rem; color:white; }
+
+    /* CARD */
+    .card {
+      width:100%; max-width:500px; background:white;
+      border-radius:24px; overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.22);
+    }
+
+    /* RECAP HEADER */
+    .recap-header {
+      background:linear-gradient(135deg,var(--blue-dk),var(--blue));
+      padding:1.8rem 2rem; color:white;
+    }
+    .recap-header h2 {
+      font-family:'Sora',sans-serif; font-size:1.1rem; font-weight:700;
+      margin-bottom:1rem; display:flex; align-items:center; gap:.5rem;
+    }
+    .recap-row {
+      display:flex; justify-content:space-between;
+      font-size:.88rem; padding:.3rem 0;
+      border-bottom:1px solid rgba(255,255,255,.1);
+    }
+    .recap-row:last-child { border:none; }
+    .rk { opacity:.7; }
+    .rv { font-weight:600; }
+    .amount-box {
+      margin-top:1.2rem; padding:.9rem 1rem;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.25);
+      border-radius:var(--r);
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .amount-box span { font-size:.88rem; opacity:.8; }
+    .amount-box strong {
+      font-family:'Sora',sans-serif; font-size:1.7rem; font-weight:800;
+    }
+
+    /* BODY */
+    .card-body { padding:1.8rem 2rem; }
+
+    .section-title {
+      font-size:.78rem; font-weight:700; color:var(--navy);
+      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.9rem;
+    }
+
+    /* INFO STEPS */
+    .pay-steps { display:flex; flex-direction:column; gap:.7rem; margin-bottom:1.6rem; }
+    .pay-step {
+      display:flex; align-items:center; gap:.9rem;
+      padding:.75rem 1rem; background:var(--gray-50);
+      border-radius:10px; font-size:.88rem;
+    }
+    .ps-num {
+      width:28px; height:28px; border-radius:50%;
+      background:var(--blue-lt); color:var(--blue);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Sora',sans-serif; font-weight:700; font-size:.78rem;
+      flex-shrink:0;
+    }
+
+    /* BOUTON PAYER */
+    #render { margin-bottom:.5rem; }
+
+    /* Override style FeexPay button si besoin */
+    .feex-fallback-btn {
+      width:100%; padding:1rem;
+      background:linear-gradient(135deg,var(--green),#34d399);
+      color:white; border:none; border-radius:50px;
+      font-family:'Sora',sans-serif; font-size:1.05rem; font-weight:700;
+      cursor:pointer; box-shadow:0 4px 20px rgba(16,185,129,.4);
+      transition:transform .15s; display:flex;
+      align-items:center; justify-content:center; gap:.6rem;
+    }
+    .feex-fallback-btn:hover { transform:translateY(-2px); }
+
+    .secure-note {
+      text-align:center; font-size:.75rem; color:var(--gray-500);
+      margin-top:.8rem; display:flex; align-items:center;
+      justify-content:center; gap:.3rem;
+    }
+
+    /* LOADING OVERLAY */
+    .overlay {
+      display:none; position:fixed; inset:0; z-index:999;
+      background:rgba(15,23,42,.6); backdrop-filter:blur(4px);
+      align-items:center; justify-content:center;
+    }
+    .overlay.show { display:flex; }
+    .overlay-box {
+      background:white; border-radius:20px; padding:2rem;
+      text-align:center; max-width:300px; width:90%;
+    }
+    .ov-spinner {
+      width:50px; height:50px; border-radius:50%;
+      border:5px solid #e2e8f0; border-top-color:var(--blue);
+      animation:spin 1s linear infinite; margin:0 auto 1rem;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .ov-title { font-family:'Sora',sans-serif; font-weight:700; color:var(--navy); margin-bottom:.4rem; }
+    .ov-sub   { font-size:.85rem; color:var(--gray-500); }
+
+    @media(max-width:500px) {
+      .card-body, .recap-header { padding:1.4rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="{% url 'core:index' %}" class="back-link">← Retour</a>
+  <div class="brand">
+    <img src="/images/logo_certitude.png" alt="Logo"/>
+    <span>La Certitude</span>
+  </div>
+</div>
+
+<!-- CARD -->
+<div class="card">
+
+  <!-- RÉCAP -->
+  <div class="recap-header">
+    <h2>💳 Résumé de l'inscription</h2>
+    <div class="recap-row"><span class="rk">Élève</span><span class="rv">{{ enrollment.full_name }}</span></div>
+    <div class="recap-row"><span class="rk">Formation</span><span class="rv">{{ enrollment.level_serie }}</span></div>
+    <div class="recap-row"><span class="rk">École</span><span class="rv">{{ enrollment.school }}</span></div>
+    <div class="amount-box">
+      <span>💰 Montant à payer</span>
+      <strong>{{ enrollment.tarif|floatformat:0 }} FCFA</strong>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <p class="section-title">Comment ça marche ?</p>
+    <div class="pay-steps">
+      <div class="pay-step">
+        <div class="ps-num">1</div>
+        <span>Cliquez sur <strong>"Payer"</strong> ci-dessous</span>
+      </div>
+      <div class="pay-step">
+        <div class="ps-num">2</div>
+        <span>Choisissez votre réseau : <strong>MTN MoMo</strong> ou <strong>MOOV Money</strong></span>
+      </div>
+      <div class="pay-step">
+        <div class="ps-num">3</div>
+        <span>Entrez votre numéro et confirmez avec votre <strong>code PIN</strong></span>
+      </div>
+      <div class="pay-step">
+        <div class="ps-num">4</div>
+        <span>Votre inscription est <strong>activée automatiquement</strong> ✅</span>
+      </div>
+    </div>
+
+    <!-- BOUTON FEEXPAY — le SDK injecte le bouton ici -->
+    <div id="render"></div>
+
+    <p class="secure-note">🔒 Paiement sécurisé par FeexPay</p>
+
+  </div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div class="overlay" id="loadingOverlay">
+  <div class="overlay-box">
+    <div class="ov-spinner"></div>
+    <div class="ov-title">Traitement en cours...</div>
+    <div class="ov-sub">Veuillez patienter</div>
+  </div>
+</div>
+
+<script>
+  const ENROLLMENT_PK   = {{ enrollment.pk }};
+  const SAVE_REF_URL    = "{% url 'payments:save_reference' pk=enrollment.pk %}";
+  const WAITING_URL     = "{% url 'payments:waiting' pk=enrollment.pk %}";
+  const SUCCESS_URL     = "{% url 'enrollments:success' pk=enrollment.pk %}";
+  const CSRF_TOKEN      = "{{ csrf_token }}";
+
+  // ── Initialisation du SDK FeexPay ──────────────────────
+  FeexPayButton.init("render", {
+    id:     "{{ feexpay_id }}",
+    amount: {{ enrollment.tarif|floatformat:0 }},
+    token:  "{{ feexpay_token }}",
+    mode:   "{{ feexpay_mode }}",
+    custom_id:   "{{ payment.feexpay_reference }}",
+    description: "Cours La Certitude - {{ enrollment.level_serie }} - {{ enrollment.full_name }}",
+
+    // ── Callback succès ──
+    callback: async (response) => {
+      console.log("FeexPay response:", response);
+      document.getElementById('loadingOverlay').classList.add('show');
+
+      try {
+        const res = await fetch(SAVE_REF_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type':  'application/json',
+            'X-CSRFToken':   CSRF_TOKEN,
+          },
+          body: JSON.stringify({
+            reference: response.reference || response.id || '',
+            status:    response.status    || 'SUCCESSFUL',
+            method:    response.operator  || '',
+          }),
+        });
+
+        const data = await res.json();
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        } else {
+          window.location.href = WAITING_URL;
+        }
+      } catch (err) {
+        console.error("Save ref error:", err);
+        window.location.href = WAITING_URL;
+      }
+    },
+
+    // ── Callback erreur ──
+    error_callback_url: window.location.href,
+  });
+</script>
+
+</body>
+</html>

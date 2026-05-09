@@ -5,26 +5,17 @@ from .models import Payment
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display  = ('student_name', 'amount_display', 'method_display', 'status_badge', 'fedapay_transaction_id', 'paid_at', 'created_at')
+    list_display  = ('student_name', 'amount_display', 'method_display', 'status_badge', 'phone_used', 'feexpay_reference', 'paid_at', 'created_at')
     list_filter   = ('status', 'method', 'created_at')
-    search_fields = ('enrollment__last_name', 'enrollment__first_name', 'enrollment__phone', 'fedapay_transaction_id')
+    search_fields = ('enrollment__last_name', 'enrollment__first_name', 'enrollment__phone', 'feexpay_reference', 'phone_used')
     ordering      = ('-created_at',)
-    readonly_fields = ('created_at', 'updated_at', 'paid_at', 'fedapay_transaction_id', 'fedapay_token')
+    readonly_fields = ('created_at', 'updated_at', 'paid_at', 'feexpay_reference', 'phone_used')
 
     fieldsets = (
-        ("👤 Inscription", {
-            'fields': ('enrollment',),
-        }),
-        ("💳 Paiement", {
-            'fields': ('amount', 'method', 'status', 'paid_at'),
-        }),
-        ("🔗 FedaPay", {
-            'fields': ('fedapay_transaction_id', 'fedapay_token'),
-            'classes': ('collapse',),
-        }),
-        ("📅 Dates", {
-            'fields': ('created_at', 'updated_at'),
-        }),
+        ("👤 Inscription", { 'fields': ('enrollment',) }),
+        ("💳 Paiement",    { 'fields': ('amount', 'method', 'status', 'phone_used', 'paid_at') }),
+        ("🔗 FeexPay",     { 'fields': ('feexpay_reference',), 'classes': ('collapse',) }),
+        ("📅 Dates",       { 'fields': ('created_at', 'updated_at') }),
     )
 
     def student_name(self, obj):
@@ -36,9 +27,9 @@ class PaymentAdmin(admin.ModelAdmin):
     amount_display.short_description = 'Montant'
 
     def method_display(self, obj):
-        icons = {'mtn': '📱 MTN MoMo', 'moov': '📱 MOOV Money', 'cash': '💵 Espèces'}
+        icons = {'mtn': '🟡 MTN MoMo', 'moov': '🔵 MOOV Money'}
         return icons.get(obj.method, obj.method or '—')
-    method_display.short_description = 'Méthode'
+    method_display.short_description = 'Réseau'
 
     def status_badge(self, obj):
         styles = {
@@ -53,9 +44,9 @@ class PaymentAdmin(admin.ModelAdmin):
         )
     status_badge.short_description = 'Statut'
 
-    actions = ['confirm_payments']
+    actions = ['confirm_manually']
 
-    def confirm_payments(self, request, queryset):
+    def confirm_manually(self, request, queryset):
         from django.utils import timezone
         updated = 0
         for payment in queryset.filter(status='pending'):
@@ -64,5 +55,5 @@ class PaymentAdmin(admin.ModelAdmin):
             payment.save()
             payment.enrollment.activate_if_paid()
             updated += 1
-        self.message_user(request, f"{updated} paiement(s) confirmé(s) et inscription(s) activée(s).")
-    confirm_payments.short_description = "✅ Confirmer les paiements sélectionnés"
+        self.message_user(request, f"✅ {updated} paiement(s) confirmé(s) manuellement.")
+    confirm_manually.short_description = "✅ Confirmer manuellement"

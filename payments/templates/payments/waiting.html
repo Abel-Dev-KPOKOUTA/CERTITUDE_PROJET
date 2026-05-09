@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>En attente de confirmation — La Certitude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --blue:#1a56db; --green:#10b981; --navy:#0f172a; --gray:#64748b; }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:'DM Sans',sans-serif; min-height:100vh;
+      background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
+      display:flex; align-items:center; justify-content:center; padding:2rem 1rem;
+    }
+    .card {
+      background:white; border-radius:24px; max-width:460px; width:100%;
+      padding:2.5rem 2rem; text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,.22);
+    }
+
+    /* SPINNER */
+    .spinner-wrap { margin:0 auto 1.5rem; width:80px; height:80px; }
+    .spinner {
+      width:80px; height:80px; border-radius:50%;
+      border:6px solid #e2e8f0;
+      border-top-color:var(--blue);
+      animation:spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* SUCCESS CIRCLE (masqué au départ) */
+    .success-circle {
+      display:none;
+      width:80px; height:80px; border-radius:50%;
+      background:linear-gradient(135deg,var(--green),#34d399);
+      margin:0 auto 1.5rem;
+      align-items:center; justify-content:center;
+      font-size:2.2rem;
+      box-shadow:0 8px 32px rgba(16,185,129,.4);
+      animation:pop .5s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
+
+    h1 {
+      font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:800;
+      color:var(--navy); margin-bottom:.6rem;
+    }
+    .sub { color:var(--gray); font-size:.92rem; line-height:1.7; margin-bottom:1.5rem; }
+
+    .info-card {
+      background:#f8fafc; border:1px solid #e2e8f0;
+      border-radius:14px; padding:1.1rem; margin-bottom:1.5rem; text-align:left;
+    }
+    .info-row {
+      display:flex; justify-content:space-between; font-size:.88rem;
+      padding:.3rem 0; border-bottom:1px solid #f1f5f9;
+    }
+    .info-row:last-child { border:none; }
+    .ik { color:var(--gray); }
+    .iv { font-weight:700; color:var(--navy); }
+
+    /* STEPS */
+    .steps { margin-bottom:1.5rem; display:flex; flex-direction:column; gap:.7rem; }
+    .step-item {
+      display:flex; align-items:center; gap:.8rem;
+      padding:.7rem .9rem; background:#f8fafc;
+      border-radius:10px; font-size:.85rem;
+    }
+    .step-item.done { background:#f0fdf4; }
+    .step-num {
+      width:26px; height:26px; border-radius:50%;
+      background:#e2e8f0; color:var(--navy);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:.78rem; flex-shrink:0;
+    }
+    .step-item.done .step-num { background:var(--green); color:white; }
+    .step-text { color:var(--navy); }
+    .step-item.active .step-text { font-weight:600; color:var(--blue); }
+
+    /* TIMER */
+    .timer {
+      font-size:.82rem; color:var(--gray); margin-bottom:1.2rem;
+    }
+    .timer span { font-weight:700; color:var(--navy); }
+
+    /* BOUTONS */
+    .btn {
+      display:block; width:100%; padding:.88rem;
+      border-radius:50px; font-family:'Sora',sans-serif;
+      font-weight:700; font-size:.92rem; text-decoration:none;
+      transition:transform .15s; margin-bottom:.8rem;
+      border:none; cursor:pointer;
+    }
+    .btn-check  { background:var(--blue); color:white; }
+    .btn-check:hover { transform:translateY(-2px); }
+    .btn-retry  { border:2px solid #e2e8f0; color:var(--navy); background:none; }
+    .btn-retry:hover { background:#f8fafc; }
+
+    .contact-note {
+      font-size:.76rem; color:#94a3b8; margin-top:1rem;
+    }
+  </style>
+</head>
+<body>
+<div class="card" id="mainCard">
+
+  <!-- SPINNER (affiché en attente) -->
+  <div class="spinner-wrap" id="spinnerWrap">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- SUCCÈS (affiché après confirmation) -->
+  <div class="success-circle" id="successCircle">✓</div>
+
+  <h1 id="mainTitle">Confirmez sur votre téléphone</h1>
+  <p class="sub" id="mainSub">
+    Une demande de paiement a été envoyée au
+    <strong>{{ payment.phone_used|default:enrollment.phone }}</strong>.
+    Entrez votre <strong>PIN Mobile Money</strong> pour valider.
+  </p>
+
+  <!-- INFOS -->
+  <div class="info-card">
+    <div class="info-row"><span class="ik">Élève</span><span class="iv">{{ enrollment.full_name }}</span></div>
+    <div class="info-row"><span class="ik">Formation</span><span class="iv">{{ enrollment.level_serie }}</span></div>
+    <div class="info-row">
+      <span class="ik">Montant</span>
+      <span class="iv">{{ enrollment.tarif|floatformat:0 }} FCFA</span>
+    </div>
+    {% if payment %}
+    <div class="info-row">
+      <span class="ik">Réseau</span>
+      <span class="iv">{{ payment.get_method_display }}</span>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ÉTAPES -->
+  <div class="steps" id="stepsWrap">
+    <div class="step-item done">
+      <div class="step-num">✓</div>
+      <span class="step-text">Demande de paiement envoyée</span>
+    </div>
+    <div class="step-item active" id="step2">
+      <div class="step-num">2</div>
+      <span class="step-text">En attente de votre confirmation...</span>
+    </div>
+    <div class="step-item" id="step3">
+      <div class="step-num">3</div>
+      <span class="step-text">Inscription activée automatiquement</span>
+    </div>
+  </div>
+
+  <p class="timer" id="timerText">
+    Vérification automatique dans <span id="countdown">5</span>s
+  </p>
+
+  <button class="btn btn-check" id="btnCheck" onclick="checkNow()">
+    🔄 Vérifier maintenant
+  </button>
+
+  <a href="{% url 'payments:checkout' pk=enrollment.pk %}" class="btn btn-retry">
+    ← Réessayer avec un autre numéro
+  </a>
+
+  <p class="contact-note">
+    Problème ? Appelez-nous : <strong>01 96 38 92 49</strong>
+  </p>
+
+</div>
+
+<script>
+  const STATUS_URL = "{% url 'payments:check_status' pk=enrollment.pk %}";
+  const SUCCESS_URL = "{% url 'enrollments:success' pk=enrollment.pk %}";
+
+  let countdown = 5;
+  let checking  = false;
+
+  async function checkNow() {
+    if (checking) return;
+    checking = true;
+    document.getElementById('btnCheck').disabled = true;
+    document.getElementById('btnCheck').textContent = '⏳ Vérification...';
+
+    try {
+      const resp = await fetch(STATUS_URL);
+      const data = await resp.json();
+
+      if (data.redirect) {
+        // Paiement confirmé !
+        document.getElementById('spinnerWrap').style.display = 'none';
+        const sc = document.getElementById('successCircle');
+        sc.style.display = 'flex';
+        document.getElementById('mainTitle').textContent = '✅ Paiement confirmé !';
+        document.getElementById('mainSub').textContent = 'Votre inscription est activée. Redirection...';
+        document.getElementById('stepsWrap').style.display = 'none';
+        document.getElementById('timerText').style.display = 'none';
+        document.getElementById('btnCheck').style.display = 'none';
+
+        setTimeout(() => { window.location.href = SUCCESS_URL; }, 1500);
+        return;
+      }
+    } catch (e) {
+      console.log('Check error:', e);
+    }
+
+    checking = false;
+    document.getElementById('btnCheck').disabled = false;
+    document.getElementById('btnCheck').textContent = '🔄 Vérifier maintenant';
+    countdown = 10;
+  }
+
+  // Compte à rebours + auto-check toutes les 5s
+  const timer = setInterval(() => {
+    countdown--;
+    const el = document.getElementById('countdown');
+    if (el) el.textContent = countdown;
+
+    if (countdown <= 0) {
+      countdown = 10;
+      checkNow();
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inscription confirmée — La Certitude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --blue:#1a56db; --green:#10b981; --gold:#f59e0b; --navy:#0f172a; --gray:#64748b; }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:'DM Sans',sans-serif; min-height:100vh;
+      background:linear-gradient(135deg,#065f46,#10b981,#34d399);
+      display:flex; align-items:center; justify-content:center; padding:2rem 1rem;
+    }
+    .card {
+      background:white; border-radius:24px; max-width:500px; width:100%;
+      padding:2.5rem 2rem; text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,.2);
+    }
+    .check-circle {
+      width:80px; height:80px; border-radius:50%;
+      background:linear-gradient(135deg,#10b981,#34d399);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 1.5rem; font-size:2.2rem;
+      box-shadow:0 8px 32px rgba(16,185,129,.4);
+      animation: pop .5s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes pop { from { transform:scale(0); } to { transform:scale(1); } }
+    h1 { font-family:'Sora',sans-serif; font-size:1.6rem; font-weight:800; color:var(--navy); margin-bottom:.5rem; }
+    .subtitle { color:var(--gray); font-size:.95rem; margin-bottom:1.8rem; line-height:1.6; }
+    .info-card {
+      background:#f0fdf4; border:1.5px solid #a7f3d0;
+      border-radius:16px; padding:1.3rem; margin-bottom:1.5rem; text-align:left;
+    }
+    .info-title {
+      font-family:'Sora',sans-serif; font-size:.78rem; font-weight:700;
+      color:#065f46; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.9rem;
+    }
+    .info-row { display:flex; justify-content:space-between; align-items:baseline; padding:.35rem 0; font-size:.9rem; border-bottom:1px solid #d1fae5; }
+    .info-row:last-child { border:none; }
+    .info-key { color:#065f46; }
+    .info-val { font-weight:700; color:var(--navy); }
+    .whatsapp-box {
+      background:#f0fdf4; border:1.5px solid #a7f3d0;
+      border-radius:16px; padding:1.2rem; margin-bottom:1.5rem;
+      display:flex; align-items:center; gap:1rem; text-align:left;
+    }
+    .wa-icon { font-size:2rem; flex-shrink:0; }
+    .wa-text p { font-size:.85rem; color:var(--gray); }
+    .wa-text strong { color:var(--navy); display:block; margin-bottom:.2rem; }
+    .badge-active {
+      display:inline-flex; align-items:center; gap:.4rem;
+      background:#d1fae5; color:#065f46;
+      padding:.4rem 1rem; border-radius:50px;
+      font-family:'Sora',sans-serif; font-size:.82rem; font-weight:700;
+      margin-bottom:1.5rem;
+    }
+    .btn {
+      display:block; width:100%; padding:.9rem;
+      border-radius:50px; text-decoration:none;
+      font-family:'Sora',sans-serif; font-weight:700; font-size:.95rem;
+      transition:transform .15s; margin-bottom:.8rem;
+    }
+    .btn-green  { background:var(--green); color:white; }
+    .btn-green:hover { transform:translateY(-2px); }
+    .btn-outline { border:2px solid #e2e8f0; color:var(--navy); }
+    .btn-outline:hover { background:#f8fafc; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="check-circle">✓</div>
+
+  <div class="badge-active">✅ Inscription validée</div>
+
+  <h1>Bienvenue, {{ enrollment.first_name }} !</h1>
+  <p class="subtitle">
+    Votre inscription aux cours de renforcement est <strong>confirmée</strong>.
+    Un SMS de confirmation a été envoyé au <strong>{{ enrollment.contact_phone }}</strong>.
+  </p>
+
+  <div class="info-card">
+    <div class="info-title">📋 Détails de l'inscription</div>
+    <div class="info-row">
+      <span class="info-key">Élève</span>
+      <span class="info-val">{{ enrollment.full_name }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Formation</span>
+      <span class="info-val">{{ enrollment.level_serie }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Établissement</span>
+      <span class="info-val">{{ enrollment.school }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Début des cours</span>
+      <span class="info-val">1er juillet 2026</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Lieu</span>
+      <span class="info-val">EPP Gbégamey Sud</span>
+    </div>
+  </div>
+
+  <div class="whatsapp-box">
+    <span class="wa-icon">💬</span>
+    <div class="wa-text">
+      <strong>Rejoignez votre groupe WhatsApp</strong>
+      <p>Envoyez votre nom au <strong>01 96 38 92 49</strong> pour être ajouté à votre groupe de classe.</p>
+    </div>
+  </div>
+
+  <a href="https://wa.me/22996389249?text=Bonjour%2C+je+suis+{{ enrollment.full_name|urlencode }}+inscrit(e)+en+{{ enrollment.level_serie|urlencode }}.+Je+souhaite+rejoindre+le+groupe+WhatsApp."
+     target="_blank" class="btn btn-green">
+    💬 Rejoindre le groupe WhatsApp
+  </a>
+  <a href="{% url 'core:index' %}" class="btn btn-outline">
+    Retour à l'accueil
+  </a>
+</div>
+</body>
+</html>

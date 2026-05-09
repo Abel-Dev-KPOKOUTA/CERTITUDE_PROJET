@@ -127,6 +127,5 @@ LOGIN_REDIRECT_URL = '/mon-espace/'
 LOGOUT_REDIRECT_URL = '/'
 
 
-FEDAPAY_SECRET_KEY   = 'sk_sandbox_VOTRE_CLE'   # depuis dashboard.fedapay.com
-FEDAPAY_ENVIRONMENT  = 'sandbox'                  # 'live' en production
-FEDAPAY_WEBHOOK_SECRET = 'whsec_VOTRE_SECRET'    # optionnel mais recommandé
+FEEXPAY_API_KEY = 'test_Hg7Kjl3ZAM63UuIUpuudD9nKuu3ZAM67Kjl3Uuhn'
+FEEXPAY_SHOP_ID = 'h5wZNXgJsHJx4Ba'

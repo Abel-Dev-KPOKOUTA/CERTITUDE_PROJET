@@ -6,423 +6,221 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Groupe La Certitude — Cours Intensifs 2026</title>
   <link rel="icon" href="/images/logo_certitude.png" type="image/png"/>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --blue:       #1a56db;
-      --blue-dk:    #1040a8;
-      --blue-lt:    #e8f0fe;
-      --blue-mid:   #3b82f6;
-      --sky:        #dbeafe;
-      --gold:       #f59e0b;
-      --gold-lt:    #fef3c7;
-      --white:      #ffffff;
-      --gray-50:    #f8fafc;
-      --gray-100:   #f1f5f9;
-      --gray-200:   #e2e8f0;
-      --gray-500:   #64748b;
-      --gray-700:   #334155;
-      --navy:       #0f172a;
-      --green:      #10b981;
-      --r: 16px;
-      --r-lg: 24px;
-      --shadow-sm: 0 2px 8px rgba(15,23,42,.06);
-      --shadow:    0 4px 24px rgba(15,23,42,.10);
-      --shadow-lg: 0 12px 48px rgba(15,23,42,.14);
+      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe; --blue-mid:#3b82f6;
+      --sky:#dbeafe; --gold:#f59e0b; --gold-lt:#fef3c7;
+      --white:#fff; --gray-50:#f8fafc; --gray-100:#f1f5f9;
+      --gray-200:#e2e8f0; --gray-500:#64748b; --gray-700:#334155;
+      --navy:#0f172a; --green:#10b981;
+      --r:16px; --r-lg:24px;
+      --shadow-sm:0 2px 8px rgba(15,23,42,.06);
+      --shadow:0 4px 24px rgba(15,23,42,.10);
+      --shadow-lg:0 12px 48px rgba(15,23,42,.14);
     }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--navy);line-height:1.6;overflow-x:hidden}
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--white);
-      color: var(--navy);
-      line-height: 1.6;
-      overflow-x: hidden;
+    /* NAVBAR */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--gray-200);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .3s}
+    .nav.scrolled{box-shadow:var(--shadow)}
+    .nav-brand{display:flex;align-items:center;gap:.7rem}
+    .nav-brand img{width:40px;height:40px;border-radius:50%;object-fit:contain;background:var(--blue-lt);padding:3px}
+    .nav-brand span{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;color:var(--navy)}
+    .nav-brand span em{color:var(--blue);font-style:normal}
+    .nav-links{display:flex;align-items:center;gap:1.8rem;font-size:.88rem;font-weight:500;color:var(--gray-700)}
+    .nav-links a:hover{color:var(--blue)}
+    .nav-cta{background:var(--blue);color:var(--white);padding:.5rem 1.3rem;border-radius:50px;font-size:.88rem;font-weight:600;font-family:'Sora',sans-serif;transition:background .2s,transform .15s;white-space:nowrap}
+    .nav-cta:hover{background:var(--blue-dk);transform:translateY(-1px)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--navy);border-radius:99px;transition:transform .3s,opacity .3s}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mobile-menu{display:none;position:fixed;inset:0;z-index:99;background:var(--white);padding:80px 2rem 2rem;flex-direction:column;gap:1.2rem}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:600;color:var(--navy);padding:.8rem 0;border-bottom:1px solid var(--gray-100)}
+    .mobile-menu .m-cta{margin-top:1rem;background:var(--blue);color:var(--white);text-align:center;padding:1rem;border-radius:var(--r);font-size:1rem;font-weight:700}
+
+    /* HERO */
+    .hero{min-height:100vh;padding-top:64px;background:linear-gradient(135deg,#1040a8 0%,#1a56db 45%,#3b82f6 100%);display:flex;align-items:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);top:-200px;right:-150px}
+    .hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.15) 0%,transparent 70%);bottom:-100px;left:-100px}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:60px 60px}
+    .hero-inner{position:relative;z-index:1;width:100%;max-width:1200px;margin:0 auto;padding:4rem 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+    .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:var(--white);padding:.4rem 1rem;border-radius:50px;font-size:.82rem;font-weight:500;margin-bottom:1.5rem}
+    .hero-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--gold);display:block;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.4)}}
+    .hero h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.15;color:var(--white);margin-bottom:1.2rem}
+    .hero h1 span{color:var(--gold)}
+    .hero-desc{font-size:1.05rem;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:2rem;max-width:480px}
+    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+    .btn-primary{background:var(--white);color:var(--blue);padding:.85rem 2rem;border-radius:50px;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.25)}
+    .btn-outline-white{border:2px solid rgba(255,255,255,.5);color:var(--white);padding:.85rem 2rem;border-radius:50px;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:600;transition:background .2s,border-color .2s}
+    .btn-outline-white:hover{background:rgba(255,255,255,.1);border-color:white}
+    .hero-stats{display:flex;gap:1.5rem;margin-top:2.5rem;flex-wrap:wrap}
+    .stat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:.9rem 1.2rem;text-align:center}
+    .stat-n{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;color:var(--gold);display:block;line-height:1}
+    .stat-l{font-size:.75rem;color:rgba(255,255,255,.7);display:block;margin-top:.3rem}
+    .hero-card{background:rgba(255,255,255,.12);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.25);border-radius:var(--r-lg);padding:2rem;color:var(--white)}
+    .hero-card h3{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+    .info-row{display:flex;align-items:flex-start;gap:.9rem;padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.12)}
+    .info-row:last-child{border-bottom:none}
+    .info-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .info-label{font-size:.75rem;color:rgba(255,255,255,.6)}
+    .info-val{font-size:.9rem;font-weight:600;margin-top:.15rem}
+    .deadline-badge{margin-top:1.5rem;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);border-radius:var(--r);padding:.8rem 1rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;font-weight:600;color:#fde68a}
+
+    /* SECTIONS */
+    .section{padding:5rem 1.5rem}
+    .section-alt{background:var(--gray-50)}
+    .container{max-width:1100px;margin:0 auto}
+    .sec-label{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue-lt);color:var(--blue);padding:.35rem .9rem;border-radius:50px;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1rem}
+    .sec-title{font-family:'Sora',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;line-height:1.2;color:var(--navy);margin-bottom:.8rem}
+    .sec-sub{color:var(--gray-500);font-size:1rem;max-width:540px;line-height:1.7;margin-bottom:3rem}
+    .text-center{text-align:center}
+    .text-center .sec-sub{margin-left:auto;margin-right:auto}
+
+    /* VOIR PLUS BUTTON */
+    .voir-plus{
+      display:inline-flex;align-items:center;gap:.5rem;
+      background:var(--blue-lt);color:var(--blue);
+      padding:.7rem 1.6rem;border-radius:50px;
+      font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;
+      transition:background .2s,color .2s,transform .15s;
+      margin-top:1.8rem;
     }
-    img { max-width: 100%; display: block; }
-    a   { text-decoration: none; color: inherit; }
+    .voir-plus:hover{background:var(--blue);color:white;transform:translateY(-2px)}
+    .voir-plus-dark{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.25)}
+    .voir-plus-dark:hover{background:rgba(255,255,255,.2);color:white}
 
-    /* ── NAVBAR ── */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--gray-200);
-      padding: 0 1.5rem;
-      height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-      transition: box-shadow .3s;
+    /* FORMATIONS */
+    .formations-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .formation-card{background:var(--white);border:2px solid var(--gray-200);border-radius:var(--r-lg);padding:2rem;transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden}
+    .formation-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--blue-mid));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+    .formation-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .formation-card:hover::before{transform:scaleX(1)}
+    .formation-card.featured{border-color:var(--blue);background:linear-gradient(135deg,#eff6ff 0%,#fff 100%)}
+    .formation-card.featured::before{transform:scaleX(1)}
+    .badge-featured{position:absolute;top:1.2rem;right:1.2rem;background:var(--blue);color:var(--white);font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:50px;text-transform:uppercase;letter-spacing:.05em}
+    .level-tag{display:inline-block;background:var(--blue-lt);color:var(--blue);font-family:'Sora',sans-serif;font-size:.78rem;font-weight:700;padding:.3rem .8rem;border-radius:50px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1rem}
+    .formation-card h3{font-family:'Sora',sans-serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:.5rem}
+    .formation-desc{font-size:.88rem;color:var(--gray-500);margin-bottom:1.2rem;line-height:1.6}
+    .subjects{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+    .subject-tag{background:var(--gray-100);color:var(--gray-700);font-size:.78rem;font-weight:500;padding:.3rem .7rem;border-radius:8px}
+    .price-row{display:flex;align-items:baseline;gap:.4rem;margin-bottom:1.5rem}
+    .price{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--blue)}
+    .price-unit{font-size:.85rem;color:var(--gray-500);font-weight:500}
+    .btn-card{display:block;width:100%;text-align:center;padding:.8rem;background:var(--blue-lt);color:var(--blue);border-radius:var(--r);font-weight:700;font-family:'Sora',sans-serif;font-size:.9rem;transition:background .2s,color .2s}
+    .btn-card:hover,.formation-card:hover .btn-card{background:var(--blue);color:var(--white)}
+
+    /* AVANTAGES */
+    .avantages-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+    .avantage-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r-lg);padding:1.8rem;display:flex;gap:1.2rem;align-items:flex-start;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s}
+    .avantage-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+    .av-icon{width:52px;height:52px;flex-shrink:0;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+    .av-icon.blue{background:var(--blue-lt)} .av-icon.gold{background:var(--gold-lt)} .av-icon.green{background:#d1fae5} .av-icon.sky{background:var(--sky)}
+    .av-title{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.4rem}
+    .av-desc{font-size:.88rem;color:var(--gray-500);line-height:1.6}
+
+    /* GALERIE PREVIEW */
+    #galerie{background:var(--navy);padding:5rem 1.5rem}
+    #galerie .sec-label{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)}
+    #galerie .sec-title{color:var(--white)}
+    #galerie .sec-sub{color:rgba(255,255,255,.6)}
+    .carousel{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg)}
+    .carousel-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+    .carousel-slide{min-width:100%;position:relative}
+    .carousel-slide img{width:100%;height:420px;object-fit:cover}
+    .slide-caption{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(0,0,0,.7));color:white;font-size:.9rem;font-weight:500}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--navy);transition:background .2s,transform .2s;z-index:2}
+    .carousel-btn:hover{background:white;transform:translateY(-50%) scale(1.1)}
+    .carousel-prev{left:1rem} .carousel-next{right:1rem}
+    .carousel-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.2rem}
+    .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:background .25s,transform .25s}
+    .dot.active{background:var(--white);transform:scale(1.3)}
+    .galerie-counter{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:.4rem .9rem;border-radius:50px;font-size:.8rem;margin-bottom:1rem}
+
+    /* TÉMOIGNAGES PREVIEW */
+    #temoignages{background:var(--gray-50);padding:5rem 1.5rem}
+    .temoignages-preview{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+    .temo-card{background:var(--white);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+    .temo-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .video-thumb{position:relative;padding-top:56.25%;background:#000;cursor:pointer;overflow:hidden}
+    .video-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s}
+    .temo-card:hover .video-thumb img{transform:scale(1.05)}
+    .play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,20,60,.45)}
+    .play-circle{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.5rem;transition:transform .2s}
+    .temo-card:hover .play-circle{transform:scale(1.15)}
+    .play-overlay span{color:white;font-size:.78rem;font-weight:600;font-family:'Sora',sans-serif;opacity:.9}
+    .temo-info{padding:1.1rem 1.3rem}
+    .temo-name{font-family:'Sora',sans-serif;font-weight:700;font-size:.95rem;color:var(--navy);margin-bottom:.2rem}
+    .temo-meta{font-size:.78rem;color:var(--gray-500);display:flex;align-items:center;gap:.4rem}
+    .temo-badge{background:var(--blue-lt);color:var(--blue);padding:.2rem .6rem;border-radius:50px;font-weight:600;font-size:.72rem}
+
+    /* MODALITÉS */
+    .modalites-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .modalite-card{border-radius:var(--r-lg);padding:2rem;text-align:center}
+    .modalite-card.blue{background:var(--blue);color:white}
+    .modalite-card.light{background:var(--white);border:2px solid var(--gray-200)}
+    .modalite-card.green-card{background:#10b981;color:white}
+    .modalite-icon{font-size:2.4rem;margin-bottom:1rem;display:block}
+    .modalite-card h3{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+    .modalite-card p{font-size:.88rem;line-height:1.7;opacity:.85}
+    .modalite-card.light h3{color:var(--navy)} .modalite-card.light p{color:var(--gray-500);opacity:1}
+    .modalite-detail{margin-top:1rem;font-size:.82rem;font-weight:600;padding:.5rem .9rem;border-radius:50px;display:inline-block}
+    .blue .modalite-detail{background:rgba(255,255,255,.2);color:white}
+    .green-card .modalite-detail{background:rgba(255,255,255,.2);color:white}
+    .light .modalite-detail{background:var(--blue-lt);color:var(--blue)}
+
+    /* CTA */
+    .cta-banner{background:linear-gradient(135deg,var(--blue-dk),var(--blue));padding:4rem 1.5rem;text-align:center;color:white;position:relative;overflow:hidden}
+    .cta-banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(255,255,255,.08) 0%,transparent 50%),radial-gradient(circle at 80% 50%,rgba(245,158,11,.15) 0%,transparent 50%)}
+    .cta-banner-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
+    .cta-banner h2{font-family:'Sora',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.8rem}
+    .cta-banner p{opacity:.85;margin-bottom:2rem;font-size:1rem}
+    .cta-deadline{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#fde68a;padding:.45rem 1rem;border-radius:50px;font-size:.82rem;font-weight:700;margin-bottom:1.5rem}
+
+    /* CONTACT */
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+    .contact-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r-lg);padding:1.8rem;display:flex;align-items:center;gap:1.2rem;box-shadow:var(--shadow-sm);transition:box-shadow .2s}
+    .contact-card:hover{box-shadow:var(--shadow)}
+    .contact-icon{width:52px;height:52px;border-radius:var(--r);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+    .ci-blue{background:var(--blue-lt)} .ci-green{background:#d1fae5}
+    .contact-label{font-size:.78rem;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+    .contact-val{font-family:'Sora',sans-serif;font-weight:700;font-size:1.05rem;color:var(--navy)}
+
+    /* FOOTER */
+    footer{background:var(--navy);color:rgba(255,255,255,.6);padding:3rem 1.5rem 2rem;text-align:center}
+    .footer-brand{display:flex;align-items:center;justify-content:center;gap:.8rem;margin-bottom:1.2rem}
+    .footer-brand img{width:44px;height:44px;border-radius:50%;background:white;padding:3px;object-fit:contain}
+    .footer-brand span{font-family:'Sora',sans-serif;font-weight:700;font-size:1.05rem;color:white}
+    footer p{font-size:.85rem;line-height:1.8}
+    footer .stars{color:var(--gold);letter-spacing:.3em;font-size:.8rem;margin:1rem 0}
+    footer .copy{font-size:.78rem;margin-top:1.5rem;opacity:.4}
+
+    .wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:56px;height:56px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.5);transition:transform .2s}
+    .wa-float:hover{transform:scale(1.1)}
+    .wa-float svg{width:28px;height:28px;fill:white}
+
+    .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+    .fade-in.visible{opacity:1;transform:none}
+
+    @media(max-width:900px){
+      .nav-links,.nav-cta{display:none} .hamburger{display:flex}
+      .hero-inner{grid-template-columns:1fr;gap:2rem} .hero-card{display:none}
+      .formations-grid,.avantages-grid,.modalites-grid,.contact-grid{grid-template-columns:1fr}
+      .temoignages-preview{grid-template-columns:1fr}
     }
-    .nav.scrolled { box-shadow: var(--shadow); }
-    .nav-brand { display: flex; align-items: center; gap: .7rem; }
-    .nav-brand img { width: 40px; height: 40px; border-radius: 50%; object-fit: contain; background: var(--blue-lt); padding: 3px; }
-    .nav-brand span { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1rem; color: var(--navy); }
-    .nav-brand span em { color: var(--blue); font-style: normal; }
-    .nav-links { display: flex; align-items: center; gap: 1.8rem; font-size: .88rem; font-weight: 500; color: var(--gray-700); }
-    .nav-links a:hover { color: var(--blue); }
-    .nav-cta { background: var(--blue); color: var(--white); padding: .5rem 1.3rem; border-radius: 50px; font-size: .88rem; font-weight: 600; font-family: 'Sora', sans-serif; transition: background .2s, transform .15s; white-space: nowrap; }
-    .nav-cta:hover { background: var(--blue-dk); transform: translateY(-1px); }
-
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); border-radius: 99px; transition: transform .3s, opacity .3s; }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .mobile-menu { display: none; position: fixed; inset: 0; z-index: 99; background: var(--white); padding: 80px 2rem 2rem; flex-direction: column; gap: 1.2rem; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-family: 'Sora', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--navy); padding: .8rem 0; border-bottom: 1px solid var(--gray-100); }
-    .mobile-menu .m-cta { margin-top: 1rem; background: var(--blue); color: var(--white); text-align: center; padding: 1rem; border-radius: var(--r); font-size: 1rem; font-weight: 700; }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh; padding-top: 64px;
-      background: linear-gradient(135deg, #1040a8 0%, #1a56db 45%, #3b82f6 100%);
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
+    @media(max-width:600px){
+      .hero h1{font-size:2rem} .hero-stats{gap:.8rem} .stat{padding:.7rem .9rem}
+      .carousel-slide img{height:240px}
     }
-    .hero::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.12) 0%, transparent 70%); top: -200px; right: -150px; }
-    .hero::after  { content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(245,158,11,.15) 0%, transparent 70%); bottom: -100px; left: -100px; }
-    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 60px 60px; }
-
-    .hero-inner { position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
-
-    .hero-badge { display: inline-flex; align-items: center; gap: .5rem; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); color: var(--white); padding: .4rem 1rem; border-radius: 50px; font-size: .82rem; font-weight: 500; margin-bottom: 1.5rem; }
-    .hero-badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); display: block; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(1.4); } }
-
-    .hero h1 { font-family: 'Sora', sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; color: var(--white); margin-bottom: 1.2rem; }
-    .hero h1 span { color: var(--gold); }
-    .hero-desc { font-size: 1.05rem; color: rgba(255,255,255,.8); line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-    .btn-primary { background: var(--white); color: var(--blue); padding: .85rem 2rem; border-radius: 50px; font-family: 'Sora', sans-serif; font-size: .95rem; font-weight: 700; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 20px rgba(0,0,0,.2); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,.25); }
-    .btn-outline-white { border: 2px solid rgba(255,255,255,.5); color: var(--white); padding: .85rem 2rem; border-radius: 50px; font-family: 'Sora', sans-serif; font-size: .95rem; font-weight: 600; transition: background .2s, border-color .2s; }
-    .btn-outline-white:hover { background: rgba(255,255,255,.1); border-color: white; }
-
-    .hero-stats { display: flex; gap: 1.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
-    .stat { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: var(--r); padding: .9rem 1.2rem; text-align: center; }
-    .stat-n { font-family: 'Sora', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--gold); display: block; line-height: 1; }
-    .stat-l { font-size: .75rem; color: rgba(255,255,255,.7); display: block; margin-top: .3rem; }
-
-    .hero-card { background: rgba(255,255,255,.12); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.25); border-radius: var(--r-lg); padding: 2rem; color: var(--white); }
-    .hero-card h3 { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; display: flex; align-items: center; gap: .6rem; }
-    .info-row { display: flex; align-items: flex-start; gap: .9rem; padding: .85rem 0; border-bottom: 1px solid rgba(255,255,255,.12); }
-    .info-row:last-child { border-bottom: none; }
-    .info-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
-    .info-label { font-size: .75rem; color: rgba(255,255,255,.6); }
-    .info-val   { font-size: .9rem; font-weight: 600; margin-top: .15rem; }
-    .deadline-badge { margin-top: 1.5rem; background: rgba(245,158,11,.2); border: 1px solid rgba(245,158,11,.4); border-radius: var(--r); padding: .8rem 1rem; display: flex; align-items: center; gap: .7rem; font-size: .88rem; font-weight: 600; color: #fde68a; }
-
-    /* ── SECTIONS ── */
-    .section { padding: 5rem 1.5rem; }
-    .section-alt { background: var(--gray-50); }
-    .container { max-width: 1100px; margin: 0 auto; }
-
-    .sec-label { display: inline-flex; align-items: center; gap: .5rem; background: var(--blue-lt); color: var(--blue); padding: .35rem .9rem; border-radius: 50px; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; }
-    .sec-title { font-family: 'Sora', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; line-height: 1.2; color: var(--navy); margin-bottom: .8rem; }
-    .sec-sub { color: var(--gray-500); font-size: 1rem; max-width: 540px; line-height: 1.7; margin-bottom: 3rem; }
-    .text-center { text-align: center; }
-    .text-center .sec-sub { margin-left: auto; margin-right: auto; }
-
-    /* ── FORMATIONS ── */
-    .formations-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .formation-card { background: var(--white); border: 2px solid var(--gray-200); border-radius: var(--r-lg); padding: 2rem; transition: border-color .25s, transform .25s, box-shadow .25s; position: relative; overflow: hidden; }
-    .formation-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--blue), var(--blue-mid)); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
-    .formation-card:hover { border-color: var(--blue); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-    .formation-card:hover::before { transform: scaleX(1); }
-    .formation-card.featured { border-color: var(--blue); background: linear-gradient(135deg, #eff6ff 0%, #fff 100%); }
-    .formation-card.featured::before { transform: scaleX(1); }
-    .badge-featured { position: absolute; top: 1.2rem; right: 1.2rem; background: var(--blue); color: var(--white); font-size: .7rem; font-weight: 700; padding: .25rem .65rem; border-radius: 50px; text-transform: uppercase; letter-spacing: .05em; }
-    .level-tag { display: inline-block; background: var(--blue-lt); color: var(--blue); font-family: 'Sora', sans-serif; font-size: .78rem; font-weight: 700; padding: .3rem .8rem; border-radius: 50px; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1rem; }
-    .formation-card h3 { font-family: 'Sora', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: .5rem; }
-    .formation-desc { font-size: .88rem; color: var(--gray-500); margin-bottom: 1.2rem; line-height: 1.6; }
-    .subjects { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
-    .subject-tag { background: var(--gray-100); color: var(--gray-700); font-size: .78rem; font-weight: 500; padding: .3rem .7rem; border-radius: 8px; }
-    .price-row { display: flex; align-items: baseline; gap: .4rem; margin-bottom: 1.5rem; }
-    .price { font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 800; color: var(--blue); }
-    .price-unit { font-size: .85rem; color: var(--gray-500); font-weight: 500; }
-    .btn-card { display: block; width: 100%; text-align: center; padding: .8rem; background: var(--blue-lt); color: var(--blue); border-radius: var(--r); font-weight: 700; font-family: 'Sora', sans-serif; font-size: .9rem; transition: background .2s, color .2s; }
-    .btn-card:hover, .formation-card:hover .btn-card { background: var(--blue); color: var(--white); }
-
-    /* ── AVANTAGES ── */
-    .avantages-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-    .avantage-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-lg); padding: 1.8rem; display: flex; gap: 1.2rem; align-items: flex-start; box-shadow: var(--shadow-sm); transition: box-shadow .2s, transform .2s; }
-    .avantage-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
-    .av-icon { width: 52px; height: 52px; flex-shrink: 0; border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-    .av-icon.blue  { background: var(--blue-lt); }
-    .av-icon.gold  { background: var(--gold-lt); }
-    .av-icon.green { background: #d1fae5; }
-    .av-icon.sky   { background: var(--sky); }
-    .av-title { font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
-    .av-desc  { font-size: .88rem; color: var(--gray-500); line-height: 1.6; }
-
-    /* ── VIDÉO ── */
-    #video { background: var(--navy); padding: 5rem 1.5rem; }
-    #video .sec-label { background: rgba(255,255,255,.1); color: rgba(255,255,255,.85); }
-    #video .sec-title { color: var(--white); }
-    #video .sec-sub   { color: rgba(255,255,255,.55); }
-
-    .video-layout {
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 3rem;
-      align-items: center;
-    }
-    .video-frame {
-      position: relative;
-      border-radius: var(--r-lg);
-      overflow: hidden;
-      box-shadow: 0 24px 64px rgba(0,0,0,.5);
-      background: #000;
-    }
-    /* Responsive 16/9 */
-    .video-frame::before {
-      content: '';
-      display: block;
-      padding-top: 56.25%;
-    }
-    .video-frame video,
-    .video-frame iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%; height: 100%;
-      border: none;
-      border-radius: var(--r-lg);
-    }
-    /* Custom play overlay (si pas de vidéo chargée) */
-    .video-placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #1040a8cc, #3b82f6cc);
-      cursor: pointer;
-      transition: background .3s;
-    }
-    .video-placeholder:hover { background: linear-gradient(135deg, #1040a8ee, #3b82f6ee); }
-    .play-btn {
-      width: 72px; height: 72px;
-      border-radius: 50%;
-      background: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,.3);
-      margin-bottom: 1rem;
-      transition: transform .2s;
-    }
-    .video-placeholder:hover .play-btn { transform: scale(1.1); }
-    .play-label { color: white; font-family: 'Sora', sans-serif; font-weight: 600; font-size: .95rem; }
-
-    .video-info { color: var(--white); }
-    .video-info h3 { font-family: 'Sora', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.3; }
-    .video-info p  { color: rgba(255,255,255,.6); font-size: .95rem; line-height: 1.75; margin-bottom: 1.5rem; }
-    .video-highlights { display: flex; flex-direction: column; gap: .8rem; }
-    .vh-item {
-      display: flex; align-items: center; gap: .8rem;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: var(--r);
-      padding: .75rem 1rem;
-      font-size: .88rem; color: rgba(255,255,255,.8);
-    }
-    .vh-icon {
-      width: 32px; height: 32px; border-radius: 8px;
-      background: rgba(26,86,219,.4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: .9rem; flex-shrink: 0;
-    }
-
-    /* ── GALERIE ── */
-    #galerie { background: var(--navy); color: var(--white); padding: 5rem 1.5rem; }
-    #galerie .sec-label { background: rgba(255,255,255,.1); color: rgba(255,255,255,.8); }
-    #galerie .sec-title { color: var(--white); }
-    #galerie .sec-sub   { color: rgba(255,255,255,.6); }
-
-    .carousel { position: relative; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-lg); }
-    .carousel-track { display: flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
-    .carousel-slide { min-width: 100%; position: relative; }
-    .carousel-slide img { width: 100%; height: 420px; object-fit: cover; }
-    .slide-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; background: linear-gradient(transparent, rgba(0,0,0,.7)); color: white; font-size: .9rem; font-weight: 500; }
-    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.9); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--navy); transition: background .2s, transform .2s; z-index: 2; }
-    .carousel-btn:hover { background: white; transform: translateY(-50%) scale(1.1); }
-    .carousel-prev { left: 1rem; }
-    .carousel-next { right: 1rem; }
-    .carousel-dots { display: flex; justify-content: center; gap: .5rem; margin-top: 1.2rem; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.3); cursor: pointer; transition: background .25s, transform .25s; }
-    .dot.active { background: var(--white); transform: scale(1.3); }
-
-    /* ── FAQ ACCORDION ── */
-    #faq { background: var(--white); padding: 5rem 1.5rem; }
-    .faq-layout {
-      display: grid;
-      grid-template-columns: 400px 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-    .faq-left h2 { font-family: 'Sora', sans-serif; font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; color: var(--navy); line-height: 1.25; margin-bottom: 1rem; }
-    .faq-left p  { color: var(--gray-500); font-size: .95rem; line-height: 1.7; margin-bottom: 2rem; }
-    .faq-cta {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: var(--blue); color: white;
-      padding: .8rem 1.8rem; border-radius: 50px;
-      font-family: 'Sora', sans-serif; font-size: .9rem; font-weight: 700;
-      transition: background .2s, transform .2s;
-    }
-    .faq-cta:hover { background: var(--blue-dk); transform: translateY(-1px); }
-
-    .faq-list { display: flex; flex-direction: column; gap: 0; }
-    .faq-item {
-      border-bottom: 1px solid var(--gray-200);
-    }
-    .faq-item:first-child { border-top: 1px solid var(--gray-200); }
-
-    .faq-question {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 0;
-      background: none;
-      border: none;
-      cursor: pointer;
-      text-align: left;
-      gap: 1rem;
-    }
-    .faq-q-text {
-      font-family: 'Sora', sans-serif;
-      font-size: .98rem;
-      font-weight: 600;
-      color: var(--navy);
-      line-height: 1.4;
-    }
-    .faq-icon {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: var(--gray-100);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background .25s, transform .3s;
-    }
-    .faq-icon svg {
-      width: 14px; height: 14px;
-      stroke: var(--gray-500);
-      transition: stroke .2s;
-    }
-    .faq-item.open .faq-icon {
-      background: var(--blue);
-      transform: rotate(180deg);
-    }
-    .faq-item.open .faq-icon svg { stroke: white; }
-
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height .35s cubic-bezier(.4,0,.2,1), padding .35s;
-    }
-    .faq-answer-inner {
-      padding: 0 0 1.2rem;
-      font-size: .9rem;
-      color: var(--gray-500);
-      line-height: 1.75;
-    }
-    .faq-item.open .faq-answer { max-height: 600px; }
-
-    /* Steps inside FAQ answer */
-    .faq-steps { display: flex; flex-direction: column; gap: .7rem; margin-top: .8rem; }
-    .faq-step {
-      display: flex; gap: .8rem; align-items: flex-start;
-    }
-    .step-num {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      background: var(--blue);
-      color: white;
-      font-size: .75rem; font-weight: 700;
-      font-family: 'Sora', sans-serif;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: .1rem;
-    }
-    .step-text { font-size: .88rem; color: var(--gray-700); line-height: 1.6; }
-    .step-text strong { color: var(--navy); }
-
-    /* ── MODALITÉS ── */
-    .modalites-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .modalite-card { border-radius: var(--r-lg); padding: 2rem; text-align: center; }
-    .modalite-card.blue  { background: var(--blue); color: white; }
-    .modalite-card.light { background: var(--white); border: 2px solid var(--gray-200); }
-    .modalite-card.green-card { background: #10b981; color: white; }
-    .modalite-icon { font-size: 2.4rem; margin-bottom: 1rem; display: block; }
-    .modalite-card h3 { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: .6rem; }
-    .modalite-card p { font-size: .88rem; line-height: 1.7; opacity: .85; }
-    .modalite-card.light h3 { color: var(--navy); }
-    .modalite-card.light p  { color: var(--gray-500); opacity: 1; }
-    .modalite-detail { margin-top: 1rem; font-size: .82rem; font-weight: 600; padding: .5rem .9rem; border-radius: 50px; display: inline-block; }
-    .blue .modalite-detail        { background: rgba(255,255,255,.2); color: white; }
-    .green-card .modalite-detail  { background: rgba(255,255,255,.2); color: white; }
-    .light .modalite-detail       { background: var(--blue-lt); color: var(--blue); }
-
-    /* ── CTA BANNER ── */
-    .cta-banner { background: linear-gradient(135deg, var(--blue-dk), var(--blue)); padding: 4rem 1.5rem; text-align: center; color: white; position: relative; overflow: hidden; }
-    .cta-banner::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,.08) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(245,158,11,.15) 0%, transparent 50%); }
-    .cta-banner-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
-    .cta-banner h2 { font-family: 'Sora', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: .8rem; }
-    .cta-banner p { opacity: .85; margin-bottom: 2rem; font-size: 1rem; }
-    .cta-deadline { display: inline-flex; align-items: center; gap: .5rem; background: rgba(245,158,11,.2); border: 1px solid rgba(245,158,11,.4); color: #fde68a; padding: .45rem 1rem; border-radius: 50px; font-size: .82rem; font-weight: 700; margin-bottom: 1.5rem; }
-
-    /* ── CONTACT ── */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
-    .contact-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-lg); padding: 1.8rem; display: flex; align-items: center; gap: 1.2rem; box-shadow: var(--shadow-sm); transition: box-shadow .2s; }
-    .contact-card:hover { box-shadow: var(--shadow); }
-    .contact-icon { width: 52px; height: 52px; border-radius: var(--r); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-    .ci-blue  { background: var(--blue-lt); }
-    .ci-green { background: #d1fae5; }
-    .contact-label { font-size: .78rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
-    .contact-val   { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--navy); }
-
-    /* ── FOOTER ── */
-    footer { background: var(--navy); color: rgba(255,255,255,.6); padding: 3rem 1.5rem 2rem; text-align: center; }
-    .footer-brand { display: flex; align-items: center; justify-content: center; gap: .8rem; margin-bottom: 1.2rem; }
-    .footer-brand img { width: 44px; height: 44px; border-radius: 50%; background: white; padding: 3px; object-fit: contain; }
-    .footer-brand span { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.05rem; color: white; }
-    footer p { font-size: .85rem; line-height: 1.8; }
-    footer .stars { color: var(--gold); letter-spacing: .3em; font-size: .8rem; margin: 1rem 0; }
-    footer .copy  { font-size: .78rem; margin-top: 1.5rem; opacity: .4; }
-
-    /* WhatsApp float */
-    .wa-float { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,.5); transition: transform .2s; }
-    .wa-float:hover { transform: scale(1.1); }
-    .wa-float svg { width: 28px; height: 28px; fill: white; }
-
-    /* ── ANIMATIONS ── */
-    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-    .fade-in.visible { opacity: 1; transform: none; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .nav-links, .nav-cta { display: none; }
-      .hamburger { display: flex; }
-      .hero-inner  { grid-template-columns: 1fr; gap: 2rem; }
-      .hero-card   { display: none; }
-      .formations-grid { grid-template-columns: 1fr; }
-      .avantages-grid  { grid-template-columns: 1fr; }
-      .modalites-grid  { grid-template-columns: 1fr; }
-      .contact-grid    { grid-template-columns: 1fr; }
-      .faq-layout      { grid-template-columns: 1fr; gap: 2rem; }
-      .video-layout    { grid-template-columns: 1fr; }
-      .video-info      { order: -1; }
-    }
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 2rem; }
-      .hero-stats { gap: .8rem; }
-      .stat { padding: .7rem .9rem; }
-      .carousel-slide img { height: 240px; }
-    }
-
   </style>
 </head>
 <body>
@@ -435,26 +233,22 @@
   </div>
   <div class="nav-links">
     <a href="#formations">Formations</a>
-    <a href="#video">Vidéo</a>
     <a href="#galerie">Galerie</a>
+    <a href="#temoignages">Témoignages</a>
     <a href="#avantages">Avantages</a>
-    <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
   </div>
   <a href="{% url 'enrollments:create' %}" class="nav-cta">S'inscrire maintenant</a>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </nav>
-<!-- MOBILE MENU -->
+
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#formations" class="mob-link">Formations</a>
-  <a href="#video"      class="mob-link">Vidéo</a>
-  <a href="#galerie"    class="mob-link">Galerie</a>
-  <a href="#avantages"  class="mob-link">Avantages</a>
-  <a href="#faq"        class="mob-link">FAQ</a>
-  <a href="#contact"    class="mob-link">Contact</a>
-  <a href="{% url 'enrollments:create' %}" class="m-cta">S'inscrire maintenant</a>
+  <a href="#formations" class="mob-link">📚 Formations</a>
+  <a href="#galerie"    class="mob-link">🖼️ Galerie</a>
+  <a href="#temoignages" class="mob-link">🎥 Témoignages</a>
+  <a href="#avantages"  class="mob-link">🎁 Avantages</a>
+  <a href="#contact"    class="mob-link">📞 Contact</a>
+  <a href="{% url 'enrollments:create' %}" class="m-cta">✦ S'inscrire maintenant</a>
 </div>
 
 <!-- HERO -->
@@ -464,9 +258,9 @@
     <div>
       <div class="hero-badge">Inscriptions ouvertes jusqu'au 22 juin 2026</div>
       <h1>Maîtrisez 100 % de votre programme en <span>2 mois</span></h1>
-      <p class="hero-desc">Cours intensifs de renforcement — Juillet &amp; Août 2026. Maths, PCT, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C &amp; D.</p>
+      <p class="hero-desc">Cours intensifs de renforcement — Juillet & Août 2026. Maths, PCT, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C & D.</p>
       <div class="hero-btns">
-        <a href="{% url 'enrollments:create' %}" class="btn-primary">S'inscrire maintenant</a>
+        <a href="{% url 'enrollments:create' %}" class="btn-primary">🚀 S'inscrire maintenant</a>
         <a href="#formations" class="btn-outline-white">Voir les formations</a>
       </div>
       <div class="hero-stats">
@@ -477,24 +271,12 @@
       </div>
     </div>
     <div class="hero-card">
-      <h3>Informations pratiques</h3>
-      <div class="info-row">
-        <div class="info-icon">📅</div>
-        <div><div class="info-label">Période</div><div class="info-val">1er juillet — 31 août 2026</div></div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon">📍</div>
-        <div><div class="info-label">Lieu</div><div class="info-val">EPP Gbégamey Sud, Cotonou</div></div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon">⏰</div>
-        <div><div class="info-label">Horaires</div><div class="info-val">Lun–Ven · 08h30 à 13h00</div></div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon">📞</div>
-        <div><div class="info-label">Contact</div><div class="info-val">01 96 38 92 49</div></div>
-      </div>
-      <div class="deadline-badge">⏳ Date limite d'inscription : <strong>22 juin 2026</strong></div>
+      <h3>📌 Informations pratiques</h3>
+      <div class="info-row"><div class="info-icon">📅</div><div><div class="info-label">Période</div><div class="info-val">1er juillet — 31 août 2026</div></div></div>
+      <div class="info-row"><div class="info-icon">📍</div><div><div class="info-label">Lieu</div><div class="info-val">EPP Gbégamey Sud, Cotonou</div></div></div>
+      <div class="info-row"><div class="info-icon">⏰</div><div><div class="info-label">Horaires</div><div class="info-val">Lun–Ven · 08h30 à 13h00</div></div></div>
+      <div class="info-row"><div class="info-icon">📞</div><div><div class="info-label">Contact</div><div class="info-val">01 96 38 92 49</div></div></div>
+      <div class="deadline-badge">⏳ Date limite : <strong>22 juin 2026</strong></div>
     </div>
   </div>
 </section>
@@ -503,51 +285,125 @@
 <section class="section" id="formations">
   <div class="container">
     <div class="text-center fade-in">
-      <div class="sec-label">Formations</div>
+      <div class="sec-label">📚 Formations</div>
       <h2 class="sec-title">Choisissez votre niveau</h2>
-      <p class="sec-sub">Un programme complet couvrant SA1, SA2 et SA3 — toutes les matières scientifiques enseignées par des professeurs expérimentés.</p>
+      <p class="sec-sub">Programme complet SA1, SA2, SA3 — toutes les matières scientifiques.</p>
     </div>
     <div class="formations-grid">
       <div class="formation-card fade-in">
         <div class="level-tag">3ème</div>
         <h3>Cours de 3ème</h3>
         <p class="formation-desc">Programme complet pour réussir le BEPC et intégrer le lycée.</p>
-        <div class="subjects">
-          <span class="subject-tag">Maths</span>
-          <span class="subject-tag">PCT</span>
-          <span class="subject-tag">SVT</span>
-          <span class="subject-tag">Anglais</span>
-        </div>
+        <div class="subjects"><span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span><span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span></div>
         <div class="price-row"><span class="price">11 500</span><span class="price-unit">FCFA</span></div>
-        <a href="{% url 'enrollments:create' %}?niveau=3eme" class="btn-card">S'inscrire</a>
+        <a href="{% url 'enrollments:create' %}?niveau=3eme" class="btn-card">S'inscrire →</a>
       </div>
       <div class="formation-card featured fade-in">
         <div class="badge-featured">Populaire</div>
-        <div class="level-tag">1ères C &amp; D</div>
+        <div class="level-tag">1ères C & D</div>
         <h3>Cours de 1ère</h3>
         <p class="formation-desc">Maîtrisez les bases de Terminale avec avance.</p>
-        <div class="subjects">
-          <span class="subject-tag">Maths</span>
-          <span class="subject-tag">PCT</span>
-          <span class="subject-tag">SVT</span>
-          <span class="subject-tag">Anglais</span>
-        </div>
+        <div class="subjects"><span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span><span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span></div>
         <div class="price-row"><span class="price">12 500</span><span class="price-unit">FCFA</span></div>
-        <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-card">S'inscrire</a>
+        <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-card">S'inscrire →</a>
       </div>
       <div class="formation-card fade-in">
-        <div class="level-tag">Terminales C &amp; D</div>
+        <div class="level-tag">Terminales C & D</div>
         <h3>Cours de Terminale</h3>
         <p class="formation-desc">Préparation intensive au BAC — 100 % du programme.</p>
-        <div class="subjects">
-          <span class="subject-tag">Maths</span>
-          <span class="subject-tag">PCT</span>
-          <span class="subject-tag">SVT</span>
-          <span class="subject-tag">Anglais</span>
-        </div>
+        <div class="subjects"><span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span><span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span></div>
         <div class="price-row"><span class="price">15 500</span><span class="price-unit">FCFA</span></div>
-        <a href="{% url 'enrollments:create' %}?niveau=tle" class="btn-card">S'inscrire</a>
+        <a href="{% url 'enrollments:create' %}?niveau=tle" class="btn-card">S'inscrire →</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE PREVIEW (6 photos) -->
+<section id="galerie">
+  <div class="container">
+    <div class="text-center fade-in" style="margin-bottom:2rem">
+      <div class="galerie-counter">🖼️ 50 photos de l'édition 2025</div>
+      <div class="sec-label">Galerie</div>
+      <h2 class="sec-title">Aperçu de l'édition passée</h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,.6)">Quelques moments forts — cours, ambiance et remise de prix.</p>
+    </div>
+    <div class="carousel fade-in">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide"><img src="/images/1.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Nos apprenants en plein cours</div></div>
+        <div class="carousel-slide"><img src="/images/2.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Photo de famille — Groupe La Certitude</div></div>
+        <div class="carousel-slide"><img src="/images/3.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Les profs et les élèves</div></div>
+        <div class="carousel-slide"><img src="/images/4.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Séance de travaux pratiques</div></div>
+        <div class="carousel-slide"><img src="/images/5.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Remise de prix</div></div>
+        <div class="carousel-slide"><img src="/images/6.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Cours de mathématiques intensif</div></div>
+      </div>
+      <button class="carousel-btn carousel-prev" id="prevBtn">‹</button>
+      <button class="carousel-btn carousel-next" id="nextBtn">›</button>
+    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
+    <div class="text-center" style="margin-top:1.5rem">
+      <a href="{% url 'core:galerie' %}" class="voir-plus voir-plus-dark">
+        🖼️ Voir toutes les 50 photos →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES PREVIEW (2 vidéos) -->
+<section class="section" id="temoignages">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="sec-label">🎥 Témoignages</div>
+      <h2 class="sec-title">Ils ont suivi nos cours</h2>
+      <p class="sec-sub">Découvrez ce que nos anciens apprenants pensent de l'expérience La Certitude.</p>
+    </div>
+    <div class="temoignages-preview fade-in">
+
+      <!-- Vidéo 1 — remplace VOTRE_ID_1 par l'ID YouTube réel -->
+      <div class="temo-card">
+        <div class="video-thumb" onclick="openVideo('VOTRE_ID_1', this)">
+          <img src="https://img.youtube.com/vi/VOTRE_ID_1/hqdefault.jpg"
+               loading="lazy" alt="Témoignage Koffi Emmanuel"
+               onerror="this.src='/images/1.jpg'"/>
+          <div class="play-overlay">
+            <div class="play-circle">▶</div>
+            <span>Regarder le témoignage</span>
+          </div>
+        </div>
+        <div class="temo-info">
+          <div class="temo-name">Koffi Emmanuel</div>
+          <div class="temo-meta">
+            <span class="temo-badge">1ère C</span>
+            CEG Zogbo · Édition 2025
+          </div>
+        </div>
+      </div>
+
+      <!-- Vidéo 2 — remplace VOTRE_ID_2 par l'ID YouTube réel -->
+      <div class="temo-card">
+        <div class="video-thumb" onclick="openVideo('VOTRE_ID_2', this)">
+          <img src="https://img.youtube.com/vi/VOTRE_ID_2/hqdefault.jpg"
+               loading="lazy" alt="Témoignage Adjoua Marie"
+               onerror="this.src='/images/2.jpg'"/>
+          <div class="play-overlay">
+            <div class="play-circle">▶</div>
+            <span>Regarder le témoignage</span>
+          </div>
+        </div>
+        <div class="temo-info">
+          <div class="temo-name">Adjoua Marie</div>
+          <div class="temo-meta">
+            <span class="temo-badge">Terminale D</span>
+            Lycée Béhanzin · Édition 2025
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="text-center">
+      <a href="{% url 'core:temoignages' %}" class="voir-plus">
+        🎥 Voir les 10 témoignages →
+      </a>
     </div>
   </div>
 </section>
@@ -556,275 +412,42 @@
 <section class="section section-alt" id="avantages">
   <div class="container">
     <div class="text-center fade-in">
-      <div class="sec-label">Pack Privilège</div>
+      <div class="sec-label">🎁 Pack Privilège</div>
       <h2 class="sec-title">Les 10 premiers inscrits par classe</h2>
       <p class="sec-sub">Des avantages exclusifs pour ceux qui s'inscrivent tôt.</p>
     </div>
     <div class="avantages-grid fade-in">
-      <div class="avantage-card">
-        <div class="av-icon blue">📦</div>
-        <div>
-          <div class="av-title">Pack 50+ épreuves corrigées</div>
-          <p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements du Bénin.</p>
-        </div>
-      </div>
-      <div class="avantage-card">
-        <div class="av-icon gold">📄</div>
-        <div>
-          <div class="av-title">Sujets d'examens blancs</div>
-          <p class="av-desc">Accès exclusif aux sujets départementaux de 2023 à 2026.</p>
-        </div>
-      </div>
-      <div class="avantage-card">
-        <div class="av-icon green">🏆</div>
-        <div>
-          <div class="av-title">Récompenses meilleurs élèves</div>
-          <p class="av-desc">Prix et reconnaissances offerts aux meilleurs élèves en fin de cours.</p>
-        </div>
-      </div>
-      <div class="avantage-card">
-        <div class="av-icon sky">🚗</div>
-        <div>
-          <div class="av-title">Cours de Code de la Route gratuit</div>
-          <p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- VIDÉO PRÉSENTATION -->
-<section id="video">
-  <div class="container">
-    <div class="video-layout fade-in">
-
-      <!-- Colonne gauche : player -->
-      <div class="video-frame">
-        <!--
-          OPTION 1 — Vidéo locale (mettez votre fichier dans /static/videos/) :
-          <video controls poster="/images/1.jpg">
-            <source src="{% static 'videos/presentation.mp4' %}" type="video/mp4"/>
-          </video>
-
-          OPTION 2 — YouTube embed (remplacez VOTRE_ID par l'identifiant YouTube) :
-          <iframe src="https://www.youtube.com/embed/VOTRE_ID?rel=0&modestbranding=1"
-                  allowfullscreen allow="autoplay; encrypted-media"></iframe>
-
-          En attendant, on affiche le placeholder ci-dessous :
-        -->
-        <div class="video-placeholder" id="videoPlaceholder">
-          <div class="play-btn">▶</div>
-          <div class="play-label">Voir la vidéo de présentation</div>
-        </div>
-      </div>
-
-      <!-- Colonne droite : texte -->
-      <div class="video-info">
-        <div class="sec-label" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.85)">Édition précédente</div>
-        <h3>Revivez l'ambiance de nos cours intensifs</h3>
-        <p>Découvrez en vidéo comment se déroulent nos sessions — cours en salle, interaction avec les professeurs, remise de prix et résultats obtenus par nos apprenants.</p>
-        <div class="video-highlights">
-          <div class="vh-item">
-            <div class="vh-icon">🎓</div>
-            Cours animés par des professeurs expérimentés
-          </div>
-          <div class="vh-item">
-            <div class="vh-icon">📊</div>
-            Programme SA1, SA2, SA3 intégralement couvert
-          </div>
-          <div class="vh-item">
-            <div class="vh-icon">🏅</div>
-            Remise de prix aux meilleurs apprenants
-          </div>
-          <div class="vh-item">
-            <div class="vh-icon">👥</div>
-            Ambiance de groupe motivante et studieuse
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- GALERIE -->
-<section id="galerie">
-  <div class="container">
-    <div class="text-center fade-in" style="margin-bottom:2rem">
-      <div class="sec-label">Galerie</div>
-      <h2 class="sec-title">L'édition passée en images</h2>
-      <p class="sec-sub" style="color:rgba(255,255,255,.6)">Des moments de l'édition 2025 — ambiance, cours et réussites.</p>
-    </div>
-    <div class="carousel fade-in">
-      <div class="carousel-track" id="carouselTrack">
-        <div class="carousel-slide"><img src="/images/1.jpg" alt="Édition 2025"/><div class="slide-caption">Nos apprenants en plein cours — Édition 2025</div></div>
-        <div class="carousel-slide"><img src="/images/2.jpg" alt="Édition 2025"/><div class="slide-caption">Photo de famille — Groupe La Certitude</div></div>
-        <div class="carousel-slide"><img src="/images/3.jpg" alt="Édition 2025"/><div class="slide-caption">Les professeurs et les élèves — EPP Gbégamey Sud</div></div>
-        <div class="carousel-slide"><img src="/images/4.jpg" alt="Édition 2025"/><div class="slide-caption">Séance de travaux pratiques</div></div>
-        <div class="carousel-slide"><img src="/images/5.jpg" alt="Édition 2025"/><div class="slide-caption">Remise de prix — Meilleurs apprenants</div></div>
-        <div class="carousel-slide"><img src="/images/6.jpg" alt="Édition 2025"/><div class="slide-caption">Cours de mathématiques intensif</div></div>
-        <div class="carousel-slide"><img src="/images/7.jpg" alt="Édition 2025"/><div class="slide-caption">Moment de révision en groupe</div></div>
-        <div class="carousel-slide"><img src="/images/8.jpg" alt="Édition 2025"/><div class="slide-caption">Clôture de l'édition 2025</div></div>
-      </div>
-      <button class="carousel-btn carousel-prev" id="prevBtn">‹</button>
-      <button class="carousel-btn carousel-next" id="nextBtn">›</button>
-    </div>
-    <div class="carousel-dots" id="carouselDots"></div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq">
-  <div class="container">
-    <div class="faq-layout">
-
-      <!-- Gauche -->
-      <div class="faq-left fade-in">
-        <div class="sec-label">Questions fréquentes</div>
-        <h2>Comment s'inscrire aux cours ?</h2>
-        <p>Tout ce que vous devez savoir sur le processus d'inscription, le paiement et le déroulement des cours.</p>
-        <a href="{% url 'enrollments:create' %}" class="faq-cta">S'inscrire maintenant →</a>
-      </div>
-
-      <!-- Droite : accordéon -->
-      <div class="faq-list fade-in" id="faqList">
-
-        <div class="faq-item open">
-          <button class="faq-question">
-            <span class="faq-q-text">Comment se déroule l'inscription en ligne ?</span>
-            <span class="faq-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              L'inscription se fait en quelques minutes, directement sur ce site, sans créer de compte.
-              <div class="faq-steps">
-                <div class="faq-step"><div class="step-num">1</div><div class="step-text"><strong>Choisissez votre profil</strong> — vous êtes l'élève ou un parent qui inscrit son enfant.</div></div>
-                <div class="faq-step"><div class="step-num">2</div><div class="step-text"><strong>Remplissez le formulaire</strong> — Nom, prénom, téléphone, établissement, niveau et série.</div></div>
-                <div class="faq-step"><div class="step-num">3</div><div class="step-text"><strong>Sélectionnez votre niveau</strong> — 3ème, 1ère C/D ou Terminale C/D.</div></div>
-                <div class="faq-step"><div class="step-num">4</div><div class="step-text"><strong>Procédez au paiement</strong> — via MTN MoMo ou Moov Money, en totalité ou par tranche.</div></div>
-                <div class="faq-step"><div class="step-num">5</div><div class="step-text"><strong>Confirmation automatique</strong> — un SMS de confirmation est envoyé à votre numéro.</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Quels modes de paiement sont acceptés ?</span>
-            <span class="faq-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Nous acceptons les paiements via <strong>MTN Mobile Money</strong> et <strong>Moov Money</strong>. Le paiement peut être effectué en totalité ou en <strong>plusieurs tranches</strong>. Une fois votre paiement confirmé, votre inscription est automatiquement validée et vous recevez un SMS de confirmation.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Quelle est la date limite pour s'inscrire ?</span>
-            <span class="faq-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Les inscriptions sont ouvertes du <strong>1er avril au 22 juin 2026</strong>. Au-delà de cette date, les inscriptions ne pourront plus être acceptées. Nous vous recommandons de vous inscrire tôt pour bénéficier du <strong>Pack Privilège</strong> réservé aux 10 premiers inscrits par classe.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Où se déroulent les cours ?</span>
-            <span class="faq-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Les cours se déroulent à l'<strong>EPP Gbégamey Sud, Cotonou</strong>, en face du Collège Notre-Dame des Apôtres. Les sessions ont lieu du <strong>lundi au vendredi</strong> de <strong>08h30 à 13h00</strong> (repos le mercredi), du 1er juillet au 31 août 2026.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Un parent peut-il inscrire son enfant ?</span>
-            <span class="faq-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Oui, tout à fait. Lors du formulaire d'inscription, vous choisissez si vous êtes <strong>l'élève lui-même</strong> ou un <strong>parent / tuteur</strong>. Si vous êtes parent, vous renseignez les informations de votre enfant ainsi que vos coordonnées pour recevoir la confirmation d'inscription.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Comment s'inscrire si je n'ai pas accès à internet ?</span>
-            <span class="faq-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Deux autres options sont disponibles :<br/><br/>
-              <strong>Sur place</strong> — Rendez-vous tous les samedis de 14h00 à 18h30 à l'EPP Gbégamey Sud.<br/><br/>
-              <strong>Via WhatsApp</strong> — Envoyez votre Nom, Prénoms, Établissement et numéro de téléphone au <strong>01 96 38 92 49</strong> après avoir effectué votre paiement.
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <div class="avantage-card"><div class="av-icon blue">📦</div><div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements.</p></div></div>
+      <div class="avantage-card"><div class="av-icon gold">📄</div><div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div></div>
+      <div class="avantage-card"><div class="av-icon green">🏆</div><div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div></div>
+      <div class="avantage-card"><div class="av-icon sky">🚗</div><div><div class="av-title">Cours de Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- MODALITÉS -->
-<section class="section section-alt" id="modalites">
+<section class="section" id="modalites">
   <div class="container">
     <div class="text-center fade-in">
-      <div class="sec-label">Modalités</div>
+      <div class="sec-label">📋 Modalités</div>
       <h2 class="sec-title">Comment s'inscrire ?</h2>
       <p class="sec-sub">3 façons simples pour rejoindre le programme.</p>
     </div>
     <div class="modalites-grid fade-in">
-      <div class="modalite-card blue">
-        <span class="modalite-icon">🌐</span>
-        <h3>En ligne</h3>
-        <p>Remplissez le formulaire et payez directement via MTN MoMo ou Moov Money.</p>
-        <a href="{% url 'enrollments:create' %}" class="modalite-detail">Commencer</a>
-      </div>
-      <div class="modalite-card light">
-        <span class="modalite-icon">🏫</span>
-        <h3>Sur place</h3>
-        <p>Venez directement à l'EPP Gbégamey Sud tous les samedis.</p>
-        <span class="modalite-detail">Samedis 14h00–18h30</span>
-      </div>
-      <div class="modalite-card green-card">
-        <span class="modalite-icon">💬</span>
-        <h3>WhatsApp</h3>
-        <p>Envoyez Nom, Prénoms, Établissement &amp; Contact au 01 96 38 92 49 après paiement.</p>
-        <a href="https://wa.me/22996389249" target="_blank" class="modalite-detail">Envoyer</a>
-      </div>
+      <div class="modalite-card blue"><span class="modalite-icon">🌐</span><h3>En ligne</h3><p>Formulaire + paiement MTN MoMo ou Moov Money.</p><a href="{% url 'enrollments:create' %}" class="modalite-detail">Commencer →</a></div>
+      <div class="modalite-card light"><span class="modalite-icon">🏫</span><h3>Sur place</h3><p>EPP Gbégamey Sud tous les samedis.</p><span class="modalite-detail">Samedis 14h00–18h30</span></div>
+      <div class="modalite-card green-card"><span class="modalite-icon">💬</span><h3>WhatsApp</h3><p>Envoyez Nom, Établissement & Contact au 01 96 38 92 49.</p><a href="https://wa.me/22996389249" target="_blank" class="modalite-detail">Envoyer →</a></div>
     </div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
+<!-- CTA -->
 <div class="cta-banner">
   <div class="cta-banner-inner">
-    <div class="cta-deadline">⏳ Clôture des inscriptions : 22 juin 2026</div>
+    <div class="cta-deadline">⏳ Clôture : 22 juin 2026</div>
     <h2>Prêt à rejoindre La Certitude ?</h2>
-    <p>Réservez votre place dès maintenant — les premières inscriptions bénéficient du Pack Privilège.</p>
-    <a href="{% url 'enrollments:create' %}" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem">S'inscrire en 2 minutes</a>
+    <p>Réservez votre place — les premiers inscrits bénéficient du Pack Privilège.</p>
+    <a href="{% url 'enrollments:create' %}" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem">🚀 S'inscrire en 2 minutes</a>
   </div>
 </div>
 
@@ -832,41 +455,25 @@
 <section class="section section-alt" id="contact">
   <div class="container">
     <div class="text-center fade-in">
-      <div class="sec-label">Contact</div>
+      <div class="sec-label">📞 Contact</div>
       <h2 class="sec-title">Nous contacter</h2>
-      <p class="sec-sub">Des questions ? Notre équipe est disponible pour vous aider.</p>
+      <p class="sec-sub">Des questions ? Notre équipe est disponible.</p>
     </div>
     <div class="contact-grid fade-in">
       <div>
-        <a href="tel:+22996389249" class="contact-card" style="margin-bottom:1rem;display:flex">
-          <div class="contact-icon ci-blue">📞</div>
-          <div><div class="contact-label">Téléphone MTN</div><div class="contact-val">01 96 38 92 49</div></div>
-        </a>
-        <a href="tel:+22995511761" class="contact-card" style="display:flex">
-          <div class="contact-icon ci-blue">📞</div>
-          <div><div class="contact-label">Téléphone MOOV</div><div class="contact-val">01 95 51 17 61</div></div>
-        </a>
+        <a href="tel:+22996389249" class="contact-card" style="margin-bottom:1rem;display:flex"><div class="contact-icon ci-blue">📞</div><div><div class="contact-label">MTN MoMo</div><div class="contact-val">01 96 38 92 49</div></div></a>
+        <a href="tel:+22995511761" class="contact-card" style="display:flex"><div class="contact-icon ci-blue">📞</div><div><div class="contact-label">MOOV Money</div><div class="contact-val">01 95 51 17 61</div></div></a>
       </div>
       <div>
-        <a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:1rem;display:flex">
-          <div class="contact-icon ci-green">💬</div>
-          <div><div class="contact-label">WhatsApp</div><div class="contact-val">01 96 38 92 49</div></div>
-        </a>
-        <div class="contact-card">
-          <div class="contact-icon ci-blue">📍</div>
-          <div><div class="contact-label">Adresse</div><div class="contact-val">EPP Gbégamey Sud, Cotonou</div></div>
-        </div>
+        <a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:1rem;display:flex"><div class="contact-icon ci-green">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val">01 96 38 92 49</div></div></a>
+        <div class="contact-card"><div class="contact-icon ci-blue">📍</div><div><div class="contact-label">Adresse</div><div class="contact-val">EPP Gbégamey Sud, Cotonou</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-brand">
-    <img src="/images/logo_certitude.png" alt="Logo"/>
-    <span>Groupe La Certitude</span>
-  </div>
+  <div class="footer-brand"><img src="/images/logo_certitude.png" alt="Logo"/><span>Groupe La Certitude</span></div>
   <div class="stars">✦ ✦ ✦</div>
   <p>Discipline · Travail · Excellence</p>
   <p style="margin-top:.5rem">EPP Gbégamey Sud, Cotonou — Bénin</p>
@@ -874,10 +481,19 @@
   <p class="copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
 </footer>
 
-<!-- WhatsApp float -->
 <a href="https://wa.me/22996389249" target="_blank" class="wa-float" aria-label="WhatsApp">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
+<!-- VIDEO MODAL -->
+<div id="videoModal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:1rem">
+  <div style="width:100%;max-width:800px;position:relative">
+    <button onclick="closeVideo()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:white;font-size:1.8rem;cursor:pointer;font-family:'Sora',sans-serif">✕</button>
+    <div style="padding-top:56.25%;position:relative;border-radius:16px;overflow:hidden">
+      <iframe id="videoFrame" src="" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen allow="autoplay"></iframe>
+    </div>
+  </div>
+</div>
 
 <script>
   /* Navbar */
@@ -885,61 +501,39 @@
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
 
   /* Hamburger */
-  const ham  = document.getElementById('hamburger');
-  const menu = document.getElementById('mobileMenu');
-  ham.addEventListener('click', () => {
-    ham.classList.toggle('open');
-    menu.classList.toggle('open');
-    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-  });
-  document.querySelectorAll('.mob-link, .m-cta').forEach(a => {
-    a.addEventListener('click', () => {
-      ham.classList.remove('open');
-      menu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
+  const ham = document.getElementById('hamburger'), menu = document.getElementById('mobileMenu');
+  ham.addEventListener('click', () => { ham.classList.toggle('open'); menu.classList.toggle('open'); document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : ''; });
+  document.querySelectorAll('.mob-link,.m-cta').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); menu.classList.remove('open'); document.body.style.overflow = ''; }));
 
   /* Carousel */
-  const track  = document.getElementById('carouselTrack');
+  const track = document.getElementById('carouselTrack');
   const dotsEl = document.getElementById('carouselDots');
   const slides = track.querySelectorAll('.carousel-slide');
-  let current  = 0;
-
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => goTo(i));
-    dotsEl.appendChild(d);
-  });
-
-  function goTo(n) {
-    current = (n + slides.length) % slides.length;
-    track.style.transform = `translateX(-${current * 100}%)`;
-    dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
-  }
-  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-  let auto = setInterval(() => goTo(current + 1), 4000);
+  let current = 0;
+  slides.forEach((_, i) => { const d = document.createElement('div'); d.className = 'dot' + (i===0?' active':''); d.addEventListener('click', () => goTo(i)); dotsEl.appendChild(d); });
+  function goTo(n) { current = (n + slides.length) % slides.length; track.style.transform = `translateX(-${current*100}%)`; dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===current)); }
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current-1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current+1));
+  let auto = setInterval(() => goTo(current+1), 4000);
   track.parentElement.addEventListener('mouseenter', () => clearInterval(auto));
-  track.parentElement.addEventListener('mouseleave', () => { auto = setInterval(() => goTo(current + 1), 4000); });
+  track.parentElement.addEventListener('mouseleave', () => { auto = setInterval(() => goTo(current+1), 4000); });
 
-  /* FAQ Accordion */
-  document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      /* Ferme tous */
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      /* Ouvre celui cliqué sauf s'il était déjà ouvert */
-      if (!isOpen) item.classList.add('open');
-    });
-  });
+  /* Video modal */
+  function openVideo(id, el) {
+    const modal = document.getElementById('videoModal');
+    document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeVideo() {
+    document.getElementById('videoModal').style.display = 'none';
+    document.getElementById('videoFrame').src = '';
+    document.body.style.overflow = '';
+  }
+  document.getElementById('videoModal').addEventListener('click', function(e) { if(e.target===this) closeVideo(); });
 
   /* Scroll reveal */
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: .12 });
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, {threshold:.12});
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 </body>

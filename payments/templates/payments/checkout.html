@@ -5,30 +5,24 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Paiement — La Certitude</title>
-
-  <!-- FeexPay JS SDK -->
-  <script src="https://api-v2.feexpay.me/feexpay-javascript-sdk/index.js"></script>
-
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe;
       --white:#fff; --navy:#0f172a; --gray-50:#f8fafc;
       --gray-100:#f1f5f9; --gray-200:#e2e8f0; --gray-500:#64748b;
-      --green:#10b981; --r:14px;
+      --green:#10b981; --gold:#f59e0b; --red:#ef4444; --r:14px;
     }
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     body {
       font-family:'DM Sans',sans-serif; min-height:100vh;
       background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
       display:flex; flex-direction:column;
-      align-items:center; justify-content:flex-start;
-      padding:2rem 1rem 4rem;
+      align-items:center; justify-content:flex-start; padding:2rem 1rem 4rem;
     }
 
-    /* TOP */
     .top-bar {
-      width:100%; max-width:500px;
+      width:100%; max-width:540px;
       display:flex; align-items:center; justify-content:space-between;
       margin-bottom:1.5rem;
     }
@@ -38,9 +32,8 @@
     .brand img { width:34px; height:34px; border-radius:50%; background:white; padding:2px; object-fit:contain; }
     .brand span { font-family:'Sora',sans-serif; font-weight:700; font-size:.88rem; color:white; }
 
-    /* CARD */
     .card {
-      width:100%; max-width:500px; background:white;
+      width:100%; max-width:540px; background:white;
       border-radius:24px; overflow:hidden;
       box-shadow:0 20px 60px rgba(0,0,0,.22);
     }
@@ -52,100 +45,142 @@
     }
     .recap-header h2 {
       font-family:'Sora',sans-serif; font-size:1.1rem; font-weight:700;
-      margin-bottom:1rem; display:flex; align-items:center; gap:.5rem;
+      margin-bottom:1rem;
     }
-    .recap-row {
-      display:flex; justify-content:space-between;
-      font-size:.88rem; padding:.3rem 0;
-      border-bottom:1px solid rgba(255,255,255,.1);
-    }
-    .recap-row:last-child { border:none; }
-    .rk { opacity:.7; }
-    .rv { font-weight:600; }
+    .rrow { display:flex; justify-content:space-between; font-size:.88rem; padding:.3rem 0; border-bottom:1px solid rgba(255,255,255,.1); }
+    .rrow:last-of-type { border:none; }
+    .rk { opacity:.7; } .rv { font-weight:600; }
     .amount-box {
-      margin-top:1.2rem; padding:.9rem 1rem;
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.25);
-      border-radius:var(--r);
-      display:flex; justify-content:space-between; align-items:center;
+      margin-top:1.2rem; padding:1rem 1.2rem;
+      background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.3);
+      border-radius:var(--r); display:flex; justify-content:space-between; align-items:center;
     }
     .amount-box span { font-size:.88rem; opacity:.8; }
-    .amount-box strong {
-      font-family:'Sora',sans-serif; font-size:1.7rem; font-weight:800;
-    }
+    .amount-box strong { font-family:'Sora',sans-serif; font-size:1.8rem; font-weight:800; }
 
-    /* BODY */
     .card-body { padding:1.8rem 2rem; }
 
-    .section-title {
+    /* ÉTAPES */
+    .steps-title {
       font-size:.78rem; font-weight:700; color:var(--navy);
-      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.9rem;
+      text-transform:uppercase; letter-spacing:.05em; margin-bottom:1rem;
     }
-
-    /* INFO STEPS */
-    .pay-steps { display:flex; flex-direction:column; gap:.7rem; margin-bottom:1.6rem; }
-    .pay-step {
-      display:flex; align-items:center; gap:.9rem;
-      padding:.75rem 1rem; background:var(--gray-50);
-      border-radius:10px; font-size:.88rem;
+    .step-list { display:flex; flex-direction:column; gap:.6rem; margin-bottom:1.6rem; }
+    .step-item {
+      display:flex; align-items:flex-start; gap:.8rem;
+      padding:.8rem 1rem; background:var(--gray-50); border-radius:10px;
     }
-    .ps-num {
-      width:28px; height:28px; border-radius:50%;
+    .sn {
+      width:26px; height:26px; border-radius:50%; flex-shrink:0;
       background:var(--blue-lt); color:var(--blue);
       display:flex; align-items:center; justify-content:center;
       font-family:'Sora',sans-serif; font-weight:700; font-size:.78rem;
-      flex-shrink:0;
+    }
+    .step-item p { font-size:.88rem; color:var(--navy); line-height:1.5; }
+    .step-item p strong { color:var(--blue); }
+
+    /* SÉLECTION RÉSEAU */
+    .method-title {
+      font-size:.78rem; font-weight:700; color:var(--navy);
+      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.7rem;
+    }
+    .method-grid { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-bottom:1.4rem; }
+    .method-card {
+      border:2px solid var(--gray-200); border-radius:var(--r);
+      padding:1.1rem; cursor:pointer; transition:border-color .2s, background .2s;
+      user-select:none;
+    }
+    .method-card:hover { border-color:var(--blue); }
+    .method-card.selected { border-color:var(--blue); background:var(--blue-lt); }
+    .method-card input { display:none; }
+    .mc-top { display:flex; align-items:center; gap:.6rem; margin-bottom:.5rem; }
+    .mc-logo { font-size:1.4rem; }
+    .mc-name { font-family:'Sora',sans-serif; font-weight:700; font-size:.9rem; color:var(--navy); }
+    .method-card.selected .mc-name { color:var(--blue); }
+
+    /* CADRE NUMÉRO À APPELER */
+    .payment-target {
+      display:none; background:#f0fdf4; border:2px solid #a7f3d0;
+      border-radius:var(--r); padding:1.1rem 1.2rem; margin-bottom:1.2rem;
+    }
+    .payment-target.show { display:block; }
+    .pt-label { font-size:.75rem; font-weight:700; color:#065f46;
+      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.5rem; }
+    .pt-number {
+      font-family:'Sora',sans-serif; font-size:1.5rem; font-weight:800;
+      color:var(--navy); letter-spacing:.05em;
+    }
+    .pt-name { font-size:.85rem; color:#065f46; margin-top:.2rem; font-weight:500; }
+    .pt-copy {
+      display:inline-block; margin-top:.6rem;
+      background:#d1fae5; color:#065f46; border:none;
+      padding:.35rem .9rem; border-radius:50px; font-size:.78rem; font-weight:700;
+      cursor:pointer; transition:background .2s;
+    }
+    .pt-copy:hover { background:#a7f3d0; }
+    .pt-copy.copied { background:#10b981; color:white; }
+
+    /* CHAMP TÉLÉPHONE */
+    .field { margin-bottom:1.2rem; }
+    .field label {
+      display:block; font-size:.78rem; font-weight:700; color:var(--navy);
+      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.5rem;
+    }
+    .field input {
+      width:100%; padding:.85rem 1rem;
+      border:1.5px solid var(--gray-200); border-radius:var(--r);
+      font-family:'DM Sans',sans-serif; font-size:.95rem; color:var(--navy);
+      background:var(--gray-50); outline:none;
+      transition:border-color .2s, box-shadow .2s;
+    }
+    .field input:focus {
+      border-color:var(--blue);
+      box-shadow:0 0 0 3px rgba(26,86,219,.12); background:white;
+    }
+    .field-hint { font-size:.76rem; color:var(--gray-500); margin-top:.35rem; }
+
+    /* ERREUR */
+    .error-box {
+      background:#fef2f2; border:1px solid #fca5a5;
+      border-radius:var(--r); padding:.9rem 1rem;
+      font-size:.85rem; color:#b91c1c; margin-bottom:1.2rem;
+      display:flex; gap:.5rem; align-items:center;
     }
 
-    /* BOUTON PAYER */
-    #render { margin-bottom:.5rem; }
+    /* CHECKBOX CONFIRMATION */
+    .confirm-check {
+      display:flex; align-items:flex-start; gap:.7rem;
+      padding:1rem; background:#fffbeb; border:1px solid #fde68a;
+      border-radius:var(--r); margin-bottom:1.4rem; cursor:pointer;
+    }
+    .confirm-check input { width:18px; height:18px; margin-top:2px; flex-shrink:0; accent-color:var(--blue); }
+    .confirm-check span { font-size:.85rem; color:#92400e; line-height:1.5; }
 
-    /* Override style FeexPay button si besoin */
-    .feex-fallback-btn {
+    /* BOUTON */
+    .btn-confirm {
       width:100%; padding:1rem;
       background:linear-gradient(135deg,var(--green),#34d399);
       color:white; border:none; border-radius:50px;
-      font-family:'Sora',sans-serif; font-size:1.05rem; font-weight:700;
+      font-family:'Sora',sans-serif; font-size:1rem; font-weight:700;
       cursor:pointer; box-shadow:0 4px 20px rgba(16,185,129,.4);
-      transition:transform .15s; display:flex;
-      align-items:center; justify-content:center; gap:.6rem;
+      transition:transform .15s, opacity .15s;
     }
-    .feex-fallback-btn:hover { transform:translateY(-2px); }
+    .btn-confirm:hover { transform:translateY(-2px); }
+    .btn-confirm:disabled { opacity:.5; cursor:not-allowed; transform:none; }
 
     .secure-note {
       text-align:center; font-size:.75rem; color:var(--gray-500);
-      margin-top:.8rem; display:flex; align-items:center;
-      justify-content:center; gap:.3rem;
+      margin-top:.8rem;
     }
 
-    /* LOADING OVERLAY */
-    .overlay {
-      display:none; position:fixed; inset:0; z-index:999;
-      background:rgba(15,23,42,.6); backdrop-filter:blur(4px);
-      align-items:center; justify-content:center;
-    }
-    .overlay.show { display:flex; }
-    .overlay-box {
-      background:white; border-radius:20px; padding:2rem;
-      text-align:center; max-width:300px; width:90%;
-    }
-    .ov-spinner {
-      width:50px; height:50px; border-radius:50%;
-      border:5px solid #e2e8f0; border-top-color:var(--blue);
-      animation:spin 1s linear infinite; margin:0 auto 1rem;
-    }
-    @keyframes spin { to { transform:rotate(360deg); } }
-    .ov-title { font-family:'Sora',sans-serif; font-weight:700; color:var(--navy); margin-bottom:.4rem; }
-    .ov-sub   { font-size:.85rem; color:var(--gray-500); }
-
-    @media(max-width:500px) {
+    @media(max-width:540px) {
       .card-body, .recap-header { padding:1.4rem 1.2rem; }
+      .method-grid { grid-template-columns:1fr 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="top-bar">
   <a href="{% url 'core:index' %}" class="back-link">← Retour</a>
   <div class="brand">
@@ -154,110 +189,150 @@
   </div>
 </div>
 
-<!-- CARD -->
 <div class="card">
 
   <!-- RÉCAP -->
   <div class="recap-header">
-    <h2>💳 Résumé de l'inscription</h2>
-    <div class="recap-row"><span class="rk">Élève</span><span class="rv">{{ enrollment.full_name }}</span></div>
-    <div class="recap-row"><span class="rk">Formation</span><span class="rv">{{ enrollment.level_serie }}</span></div>
-    <div class="recap-row"><span class="rk">École</span><span class="rv">{{ enrollment.school }}</span></div>
+    <h2>💳 Récapitulatif — Procédez au paiement</h2>
+    <div class="rrow"><span class="rk">Élève</span><span class="rv">{{ enrollment.full_name }}</span></div>
+    <div class="rrow"><span class="rk">Formation</span><span class="rv">{{ enrollment.level_serie }}</span></div>
+    <div class="rrow"><span class="rk">École</span><span class="rv">{{ enrollment.school }}</span></div>
     <div class="amount-box">
-      <span>💰 Montant à payer</span>
+      <span>Montant à envoyer</span>
       <strong>{{ enrollment.tarif|floatformat:0 }} FCFA</strong>
     </div>
   </div>
 
-  <!-- BODY -->
   <div class="card-body">
 
-    <p class="section-title">Comment ça marche ?</p>
-    <div class="pay-steps">
-      <div class="pay-step">
-        <div class="ps-num">1</div>
-        <span>Cliquez sur <strong>"Payer"</strong> ci-dessous</span>
+    <!-- ÉTAPES -->
+    <p class="steps-title">📋 Comment payer ?</p>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="sn">1</div>
+        <p>Choisissez votre réseau ci-dessous (<strong>MTN</strong> ou <strong>MOOV</strong>)</p>
       </div>
-      <div class="pay-step">
-        <div class="ps-num">2</div>
-        <span>Choisissez votre réseau : <strong>MTN MoMo</strong> ou <strong>MOOV Money</strong></span>
+      <div class="step-item">
+        <div class="sn">2</div>
+        <p>Ouvrez votre application Mobile Money et envoyez <strong>{{ enrollment.tarif|floatformat:0 }} FCFA</strong> au numéro affiché au nom de <strong>CODJO Abel Jean Eudes</strong></p>
       </div>
-      <div class="pay-step">
-        <div class="ps-num">3</div>
-        <span>Entrez votre numéro et confirmez avec votre <strong>code PIN</strong></span>
-      </div>
-      <div class="pay-step">
-        <div class="ps-num">4</div>
-        <span>Votre inscription est <strong>activée automatiquement</strong> ✅</span>
+      <div class="step-item">
+        <div class="sn">3</div>
+        <p>Revenez ici, indiquez votre numéro et confirmez — <strong>votre reçu sera généré immédiatement</strong> 🎉</p>
       </div>
     </div>
 
-    <!-- BOUTON FEEXPAY — le SDK injecte le bouton ici -->
-    <div id="render"></div>
+    {% if error %}
+    <div class="error-box">⚠️ {{ error }}</div>
+    {% endif %}
 
-    <p class="secure-note">🔒 Paiement sécurisé par FeexPay</p>
+    <form method="post" id="payForm">
+      {% csrf_token %}
 
-  </div>
-</div>
+      <!-- CHOIX RÉSEAU -->
+      <p class="method-title">Choisissez votre réseau</p>
+      <div class="method-grid">
 
-<!-- LOADING OVERLAY -->
-<div class="overlay" id="loadingOverlay">
-  <div class="overlay-box">
-    <div class="ov-spinner"></div>
-    <div class="ov-title">Traitement en cours...</div>
-    <div class="ov-sub">Veuillez patienter</div>
+        <label class="method-card selected" id="card-mtn" data-method="mtn">
+          <input type="radio" name="method" value="mtn" checked/>
+          <div class="mc-top">
+            <span class="mc-logo">🟡</span>
+            <span class="mc-name">MTN MoMo</span>
+          </div>
+          <div style="font-size:.78rem;color:var(--gray-500)">01 96 38 92 49</div>
+        </label>
+
+        <label class="method-card" id="card-moov" data-method="moov">
+          <input type="radio" name="method" value="moov"/>
+          <div class="mc-top">
+            <span class="mc-logo">🔵</span>
+            <span class="mc-name">MOOV Money</span>
+          </div>
+          <div style="font-size:.78rem;color:var(--gray-500)">01 95 51 17 61</div>
+        </label>
+
+      </div>
+
+      <!-- NUMÉRO BÉNÉFICIAIRE (change selon réseau) -->
+      <div class="payment-target show" id="targetBox">
+        <div class="pt-label">📲 Envoyez au numéro suivant</div>
+        <div class="pt-number" id="targetNumber">01 96 38 92 49</div>
+        <div class="pt-name">Au nom de : <strong>CODJO Abel Jean Eudes</strong></div>
+        <button type="button" class="pt-copy" id="copyBtn" onclick="copyNumber()">📋 Copier le numéro</button>
+      </div>
+
+      <!-- NUMÉRO DU PAYEUR -->
+      <div class="field">
+        <label>Votre numéro ayant effectué le paiement *</label>
+        <input type="tel" name="phone_used"
+               placeholder="Ex : 01 96 38 92 49"
+               required/>
+        <p class="field-hint">Le numéro depuis lequel vous avez envoyé l'argent</p>
+      </div>
+
+      <!-- CONFIRMATION -->
+      <label class="confirm-check" id="confirmCheck">
+        <input type="checkbox" id="confirmBox" required/>
+        <span>
+          ✅ Je confirme avoir envoyé <strong>{{ enrollment.tarif|floatformat:0 }} FCFA</strong>
+          au <strong id="confirmNum">01 96 38 92 49</strong>
+          au nom de <strong>CODJO Abel Jean Eudes</strong> via Mobile Money.
+        </span>
+      </label>
+
+      <button type="submit" class="btn-confirm" id="btnConfirm" disabled>
+        📄 Valider et obtenir mon reçu
+      </button>
+
+      <p class="secure-note">
+        Votre reçu sera généré immédiatement. L'admin vérifiera et confirmera votre inscription.
+      </p>
+
+    </form>
   </div>
 </div>
 
 <script>
-  const ENROLLMENT_PK   = {{ enrollment.pk }};
-  const SAVE_REF_URL    = "{% url 'payments:save_reference' pk=enrollment.pk %}";
-  const WAITING_URL     = "{% url 'payments:waiting' pk=enrollment.pk %}";
-  const SUCCESS_URL     = "{% url 'enrollments:success' pk=enrollment.pk %}";
-  const CSRF_TOKEN      = "{{ csrf_token }}";
+  const NUMBERS = { mtn: '01 96 38 92 49', moov: '01 95 51 17 61' };
+  let selected = 'mtn';
 
-  // ── Initialisation du SDK FeexPay ──────────────────────
-  FeexPayButton.init("render", {
-    id:     "{{ feexpay_id }}",
-    amount: {{ enrollment.tarif|floatformat:0 }},
-    token:  "{{ feexpay_token }}",
-    mode:   "{{ feexpay_mode }}",
-    custom_id:   "{{ payment.feexpay_reference }}",
-    description: "Cours La Certitude - {{ enrollment.level_serie }} - {{ enrollment.full_name }}",
+  document.querySelectorAll('.method-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.method-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      card.querySelector('input').checked = true;
+      selected = card.dataset.method;
 
-    // ── Callback succès ──
-    callback: async (response) => {
-      console.log("FeexPay response:", response);
-      document.getElementById('loadingOverlay').classList.add('show');
+      // Mettre à jour le numéro affiché
+      document.getElementById('targetNumber').textContent = NUMBERS[selected];
+      document.getElementById('confirmNum').textContent   = NUMBERS[selected];
+    });
+  });
 
-      try {
-        const res = await fetch(SAVE_REF_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type':  'application/json',
-            'X-CSRFToken':   CSRF_TOKEN,
-          },
-          body: JSON.stringify({
-            reference: response.reference || response.id || '',
-            status:    response.status    || 'SUCCESSFUL',
-            method:    response.operator  || '',
-          }),
-        });
+  // Activer le bouton quand checkbox cochée
+  document.getElementById('confirmBox').addEventListener('change', function() {
+    document.getElementById('btnConfirm').disabled = !this.checked;
+  });
 
-        const data = await res.json();
-        if (data.redirect) {
-          window.location.href = data.redirect;
-        } else {
-          window.location.href = WAITING_URL;
-        }
-      } catch (err) {
-        console.error("Save ref error:", err);
-        window.location.href = WAITING_URL;
-      }
-    },
+  // Copier le numéro
+  function copyNumber() {
+    const num = NUMBERS[selected].replace(/ /g, '');
+    navigator.clipboard.writeText(num).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✅ Copié !';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '📋 Copier le numéro';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
 
-    // ── Callback erreur ──
-    error_callback_url: window.location.href,
+  // Désactiver le bouton à la soumission
+  document.getElementById('payForm').addEventListener('submit', function() {
+    const btn = document.getElementById('btnConfirm');
+    btn.disabled = true;
+    btn.textContent = '⏳ Génération du reçu...';
   });
 </script>
 

@@ -1,0 +1,328 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Témoignages — Groupe La Certitude</title>
+  <link rel="icon" href="/images/logo_certitude.png" type="image/png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe;
+      --navy:#0f172a; --white:#fff; --gray-50:#f8fafc;
+      --gray-100:#f1f5f9; --gray-200:#e2e8f0; --gray-500:#64748b;
+      --gold:#f59e0b; --green:#10b981; --r:14px; --r-lg:20px;
+      --shadow:0 4px 24px rgba(15,23,42,.10);
+      --shadow-lg:0 16px 48px rgba(15,23,42,.18);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--navy);min-height:100vh}
+    a{text-decoration:none;color:inherit}
+
+    /* ── HEADER ── */
+    .page-header{
+      background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
+      padding:5rem 1.5rem 4rem;text-align:center;position:relative;overflow:hidden;
+    }
+    .page-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:50px 50px}
+    .header-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
+    .back-link{display:inline-flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:1.8rem;transition:color .2s}
+    .back-link:hover{color:white}
+    .header-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);padding:.35rem .9rem;border-radius:50px;font-size:.78rem;font-weight:600;margin-bottom:1rem}
+    .page-header h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;color:white;margin-bottom:.7rem;line-height:1.2}
+    .page-header p{color:rgba(255,255,255,.7);font-size:1rem;line-height:1.6;max-width:540px;margin:0 auto}
+    .video-count{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.35);color:#fde68a;padding:.4rem 1rem;border-radius:50px;font-size:.82rem;font-weight:700;margin-top:1rem}
+
+    /* ── STATS STRIP ── */
+    .stats-strip{
+      background:var(--white);border-bottom:1px solid var(--gray-200);
+      padding:1.5rem;
+    }
+    .stats-inner{
+      max-width:900px;margin:0 auto;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
+      text-align:center;
+    }
+    .stat-item{}
+    .stat-n{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;color:var(--blue);display:block}
+    .stat-l{font-size:.78rem;color:var(--gray-500);margin-top:.15rem}
+
+    /* ── GRILLE VIDÉOS ── */
+    .videos-section{padding:3rem 1.5rem 5rem;max-width:1100px;margin:0 auto}
+    .videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.8rem}
+
+    .video-card{
+      background:var(--white);border-radius:var(--r-lg);overflow:hidden;
+      box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;
+      display:flex;flex-direction:column;
+    }
+    .video-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+
+    /* MINIATURE */
+    .video-thumb{
+      position:relative;padding-top:56.25%;
+      background:linear-gradient(135deg,#1040a8,#1a56db);
+      cursor:pointer;overflow:hidden;
+    }
+    .video-thumb img{
+      position:absolute;inset:0;width:100%;height:100%;
+      object-fit:cover;transition:transform .4s;
+    }
+    .video-card:hover .video-thumb img{transform:scale(1.06)}
+
+    /* OVERLAY PLAY */
+    .play-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(transparent 30%,rgba(5,15,40,.65));
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      transition:background .3s;
+    }
+    .video-card:hover .play-overlay{background:linear-gradient(transparent 20%,rgba(5,15,40,.75))}
+
+    .play-ring{
+      width:64px;height:64px;border-radius:50%;
+      background:rgba(255,255,255,.95);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.5rem;
+      box-shadow:0 4px 24px rgba(0,0,0,.35);
+      transition:transform .25s,background .2s;
+      margin-bottom:.6rem;
+    }
+    .video-card:hover .play-ring{transform:scale(1.12);background:white}
+
+    .play-label{
+      color:white;font-family:'Sora',sans-serif;
+      font-size:.78rem;font-weight:600;
+      background:rgba(0,0,0,.4);padding:.3rem .8rem;border-radius:50px;
+    }
+
+    /* DURÉE badge */
+    .duration-badge{
+      position:absolute;bottom:.6rem;right:.7rem;
+      background:rgba(0,0,0,.7);color:white;
+      font-size:.72rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;
+    }
+
+    /* INFOS */
+    .video-info{padding:1.3rem 1.4rem;flex:1;display:flex;flex-direction:column;gap:.5rem}
+    .video-name{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;color:var(--navy)}
+    .video-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+    .badge-niveau{
+      background:var(--blue-lt);color:var(--blue);
+      padding:.22rem .65rem;border-radius:50px;
+      font-size:.72rem;font-weight:700;
+    }
+    .badge-ecole{font-size:.78rem;color:var(--gray-500)}
+
+    .video-quote{
+      font-size:.85rem;color:var(--gray-500);
+      line-height:1.55;font-style:italic;
+      border-left:3px solid var(--blue-lt);
+      padding-left:.8rem;margin-top:.3rem;
+    }
+
+    .btn-watch{
+      display:flex;align-items:center;justify-content:center;gap:.5rem;
+      margin-top:.8rem;padding:.7rem;
+      background:var(--blue-lt);color:var(--blue);
+      border-radius:var(--r);font-family:'Sora',sans-serif;
+      font-weight:700;font-size:.85rem;border:none;cursor:pointer;
+      transition:background .2s,color .2s; width:100%;
+    }
+    .btn-watch:hover{background:var(--blue);color:white}
+
+    /* ── MODAL VIDÉO ── */
+    .modal{
+      display:none;position:fixed;inset:0;z-index:999;
+      background:rgba(5,10,30,.92);
+      align-items:center;justify-content:center;
+      padding:1rem;
+    }
+    .modal.open{display:flex}
+    .modal-inner{width:100%;max-width:860px;position:relative}
+    .modal-close{
+      position:absolute;top:-48px;right:0;
+      background:rgba(255,255,255,.1);border:none;color:white;
+      width:40px;height:40px;border-radius:50%;font-size:1.3rem;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .2s;
+    }
+    .modal-close:hover{background:rgba(255,255,255,.25)}
+    .modal-header{
+      display:flex;align-items:center;gap:.8rem;
+      margin-bottom:.9rem;
+    }
+    .modal-name{font-family:'Sora',sans-serif;font-weight:700;color:white;font-size:1rem}
+    .modal-meta{font-size:.8rem;color:rgba(255,255,255,.6)}
+    .video-frame-wrap{
+      position:relative;padding-top:56.25%;
+      border-radius:var(--r-lg);overflow:hidden;background:#000;
+    }
+    .video-frame-wrap iframe{
+      position:absolute;inset:0;width:100%;height:100%;border:none;
+    }
+
+    /* ── CITATION STARS ── */
+    .stars-row{color:var(--gold);font-size:1rem;letter-spacing:.15em}
+
+    /* ── CTA ── */
+    .temo-cta{
+      background:linear-gradient(135deg,var(--blue-dk),var(--blue));
+      padding:3.5rem 1.5rem;text-align:center;color:white;
+    }
+    .temo-cta h2{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:.6rem}
+    .temo-cta p{opacity:.8;margin-bottom:1.5rem}
+    .btn-white{background:white;color:var(--blue);padding:.85rem 2rem;border-radius:50px;font-family:'Sora',sans-serif;font-weight:700;font-size:.95rem;transition:transform .2s;display:inline-block}
+    .btn-white:hover{transform:translateY(-2px)}
+
+    .fade-in{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+    .fade-in.visible{opacity:1;transform:none}
+
+    @media(max-width:700px){
+      .videos-grid{grid-template-columns:1fr}
+      .stats-inner{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="header-inner">
+    <a href="{% url 'core:index' %}" class="back-link">← Retour à l'accueil</a>
+    <div class="header-badge">🎥 Témoignages vidéo</div>
+    <h1>Ils ont vécu l'expérience<br/>La Certitude</h1>
+    <p>Découvrez les témoignages authentiques de nos anciens apprenants et de leurs parents — édition 2025.</p>
+    <div class="video-count">🎥 {{ videos|length }} témoignages vidéo</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-n">100%</span>
+      <div class="stat-l">Programme couvert</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-n">3</span>
+      <div class="stat-l">Niveaux enseignés</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-n">9</span>
+      <div class="stat-l">Semaines intensives</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-n">⭐⭐⭐⭐⭐</span>
+      <div class="stat-l">Satisfaction apprenants</div>
+    </div>
+  </div>
+</div>
+
+<!-- GRILLE VIDÉOS -->
+<div class="videos-section">
+  <div class="videos-grid">
+
+    {% for video in videos %}
+    <div class="video-card fade-in" style="animation-delay:{{ forloop.counter0 }}00ms">
+
+      <!-- MINIATURE -->
+      <div class="video-thumb" onclick="openModal('{{ video.youtube_id }}', '{{ video.nom }}', '{{ video.niveau }}', '{{ video.ecole }}')">
+        <img
+          src="https://img.youtube.com/vi/{{ video.youtube_id }}/hqdefault.jpg"
+          alt="Témoignage {{ video.nom }}"
+          loading="lazy"
+          onerror="this.src='/images/{{ forloop.counter }}.jpg'"
+        />
+        <div class="play-overlay">
+          <div class="play-ring">▶</div>
+          <div class="play-label">Regarder le témoignage</div>
+        </div>
+        <div class="duration-badge">📹 Témoignage</div>
+      </div>
+
+      <!-- INFOS -->
+      <div class="video-info">
+        <div class="stars-row">★★★★★</div>
+        <div class="video-name">{{ video.nom }}</div>
+        <div class="video-meta">
+          <span class="badge-niveau">{{ video.niveau }}</span>
+          <span class="badge-ecole">{{ video.ecole }}</span>
+        </div>
+        <p class="video-quote">
+          "Grâce au Groupe La Certitude, j'ai maîtrisé tout mon programme en seulement 2 mois."
+        </p>
+        <button class="btn-watch" onclick="openModal('{{ video.youtube_id }}', '{{ video.nom }}', '{{ video.niveau }}', '{{ video.ecole }}')">
+          ▶ Regarder le témoignage
+        </button>
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+<!-- MODAL VIDÉO -->
+<div class="modal" id="videoModal" onclick="handleModalClick(event)">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <div>
+        <div class="modal-name" id="modalName"></div>
+        <div class="modal-meta" id="modalMeta"></div>
+      </div>
+    </div>
+    <div class="video-frame-wrap">
+      <iframe
+        id="videoFrame"
+        src=""
+        allowfullscreen
+        allow="autoplay; encrypted-media"
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="temo-cta">
+  <h2>Prêt à rejoindre leur succès ?</h2>
+  <p>Inscrivez-vous aux cours intensifs de l'édition 2026.</p>
+  <a href="{% url 'enrollments:create' %}" class="btn-white">🚀 S'inscrire maintenant</a>
+</div>
+
+<script>
+  function openModal(youtubeId, nom, niveau, ecole) {
+    document.getElementById('videoFrame').src =
+      `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+    document.getElementById('modalName').textContent = nom;
+    document.getElementById('modalMeta').textContent = `${niveau} · ${ecole} · Édition 2025`;
+    document.getElementById('videoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('videoModal').classList.remove('open');
+    document.getElementById('videoFrame').src = '';
+    document.body.style.overflow = '';
+  }
+
+  function handleModalClick(e) {
+    if (e.target === document.getElementById('videoModal')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  /* Scroll reveal */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: .1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

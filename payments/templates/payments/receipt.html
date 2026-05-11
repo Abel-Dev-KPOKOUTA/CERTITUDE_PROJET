@@ -1,0 +1,334 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reçu {{ payment.receipt_number }} — La Certitude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe;
+      --white:#fff; --navy:#0f172a; --gray-100:#f1f5f9;
+      --gray-200:#e2e8f0; --gray-500:#64748b; --green:#10b981;
+      --gold:#f59e0b; --r:14px;
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:'DM Sans',sans-serif; min-height:100vh;
+      background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:flex-start;
+      padding:2rem 1rem 4rem;
+    }
+
+    .top-bar {
+      width:100%; max-width:580px;
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:1.5rem;
+    }
+    .brand { display:flex; align-items:center; gap:.6rem; }
+    .brand img { width:36px; height:36px; border-radius:50%; background:white; padding:2px; object-fit:contain; }
+    .brand span { font-family:'Sora',sans-serif; font-weight:700; color:white; font-size:.9rem; }
+    .home-link { color:rgba(255,255,255,.75); font-size:.85rem; text-decoration:none; }
+    .home-link:hover { color:white; }
+
+    /* ACTION BUTTONS */
+    .action-btns {
+      width:100%; max-width:580px;
+      display:flex; gap:.8rem; margin-bottom:1.2rem; flex-wrap:wrap;
+    }
+    .btn-action {
+      flex:1; min-width:140px; padding:.8rem 1rem;
+      border-radius:50px; font-family:'Sora',sans-serif;
+      font-weight:700; font-size:.88rem; cursor:pointer;
+      border:none; transition:transform .15s;
+      display:flex; align-items:center; justify-content:center; gap:.4rem;
+    }
+    .btn-action:hover { transform:translateY(-2px); }
+    .btn-download { background:var(--gold); color:var(--navy); }
+    .btn-whatsapp { background:#25d366; color:white; }
+    .btn-home     { background:rgba(255,255,255,.15); color:white; border:1px solid rgba(255,255,255,.3); }
+
+    /* REÇU */
+    .receipt {
+      width:100%; max-width:580px; background:white;
+      border-radius:24px; overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.25);
+    }
+
+    /* HEADER REÇU */
+    .receipt-header {
+      background:linear-gradient(135deg,var(--blue-dk),var(--blue));
+      padding:2rem; text-align:center; color:white; position:relative;
+    }
+    .receipt-header::after {
+      content:'';
+      position:absolute; bottom:-16px; left:0; right:0; height:32px;
+      background:white;
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .receipt-logo {
+      width:64px; height:64px; border-radius:50%;
+      background:white; padding:4px; object-fit:contain;
+      margin:0 auto 1rem; display:block;
+      box-shadow:0 4px 16px rgba(0,0,0,.2);
+    }
+    .receipt-header h1 {
+      font-family:'Sora',sans-serif; font-size:1.3rem; font-weight:800;
+    }
+    .receipt-header p { font-size:.85rem; opacity:.8; margin-top:.3rem; }
+
+    /* STATUS BADGE */
+    .status-badge {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:.4rem 1.1rem; border-radius:50px;
+      font-family:'Sora',sans-serif; font-size:.82rem; font-weight:700;
+      margin-top:1rem;
+    }
+    .status-pending   { background:rgba(245,158,11,.2); color:#fde68a; }
+    .status-confirmed { background:rgba(16,185,129,.2); color:#a7f3d0; }
+
+    /* CORPS REÇU */
+    .receipt-body { padding:2.5rem 2rem 2rem; }
+
+    .receipt-num {
+      text-align:center; margin-bottom:1.8rem;
+    }
+    .receipt-num .rn-label { font-size:.75rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:.06em; }
+    .receipt-num .rn-value {
+      font-family:'Sora',sans-serif; font-size:1.2rem; font-weight:800;
+      color:var(--navy); letter-spacing:.08em; margin-top:.2rem;
+    }
+    .receipt-num .rn-date { font-size:.8rem; color:var(--gray-500); margin-top:.15rem; }
+
+    /* SECTIONS */
+    .section { margin-bottom:1.5rem; }
+    .sec-title {
+      font-size:.72rem; font-weight:700; color:var(--blue);
+      text-transform:uppercase; letter-spacing:.07em;
+      margin-bottom:.7rem; padding-bottom:.4rem;
+      border-bottom:2px solid var(--blue-lt);
+    }
+    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:.5rem .8rem; }
+    .info-item {}
+    .info-label { font-size:.72rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:.04em; }
+    .info-val   { font-weight:600; font-size:.92rem; color:var(--navy); margin-top:.15rem; }
+    .info-item.full { grid-column:1/-1; }
+
+    /* MONTANT */
+    .amount-section {
+      background:linear-gradient(135deg,var(--blue),#3b82f6);
+      border-radius:var(--r); padding:1.3rem 1.5rem;
+      display:flex; justify-content:space-between; align-items:center;
+      color:white; margin-bottom:1.5rem;
+    }
+    .am-label { font-size:.88rem; opacity:.8; }
+    .am-value { font-family:'Sora',sans-serif; font-size:2rem; font-weight:800; }
+
+    /* PAIEMENT INFO */
+    .payment-info {
+      background:var(--gray-100); border-radius:var(--r);
+      padding:1.1rem; margin-bottom:1.5rem;
+    }
+    .pi-row {
+      display:flex; justify-content:space-between; align-items:center;
+      font-size:.88rem; padding:.3rem 0;
+      border-bottom:1px solid var(--gray-200);
+    }
+    .pi-row:last-child { border:none; }
+    .pi-key { color:var(--gray-500); }
+    .pi-val { font-weight:600; color:var(--navy); }
+
+    /* AVERTISSEMENT PENDING */
+    .pending-notice {
+      background:#fffbeb; border:1.5px solid #fde68a;
+      border-radius:var(--r); padding:1rem 1.1rem; margin-bottom:1.5rem;
+      font-size:.85rem; color:#92400e; line-height:1.6;
+    }
+    .pending-notice strong { color:#78350f; }
+
+    /* FOOTER REÇU */
+    .receipt-footer {
+      background:var(--gray-100); padding:1.2rem 2rem;
+      text-align:center; border-top:1px solid var(--gray-200);
+    }
+    .receipt-footer p { font-size:.78rem; color:var(--gray-500); line-height:1.7; }
+    .receipt-footer strong { color:var(--navy); }
+
+    /* PRINT STYLES */
+    @media print {
+      body { background:white; padding:0; }
+      .top-bar, .action-btns { display:none; }
+      .receipt { box-shadow:none; border-radius:0; max-width:100%; }
+    }
+
+    @media(max-width:540px) {
+      .receipt-body { padding:2rem 1.2rem 1.5rem; }
+      .info-grid { grid-template-columns:1fr; }
+      .amount-section { flex-direction:column; gap:.5rem; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="brand">
+    <img src="/images/logo_certitude.png" alt="Logo"/>
+    <span>La Certitude</span>
+  </div>
+  <a href="{% url 'core:index' %}" class="home-link">Retour à l'accueil</a>
+</div>
+
+<!-- BOUTONS D'ACTION -->
+<div class="action-btns">
+  <button class="btn-action btn-download" onclick="window.print()">
+    📥 Télécharger / Imprimer
+  </button>
+  <a href="https://wa.me/22996389249?text=Bonjour%2C+j'ai+effectue+mon+paiement+pour+{{ enrollment.full_name|urlencode }}+%28Recu+{{ payment.receipt_number }}%29.+Merci+de+confirmer+mon+inscription."
+     target="_blank" class="btn-action btn-whatsapp">
+    💬 Envoyer sur WhatsApp
+  </a>
+  <a href="{% url 'core:index' %}" class="btn-action btn-home">
+    🏠 Accueil
+  </a>
+</div>
+
+<!-- REÇU -->
+<div class="receipt" id="receipt">
+
+  <!-- HEADER -->
+  <div class="receipt-header">
+    <img src="/images/logo_certitude.png" alt="Logo" class="receipt-logo"/>
+    <h1>GROUPE LA CERTITUDE</h1>
+    <p>Cours intensifs de renforcement — Juillet & Août 2026</p>
+    <div class="status-badge {% if payment.status == 'confirmed' %}status-confirmed{% else %}status-pending{% endif %}">
+      {% if payment.status == 'confirmed' %}
+        ✅ Paiement confirmé
+      {% else %}
+        ⏳ En attente de confirmation
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- CORPS -->
+  <div class="receipt-body">
+
+    <!-- NUMÉRO DE REÇU -->
+    <div class="receipt-num">
+      <div class="rn-label">Numéro de reçu</div>
+      <div class="rn-value">{{ payment.receipt_number }}</div>
+      <div class="rn-date">{{ payment.created_at|date:"d/m/Y à H:i" }}</div>
+    </div>
+
+    <!-- MONTANT -->
+    <div class="amount-section">
+      <div>
+        <div class="am-label">Montant total</div>
+        <div class="am-value">{{ payment.amount|floatformat:0 }} FCFA</div>
+      </div>
+      <div style="text-align:right">
+        <div class="am-label">Réseau</div>
+        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;">
+          {{ payment.get_method_display }}
+        </div>
+      </div>
+    </div>
+
+    <!-- INFORMATIONS ÉLÈVE -->
+    <div class="section">
+      <div class="sec-title">👤 Informations de l'élève</div>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Nom complet</div>
+          <div class="info-val">{{ enrollment.full_name }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Contact</div>
+          <div class="info-val">{{ enrollment.phone }}</div>
+        </div>
+        <div class="info-item full">
+          <div class="info-label">Établissement</div>
+          <div class="info-val">{{ enrollment.school }}</div>
+        </div>
+        {% if enrollment.parent_name %}
+        <div class="info-item full">
+          <div class="info-label">Parent / Tuteur</div>
+          <div class="info-val">{{ enrollment.parent_name }} — {{ enrollment.parent_phone }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- FORMATION -->
+    <div class="section">
+      <div class="sec-title">📚 Formation inscrite</div>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Niveau</div>
+          <div class="info-val">{{ enrollment.level_serie }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Tarif</div>
+          <div class="info-val">{{ enrollment.tarif|floatformat:0 }} FCFA</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Début des cours</div>
+          <div class="info-val">1er juillet 2026</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Lieu</div>
+          <div class="info-val">EPP Gbégamey Sud</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DÉTAILS PAIEMENT -->
+    <div class="payment-info">
+      <div class="pi-row">
+        <span class="pi-key">Numéro payeur</span>
+        <span class="pi-val">{{ payment.phone_used }}</span>
+      </div>
+      <div class="pi-row">
+        <span class="pi-key">Numéro bénéficiaire</span>
+        <span class="pi-val">{{ payment.destination_phone }}</span>
+      </div>
+      <div class="pi-row">
+        <span class="pi-key">Bénéficiaire</span>
+        <span class="pi-val">{{ payment.destination_name }}</span>
+      </div>
+      <div class="pi-row">
+        <span class="pi-key">Réseau</span>
+        <span class="pi-val">{{ payment.get_method_display }}</span>
+      </div>
+      <div class="pi-row">
+        <span class="pi-key">Statut</span>
+        <span class="pi-val">{{ payment.get_status_display }}</span>
+      </div>
+    </div>
+
+    {% if payment.status == 'pending' %}
+    <div class="pending-notice">
+      ℹ️ <strong>Important :</strong> Ce reçu atteste de votre déclaration de paiement.
+      Notre équipe va vérifier votre transaction et <strong>confirmer votre inscription</strong> dans les plus brefs délais.
+      Conservez ce reçu et votre numéro <strong>{{ payment.receipt_number }}</strong>.
+      <br/><br/>
+      📲 Envoyez une copie de votre reçu Mobile Money sur WhatsApp au <strong>01 96 38 92 49</strong> pour accélérer la confirmation.
+    </div>
+    {% endif %}
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="receipt-footer">
+    <p>
+      <strong>Groupe La Certitude</strong> — Discipline · Travail · Excellence<br/>
+      EPP Gbégamey Sud, Cotonou, Bénin<br/>
+      📞 01 96 38 92 49 · 01 95 51 17 61
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>

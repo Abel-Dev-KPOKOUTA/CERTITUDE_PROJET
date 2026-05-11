@@ -4,18 +4,15 @@ from . import views
 app_name = 'payments'
 
 urlpatterns = [
-    # Page de paiement (JS SDK FeexPay)
-    path('paiement/<int:pk>/',              views.checkout_view,       name='checkout'),
+    # Page de paiement (instructions + formulaire de confirmation)
+    path('paiement/<int:pk>/',         views.checkout_view,      name='checkout'),
 
-    # AJAX : sauvegarde la référence après callback JS
-    path('paiement/<int:pk>/reference/',    views.save_reference_view, name='save_reference'),
+    # Reçu après paiement déclaré
+    path('recu/<int:pk>/',             views.receipt_view,       name='receipt'),
 
-    # Page d'attente
-    path('paiement/<int:pk>/attente/',      views.waiting_view,        name='waiting'),
+    # Version imprimable du reçu
+    path('recu/<int:pk>/imprimer/',    views.receipt_print_view, name='receipt_print'),
 
-    # Polling AJAX
-    path('paiement/<int:pk>/statut/',       views.check_status_view,   name='check_status'),
-
-    # Webhook FeexPay
-    path('paiement/webhook/',               views.webhook_view,        name='webhook'),
+    # Confirmation admin rapide
+    path('paiement/<int:pk>/confirmer/', views.confirm_payment_view, name='confirm'),
 ]

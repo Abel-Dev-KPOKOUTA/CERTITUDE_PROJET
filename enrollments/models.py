@@ -52,7 +52,14 @@ class Enrollment(models.Model):
 
     # ── Niveau & Série ──────────────────────────────────────
     level = models.CharField(max_length=10, choices=LEVEL_CHOICES, verbose_name="Niveau")
-    serie = models.CharField(max_length=1,  choices=SERIE_CHOICES, verbose_name="Série")
+    serie = models.CharField(
+        max_length=1, choices=SERIE_CHOICES,
+        blank=True, default='',
+        verbose_name="Série"
+    )
+
+
+
 
     # ── Informations du parent (optionnel) ──────────────────
     parent_name  = models.CharField(max_length=200, blank=True, verbose_name="Nom du parent / tuteur")

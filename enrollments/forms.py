@@ -56,6 +56,6 @@ class EnrollmentForm(forms.ModelForm):
 
         # 3ème → pas de série
         if cleaned.get('level') == '3eme':
-            cleaned['serie'] = 'C'
+            cleaned['serie'] = ''   # pas de série pour la 3ème
 
         return cleaned

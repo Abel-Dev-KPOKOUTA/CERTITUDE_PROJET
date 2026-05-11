@@ -1,9 +1,10 @@
-from django.urls import path, include
-from .import views
-from django.conf import settings
-from django.conf.urls.static import static
+from django.urls import path
+from . import views
 
 app_name = 'core'
+
 urlpatterns = [
-    path('', views.accueil, name='index'),
+    path('',              views.home,         name='index'),
+    path('galerie/',      views.galerie,      name='galerie'),
+    path('temoignages/',  views.temoignages,  name='temoignages'),
 ]

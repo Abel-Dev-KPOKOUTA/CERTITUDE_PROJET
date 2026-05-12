@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import os 
 
 def home(request):
     return render(request, 'core/index.html')
@@ -9,7 +9,7 @@ def galerie(request):
     # Génère dynamiquement les 50 images
     images = [
         {'src': f'/images/{i}.jpg', 'alt': f'Édition 2025 — photo {i}'}
-        for i in range(1, 51)
+        for i in range(1, len(os.listdir('images')) )
     ]
     return render(request, 'core/galerie.html', {'images': images})
 

@@ -25,7 +25,7 @@
     img{max-width:100%;display:block}
     a{text-decoration:none;color:inherit}
 
-    /* NAVBAR */
+    /* ── NAVBAR ── */
     .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--gray-200);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .3s}
     .nav.scrolled{box-shadow:var(--shadow)}
     .nav-brand{display:flex;align-items:center;gap:.7rem}
@@ -46,7 +46,7 @@
     .mobile-menu a{font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:600;color:var(--navy);padding:.8rem 0;border-bottom:1px solid var(--gray-100)}
     .mobile-menu .m-cta{margin-top:1rem;background:var(--blue);color:var(--white);text-align:center;padding:1rem;border-radius:var(--r);font-size:1rem;font-weight:700}
 
-    /* HERO */
+    /* ── HERO ── */
     .hero{min-height:100vh;padding-top:64px;background:linear-gradient(135deg,#1040a8 0%,#1a56db 45%,#3b82f6 100%);display:flex;align-items:center;position:relative;overflow:hidden}
     .hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);top:-200px;right:-150px}
     .hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.15) 0%,transparent 70%);bottom:-100px;left:-100px}
@@ -76,7 +76,7 @@
     .info-val{font-size:.9rem;font-weight:600;margin-top:.15rem}
     .deadline-badge{margin-top:1.5rem;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);border-radius:var(--r);padding:.8rem 1rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;font-weight:600;color:#fde68a}
 
-    /* SECTIONS */
+    /* ── SECTIONS ── */
     .section{padding:5rem 1.5rem}
     .section-alt{background:var(--gray-50)}
     .container{max-width:1100px;margin:0 auto}
@@ -86,20 +86,13 @@
     .text-center{text-align:center}
     .text-center .sec-sub{margin-left:auto;margin-right:auto}
 
-    /* VOIR PLUS BUTTON */
-    .voir-plus{
-      display:inline-flex;align-items:center;gap:.5rem;
-      background:var(--blue-lt);color:var(--blue);
-      padding:.7rem 1.6rem;border-radius:50px;
-      font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;
-      transition:background .2s,color .2s,transform .15s;
-      margin-top:1.8rem;
-    }
+    /* ── VOIR PLUS ── */
+    .voir-plus{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue-lt);color:var(--blue);padding:.7rem 1.6rem;border-radius:50px;font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;transition:background .2s,color .2s,transform .15s;margin-top:1.8rem}
     .voir-plus:hover{background:var(--blue);color:white;transform:translateY(-2px)}
     .voir-plus-dark{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.25)}
     .voir-plus-dark:hover{background:rgba(255,255,255,.2);color:white}
 
-    /* FORMATIONS */
+    /* ── FORMATIONS ── */
     .formations-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
     .formation-card{background:var(--white);border:2px solid var(--gray-200);border-radius:var(--r-lg);padding:2rem;transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden}
     .formation-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--blue-mid));transform:scaleX(0);transform-origin:left;transition:transform .3s}
@@ -119,7 +112,7 @@
     .btn-card{display:block;width:100%;text-align:center;padding:.8rem;background:var(--blue-lt);color:var(--blue);border-radius:var(--r);font-weight:700;font-family:'Sora',sans-serif;font-size:.9rem;transition:background .2s,color .2s}
     .btn-card:hover,.formation-card:hover .btn-card{background:var(--blue);color:var(--white)}
 
-    /* AVANTAGES */
+    /* ── AVANTAGES ── */
     .avantages-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
     .avantage-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r-lg);padding:1.8rem;display:flex;gap:1.2rem;align-items:flex-start;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s}
     .avantage-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
@@ -128,7 +121,32 @@
     .av-title{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.4rem}
     .av-desc{font-size:.88rem;color:var(--gray-500);line-height:1.6}
 
-    /* GALERIE PREVIEW */
+    /* ── FAQ ── */
+    #faq{background:var(--white);padding:5rem 1.5rem}
+    .faq-layout{display:grid;grid-template-columns:380px 1fr;gap:4rem;align-items:start}
+    .faq-left h2{font-family:'Sora',sans-serif;font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:var(--navy);line-height:1.25;margin-bottom:1rem}
+    .faq-left p{color:var(--gray-500);font-size:.95rem;line-height:1.7;margin-bottom:2rem}
+    .faq-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue);color:white;padding:.8rem 1.8rem;border-radius:50px;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:700;transition:background .2s,transform .2s}
+    .faq-cta:hover{background:var(--blue-dk);transform:translateY(-1px)}
+    .faq-list{display:flex;flex-direction:column}
+    .faq-item{border-bottom:1px solid var(--gray-200)}
+    .faq-item:first-child{border-top:1px solid var(--gray-200)}
+    .faq-question{width:100%;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0;background:none;border:none;cursor:pointer;text-align:left;gap:1rem}
+    .faq-q-text{font-family:'Sora',sans-serif;font-size:.98rem;font-weight:600;color:var(--navy);line-height:1.4}
+    .faq-icon{width:28px;height:28px;border-radius:50%;background:var(--gray-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .25s,transform .3s}
+    .faq-icon svg{width:14px;height:14px;stroke:var(--gray-500);transition:stroke .2s}
+    .faq-item.open .faq-icon{background:var(--blue);transform:rotate(180deg)}
+    .faq-item.open .faq-icon svg{stroke:white}
+    .faq-answer{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
+    .faq-answer-inner{padding:0 0 1.2rem;font-size:.9rem;color:var(--gray-500);line-height:1.75}
+    .faq-item.open .faq-answer{max-height:600px}
+    .faq-steps{display:flex;flex-direction:column;gap:.7rem;margin-top:.8rem}
+    .faq-step{display:flex;gap:.8rem;align-items:flex-start}
+    .step-num{width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:.75rem;font-weight:700;font-family:'Sora',sans-serif;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem}
+    .step-text{font-size:.88rem;color:var(--gray-700);line-height:1.6}
+    .step-text strong{color:var(--navy)}
+
+    /* ── GALERIE PREVIEW ── */
     #galerie{background:var(--navy);padding:5rem 1.5rem}
     #galerie .sec-label{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)}
     #galerie .sec-title{color:var(--white)}
@@ -146,7 +164,7 @@
     .dot.active{background:var(--white);transform:scale(1.3)}
     .galerie-counter{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:.4rem .9rem;border-radius:50px;font-size:.8rem;margin-bottom:1rem}
 
-    /* TÉMOIGNAGES PREVIEW */
+    /* ── TÉMOIGNAGES PREVIEW ── */
     #temoignages{background:var(--gray-50);padding:5rem 1.5rem}
     .temoignages-preview{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
     .temo-card{background:var(--white);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
@@ -163,7 +181,7 @@
     .temo-meta{font-size:.78rem;color:var(--gray-500);display:flex;align-items:center;gap:.4rem}
     .temo-badge{background:var(--blue-lt);color:var(--blue);padding:.2rem .6rem;border-radius:50px;font-weight:600;font-size:.72rem}
 
-    /* MODALITÉS */
+    /* ── MODALITÉS ── */
     .modalites-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
     .modalite-card{border-radius:var(--r-lg);padding:2rem;text-align:center}
     .modalite-card.blue{background:var(--blue);color:white}
@@ -178,7 +196,7 @@
     .green-card .modalite-detail{background:rgba(255,255,255,.2);color:white}
     .light .modalite-detail{background:var(--blue-lt);color:var(--blue)}
 
-    /* CTA */
+    /* ── CTA ── */
     .cta-banner{background:linear-gradient(135deg,var(--blue-dk),var(--blue));padding:4rem 1.5rem;text-align:center;color:white;position:relative;overflow:hidden}
     .cta-banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(255,255,255,.08) 0%,transparent 50%),radial-gradient(circle at 80% 50%,rgba(245,158,11,.15) 0%,transparent 50%)}
     .cta-banner-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
@@ -186,7 +204,7 @@
     .cta-banner p{opacity:.85;margin-bottom:2rem;font-size:1rem}
     .cta-deadline{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#fde68a;padding:.45rem 1rem;border-radius:50px;font-size:.82rem;font-weight:700;margin-bottom:1.5rem}
 
-    /* CONTACT */
+    /* ── CONTACT ── */
     .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
     .contact-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r-lg);padding:1.8rem;display:flex;align-items:center;gap:1.2rem;box-shadow:var(--shadow-sm);transition:box-shadow .2s}
     .contact-card:hover{box-shadow:var(--shadow)}
@@ -195,7 +213,7 @@
     .contact-label{font-size:.78rem;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
     .contact-val{font-family:'Sora',sans-serif;font-weight:700;font-size:1.05rem;color:var(--navy)}
 
-    /* FOOTER */
+    /* ── FOOTER ── */
     footer{background:var(--navy);color:rgba(255,255,255,.6);padding:3rem 1.5rem 2rem;text-align:center}
     .footer-brand{display:flex;align-items:center;justify-content:center;gap:.8rem;margin-bottom:1.2rem}
     .footer-brand img{width:44px;height:44px;border-radius:50%;background:white;padding:3px;object-fit:contain}
@@ -211,11 +229,13 @@
     .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
     .fade-in.visible{opacity:1;transform:none}
 
+    /* ── RESPONSIVE ── */
     @media(max-width:900px){
       .nav-links,.nav-cta{display:none} .hamburger{display:flex}
       .hero-inner{grid-template-columns:1fr;gap:2rem} .hero-card{display:none}
       .formations-grid,.avantages-grid,.modalites-grid,.contact-grid{grid-template-columns:1fr}
       .temoignages-preview{grid-template-columns:1fr}
+      .faq-layout{grid-template-columns:1fr;gap:2rem}
     }
     @media(max-width:600px){
       .hero h1{font-size:2rem} .hero-stats{gap:.8rem} .stat{padding:.7rem .9rem}
@@ -236,6 +256,7 @@
     <a href="#galerie">Galerie</a>
     <a href="#temoignages">Témoignages</a>
     <a href="#avantages">Avantages</a>
+    <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
   </div>
   <a href="{% url 'enrollments:create' %}" class="nav-cta">S'inscrire maintenant</a>
@@ -243,11 +264,12 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#formations" class="mob-link">📚 Formations</a>
-  <a href="#galerie"    class="mob-link">🖼️ Galerie</a>
+  <a href="#formations"  class="mob-link">📚 Formations</a>
+  <a href="#galerie"     class="mob-link">🖼️ Galerie</a>
   <a href="#temoignages" class="mob-link">🎥 Témoignages</a>
-  <a href="#avantages"  class="mob-link">🎁 Avantages</a>
-  <a href="#contact"    class="mob-link">📞 Contact</a>
+  <a href="#avantages"   class="mob-link">🎁 Avantages</a>
+  <a href="#faq"         class="mob-link">❓ FAQ</a>
+  <a href="#contact"     class="mob-link">📞 Contact</a>
   <a href="{% url 'enrollments:create' %}" class="m-cta">✦ S'inscrire maintenant</a>
 </div>
 
@@ -258,7 +280,7 @@
     <div>
       <div class="hero-badge">Inscriptions ouvertes jusqu'au 22 juin 2026</div>
       <h1>Maîtrisez 100 % de votre programme en <span>2 mois</span></h1>
-      <p class="hero-desc">Cours intensifs de renforcement — Juillet & Août 2026. Maths, PCT, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C & D.</p>
+      <p class="hero-desc">Cours intensifs de renforcement — Juillet &amp; Août 2026. Maths, PCT, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C &amp; D.</p>
       <div class="hero-btns">
         <a href="{% url 'enrollments:create' %}" class="btn-primary">🚀 S'inscrire maintenant</a>
         <a href="#formations" class="btn-outline-white">Voir les formations</a>
@@ -300,7 +322,7 @@
       </div>
       <div class="formation-card featured fade-in">
         <div class="badge-featured">Populaire</div>
-        <div class="level-tag">1ères C & D</div>
+        <div class="level-tag">1ères C &amp; D</div>
         <h3>Cours de 1ère</h3>
         <p class="formation-desc">Maîtrisez les bases de Terminale avec avance.</p>
         <div class="subjects"><span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span><span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span></div>
@@ -308,7 +330,7 @@
         <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-card">S'inscrire →</a>
       </div>
       <div class="formation-card fade-in">
-        <div class="level-tag">Terminales C & D</div>
+        <div class="level-tag">Terminales C &amp; D</div>
         <h3>Cours de Terminale</h3>
         <p class="formation-desc">Préparation intensive au BAC — 100 % du programme.</p>
         <div class="subjects"><span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span><span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span></div>
@@ -319,7 +341,7 @@
   </div>
 </section>
 
-<!-- GALERIE PREVIEW (6 photos) -->
+<!-- GALERIE PREVIEW -->
 <section id="galerie">
   <div class="container">
     <div class="text-center fade-in" style="margin-bottom:2rem">
@@ -342,14 +364,12 @@
     </div>
     <div class="carousel-dots" id="carouselDots"></div>
     <div class="text-center" style="margin-top:1.5rem">
-      <a href="{% url 'core:galerie' %}" class="voir-plus voir-plus-dark">
-        🖼️ Voir toutes les 50 photos →
-      </a>
+      <a href="{% url 'core:galerie' %}" class="voir-plus voir-plus-dark">🖼️ Voir toutes les 50 photos →</a>
     </div>
   </div>
 </section>
 
-<!-- TÉMOIGNAGES PREVIEW (2 vidéos) -->
+<!-- TÉMOIGNAGES PREVIEW -->
 <section class="section" id="temoignages">
   <div class="container">
     <div class="text-center fade-in">
@@ -358,52 +378,29 @@
       <p class="sec-sub">Découvrez ce que nos anciens apprenants pensent de l'expérience La Certitude.</p>
     </div>
     <div class="temoignages-preview fade-in">
-
-      <!-- Vidéo 1 — remplace VOTRE_ID_1 par l'ID YouTube réel -->
       <div class="temo-card">
-        <div class="video-thumb" onclick="openVideo('VOTRE_ID_1', this)">
-          <img src="https://img.youtube.com/vi/VOTRE_ID_1/hqdefault.jpg"
-               loading="lazy" alt="Témoignage Koffi Emmanuel"
-               onerror="this.src='/images/1.jpg'"/>
-          <div class="play-overlay">
-            <div class="play-circle">▶</div>
-            <span>Regarder le témoignage</span>
-          </div>
+        <div class="video-thumb" onclick="openVideo('VOTRE_ID_1')">
+          <img src="https://img.youtube.com/vi/VOTRE_ID_1/hqdefault.jpg" loading="lazy" alt="Témoignage" onerror="this.src='/images/1.jpg'"/>
+          <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
         </div>
         <div class="temo-info">
           <div class="temo-name">Koffi Emmanuel</div>
-          <div class="temo-meta">
-            <span class="temo-badge">1ère C</span>
-            CEG Zogbo · Édition 2025
-          </div>
+          <div class="temo-meta"><span class="temo-badge">1ère C</span> CEG Zogbo · Édition 2025</div>
         </div>
       </div>
-
-      <!-- Vidéo 2 — remplace VOTRE_ID_2 par l'ID YouTube réel -->
       <div class="temo-card">
-        <div class="video-thumb" onclick="openVideo('VOTRE_ID_2', this)">
-          <img src="https://img.youtube.com/vi/VOTRE_ID_2/hqdefault.jpg"
-               loading="lazy" alt="Témoignage Adjoua Marie"
-               onerror="this.src='/images/2.jpg'"/>
-          <div class="play-overlay">
-            <div class="play-circle">▶</div>
-            <span>Regarder le témoignage</span>
-          </div>
+        <div class="video-thumb" onclick="openVideo('VOTRE_ID_2')">
+          <img src="https://img.youtube.com/vi/VOTRE_ID_2/hqdefault.jpg" loading="lazy" alt="Témoignage" onerror="this.src='/images/2.jpg'"/>
+          <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
         </div>
         <div class="temo-info">
           <div class="temo-name">Adjoua Marie</div>
-          <div class="temo-meta">
-            <span class="temo-badge">Terminale D</span>
-            Lycée Béhanzin · Édition 2025
-          </div>
+          <div class="temo-meta"><span class="temo-badge">Terminale D</span> Lycée Béhanzin · Édition 2025</div>
         </div>
       </div>
-
     </div>
     <div class="text-center">
-      <a href="{% url 'core:temoignages' %}" class="voir-plus">
-        🎥 Voir les 10 témoignages →
-      </a>
+      <a href="{% url 'core:temoignages' %}" class="voir-plus">🎥 Voir les 10 témoignages →</a>
     </div>
   </div>
 </section>
@@ -425,6 +422,122 @@
   </div>
 </section>
 
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section id="faq">
+  <div class="container">
+    <div class="faq-layout">
+
+      <div class="faq-left fade-in">
+        <div class="sec-label">❓ Questions fréquentes</div>
+        <h2>Tout savoir sur l'inscription</h2>
+        <p>Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses sont ici.</p>
+        <a href="{% url 'enrollments:create' %}" class="faq-cta">S'inscrire maintenant →</a>
+      </div>
+
+      <div class="faq-list fade-in" id="faqList">
+
+        <div class="faq-item open">
+          <button class="faq-question">
+            <span class="faq-q-text">Comment se déroule l'inscription en ligne ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              L'inscription se fait en quelques minutes, sans créer de compte.
+              <div class="faq-steps">
+                <div class="faq-step"><div class="step-num">1</div><div class="step-text"><strong>Choisissez votre profil</strong> — vous êtes l'élève lui-même ou un parent qui inscrit son enfant.</div></div>
+                <div class="faq-step"><div class="step-num">2</div><div class="step-text"><strong>Remplissez le formulaire</strong> — Nom, prénom, téléphone, établissement.</div></div>
+                <div class="faq-step"><div class="step-num">3</div><div class="step-text"><strong>Choisissez le niveau</strong> — 3ème, 1ère C/D ou Terminale C/D + la série.</div></div>
+                <div class="faq-step"><div class="step-num">4</div><div class="step-text"><strong>Effectuez le paiement</strong> — via MTN MoMo ou Moov Money au numéro indiqué.</div></div>
+                <div class="faq-step"><div class="step-num">5</div><div class="step-text"><strong>Téléchargez votre reçu</strong> — généré automatiquement après votre paiement.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Quels modes de paiement sont acceptés ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Nous acceptons les paiements via <strong>MTN Mobile Money</strong> (01 96 38 92 49)
+              et <strong>Moov Money</strong> (01 95 51 17 61), au nom de <strong>CODJO Abel Jean Eudes</strong>.
+              Le paiement peut être effectué en totalité ou en <strong>plusieurs tranches</strong>.
+              Un reçu téléchargeable est généré à chaque paiement.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Quelle est la date limite pour s'inscrire ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Les inscriptions sont ouvertes du <strong>1er avril au 22 juin 2026</strong>.
+              Passé cette date, les inscriptions ne seront plus acceptées.
+              Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong>
+              réservé aux 10 premiers inscrits par classe.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Où se déroulent les cours ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Les cours se déroulent à l'<strong>EPP Gbégamey Sud, Cotonou</strong>,
+              en face du Collège Notre-Dame des Apôtres.<br/><br/>
+              📅 Du <strong>1er juillet au 31 août 2026</strong><br/>
+              ⏰ <strong>Lundi au Vendredi</strong> de <strong>08h30 à 13h00</strong> (repos le mercredi)
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Un parent peut-il inscrire son enfant ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Oui, tout à fait. Lors de l'inscription, vous choisissez si vous êtes
+              <strong>l'élève lui-même</strong> ou un <strong>parent / tuteur</strong>.
+              Si vous êtes parent, vous renseignez les informations de votre enfant
+              et vos coordonnées. Votre enfant n'a pas besoin d'avoir un téléphone.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Comment s'inscrire sans accès à internet ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Deux alternatives sont disponibles :<br/><br/>
+              🏫 <strong>Sur place</strong> — Venez tous les samedis de 14h00 à 18h30
+              à l'EPP Gbégamey Sud.<br/><br/>
+              💬 <strong>Via WhatsApp</strong> — Envoyez votre Nom, Prénoms,
+              Établissement et numéro au <strong>01 96 38 92 49</strong>
+              après avoir effectué votre paiement Mobile Money.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ══════════════════ FIN FAQ ══════════════════ -->
+
 <!-- MODALITÉS -->
 <section class="section" id="modalites">
   <div class="container">
@@ -436,7 +549,7 @@
     <div class="modalites-grid fade-in">
       <div class="modalite-card blue"><span class="modalite-icon">🌐</span><h3>En ligne</h3><p>Formulaire + paiement MTN MoMo ou Moov Money.</p><a href="{% url 'enrollments:create' %}" class="modalite-detail">Commencer →</a></div>
       <div class="modalite-card light"><span class="modalite-icon">🏫</span><h3>Sur place</h3><p>EPP Gbégamey Sud tous les samedis.</p><span class="modalite-detail">Samedis 14h00–18h30</span></div>
-      <div class="modalite-card green-card"><span class="modalite-icon">💬</span><h3>WhatsApp</h3><p>Envoyez Nom, Établissement & Contact au 01 96 38 92 49.</p><a href="https://wa.me/22996389249" target="_blank" class="modalite-detail">Envoyer →</a></div>
+      <div class="modalite-card green-card"><span class="modalite-icon">💬</span><h3>WhatsApp</h3><p>Envoyez Nom, Établissement &amp; Contact au 01 96 38 92 49.</p><a href="https://wa.me/22996389249" target="_blank" class="modalite-detail">Envoyer →</a></div>
     </div>
   </div>
 </section>
@@ -488,7 +601,7 @@
 <!-- VIDEO MODAL -->
 <div id="videoModal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:1rem">
   <div style="width:100%;max-width:800px;position:relative">
-    <button onclick="closeVideo()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:white;font-size:1.8rem;cursor:pointer;font-family:'Sora',sans-serif">✕</button>
+    <button onclick="closeVideo()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:white;font-size:1.8rem;cursor:pointer">✕</button>
     <div style="padding-top:56.25%;position:relative;border-radius:16px;overflow:hidden">
       <iframe id="videoFrame" src="" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen allow="autoplay"></iframe>
     </div>
@@ -510,8 +623,8 @@
   const dotsEl = document.getElementById('carouselDots');
   const slides = track.querySelectorAll('.carousel-slide');
   let current = 0;
-  slides.forEach((_, i) => { const d = document.createElement('div'); d.className = 'dot' + (i===0?' active':''); d.addEventListener('click', () => goTo(i)); dotsEl.appendChild(d); });
-  function goTo(n) { current = (n + slides.length) % slides.length; track.style.transform = `translateX(-${current*100}%)`; dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===current)); }
+  slides.forEach((_, i) => { const d = document.createElement('div'); d.className = 'dot'+(i===0?' active':''); d.addEventListener('click', () => goTo(i)); dotsEl.appendChild(d); });
+  function goTo(n) { current = (n+slides.length)%slides.length; track.style.transform = `translateX(-${current*100}%)`; dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===current)); }
   document.getElementById('prevBtn').addEventListener('click', () => goTo(current-1));
   document.getElementById('nextBtn').addEventListener('click', () => goTo(current+1));
   let auto = setInterval(() => goTo(current+1), 4000);
@@ -519,10 +632,9 @@
   track.parentElement.addEventListener('mouseleave', () => { auto = setInterval(() => goTo(current+1), 4000); });
 
   /* Video modal */
-  function openVideo(id, el) {
-    const modal = document.getElementById('videoModal');
+  function openVideo(id) {
     document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-    modal.style.display = 'flex';
+    document.getElementById('videoModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
   function closeVideo() {
@@ -531,6 +643,16 @@
     document.body.style.overflow = '';
   }
   document.getElementById('videoModal').addEventListener('click', function(e) { if(e.target===this) closeVideo(); });
+
+  /* FAQ Accordion */
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
 
   /* Scroll reveal */
   const observer = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, {threshold:.12});

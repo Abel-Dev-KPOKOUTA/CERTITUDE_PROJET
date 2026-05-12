@@ -6,381 +6,1245 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Groupe La Certitude — Cours Intensifs 2026</title>
   <link rel="icon" href="/images/logo_certitude.png" type="image/png"/>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <!-- Police EXACTE de Vatcho -->
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
   <style>
+    /* ═══════════════════════════════════════════════
+       VATCHO EXACT TOKENS — source Bricolage Grotesque
+    ═══════════════════════════════════════════════ */
     :root {
-      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe; --blue-mid:#3b82f6;
-      --sky:#dbeafe; --gold:#f59e0b; --gold-lt:#fef3c7;
-      --white:#fff; --gray-50:#f8fafc; --gray-100:#f1f5f9;
-      --gray-200:#e2e8f0; --gray-500:#64748b; --gray-700:#334155;
-      --navy:#0f172a; --green:#10b981;
-      --r:16px; --r-lg:24px;
-      --shadow-sm:0 2px 8px rgba(15,23,42,.06);
-      --shadow:0 4px 24px rgba(15,23,42,.10);
-      --shadow-lg:0 12px 48px rgba(15,23,42,.14);
+      /* Hero gradient — exact Vatcho */
+      --hero-from:  #d7c8ff;
+      --hero-via:   #c2b0f8;
+      --hero-to:    #b79dee;
+
+      /* Accent violet Vatcho */
+      --accent:     #3a2bbf;
+      --accent-10:  rgba(58,43,191,.10);
+      --accent-20:  rgba(58,43,191,.20);
+
+      /* Bouton principal Vatcho — #635b7d */
+      --btn:        #635b7d;
+      --btn-hover:  #4f4865;
+
+      /* Fond clair section */
+      --bg-lavender: #f6f4ff;
+      --bg-white:    #ffffff;
+      --bg-slate:    #f8fafc;
+
+      /* Textes */
+      --ink:        #0f172a;
+      --ink-md:     #475569;
+      --ink-lt:     #94a3b8;
+
+      /* Bordures */
+      --border:     #e2e8f0;
+      --border-md:  #cbd5e1;
+
+      /* Tags funding */
+      --tag-funded-bg:  #ecfdf5;
+      --tag-funded-txt: #059669;
+      --tag-partial-bg: #fef9c3;
+      --tag-partial-txt:#a16207;
+      --tag-closed-bg:  #fef2f2;
+      --tag-closed-txt: #dc2626;
+      --tag-cat-bg:     var(--accent-10);
+      --tag-cat-txt:    var(--accent);
+
+      /* Ombres */
+      --sh-sm: 0 8px 30px rgba(0,0,0,.06);
+      --sh-md: 0 12px 40px rgba(0,0,0,.10);
+
+      --r-card: 20px;
+      --r-pill: 999px;
+      --font: 'Bricolage Grotesque', sans-serif;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--navy);line-height:1.6;overflow-x:hidden}
-    img{max-width:100%;display:block}
-    a{text-decoration:none;color:inherit}
 
-    /* ── NAVBAR ── */
-    .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--gray-200);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .3s}
-    .nav.scrolled{box-shadow:var(--shadow)}
-    .nav-brand{display:flex;align-items:center;gap:.7rem}
-    .nav-brand img{width:40px;height:40px;border-radius:50%;object-fit:contain;background:var(--blue-lt);padding:3px}
-    .nav-brand span{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;color:var(--navy)}
-    .nav-brand span em{color:var(--blue);font-style:normal}
-    .nav-links{display:flex;align-items:center;gap:1.8rem;font-size:.88rem;font-weight:500;color:var(--gray-700)}
-    .nav-links a:hover{color:var(--blue)}
-    .nav-cta{background:var(--blue);color:var(--white);padding:.5rem 1.3rem;border-radius:50px;font-size:.88rem;font-weight:600;font-family:'Sora',sans-serif;transition:background .2s,transform .15s;white-space:nowrap}
-    .nav-cta:hover{background:var(--blue-dk);transform:translateY(-1px)}
-    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
-    .hamburger span{display:block;width:24px;height:2px;background:var(--navy);border-radius:99px;transition:transform .3s,opacity .3s}
-    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-    .hamburger.open span:nth-child(2){opacity:0}
-    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-    .mobile-menu{display:none;position:fixed;inset:0;z-index:99;background:var(--white);padding:80px 2rem 2rem;flex-direction:column;gap:1.2rem}
-    .mobile-menu.open{display:flex}
-    .mobile-menu a{font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:600;color:var(--navy);padding:.8rem 0;border-bottom:1px solid var(--gray-100)}
-    .mobile-menu .m-cta{margin-top:1rem;background:var(--blue);color:var(--white);text-align:center;padding:1rem;border-radius:var(--r);font-size:1rem;font-weight:700}
-
-    /* ── HERO ── */
-    .hero{min-height:100vh;padding-top:64px;background:linear-gradient(135deg,#1040a8 0%,#1a56db 45%,#3b82f6 100%);display:flex;align-items:center;position:relative;overflow:hidden}
-    .hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);top:-200px;right:-150px}
-    .hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.15) 0%,transparent 70%);bottom:-100px;left:-100px}
-    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:60px 60px}
-    .hero-inner{position:relative;z-index:1;width:100%;max-width:1200px;margin:0 auto;padding:4rem 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
-    .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:var(--white);padding:.4rem 1rem;border-radius:50px;font-size:.82rem;font-weight:500;margin-bottom:1.5rem}
-    .hero-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--gold);display:block;animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.4)}}
-    .hero h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.15;color:var(--white);margin-bottom:1.2rem}
-    .hero h1 span{color:var(--gold)}
-    .hero-desc{font-size:1.05rem;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:2rem;max-width:480px}
-    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
-    .btn-primary{background:var(--white);color:var(--blue);padding:.85rem 2rem;border-radius:50px;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(0,0,0,.2)}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.25)}
-    .btn-outline-white{border:2px solid rgba(255,255,255,.5);color:var(--white);padding:.85rem 2rem;border-radius:50px;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:600;transition:background .2s,border-color .2s}
-    .btn-outline-white:hover{background:rgba(255,255,255,.1);border-color:white}
-    .hero-stats{display:flex;gap:1.5rem;margin-top:2.5rem;flex-wrap:wrap}
-    .stat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:.9rem 1.2rem;text-align:center}
-    .stat-n{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;color:var(--gold);display:block;line-height:1}
-    .stat-l{font-size:.75rem;color:rgba(255,255,255,.7);display:block;margin-top:.3rem}
-    .hero-card{background:rgba(255,255,255,.12);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.25);border-radius:var(--r-lg);padding:2rem;color:var(--white)}
-    .hero-card h3{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
-    .info-row{display:flex;align-items:flex-start;gap:.9rem;padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.12)}
-    .info-row:last-child{border-bottom:none}
-    .info-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-    .info-label{font-size:.75rem;color:rgba(255,255,255,.6)}
-    .info-val{font-size:.9rem;font-weight:600;margin-top:.15rem}
-    .deadline-badge{margin-top:1.5rem;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);border-radius:var(--r);padding:.8rem 1rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;font-weight:600;color:#fde68a}
-
-    /* ── SECTIONS ── */
-    .section{padding:5rem 1.5rem}
-    .section-alt{background:var(--gray-50)}
-    .container{max-width:1100px;margin:0 auto}
-    .sec-label{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue-lt);color:var(--blue);padding:.35rem .9rem;border-radius:50px;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1rem}
-    .sec-title{font-family:'Sora',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;line-height:1.2;color:var(--navy);margin-bottom:.8rem}
-    .sec-sub{color:var(--gray-500);font-size:1rem;max-width:540px;line-height:1.7;margin-bottom:3rem}
-    .text-center{text-align:center}
-    .text-center .sec-sub{margin-left:auto;margin-right:auto}
-
-    /* ── VOIR PLUS ── */
-    .voir-plus{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue-lt);color:var(--blue);padding:.7rem 1.6rem;border-radius:50px;font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;transition:background .2s,color .2s,transform .15s;margin-top:1.8rem}
-    .voir-plus:hover{background:var(--blue);color:white;transform:translateY(-2px)}
-    .voir-plus-dark{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.25)}
-    .voir-plus-dark:hover{background:rgba(255,255,255,.2);color:white}
-
-    /* ── FORMATIONS ── */
-    .formations-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-    .formation-card{background:var(--white);border:2px solid var(--gray-200);border-radius:var(--r-lg);padding:2rem;transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden}
-    .formation-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--blue-mid));transform:scaleX(0);transform-origin:left;transition:transform .3s}
-    .formation-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-    .formation-card:hover::before{transform:scaleX(1)}
-    .formation-card.featured{border-color:var(--blue);background:linear-gradient(135deg,#eff6ff 0%,#fff 100%)}
-    .formation-card.featured::before{transform:scaleX(1)}
-    .badge-featured{position:absolute;top:1.2rem;right:1.2rem;background:var(--blue);color:var(--white);font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:50px;text-transform:uppercase;letter-spacing:.05em}
-    .level-tag{display:inline-block;background:var(--blue-lt);color:var(--blue);font-family:'Sora',sans-serif;font-size:.78rem;font-weight:700;padding:.3rem .8rem;border-radius:50px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1rem}
-    .formation-card h3{font-family:'Sora',sans-serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:.5rem}
-    .formation-desc{font-size:.88rem;color:var(--gray-500);margin-bottom:1.2rem;line-height:1.6}
-    .subjects{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
-    .subject-tag{background:var(--gray-100);color:var(--gray-700);font-size:.78rem;font-weight:500;padding:.3rem .7rem;border-radius:8px}
-    .price-row{display:flex;align-items:baseline;gap:.4rem;margin-bottom:1.5rem}
-    .price{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--blue)}
-    .price-unit{font-size:.85rem;color:var(--gray-500);font-weight:500}
-    .btn-card{display:block;width:100%;text-align:center;padding:.8rem;background:var(--blue-lt);color:var(--blue);border-radius:var(--r);font-weight:700;font-family:'Sora',sans-serif;font-size:.9rem;transition:background .2s,color .2s}
-    .btn-card:hover,.formation-card:hover .btn-card{background:var(--blue);color:var(--white)}
-
-    /* ── AVANTAGES ── */
-    .avantages-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
-    .avantage-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r-lg);padding:1.8rem;display:flex;gap:1.2rem;align-items:flex-start;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s}
-    .avantage-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
-    .av-icon{width:52px;height:52px;flex-shrink:0;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
-    .av-icon.blue{background:var(--blue-lt)} .av-icon.gold{background:var(--gold-lt)} .av-icon.green{background:#d1fae5} .av-icon.sky{background:var(--sky)}
-    .av-title{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.4rem}
-    .av-desc{font-size:.88rem;color:var(--gray-500);line-height:1.6}
-
-    /* ── FAQ ── */
-    #faq{background:var(--white);padding:5rem 1.5rem}
-    .faq-layout{display:grid;grid-template-columns:380px 1fr;gap:4rem;align-items:start}
-    .faq-left h2{font-family:'Sora',sans-serif;font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:var(--navy);line-height:1.25;margin-bottom:1rem}
-    .faq-left p{color:var(--gray-500);font-size:.95rem;line-height:1.7;margin-bottom:2rem}
-    .faq-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue);color:white;padding:.8rem 1.8rem;border-radius:50px;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:700;transition:background .2s,transform .2s}
-    .faq-cta:hover{background:var(--blue-dk);transform:translateY(-1px)}
-    .faq-list{display:flex;flex-direction:column}
-    .faq-item{border-bottom:1px solid var(--gray-200)}
-    .faq-item:first-child{border-top:1px solid var(--gray-200)}
-    .faq-question{width:100%;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0;background:none;border:none;cursor:pointer;text-align:left;gap:1rem}
-    .faq-q-text{font-family:'Sora',sans-serif;font-size:.98rem;font-weight:600;color:var(--navy);line-height:1.4}
-    .faq-icon{width:28px;height:28px;border-radius:50%;background:var(--gray-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .25s,transform .3s}
-    .faq-icon svg{width:14px;height:14px;stroke:var(--gray-500);transition:stroke .2s}
-    .faq-item.open .faq-icon{background:var(--blue);transform:rotate(180deg)}
-    .faq-item.open .faq-icon svg{stroke:white}
-    .faq-answer{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
-    .faq-answer-inner{padding:0 0 1.2rem;font-size:.9rem;color:var(--gray-500);line-height:1.75}
-    .faq-item.open .faq-answer{max-height:600px}
-    .faq-steps{display:flex;flex-direction:column;gap:.7rem;margin-top:.8rem}
-    .faq-step{display:flex;gap:.8rem;align-items:flex-start}
-    .step-num{width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:.75rem;font-weight:700;font-family:'Sora',sans-serif;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem}
-    .step-text{font-size:.88rem;color:var(--gray-700);line-height:1.6}
-    .step-text strong{color:var(--navy)}
-
-    /* ── GALERIE PREVIEW ── */
-    #galerie{background:var(--navy);padding:5rem 1.5rem}
-    #galerie .sec-label{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)}
-    #galerie .sec-title{color:var(--white)}
-    #galerie .sec-sub{color:rgba(255,255,255,.6)}
-    .carousel{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg)}
-    .carousel-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
-    .carousel-slide{min-width:100%;position:relative}
-    .carousel-slide img{width:100%;height:420px;object-fit:cover}
-    .slide-caption{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(0,0,0,.7));color:white;font-size:.9rem;font-weight:500}
-    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--navy);transition:background .2s,transform .2s;z-index:2}
-    .carousel-btn:hover{background:white;transform:translateY(-50%) scale(1.1)}
-    .carousel-prev{left:1rem} .carousel-next{right:1rem}
-    .carousel-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.2rem}
-    .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:background .25s,transform .25s}
-    .dot.active{background:var(--white);transform:scale(1.3)}
-    .galerie-counter{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:.4rem .9rem;border-radius:50px;font-size:.8rem;margin-bottom:1rem}
-
-    /* ── TÉMOIGNAGES PREVIEW ── */
-    #temoignages{background:var(--gray-50);padding:5rem 1.5rem}
-    .temoignages-preview{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-    .temo-card{background:var(--white);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
-    .temo-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-    .video-thumb{position:relative;padding-top:56.25%;background:#000;cursor:pointer;overflow:hidden}
-    .video-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s}
-    .temo-card:hover .video-thumb img{transform:scale(1.05)}
-    .play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,20,60,.45)}
-    .play-circle{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.5rem;transition:transform .2s}
-    .temo-card:hover .play-circle{transform:scale(1.15)}
-    .play-overlay span{color:white;font-size:.78rem;font-weight:600;font-family:'Sora',sans-serif;opacity:.9}
-    .temo-info{padding:1.1rem 1.3rem}
-    .temo-name{font-family:'Sora',sans-serif;font-weight:700;font-size:.95rem;color:var(--navy);margin-bottom:.2rem}
-    .temo-meta{font-size:.78rem;color:var(--gray-500);display:flex;align-items:center;gap:.4rem}
-    .temo-badge{background:var(--blue-lt);color:var(--blue);padding:.2rem .6rem;border-radius:50px;font-weight:600;font-size:.72rem}
-
-    /* ── MODALITÉS ── */
-    .modalites-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-    .modalite-card{border-radius:var(--r-lg);padding:2rem;text-align:center}
-    .modalite-card.blue{background:var(--blue);color:white}
-    .modalite-card.light{background:var(--white);border:2px solid var(--gray-200)}
-    .modalite-card.green-card{background:#10b981;color:white}
-    .modalite-icon{font-size:2.4rem;margin-bottom:1rem;display:block}
-    .modalite-card h3{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
-    .modalite-card p{font-size:.88rem;line-height:1.7;opacity:.85}
-    .modalite-card.light h3{color:var(--navy)} .modalite-card.light p{color:var(--gray-500);opacity:1}
-    .modalite-detail{margin-top:1rem;font-size:.82rem;font-weight:600;padding:.5rem .9rem;border-radius:50px;display:inline-block}
-    .blue .modalite-detail{background:rgba(255,255,255,.2);color:white}
-    .green-card .modalite-detail{background:rgba(255,255,255,.2);color:white}
-    .light .modalite-detail{background:var(--blue-lt);color:var(--blue)}
-
-    /* ── CTA ── */
-    .cta-banner{background:linear-gradient(135deg,var(--blue-dk),var(--blue));padding:4rem 1.5rem;text-align:center;color:white;position:relative;overflow:hidden}
-    .cta-banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(255,255,255,.08) 0%,transparent 50%),radial-gradient(circle at 80% 50%,rgba(245,158,11,.15) 0%,transparent 50%)}
-    .cta-banner-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
-    .cta-banner h2{font-family:'Sora',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.8rem}
-    .cta-banner p{opacity:.85;margin-bottom:2rem;font-size:1rem}
-    .cta-deadline{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#fde68a;padding:.45rem 1rem;border-radius:50px;font-size:.82rem;font-weight:700;margin-bottom:1.5rem}
-
-    /* ── CONTACT ── */
-    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
-    .contact-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r-lg);padding:1.8rem;display:flex;align-items:center;gap:1.2rem;box-shadow:var(--shadow-sm);transition:box-shadow .2s}
-    .contact-card:hover{box-shadow:var(--shadow)}
-    .contact-icon{width:52px;height:52px;border-radius:var(--r);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
-    .ci-blue{background:var(--blue-lt)} .ci-green{background:#d1fae5}
-    .contact-label{font-size:.78rem;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
-    .contact-val{font-family:'Sora',sans-serif;font-weight:700;font-size:1.05rem;color:var(--navy)}
-
-    /* ── FOOTER ── */
-    footer{background:var(--navy);color:rgba(255,255,255,.6);padding:3rem 1.5rem 2rem;text-align:center}
-    .footer-brand{display:flex;align-items:center;justify-content:center;gap:.8rem;margin-bottom:1.2rem}
-    .footer-brand img{width:44px;height:44px;border-radius:50%;background:white;padding:3px;object-fit:contain}
-    .footer-brand span{font-family:'Sora',sans-serif;font-weight:700;font-size:1.05rem;color:white}
-    footer p{font-size:.85rem;line-height:1.8}
-    footer .stars{color:var(--gold);letter-spacing:.3em;font-size:.8rem;margin:1rem 0}
-    footer .copy{font-size:.78rem;margin-top:1.5rem;opacity:.4}
-
-    .wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:56px;height:56px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.5);transition:transform .2s}
-    .wa-float:hover{transform:scale(1.1)}
-    .wa-float svg{width:28px;height:28px;fill:white}
-
-    .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
-    .fade-in.visible{opacity:1;transform:none}
-
-    /* ── RESPONSIVE ── */
-    @media(max-width:900px){
-      .nav-links,.nav-cta{display:none} .hamburger{display:flex}
-      .hero-inner{grid-template-columns:1fr;gap:2rem} .hero-card{display:none}
-      .formations-grid,.avantages-grid,.modalites-grid,.contact-grid{grid-template-columns:1fr}
-      .temoignages-preview{grid-template-columns:1fr}
-      .faq-layout{grid-template-columns:1fr;gap:2rem}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font);
+      background: var(--bg-white);
+      color: var(--ink);
+      overflow-x: hidden;
+      line-height: 1.6;
     }
-    @media(max-width:600px){
-      .hero h1{font-size:2rem} .hero-stats{gap:.8rem} .stat{padding:.7rem .9rem}
-      .carousel-slide img{height:240px}
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ═══ NAVBAR ═══ */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      padding: 1rem 1.5rem;
+    }
+    /* Logo — texte pur comme Vatcho */
+    .nav-logo {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: 1.3rem; font-weight: 700; letter-spacing: -.03em;
+    }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 50%; object-fit: contain; }
+
+    /* Search — Vatcho style */
+    .nav-search {
+      flex: 1; min-width: 220px; max-width: 480px; order: 3;
+      width: 100%;
+    }
+    .nav-search form {
+      display: flex; align-items: center; gap: .5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--r-pill);
+      padding: .45rem 1rem;
+      background: var(--bg-white);
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .nav-search form:focus-within {
+      border-color: #9986f6;
+      box-shadow: 0 0 0 2px rgba(153,134,246,.25);
+    }
+    .nav-search svg { color: var(--ink-lt); flex-shrink: 0; }
+    .nav-search input {
+      flex: 1; border: none; outline: none; font-size: .8rem;
+      font-family: var(--font); color: var(--ink);
+      background: transparent;
+    }
+    .nav-search input::placeholder { color: var(--ink-lt); }
+
+    /* Nav links */
+    .nav-links {
+      display: flex; align-items: center; gap: 1.5rem;
+      font-size: .78rem; font-weight: 600; color: var(--ink-md);
+      margin-left: auto; order: 2;
+    }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+    .nav-links a.active { text-decoration: underline; text-underline-offset: 4px; }
+
+    .btn-login {
+      border: 1px solid var(--border-md); border-radius: var(--r-pill);
+      padding: .4rem 1.1rem; font-size: .78rem; font-weight: 600;
+      background: var(--bg-white); color: var(--ink-md); cursor: pointer;
+      font-family: var(--font); transition: background .2s;
+    }
+    .btn-login:hover { background: var(--bg-slate); }
+    /* Bouton Vatcho exact #635b7d */
+    .btn-vatcho {
+      background: var(--btn); color: #fff;
+      border: none; border-radius: var(--r-pill);
+      padding: .45rem 1.2rem; font-size: .78rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font);
+      transition: background .2s;
+      display: inline-flex; align-items: center; gap: .35rem;
+    }
+    .btn-vatcho:hover { background: var(--btn-hover); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 99px; transition: .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display: none; position: fixed; inset: 0; z-index: 99; background: #fff; padding: 70px 1.5rem 2rem; flex-direction: column; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 1.1rem; font-weight: 700; padding: .8rem 0; border-bottom: 1px solid var(--border); color: var(--ink); }
+    .mobile-menu .m-cta { margin-top: 1.2rem; background: var(--btn); color: #fff; text-align: center; padding: .9rem; border-radius: var(--r-card); font-weight: 700; }
+
+    /* ═══ HERO — gradient Vatcho exact ═══ */
+    .hero {
+      background: linear-gradient(135deg, var(--hero-from) 0%, var(--hero-via) 50%, var(--hero-to) 100%);
+      padding: 4rem 1.5rem 0;
+      overflow: hidden; position: relative;
+    }
+    /* Déco SVG comme Vatcho */
+    .hero-deco { position: absolute; pointer-events: none; }
+    .hero-deco-blob {
+      top: -40px; right: -60px; width: 400px; opacity: .45;
+    }
+    .hero-deco-circle {
+      top: 40px; right: 40px; width: 50px; opacity: .7;
+    }
+
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: flex-end;
+    }
+    /* Texte hero — style Vatcho avec shadow-box */
+    .hero-text { padding-bottom: 3rem; }
+    .hero-h1 {
+      font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -.03em; margin-bottom: 1.2rem;
+    }
+    /* Vatcho met les mots en boîte blanche */
+    .hero-h1 .word-box {
+      display: inline-block;
+      background: #fff; color: var(--ink);
+      padding: .1em .3em;
+      box-shadow: 4px 4px 0 #e2d9fd;
+      margin-bottom: .2rem; margin-right: .2rem;
+    }
+    .hero-sub {
+      font-size: .98rem; color: rgba(15,23,42,.75);
+      max-width: 500px; line-height: 1.75; margin-bottom: 1.8rem;
+    }
+    .hero-btns { display: flex; gap: .8rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
+    .btn-hero-primary {
+      background: var(--ink); color: #fff;
+      border-radius: var(--r-pill); padding: .7rem 1.8rem;
+      font-size: .9rem; font-weight: 600;
+      font-family: var(--font);
+      transition: background .2s;
+    }
+    .btn-hero-primary:hover { background: #1e293b; }
+    .btn-hero-ghost {
+      background: rgba(255,255,255,.4); color: var(--ink);
+      border-radius: var(--r-pill); padding: .7rem 1.8rem;
+      font-size: .9rem; font-weight: 500;
+      font-family: var(--font);
+      transition: background .2s;
+    }
+    .btn-hero-ghost:hover { background: rgba(255,255,255,.65); }
+
+    /* Stats pills */
+    .hero-stats { display: flex; flex-wrap: wrap; gap: .8rem; }
+    .stat-pill {
+      background: rgba(255,255,255,.5);
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: var(--r-pill);
+      padding: .5rem 1.2rem;
+      display: flex; flex-direction: column; align-items: center;
+      backdrop-filter: blur(4px);
+    }
+    .stat-n { font-size: 1.4rem; font-weight: 800; letter-spacing: -.03em; }
+    .stat-l { font-size: .68rem; font-weight: 600; color: rgba(15,23,42,.6); margin-top: 1px; }
+
+    /* Hero image panel */
+    .hero-img-panel {
+      position: relative; aspect-ratio: 4/3;
+      align-self: flex-end;
+    }
+    .hero-img-panel img {
+      width: 100%; height: 100%; object-fit: contain;
+      object-position: bottom;
+    }
+    /* Info card flottante dans le hero */
+    .hero-card {
+      position: absolute; bottom: 1.5rem; left: -1rem;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: var(--r-card);
+      padding: 1.2rem 1.4rem;
+      box-shadow: var(--sh-md);
+      min-width: 240px;
+    }
+    .hero-card-title {
+      font-size: .78rem; font-weight: 700; color: var(--ink-md);
+      text-transform: uppercase; letter-spacing: .05em;
+      margin-bottom: .9rem;
+    }
+    .hero-card-row {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .55rem 0; border-bottom: 1px solid rgba(0,0,0,.06);
+      font-size: .85rem;
+    }
+    .hero-card-row:last-child { border-bottom: none; }
+    .hero-card-icon {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: var(--bg-lavender);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .hero-card-label { font-size: .68rem; color: var(--ink-lt); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .hero-card-val { font-size: .87rem; font-weight: 700; }
+    .hero-deadline {
+      margin-top: .9rem;
+      background: rgba(58,43,191,.08);
+      border: 1px solid rgba(58,43,191,.2);
+      border-radius: var(--r-card);
+      padding: .6rem .9rem;
+      font-size: .82rem; font-weight: 700; color: var(--accent);
+      display: flex; align-items: center; gap: .5rem;
+    }
+
+    /* ═══ SECTIONS ═══ */
+    .section { padding: 4.5rem 1.5rem; }
+    .section-alt { background: var(--bg-lavender); }
+    .section-dark { background: #1e1b2e; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .sec-head { margin-bottom: 2.5rem; }
+    /* Label pill — Vatcho style */
+    .sec-label {
+      display: inline-block;
+      font-size: .72rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-10);
+      border-radius: var(--r-pill);
+      padding: .3rem .9rem; margin-bottom: .7rem;
+    }
+    .sec-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.15;
+      margin-bottom: .5rem;
+    }
+    .sec-sub {
+      font-size: .95rem; color: var(--ink-md); max-width: 520px; line-height: 1.75;
+    }
+    .text-center { text-align: center; }
+    .text-center .sec-sub { margin: 0 auto; }
+
+    /* Tags Vatcho */
+    .tag {
+      display: inline-block; border-radius: var(--r-pill);
+      padding: .28rem .75rem; font-size: .72rem; font-weight: 600;
+      letter-spacing: .03em;
+    }
+    .tag-cat    { background: var(--tag-cat-bg); color: var(--tag-cat-txt); }
+    .tag-funded { background: var(--tag-funded-bg); color: var(--tag-funded-txt); }
+    .tag-partial{ background: var(--tag-partial-bg); color: var(--tag-partial-txt); }
+    .tag-closed { background: var(--tag-closed-bg); color: var(--tag-closed-txt); }
+
+    /* ═══ OPPORTUNITY CARDS — Vatcho exact ═══ */
+    .opps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .opp-card {
+      display: flex; flex-direction: column;
+      border-radius: var(--r-card);
+      border: 1px solid var(--border);
+      background: var(--bg-white);
+      overflow: hidden;
+      box-shadow: var(--sh-sm);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .opp-card:hover { box-shadow: var(--sh-md); transform: translateY(-3px); }
+    .opp-card-img {
+      aspect-ratio: 16/10; overflow: hidden; background: var(--bg-slate);
+    }
+    .opp-card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .opp-card:hover .opp-card-img img { transform: scale(1.04); }
+    .opp-card-body { flex: 1; display: flex; flex-direction: column; padding: 1.2rem 1.3rem; }
+    .opp-card-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .75rem; }
+    .opp-card-title {
+      font-size: 1rem; font-weight: 700; line-height: 1.35;
+      margin-bottom: .25rem; letter-spacing: -.01em;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      transition: color .2s;
+    }
+    .opp-card:hover .opp-card-title { color: var(--accent); }
+    .opp-card-org { font-size: .75rem; color: var(--ink-lt); margin-bottom: .7rem; }
+    .opp-card-desc {
+      font-size: .85rem; color: var(--ink-md); line-height: 1.6;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: .7rem;
+    }
+    .opp-card-loc {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .72rem; color: var(--ink-lt); margin-bottom: 1rem;
+    }
+    .opp-card-loc svg { color: var(--accent); }
+    .opp-card-footer {
+      margin-top: auto; display: flex; align-items: center; gap: .6rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    /* "View details →" Vatcho bouton */
+    .btn-view {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--btn); color: #fff;
+      border-radius: var(--r-pill); padding: .5rem 1.1rem;
+      font-size: .75rem; font-weight: 600; font-family: var(--font);
+      transition: background .2s;
+    }
+    .btn-view:hover { background: var(--btn-hover); }
+    /* Share icon */
+    .btn-share-icon {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; background: var(--bg-white);
+      transition: border-color .2s;
+    }
+    .btn-share-icon:hover { border-color: var(--accent); }
+    .card-deadline { font-size: .72rem; font-weight: 600; color: var(--ink-md); margin-left: auto; }
+
+    /* ═══ FORMATIONS (niveaux) ═══ */
+    .formations-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .formation-card {
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--r-card); padding: 1.6rem;
+      position: relative; overflow: hidden;
+      transition: border-color .2s, box-shadow .2s, transform .2s;
+    }
+    .formation-card:hover { border-color: var(--btn); box-shadow: var(--sh-md); transform: translateY(-3px); }
+    .formation-card.featured { border-color: var(--accent); border-width: 2px; }
+    .badge-pop {
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--accent-10); color: var(--accent);
+      border-radius: var(--r-pill); padding: .22rem .65rem;
+      font-size: .68rem; font-weight: 700; letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .level-tag {
+      display: inline-block; background: var(--accent-10); color: var(--accent);
+      border-radius: var(--r-pill); padding: .28rem .85rem;
+      font-size: .72rem; font-weight: 700; letter-spacing: .04em;
+      text-transform: uppercase; margin-bottom: .9rem;
+    }
+    .formation-card h3 { font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .4rem; }
+    .formation-desc { font-size: .85rem; color: var(--ink-md); line-height: 1.65; margin-bottom: 1rem; }
+    .subjects { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.2rem; }
+    .subject-tag { background: var(--bg-slate); color: var(--ink-md); font-size: .75rem; font-weight: 600; padding: .28rem .7rem; border-radius: 8px; border: 1px solid var(--border); }
+    .price-row { display: flex; align-items: baseline; gap: .3rem; margin-bottom: 1.2rem; }
+    .price { font-size: 1.9rem; font-weight: 900; letter-spacing: -.03em; }
+    .price-unit { font-size: .82rem; color: var(--ink-lt); font-weight: 600; }
+    .card-foot-row { display: flex; align-items: center; gap: .6rem; }
+
+    /* ═══ PROFESSEURS — section clé ═══ */
+    .profs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .prof-card {
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--r-card); overflow: hidden;
+      box-shadow: var(--sh-sm);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .prof-card:hover { box-shadow: var(--sh-md); transform: translateY(-3px); }
+    .prof-avatar {
+      aspect-ratio: 16/9; background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem; position: relative; overflow: hidden;
+    }
+    .prof-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .prof-matiere-badge {
+      position: absolute; top: .8rem; left: .8rem;
+      background: var(--btn); color: #fff;
+      border-radius: var(--r-pill); padding: .28rem .75rem;
+      font-size: .7rem; font-weight: 700;
+    }
+    .prof-body { padding: 1.2rem 1.3rem; }
+    .prof-name { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .2rem; }
+    .prof-role { font-size: .78rem; color: var(--accent); font-weight: 700; margin-bottom: .6rem; }
+    .prof-bio { font-size: .82rem; color: var(--ink-md); line-height: 1.65; margin-bottom: 1rem; }
+    .prof-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.1rem; }
+    .prof-tag { background: var(--accent-10); color: var(--accent); border-radius: var(--r-pill); padding: .22rem .6rem; font-size: .72rem; font-weight: 700; }
+    .prof-contact-row { display: flex; gap: .6rem; }
+    .btn-contact-wa {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: .4rem;
+      background: #25d366; color: #fff;
+      border-radius: var(--r-pill); padding: .55rem 1rem;
+      font-size: .78rem; font-weight: 700; font-family: var(--font);
+      transition: opacity .2s;
+    }
+    .btn-contact-wa:hover { opacity: .88; }
+    .btn-contact-call {
+      display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--bg-white);
+      transition: border-color .2s;
+    }
+    .btn-contact-call:hover { border-color: var(--accent); }
+    .prof-mode-badges { display: flex; gap: .4rem; margin-bottom: .8rem; }
+    .mode-badge {
+      font-size: .68rem; font-weight: 700; padding: .2rem .55rem;
+      border-radius: var(--r-pill); border: 1px solid;
+    }
+    .mode-home { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .mode-online { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
+
+    /* ═══ ASTUCES ═══ */
+    .astuces-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+    .astuce-card {
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--r-card); overflow: hidden;
+      box-shadow: var(--sh-sm);
+      transition: box-shadow .2s, transform .2s;
+      display: flex; flex-direction: column;
+    }
+    .astuce-card:hover { box-shadow: var(--sh-md); transform: translateY(-3px); }
+    .astuce-header {
+      padding: 1.4rem 1.5rem 1rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .astuce-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+    .astuce-matiere { font-size: .7rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .2rem; }
+    .astuce-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -.02em; }
+    .astuce-body { padding: 0 1.5rem 1.5rem; }
+    .astuce-tip {
+      display: flex; gap: .75rem; padding: .7rem 0;
+      border-bottom: 1px solid var(--border); align-items: flex-start;
+    }
+    .astuce-tip:last-child { border-bottom: none; }
+    .tip-num {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--btn); color: #fff;
+      font-size: .72rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .tip-text { font-size: .85rem; color: var(--ink-md); line-height: 1.65; }
+    .tip-text strong { color: var(--ink); }
+    .astuce-cta {
+      display: block; text-align: center;
+      background: var(--accent-10); color: var(--accent);
+      border-radius: var(--r-pill); padding: .65rem 1.2rem;
+      font-size: .82rem; font-weight: 700;
+      margin: 1rem 1.5rem 1.5rem;
+      transition: background .2s;
+    }
+    .astuce-cta:hover { background: var(--accent-20); }
+
+    /* ═══ AVANTAGES ═══ */
+    .avantages-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.2rem; }
+    .avantage-card {
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--r-card); padding: 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      box-shadow: var(--sh-sm); transition: box-shadow .2s, transform .2s;
+    }
+    .avantage-card:hover { box-shadow: var(--sh-md); transform: translateY(-2px); }
+    .av-icon {
+      width: 48px; height: 48px; border-radius: 13px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+      background: var(--bg-lavender);
+    }
+    .av-title { font-size: .96rem; font-weight: 800; margin-bottom: .3rem; }
+    .av-desc { font-size: .83rem; color: var(--ink-md); line-height: 1.65; }
+
+    /* ═══ FAQ ═══ */
+    .faq-layout { display: grid; grid-template-columns: 360px 1fr; gap: 4rem; align-items: start; }
+    .faq-left .sec-title { font-size: 1.8rem; }
+    .faq-left p { font-size: .9rem; color: var(--ink-md); line-height: 1.75; margin-bottom: 1.8rem; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-question {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 0; background: none; border: none; cursor: pointer;
+      text-align: left; gap: 1rem;
+    }
+    .faq-q-text { font-size: .92rem; font-weight: 700; color: var(--ink); }
+    .faq-icon {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--bg-slate);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background .25s, transform .3s;
+    }
+    .faq-icon svg { stroke: var(--ink-md); transition: stroke .2s; }
+    .faq-item.open .faq-icon { background: var(--btn); transform: rotate(180deg); }
+    .faq-item.open .faq-icon svg { stroke: #fff; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+    .faq-answer-inner { padding: 0 0 1.2rem; font-size: .88rem; color: var(--ink-md); line-height: 1.8; }
+    .faq-item.open .faq-answer { max-height: 600px; }
+
+    /* ═══ MODALITES ═══ */
+    .modalites-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+    .modalite-card { border-radius: var(--r-card); padding: 2rem 1.7rem; text-align: center; }
+    .mc-lavender { background: linear-gradient(135deg, var(--hero-from), var(--hero-via)); }
+    .mc-white { background: var(--bg-white); border: 1px solid var(--border); box-shadow: var(--sh-sm); }
+    .mc-dark { background: var(--btn-hover); color: #fff; }
+    .modalite-icon { font-size: 2.2rem; display: block; margin-bottom: .9rem; }
+    .modalite-card h3 { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .5rem; }
+    .mc-lavender h3, .mc-white h3 { color: var(--ink); }
+    .modalite-card p { font-size: .83rem; line-height: 1.68; margin-bottom: 1rem; }
+    .mc-white p, .mc-lavender p { color: var(--ink-md); }
+    .mc-dark p { color: rgba(255,255,255,.75); }
+    .mc-pill { display: inline-block; font-size: .8rem; font-weight: 700; padding: .45rem 1.1rem; border-radius: var(--r-pill); }
+    .mc-lavender .mc-pill { background: rgba(255,255,255,.55); color: var(--ink); }
+    .mc-white .mc-pill { background: var(--accent-10); color: var(--accent); }
+    .mc-dark .mc-pill { background: rgba(255,255,255,.15); color: #fff; }
+
+    /* ═══ CTA BANNER ═══ */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--hero-from), var(--hero-via), var(--hero-to));
+      padding: 4rem 1.5rem; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+    .cta-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.9);
+      border-radius: var(--r-pill); padding: .38rem 1rem;
+      font-size: .78rem; font-weight: 700; margin-bottom: 1.1rem;
+    }
+    .cta-banner h2 { font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 900; letter-spacing: -.03em; margin-bottom: .6rem; }
+    .cta-banner p { font-size: .95rem; color: rgba(15,23,42,.7); margin-bottom: 1.8rem; }
+
+    /* ═══ TÉMOIGNAGES ═══ */
+    .temo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; }
+    .temo-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--r-card); overflow: hidden; box-shadow: var(--sh-sm); transition: box-shadow .2s, transform .2s; }
+    .temo-card:hover { box-shadow: var(--sh-md); transform: translateY(-3px); }
+    .video-thumb { position: relative; padding-top: 56.25%; cursor: pointer; overflow: hidden; background: var(--bg-slate); }
+    .video-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+    .temo-card:hover .video-thumb img { transform: scale(1.04); }
+    .play-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(30,27,46,.42); }
+    .play-circle { width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,.95); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: .4rem; transition: transform .2s; }
+    .temo-card:hover .play-circle { transform: scale(1.1); }
+    .play-overlay span { color: #fff; font-size: .75rem; font-weight: 700; opacity: .9; }
+    .temo-info { padding: 1rem 1.2rem; }
+    .temo-name { font-size: .92rem; font-weight: 800; margin-bottom: .25rem; }
+    .temo-meta { font-size: .75rem; color: var(--ink-lt); display: flex; align-items: center; gap: .4rem; }
+    .temo-badge { background: var(--accent-10); color: var(--accent); padding: .18rem .55rem; border-radius: var(--r-pill); font-weight: 700; font-size: .7rem; }
+
+    /* ═══ GALERIE ═══ */
+    .carousel { position: relative; border-radius: var(--r-card); overflow: hidden; }
+    .carousel-track { display: flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+    .carousel-slide { min-width: 100%; position: relative; }
+    .carousel-slide img { width: 100%; height: 420px; object-fit: cover; display: block; }
+    .slide-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.2rem; background: linear-gradient(transparent, rgba(0,0,0,.65)); color: #fff; font-size: .87rem; font-weight: 600; }
+    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.9); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--ink); z-index: 2; transition: background .2s; }
+    .carousel-btn:hover { background: #fff; }
+    .carousel-prev { left: .9rem; } .carousel-next { right: .9rem; }
+    .carousel-dots { display: flex; justify-content: center; gap: .45rem; margin-top: 1rem; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(0,0,0,.15); cursor: pointer; transition: .25s; }
+    .dot.active { background: var(--btn); transform: scale(1.35); }
+
+    /* ═══ CONTACT ═══ */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .contact-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--r-card); padding: 1.3rem 1.4rem; display: flex; align-items: center; gap: 1rem; box-shadow: var(--sh-sm); transition: box-shadow .2s, border-color .2s; }
+    .contact-card:hover { box-shadow: var(--sh-md); border-color: var(--btn); }
+    .contact-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: var(--bg-lavender); }
+    .contact-label { font-size: .68rem; font-weight: 800; color: var(--ink-lt); text-transform: uppercase; letter-spacing: .07em; }
+    .contact-val { font-size: 1rem; font-weight: 900; margin-top: .1rem; }
+
+    /* ═══ NEWSLETTER ═══ */
+    .newsletter-wrap {
+      background: var(--bg-lavender); border-radius: var(--r-card);
+      padding: 3rem 2rem; text-align: center; max-width: 700px; margin: 0 auto;
+    }
+    .newsletter-form { display: flex; gap: .6rem; max-width: 480px; margin: 1.5rem auto 0; flex-wrap: wrap; }
+    .newsletter-form input {
+      flex: 1; min-width: 200px; border: 1px solid var(--border);
+      border-radius: var(--r-pill); padding: .7rem 1.2rem;
+      font-size: .88rem; font-family: var(--font); outline: none;
+      transition: border-color .2s;
+    }
+    .newsletter-form input:focus { border-color: var(--accent); }
+    .newsletter-form button {
+      background: var(--btn-hover); color: #fff; border: none;
+      border-radius: var(--r-pill); padding: .7rem 1.5rem;
+      font-size: .88rem; font-weight: 700; font-family: var(--font); cursor: pointer;
+      transition: background .2s;
+    }
+    .newsletter-form button:hover { background: var(--accent); }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      background: linear-gradient(180deg, #3d3658 0%, #4f486d 45%, #635b7d 100%);
+      color: rgba(255,255,255,.7);
+      padding: 4rem 1.5rem 1.5rem; position: relative; overflow: hidden;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; }
+    .footer-brand { display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
+    .footer-brand img { width: 36px; height: 36px; border-radius: 50%; background: #fff; padding: 2px; object-fit: contain; }
+    .footer-brand-name { font-size: 1rem; font-weight: 800; color: #fff; }
+    .footer-desc { font-size: .8rem; line-height: 1.8; }
+    .footer-col h4 { font-size: .85rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+    .footer-col ul li a { font-size: .78rem; color: rgba(255,255,255,.65); transition: color .2s; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-social { display: flex; gap: .9rem; margin-top: 1rem; }
+    .footer-social a { color: rgba(255,255,255,.65); transition: color .2s; }
+    .footer-social a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.12); padding-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8rem; }
+    /* Vatcho big text footer */
+    .footer-bigtext {
+      text-align: center; margin: 1.5rem 0;
+      font-size: clamp(50px, 12vw, 160px);
+      font-weight: 900; letter-spacing: -.04em;
+      color: rgba(255,255,255,.07); user-select: none; line-height: 1;
+    }
+    .footer-wa-btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(37,211,102,.15); border: 1px solid rgba(37,211,102,.35);
+      border-radius: var(--r-pill); padding: .4rem 1rem;
+      font-size: .75rem; font-weight: 700; color: #6ee7a0;
+      transition: background .2s;
+    }
+    .footer-wa-btn:hover { background: rgba(37,211,102,.25); }
+    .footer-ig-btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(255,100,130,.12); border: 1px solid rgba(255,100,130,.28);
+      border-radius: var(--r-pill); padding: .4rem 1rem;
+      font-size: .75rem; font-weight: 700; color: #fca5b9;
+      transition: background .2s;
+    }
+    .footer-ig-btn:hover { background: rgba(255,100,130,.22); }
+    .footer-copy { font-size: .73rem; opacity: .4; }
+
+    /* ═══ WA FLOAT ═══ */
+    .wa-float { position: fixed; bottom: 1.4rem; right: 1.4rem; z-index: 99; width: 52px; height: 52px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,.42); transition: transform .2s; }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 26px; height: 26px; fill: #fff; }
+
+    /* ═══ VIDEO MODAL ═══ */
+    #videoModal { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(10,8,24,.9); align-items: center; justify-content: center; padding: 1rem; }
+    .vm-inner { width: 100%; max-width: 860px; position: relative; }
+    .vm-close { position: absolute; top: -44px; right: 0; background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+    .vm-frame { padding-top: 56.25%; position: relative; border-radius: var(--r-card); overflow: hidden; }
+    .vm-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    /* ═══ FADE IN ═══ */
+    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* Bouton "Voir plus" */
+    .btn-voir {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--accent-10); color: var(--accent);
+      border-radius: var(--r-pill); padding: .75rem 2rem;
+      font-size: .88rem; font-weight: 700; font-family: var(--font);
+      margin-top: 1.8rem; transition: background .2s, color .2s;
+    }
+    .btn-voir:hover { background: var(--btn); color: #fff; }
+    .btn-voir-dark {
+      background: rgba(255,255,255,.12); color: rgba(255,255,255,.85);
+      border: 1px solid rgba(255,255,255,.22);
+    }
+    .btn-voir-dark:hover { background: rgba(255,255,255,.22); color: #fff; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 960px) {
+      .nav-links, .btn-login { display: none; }
+      .hamburger { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-img-panel { display: none; }
+      .hero-text { padding-bottom: 2.5rem; }
+      .opps-grid, .formations-grid, .profs-grid, .modalites-grid { grid-template-columns: 1fr; }
+      .temo-grid, .avantages-grid { grid-template-columns: 1fr; }
+      .astuces-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .faq-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .hero-h1 { font-size: 1.8rem; }
+      .hero-btns { flex-direction: column; }
+      .hero-btns a { justify-content: center; }
+      .carousel-slide img { height: 230px; }
+      .footer-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="nav" id="navbar">
-  <div class="nav-brand">
-    <img src="/images/logo_certitude.png" alt="La Certitude"/>
-    <span>La <em>Certitude</em></span>
+<!-- ═══ NAVBAR ═══ -->
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <img src="/images/logo_certitude.png" alt="La Certitude"/>
+      La Certitude
+    </div>
+    <!-- Search — milieu comme Vatcho -->
+    <div class="nav-search">
+      <form>
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Rechercher une formation, un prof..."/>
+      </form>
+    </div>
+    <!-- Links droite -->
+    <nav class="nav-links">
+      <a href="#formations" class="active">Formations</a>
+      <a href="#professeurs">Professeurs</a>
+      <a href="#astuces">Astuces</a>
+      <a href="#galerie">Galerie</a>
+      <a href="#contact">Contact</a>
+      <button class="btn-login">Se connecter</button>
+      <a href="{% url 'enrollments:create' %}" class="btn-vatcho">S'inscrire</a>
+    </nav>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
   </div>
-  <div class="nav-links">
-    <a href="#formations">Formations</a>
-    <a href="#galerie">Galerie</a>
-    <a href="#temoignages">Témoignages</a>
-    <a href="#avantages">Avantages</a>
-    <a href="#faq">FAQ</a>
-    <a href="#contact">Contact</a>
-  </div>
-  <a href="{% url 'enrollments:create' %}" class="nav-cta">S'inscrire maintenant</a>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-</nav>
+</header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#formations"  class="mob-link">📚 Formations</a>
-  <a href="#galerie"     class="mob-link">🖼️ Galerie</a>
-  <a href="#temoignages" class="mob-link">🎥 Témoignages</a>
-  <a href="#avantages"   class="mob-link">🎁 Avantages</a>
-  <a href="#faq"         class="mob-link">❓ FAQ</a>
-  <a href="#contact"     class="mob-link">📞 Contact</a>
-  <a href="{% url 'enrollments:create' %}" class="m-cta">✦ S'inscrire maintenant</a>
+  <a href="#formations" class="mob-link">📚 Formations</a>
+  <a href="#professeurs" class="mob-link">👨‍🏫 Professeurs</a>
+  <a href="#astuces" class="mob-link">💡 Astuces</a>
+  <a href="#galerie" class="mob-link">🖼️ Galerie</a>
+  <a href="#contact" class="mob-link">📞 Contact</a>
+  <a href="{% url 'enrollments:create' %}" class="m-cta">S'inscrire maintenant</a>
 </div>
 
-<!-- HERO -->
+<!-- ═══ HERO — gradient Vatcho ═══ -->
 <section class="hero">
-  <div class="hero-grid"></div>
+  <!-- Déco SVG Vatcho -->
+  <svg class="hero-deco hero-deco-blob" aria-hidden="true" viewBox="0 0 884 578" xmlns="http://www.w3.org/2000/svg" fill="white">
+    <path d="M77.978 55.4516C245.177 -111.529 296.923 154.357 535.599 128.113C909.567 87.0169 938.305 347.546 826.648 525.777C714.974 704.007 550.407 814.987 320.862 731.954C54.1102 635.466 -103.473 236.656 77.978 55.4516Z"/>
+  </svg>
+  <svg class="hero-deco hero-deco-circle" aria-hidden="true" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <circle cx="76" cy="76" r="63.74" stroke="#A992C9" stroke-width="18"/>
+  </svg>
+
   <div class="hero-inner">
-    <div>
-      <div class="hero-badge">Inscriptions ouvertes jusqu'au 22 juin 2026</div>
-      <h1>Maîtrisez 100 % de votre programme en <span>2 mois</span></h1>
-      <p class="hero-desc">Cours intensifs de renforcement — Juillet &amp; Août 2026. Maths, PCT, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C &amp; D.</p>
+    <!-- Texte gauche -->
+    <div class="hero-text">
+      <h1 class="hero-h1">
+        <span class="word-box">Maîtrisez 100 %</span>
+        <span class="word-box">de votre programme</span>
+        <span class="word-box">en 2 mois.</span>
+      </h1>
+      <p class="hero-sub">Cours intensifs de renforcement — Juillet &amp; Août 2026. Maths, PCT, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C &amp; D. Plus de 50 professeurs qualifiés.</p>
       <div class="hero-btns">
-        <a href="{% url 'enrollments:create' %}" class="btn-primary">🚀 S'inscrire maintenant</a>
-        <a href="#formations" class="btn-outline-white">Voir les formations</a>
+        <a href="{% url 'enrollments:create' %}" class="btn-hero-primary">Voir les formations →</a>
+        <a href="#professeurs" class="btn-hero-ghost">Nos professeurs</a>
       </div>
       <div class="hero-stats">
-        <div class="stat"><span class="stat-n">3</span><span class="stat-l">Niveaux</span></div>
-        <div class="stat"><span class="stat-n">4</span><span class="stat-l">Matières</span></div>
-        <div class="stat"><span class="stat-n">9</span><span class="stat-l">Semaines</span></div>
-        <div class="stat"><span class="stat-n">100%</span><span class="stat-l">Programme</span></div>
+        <div class="stat-pill"><span class="stat-n">3</span><span class="stat-l">Niveaux</span></div>
+        <div class="stat-pill"><span class="stat-n">4</span><span class="stat-l">Matières</span></div>
+        <div class="stat-pill"><span class="stat-n">9</span><span class="stat-l">Semaines</span></div>
+        <div class="stat-pill"><span class="stat-n">100%</span><span class="stat-l">Programme</span></div>
       </div>
     </div>
-    <div class="hero-card">
-      <h3>📌 Informations pratiques</h3>
-      <div class="info-row"><div class="info-icon">📅</div><div><div class="info-label">Période</div><div class="info-val">1er juillet — 31 août 2026</div></div></div>
-      <div class="info-row"><div class="info-icon">📍</div><div><div class="info-label">Lieu</div><div class="info-val">EPP Gbégamey Sud, Cotonou</div></div></div>
-      <div class="info-row"><div class="info-icon">⏰</div><div><div class="info-label">Horaires</div><div class="info-val">Lun–Ven · 08h30 à 13h00</div></div></div>
-      <div class="info-row"><div class="info-icon">📞</div><div><div class="info-label">Contact</div><div class="info-val">01 96 38 92 49</div></div></div>
-      <div class="deadline-badge">⏳ Date limite : <strong>22 juin 2026</strong></div>
+
+    <!-- Panneau droite avec image + card -->
+    <div class="hero-img-panel">
+      <!-- Info card flottante -->
+      <div class="hero-card">
+        <div class="hero-card-title">📌 Infos pratiques</div>
+        <div class="hero-card-row">
+          <div class="hero-card-icon">📅</div>
+          <div><div class="hero-card-label">Période</div><div class="hero-card-val">1er juil. — 31 août 2026</div></div>
+        </div>
+        <div class="hero-card-row">
+          <div class="hero-card-icon">📍</div>
+          <div><div class="hero-card-label">Lieu</div><div class="hero-card-val">EPP Gbégamey Sud, Cotonou</div></div>
+        </div>
+        <div class="hero-card-row">
+          <div class="hero-card-icon">⏰</div>
+          <div><div class="hero-card-label">Horaires</div><div class="hero-card-val">Lun–Ven · 08h30 – 13h00</div></div>
+        </div>
+        <div class="hero-deadline">⏳ Date limite : <strong>22 juin 2026</strong></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FORMATIONS -->
+<!-- ═══ FORMATIONS ═══ -->
 <section class="section" id="formations">
   <div class="container">
-    <div class="text-center fade-in">
+    <div class="sec-head text-center fade-in">
       <div class="sec-label">📚 Formations</div>
       <h2 class="sec-title">Choisissez votre niveau</h2>
-      <p class="sec-sub">Programme complet SA1, SA2, SA3 — toutes les matières scientifiques.</p>
+      <p class="sec-sub">Programme complet SA1, SA2, SA3 — toutes les matières scientifiques couvertes.</p>
     </div>
     <div class="formations-grid">
       <div class="formation-card fade-in">
         <div class="level-tag">3ème</div>
         <h3>Cours de 3ème</h3>
-        <p class="formation-desc">Programme complet pour réussir le BEPC et intégrer le lycée.</p>
-        <div class="subjects"><span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span><span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span></div>
+        <p class="formation-desc">Programme complet pour réussir le BEPC et intégrer le lycée en toute confiance.</p>
+        <div class="subjects">
+          <span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span>
+          <span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span>
+        </div>
         <div class="price-row"><span class="price">11 500</span><span class="price-unit">FCFA</span></div>
-        <a href="{% url 'enrollments:create' %}?niveau=3eme" class="btn-card">S'inscrire →</a>
+        <div class="card-foot-row">
+          <a href="{% url 'enrollments:create' %}?niveau=3eme" class="btn-view">S'inscrire →</a>
+          <button class="btn-share-icon" title="Partager">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+        </div>
       </div>
       <div class="formation-card featured fade-in">
-        <div class="badge-featured">Populaire</div>
+        <span class="badge-pop">Populaire</span>
         <div class="level-tag">1ères C &amp; D</div>
         <h3>Cours de 1ère</h3>
-        <p class="formation-desc">Maîtrisez les bases de Terminale avec avance.</p>
-        <div class="subjects"><span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span><span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span></div>
+        <p class="formation-desc">Maîtrisez les bases de Terminale avec de l'avance sur le programme.</p>
+        <div class="subjects">
+          <span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span>
+          <span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span>
+        </div>
         <div class="price-row"><span class="price">12 500</span><span class="price-unit">FCFA</span></div>
-        <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-card">S'inscrire →</a>
+        <div class="card-foot-row">
+          <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-view">S'inscrire →</a>
+          <button class="btn-share-icon" title="Partager">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+          <span class="card-deadline">Limite : 22 juin</span>
+        </div>
       </div>
       <div class="formation-card fade-in">
         <div class="level-tag">Terminales C &amp; D</div>
         <h3>Cours de Terminale</h3>
-        <p class="formation-desc">Préparation intensive au BAC — 100 % du programme.</p>
-        <div class="subjects"><span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span><span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span></div>
+        <p class="formation-desc">Préparation intensive au BAC — 100 % du programme couvert.</p>
+        <div class="subjects">
+          <span class="subject-tag">📐 Maths</span><span class="subject-tag">⚗️ PCT</span>
+          <span class="subject-tag">🌿 SVT</span><span class="subject-tag">🇬🇧 Anglais</span>
+        </div>
         <div class="price-row"><span class="price">15 500</span><span class="price-unit">FCFA</span></div>
-        <a href="{% url 'enrollments:create' %}?niveau=tle" class="btn-card">S'inscrire →</a>
+        <div class="card-foot-row">
+          <a href="{% url 'enrollments:create' %}?niveau=tle" class="btn-view">S'inscrire →</a>
+          <button class="btn-share-icon" title="Partager">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- GALERIE PREVIEW -->
-<section id="galerie">
+<!-- ═══ PROFESSEURS ═══ -->
+<section class="section section-alt" id="professeurs">
   <div class="container">
-    <div class="text-center fade-in" style="margin-bottom:2rem">
-      <div class="galerie-counter">🖼️ 50 photos de l'édition 2025</div>
-      <div class="sec-label">Galerie</div>
-      <h2 class="sec-title">Aperçu de l'édition passée</h2>
-      <p class="sec-sub" style="color:rgba(255,255,255,.6)">Quelques moments forts — cours, ambiance et remise de prix.</p>
+    <div class="sec-head text-center fade-in">
+      <div class="sec-label">👨‍🏫 Nos Professeurs</div>
+      <h2 class="sec-title">Des experts à votre service</h2>
+      <p class="sec-sub">Cours en maison ou en ligne — contactez directement le professeur de votre choix.</p>
+    </div>
+    <div class="profs-grid">
+
+      <!-- Prof Maths -->
+      <div class="prof-card fade-in">
+        <div class="prof-avatar">
+          <span>👨‍🏫</span>
+          <span class="prof-matiere-badge">Maths</span>
+        </div>
+        <div class="prof-body">
+          <div class="prof-mode-badges">
+            <span class="mode-badge mode-home">🏠 Cours à domicile</span>
+            <span class="mode-badge mode-online">💻 En ligne</span>
+          </div>
+          <div class="prof-name">M. Codjo Abel</div>
+          <div class="prof-role">Professeur de Mathématiques</div>
+          <p class="prof-bio">10 ans d'expérience, spécialiste Terminale C&D. Taux de réussite au BAC de 92 % sur ses élèves.</p>
+          <div class="prof-tags">
+            <span class="prof-tag">Algèbre</span>
+            <span class="prof-tag">Analyse</span>
+            <span class="prof-tag">Géométrie</span>
+            <span class="prof-tag">Trigonométrie</span>
+          </div>
+          <div class="prof-contact-row">
+            <a href="https://wa.me/22996389249" target="_blank" class="btn-contact-wa">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="tel:+22996389249" class="btn-contact-call">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prof SVT -->
+      <div class="prof-card fade-in">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#bbf7d0,#86efac)">
+          <span>👩‍🔬</span>
+          <span class="prof-matiere-badge" style="background:#059669">SVT</span>
+        </div>
+        <div class="prof-body">
+          <div class="prof-mode-badges">
+            <span class="mode-badge mode-home">🏠 Cours à domicile</span>
+            <span class="mode-badge mode-online">💻 En ligne</span>
+          </div>
+          <div class="prof-name">Mme Agbossou Faïda</div>
+          <div class="prof-role">Professeure de SVT</div>
+          <p class="prof-bio">Biologie, Géologie, Écologie. Méthode pédagogique basée sur des schémas et cas pratiques. Très appréciée des élèves.</p>
+          <div class="prof-tags">
+            <span class="prof-tag">Biologie cellulaire</span>
+            <span class="prof-tag">Génétique</span>
+            <span class="prof-tag">Géologie</span>
+          </div>
+          <div class="prof-contact-row">
+            <a href="https://wa.me/22997000001" target="_blank" class="btn-contact-wa">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="tel:+22997000001" class="btn-contact-call">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prof Physique-Chimie -->
+      <div class="prof-card fade-in">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#fde68a,#fbbf24)">
+          <span>🔬</span>
+          <span class="prof-matiere-badge" style="background:#d97706">PCT</span>
+        </div>
+        <div class="prof-body">
+          <div class="prof-mode-badges">
+            <span class="mode-badge mode-home">🏠 Cours à domicile</span>
+            <span class="mode-badge mode-online">💻 En ligne</span>
+          </div>
+          <div class="prof-name">M. Dossou Romaric</div>
+          <div class="prof-role">Professeur de Physique-Chimie</div>
+          <p class="prof-bio">Docteur en chimie organique, 7 ans d'enseignement. Spécialiste en mécanique, électricité et thermodynamique.</p>
+          <div class="prof-tags">
+            <span class="prof-tag">Mécanique</span>
+            <span class="prof-tag">Électricité</span>
+            <span class="prof-tag">Chimie organique</span>
+          </div>
+          <div class="prof-contact-row">
+            <a href="https://wa.me/22997000002" target="_blank" class="btn-contact-wa">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="tel:+22997000002" class="btn-contact-call">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prof Anglais -->
+      <div class="prof-card fade-in">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#bfdbfe,#93c5fd)">
+          <span>🇬🇧</span>
+          <span class="prof-matiere-badge" style="background:#1d4ed8">Anglais</span>
+        </div>
+        <div class="prof-body">
+          <div class="prof-mode-badges">
+            <span class="mode-badge mode-home">🏠 Cours à domicile</span>
+            <span class="mode-badge mode-online">💻 En ligne</span>
+          </div>
+          <div class="prof-name">Mme Tokoudagba Grace</div>
+          <div class="prof-role">Professeure d'Anglais</div>
+          <p class="prof-bio">Certifiée Cambridge, 8 ans d'expérience. Méthode immersive, grammaire avancée, oral et rédaction.</p>
+          <div class="prof-tags">
+            <span class="prof-tag">Grammaire</span>
+            <span class="prof-tag">Expression orale</span>
+            <span class="prof-tag">Rédaction</span>
+          </div>
+          <div class="prof-contact-row">
+            <a href="https://wa.me/22997000003" target="_blank" class="btn-contact-wa">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="tel:+22997000003" class="btn-contact-call">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prof Maths 2 -->
+      <div class="prof-card fade-in">
+        <div class="prof-avatar">
+          <span>👨‍💻</span>
+          <span class="prof-matiere-badge">Maths</span>
+        </div>
+        <div class="prof-body">
+          <div class="prof-mode-badges">
+            <span class="mode-badge mode-online">💻 En ligne uniquement</span>
+          </div>
+          <div class="prof-name">M. Azonhiho Patrick</div>
+          <div class="prof-role">Professeur de Mathématiques</div>
+          <p class="prof-bio">Ingénieur de formation, pédagogie par les exercices réels. Spécialiste des probabilités et statistiques.</p>
+          <div class="prof-tags">
+            <span class="prof-tag">Probabilités</span>
+            <span class="prof-tag">Statistiques</span>
+            <span class="prof-tag">Suites</span>
+          </div>
+          <div class="prof-contact-row">
+            <a href="https://wa.me/22997000004" target="_blank" class="btn-contact-wa">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="tel:+22997000004" class="btn-contact-call">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prof SVT 2 -->
+      <div class="prof-card fade-in">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8)">
+          <span>🧬</span>
+          <span class="prof-matiere-badge" style="background:#be185d">SVT</span>
+        </div>
+        <div class="prof-body">
+          <div class="prof-mode-badges">
+            <span class="mode-badge mode-home">🏠 Cours à domicile</span>
+          </div>
+          <div class="prof-name">M. Hounkpatin Serge</div>
+          <div class="prof-role">Professeur de SVT</div>
+          <p class="prof-bio">Licence en biologie, master en sciences de l'éducation. Méthodes actives et supports visuels innovants.</p>
+          <div class="prof-tags">
+            <span class="prof-tag">Nutrition</span>
+            <span class="prof-tag">Immunologie</span>
+            <span class="prof-tag">Reproduction</span>
+          </div>
+          <div class="prof-contact-row">
+            <a href="https://wa.me/22997000005" target="_blank" class="btn-contact-wa">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="tel:+22997000005" class="btn-contact-call">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.09 2.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="text-center">
+      <a href="#" class="btn-voir">👨‍🏫 Voir tous les professeurs →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ASTUCES ═══ -->
+<section class="section" id="astuces">
+  <div class="container">
+    <div class="sec-head text-center fade-in">
+      <div class="sec-label">💡 Astuces &amp; Méthodes</div>
+      <h2 class="sec-title">Réussir avec les bonnes stratégies</h2>
+      <p class="sec-sub">Des astuces pratiques par matière pour booster vos résultats avant les examens.</p>
+    </div>
+    <div class="astuces-grid">
+
+      <!-- Maths -->
+      <div class="astuce-card fade-in">
+        <div class="astuce-header">
+          <div class="astuce-icon" style="background:#ede9fe">📐</div>
+          <div>
+            <div class="astuce-matiere">Mathématiques</div>
+            <div class="astuce-title">5 astuces pour maîtriser l'Algèbre</div>
+          </div>
+        </div>
+        <div class="astuce-body">
+          <div class="astuce-tip"><div class="tip-num">1</div><div class="tip-text"><strong>Identités remarquables :</strong> Mémorisez (a+b)², (a-b)², (a+b)(a-b) avec des exemples numériques.</div></div>
+          <div class="astuce-tip"><div class="tip-num">2</div><div class="tip-text"><strong>Factorisation :</strong> Cherchez toujours le facteur commun avant toute autre méthode.</div></div>
+          <div class="astuce-tip"><div class="tip-num">3</div><div class="tip-text"><strong>Équations du 2nd degré :</strong> Calculez toujours le discriminant Δ = b²-4ac en premier.</div></div>
+          <div class="astuce-tip"><div class="tip-num">4</div><div class="tip-text"><strong>Suites :</strong> Identifiez d'abord si la suite est arithmétique (raison r) ou géométrique (raison q).</div></div>
+          <div class="astuce-tip"><div class="tip-num">5</div><div class="tip-text"><strong>Pratique quotidienne :</strong> Résolvez 3 exercices par jour sur des thèmes différents.</div></div>
+        </div>
+        <a href="#" class="astuce-cta">Voir toutes les astuces Maths →</a>
+      </div>
+
+      <!-- PCT -->
+      <div class="astuce-card fade-in">
+        <div class="astuce-header">
+          <div class="astuce-icon" style="background:#fef9c3">⚗️</div>
+          <div>
+            <div class="astuce-matiere" style="color:#a16207">Physique-Chimie</div>
+            <div class="astuce-title">Maîtriser les calculs de PCT</div>
+          </div>
+        </div>
+        <div class="astuce-body">
+          <div class="astuce-tip"><div class="tip-num" style="background:#d97706">1</div><div class="tip-text"><strong>Unités SI :</strong> Toujours convertir avant tout calcul (kJ → J, km/h → m/s, etc.).</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#d97706">2</div><div class="tip-text"><strong>Lois de Newton :</strong> Dessinez toujours le bilan des forces avant d'écrire les équations.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#d97706">3</div><div class="tip-text"><strong>Réactions chimiques :</strong> Équilibrez les atomes puis les charges, jamais l'inverse.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#d97706">4</div><div class="tip-text"><strong>Électricité :</strong> Appliquez Ohm U=RI systématiquement avant de chercher la puissance.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#d97706">5</div><div class="tip-text"><strong>Vérification :</strong> Homogénéité des unités — vérifiez toujours que vos unités sont cohérentes.</div></div>
+        </div>
+        <a href="{% url 'core:astuces' %}?matiere=pct" class="astuce-cta" style="color:#a16207;background:#fef9c3">Voir toutes les astuces PCT →</a>
+      </div>
+
+      <!-- SVT -->
+      <div class="astuce-card fade-in">
+        <div class="astuce-header">
+          <div class="astuce-icon" style="background:#d1fae5">🌿</div>
+          <div>
+            <div class="astuce-matiere" style="color:#059669">SVT</div>
+            <div class="astuce-title">Technique de mémorisation SVT</div>
+          </div>
+        </div>
+        <div class="astuce-body">
+          <div class="astuce-tip"><div class="tip-num" style="background:#059669">1</div><div class="tip-text"><strong>Schémas légendés :</strong> Dessinez et légendez chaque organe ou cellule — le visuel aide 3× plus que le texte.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#059669">2</div><div class="tip-text"><strong>Mots-clés :</strong> Pour la génétique, faites un tableau phénotype/génotype avant chaque exercice.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#059669">3</div><div class="tip-text"><strong>Cycles biologiques :</strong> Tracez le cycle (méiose, mitose) sur papier sans regarder le cours.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#059669">4</div><div class="tip-text"><strong>Immunologie :</strong> Retenez l'ordre des étapes immunitaires : non-spécifique → spécifique → mémoire.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#059669">5</div><div class="tip-text"><strong>Révision active :</strong> Récitez les définitions à voix haute sans regarder vos notes.</div></div>
+        </div>
+        <a href="{% url 'core:astuces' %}?matiere=svt" class="astuce-cta" style="color:#059669;background:#d1fae5">Voir toutes les astuces SVT →</a>
+      </div>
+
+      <!-- Anglais -->
+      <div class="astuce-card fade-in">
+        <div class="astuce-header">
+          <div class="astuce-icon" style="background:#dbeafe">🇬🇧</div>
+          <div>
+            <div class="astuce-matiere" style="color:#1d4ed8">Anglais</div>
+            <div class="astuce-title">Améliorer son score en Anglais</div>
+          </div>
+        </div>
+        <div class="astuce-body">
+          <div class="astuce-tip"><div class="tip-num" style="background:#1d4ed8">1</div><div class="tip-text"><strong>Lecture quotidienne :</strong> 15 min de texte anglais par jour pour enrichir le vocabulaire passivement.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#1d4ed8">2</div><div class="tip-text"><strong>Tenses (temps) :</strong> Créez un tableau des 12 temps avec exemples — à réviser chaque semaine.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#1d4ed8">3</div><div class="tip-text"><strong>Expression écrite :</strong> Structure : Introduction → 2 arguments avec exemples → Conclusion. Toujours.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#1d4ed8">4</div><div class="tip-text"><strong>Compréhension :</strong> Lisez d'abord les questions, puis le texte — vous saurez quoi chercher.</div></div>
+          <div class="astuce-tip"><div class="tip-num" style="background:#1d4ed8">5</div><div class="tip-text"><strong>Phonologie :</strong> Écoutez des podcasts BBC Learning English 10 min/jour pour l'oral.</div></div>
+        </div>
+        <a href="#" class="astuce-cta" style="color:#1d4ed8;background:#dbeafe">Voir toutes les astuces Anglais →</a>
+      </div>
+
+    </div>
+    <div class="text-center">
+      <a href="#" class="btn-voir">💡 Voir toutes les astuces →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AVANTAGES ═══ -->
+<section class="section section-alt" id="avantages">
+  <div class="container">
+    <div class="sec-head text-center fade-in">
+      <div class="sec-label">🎁 Pack Privilège</div>
+      <h2 class="sec-title">Les 10 premiers inscrits par classe</h2>
+      <p class="sec-sub">Des avantages exclusifs réservés aux premiers inscrits.</p>
+    </div>
+    <div class="avantages-grid fade-in">
+      <div class="avantage-card"><div class="av-icon">📦</div><div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements.</p></div></div>
+      <div class="avantage-card"><div class="av-icon" style="background:#d1fae5">📄</div><div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div></div>
+      <div class="avantage-card"><div class="av-icon" style="background:#fef9c3">🏆</div><div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div></div>
+      <div class="avantage-card"><div class="av-icon" style="background:#dbeafe">🚗</div><div><div class="av-title">Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALERIE ═══ -->
+<section class="section section-dark" id="galerie">
+  <div class="container">
+    <div class="sec-head text-center fade-in">
+      <span style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.7);padding:.35rem 1rem;border-radius:var(--r-pill);font-size:.76rem;font-weight:700;margin-bottom:1rem;">🖼️ 50 photos · Édition 2025</span>
+      <div class="sec-label" style="background:rgba(191,179,245,.15);color:#c2b0f8;border:1px solid rgba(191,179,245,.3)">Galerie</div>
+      <h2 class="sec-title" style="color:#fff">Aperçu de l'édition passée</h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,.5)">Quelques moments forts — cours, ambiance et remise de prix.</p>
     </div>
     <div class="carousel fade-in">
       <div class="carousel-track" id="carouselTrack">
-        <div class="carousel-slide"><img src="/images/1.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Nos apprenants en plein cours</div></div>
-        <div class="carousel-slide"><img src="/images/2.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Photo de famille — Groupe La Certitude</div></div>
-        <div class="carousel-slide"><img src="/images/3.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Les profs et les élèves</div></div>
-        <div class="carousel-slide"><img src="/images/4.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Séance de travaux pratiques</div></div>
-        <div class="carousel-slide"><img src="/images/5.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Remise de prix</div></div>
-        <div class="carousel-slide"><img src="/images/6.jpg" loading="lazy" alt="Édition 2025"/><div class="slide-caption">📸 Cours de mathématiques intensif</div></div>
+        <div class="carousel-slide"><img src="/images/1.jpg" loading="lazy" alt="Cours"/><div class="slide-caption">📸 Nos apprenants en plein cours</div></div>
+        <div class="carousel-slide"><img src="/images/2.jpg" loading="lazy" alt="Groupe"/><div class="slide-caption">📸 Photo de famille — Groupe La Certitude</div></div>
+        <div class="carousel-slide"><img src="/images/3.jpg" loading="lazy" alt="Profs"/><div class="slide-caption">📸 Les profs et les élèves</div></div>
+        <div class="carousel-slide"><img src="/images/4.jpg" loading="lazy" alt="TP"/><div class="slide-caption">📸 Séance de travaux pratiques</div></div>
+        <div class="carousel-slide"><img src="/images/5.jpg" loading="lazy" alt="Prix"/><div class="slide-caption">📸 Remise de prix</div></div>
+        <div class="carousel-slide"><img src="/images/6.jpg" loading="lazy" alt="Maths"/><div class="slide-caption">📸 Cours de mathématiques intensif</div></div>
       </div>
       <button class="carousel-btn carousel-prev" id="prevBtn">‹</button>
       <button class="carousel-btn carousel-next" id="nextBtn">›</button>
     </div>
     <div class="carousel-dots" id="carouselDots"></div>
-    <div class="text-center" style="margin-top:1.5rem">
-      <a href="{% url 'core:galerie' %}" class="voir-plus voir-plus-dark">🖼️ Voir toutes les 50 photos →</a>
+    <div class="text-center">
+      <a href="{% url 'core:galerie' %}" class="btn-voir btn-voir-dark">🖼️ Voir toutes les 50 photos →</a>
     </div>
   </div>
 </section>
 
-<!-- TÉMOIGNAGES PREVIEW -->
+<!-- ═══ TEMOIGNAGES ═══ -->
 <section class="section" id="temoignages">
   <div class="container">
-    <div class="text-center fade-in">
+    <div class="sec-head text-center fade-in">
       <div class="sec-label">🎥 Témoignages</div>
       <h2 class="sec-title">Ils ont suivi nos cours</h2>
       <p class="sec-sub">Découvrez ce que nos anciens apprenants pensent de l'expérience La Certitude.</p>
     </div>
-    <div class="temoignages-preview fade-in">
+    <div class="temo-grid fade-in">
       <div class="temo-card">
         <div class="video-thumb" onclick="openVideo('VOTRE_ID_1')">
-          <img src="https://img.youtube.com/vi/VOTRE_ID_1/hqdefault.jpg" loading="lazy" alt="Témoignage" onerror="this.src='/images/1.jpg'"/>
+          <img src="https://img.youtube.com/vi/VOTRE_ID_1/hqdefault.jpg" loading="lazy" alt="Koffi Emmanuel" onerror="this.src='/images/1.jpg'"/>
           <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
         </div>
         <div class="temo-info">
@@ -390,7 +1254,7 @@
       </div>
       <div class="temo-card">
         <div class="video-thumb" onclick="openVideo('VOTRE_ID_2')">
-          <img src="https://img.youtube.com/vi/VOTRE_ID_2/hqdefault.jpg" loading="lazy" alt="Témoignage" onerror="this.src='/images/2.jpg'"/>
+          <img src="https://img.youtube.com/vi/VOTRE_ID_2/hqdefault.jpg" loading="lazy" alt="Adjoua Marie" onerror="this.src='/images/2.jpg'"/>
           <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
         </div>
         <div class="temo-info">
@@ -400,238 +1264,294 @@
       </div>
     </div>
     <div class="text-center">
-      <a href="{% url 'core:temoignages' %}" class="voir-plus">🎥 Voir les 10 témoignages →</a>
+      <a href="{% url 'core:temoignages' %}" class="btn-voir">🎥 Voir les 10 témoignages →</a>
     </div>
   </div>
 </section>
 
-<!-- AVANTAGES -->
-<section class="section section-alt" id="avantages">
+<!-- ═══ MODALITES ═══ -->
+<section class="section section-alt" id="modalites">
   <div class="container">
-    <div class="text-center fade-in">
-      <div class="sec-label">🎁 Pack Privilège</div>
-      <h2 class="sec-title">Les 10 premiers inscrits par classe</h2>
-      <p class="sec-sub">Des avantages exclusifs pour ceux qui s'inscrivent tôt.</p>
-    </div>
-    <div class="avantages-grid fade-in">
-      <div class="avantage-card"><div class="av-icon blue">📦</div><div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements.</p></div></div>
-      <div class="avantage-card"><div class="av-icon gold">📄</div><div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div></div>
-      <div class="avantage-card"><div class="av-icon green">🏆</div><div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div></div>
-      <div class="avantage-card"><div class="av-icon sky">🚗</div><div><div class="av-title">Cours de Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════ FAQ ══════════════════ -->
-<section id="faq">
-  <div class="container">
-    <div class="faq-layout">
-
-      <div class="faq-left fade-in">
-        <div class="sec-label">❓ Questions fréquentes</div>
-        <h2>Tout savoir sur l'inscription</h2>
-        <p>Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses sont ici.</p>
-        <a href="{% url 'enrollments:create' %}" class="faq-cta">S'inscrire maintenant →</a>
-      </div>
-
-      <div class="faq-list fade-in" id="faqList">
-
-        <div class="faq-item open">
-          <button class="faq-question">
-            <span class="faq-q-text">Comment se déroule l'inscription en ligne ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              L'inscription se fait en quelques minutes, sans créer de compte.
-              <div class="faq-steps">
-                <div class="faq-step"><div class="step-num">1</div><div class="step-text"><strong>Choisissez votre profil</strong> — vous êtes l'élève lui-même ou un parent qui inscrit son enfant.</div></div>
-                <div class="faq-step"><div class="step-num">2</div><div class="step-text"><strong>Remplissez le formulaire</strong> — Nom, prénom, téléphone, établissement.</div></div>
-                <div class="faq-step"><div class="step-num">3</div><div class="step-text"><strong>Choisissez le niveau</strong> — 3ème, 1ère C/D ou Terminale C/D + la série.</div></div>
-                <div class="faq-step"><div class="step-num">4</div><div class="step-text"><strong>Effectuez le paiement</strong> — via MTN MoMo ou Moov Money au numéro indiqué.</div></div>
-                <div class="faq-step"><div class="step-num">5</div><div class="step-text"><strong>Téléchargez votre reçu</strong> — généré automatiquement après votre paiement.</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Quels modes de paiement sont acceptés ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Nous acceptons les paiements via <strong>MTN Mobile Money</strong> (01 96 38 92 49)
-              et <strong>Moov Money</strong> (01 95 51 17 61), au nom de <strong>CODJO Abel Jean Eudes</strong>.
-              Le paiement peut être effectué en totalité ou en <strong>plusieurs tranches</strong>.
-              Un reçu téléchargeable est généré à chaque paiement.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Quelle est la date limite pour s'inscrire ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Les inscriptions sont ouvertes du <strong>1er avril au 22 juin 2026</strong>.
-              Passé cette date, les inscriptions ne seront plus acceptées.
-              Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong>
-              réservé aux 10 premiers inscrits par classe.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Où se déroulent les cours ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Les cours se déroulent à l'<strong>EPP Gbégamey Sud, Cotonou</strong>,
-              en face du Collège Notre-Dame des Apôtres.<br/><br/>
-              📅 Du <strong>1er juillet au 31 août 2026</strong><br/>
-              ⏰ <strong>Lundi au Vendredi</strong> de <strong>08h30 à 13h00</strong> (repos le mercredi)
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Un parent peut-il inscrire son enfant ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Oui, tout à fait. Lors de l'inscription, vous choisissez si vous êtes
-              <strong>l'élève lui-même</strong> ou un <strong>parent / tuteur</strong>.
-              Si vous êtes parent, vous renseignez les informations de votre enfant
-              et vos coordonnées. Votre enfant n'a pas besoin d'avoir un téléphone.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Comment s'inscrire sans accès à internet ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Deux alternatives sont disponibles :<br/><br/>
-              🏫 <strong>Sur place</strong> — Venez tous les samedis de 14h00 à 18h30
-              à l'EPP Gbégamey Sud.<br/><br/>
-              💬 <strong>Via WhatsApp</strong> — Envoyez votre Nom, Prénoms,
-              Établissement et numéro au <strong>01 96 38 92 49</strong>
-              après avoir effectué votre paiement Mobile Money.
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ══════════════════ FIN FAQ ══════════════════ -->
-
-<!-- MODALITÉS -->
-<section class="section" id="modalites">
-  <div class="container">
-    <div class="text-center fade-in">
+    <div class="sec-head text-center fade-in">
       <div class="sec-label">📋 Modalités</div>
       <h2 class="sec-title">Comment s'inscrire ?</h2>
       <p class="sec-sub">3 façons simples pour rejoindre le programme.</p>
     </div>
     <div class="modalites-grid fade-in">
-      <div class="modalite-card blue"><span class="modalite-icon">🌐</span><h3>En ligne</h3><p>Formulaire + paiement MTN MoMo ou Moov Money.</p><a href="{% url 'enrollments:create' %}" class="modalite-detail">Commencer →</a></div>
-      <div class="modalite-card light"><span class="modalite-icon">🏫</span><h3>Sur place</h3><p>EPP Gbégamey Sud tous les samedis.</p><span class="modalite-detail">Samedis 14h00–18h30</span></div>
-      <div class="modalite-card green-card"><span class="modalite-icon">💬</span><h3>WhatsApp</h3><p>Envoyez Nom, Établissement &amp; Contact au 01 96 38 92 49.</p><a href="https://wa.me/22996389249" target="_blank" class="modalite-detail">Envoyer →</a></div>
+      <div class="modalite-card mc-lavender">
+        <span class="modalite-icon">🌐</span>
+        <h3>En ligne</h3>
+        <p>Formulaire + paiement MTN MoMo ou Moov Money en quelques clics.</p>
+        <a href="{% url 'enrollments:create' %}" class="mc-pill">Commencer →</a>
+      </div>
+      <div class="modalite-card mc-white">
+        <span class="modalite-icon">🏫</span>
+        <h3>Sur place</h3>
+        <p>EPP Gbégamey Sud, tous les samedis de l'après-midi.</p>
+        <span class="mc-pill">Samedis 14h–18h30</span>
+      </div>
+      <div class="modalite-card mc-dark">
+        <span class="modalite-icon">💬</span>
+        <h3>WhatsApp</h3>
+        <p>Envoyez Nom, Établissement &amp; Contact au 01 96 38 92 49.</p>
+        <a href="https://wa.me/22996389249" target="_blank" class="mc-pill">Envoyer →</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
+<!-- ═══ FAQ ═══ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-left fade-in">
+        <div class="sec-label">❓ FAQ</div>
+        <h2 class="sec-title">Tout savoir sur l'inscription</h2>
+        <p>Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses sont ici.</p>
+        <a href="{% url 'enrollments:create' %}" class="btn-vatcho" style="font-size:.9rem;padding:.7rem 1.6rem">S'inscrire maintenant →</a>
+      </div>
+      <div class="faq-list fade-in" id="faqList">
+        <div class="faq-item open">
+          <button class="faq-question">
+            <span class="faq-q-text">Comment se déroule l'inscription en ligne ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">L'inscription se fait en quelques minutes. Choisissez votre profil (élève ou parent), remplissez le formulaire, sélectionnez votre niveau, effectuez le paiement via MTN MoMo ou Moov Money, puis téléchargez votre reçu automatiquement généré.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Quels modes de paiement sont acceptés ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Nous acceptons <strong>MTN Mobile Money</strong> (01 96 38 92 49) et <strong>Moov Money</strong> (01 95 51 17 61), au nom de CODJO Abel Jean Eudes. Le paiement peut se faire en plusieurs tranches.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Quelle est la date limite pour s'inscrire ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Les inscriptions sont ouvertes du <strong>1er avril au 22 juin 2026</strong>. Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong> réservé aux 10 premiers inscrits par classe.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Comment contacter un professeur pour des cours à domicile ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Rendez-vous dans la section <strong>Professeurs</strong> de notre site, choisissez le professeur de la matière souhaitée, puis cliquez sur le bouton WhatsApp pour le contacter directement. Vous pouvez aussi appeler son numéro affiché.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span class="faq-q-text">Un parent peut-il inscrire son enfant ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Oui, tout à fait. Lors de l'inscription, choisissez le profil <strong>Parent/Tuteur</strong> et renseignez les informations de votre enfant. Votre enfant n'a pas besoin d'avoir un téléphone.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
 <div class="cta-banner">
-  <div class="cta-banner-inner">
-    <div class="cta-deadline">⏳ Clôture : 22 juin 2026</div>
+  <div class="cta-inner">
+    <div class="cta-pill">⏳ Clôture des inscriptions : 22 juin 2026</div>
     <h2>Prêt à rejoindre La Certitude ?</h2>
-    <p>Réservez votre place — les premiers inscrits bénéficient du Pack Privilège.</p>
-    <a href="{% url 'enrollments:create' %}" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem">🚀 S'inscrire en 2 minutes</a>
+    <p>Réservez votre place — les premiers inscrits bénéficient du Pack Privilège exclusif.</p>
+    <a href="{% url 'enrollments:create' %}" class="btn-hero-primary" style="font-size:.95rem;padding:.85rem 2.2rem">
+      S'inscrire en 2 minutes →
+    </a>
   </div>
 </div>
 
-<!-- CONTACT -->
+<!-- ═══ NEWSLETTER ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="newsletter-wrap fade-in">
+      <div class="sec-label">📧 Newsletter</div>
+      <h2 class="sec-title">Restez informé</h2>
+      <p class="sec-sub" style="margin:0 auto">Recevez chaque semaine les astuces, les dates importantes et les nouvelles du groupe La Certitude.</p>
+      <form class="newsletter-form" onsubmit="return false">
+        <input type="email" placeholder="votre@email.com" required/>
+        <button type="submit">S'abonner</button>
+      </form>
+      <p style="font-size:.75rem;color:var(--ink-lt);margin-top:.7rem">Pas de spam. Désabonnement à tout moment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
 <section class="section section-alt" id="contact">
   <div class="container">
-    <div class="text-center fade-in">
+    <div class="sec-head text-center fade-in">
       <div class="sec-label">📞 Contact</div>
       <h2 class="sec-title">Nous contacter</h2>
       <p class="sec-sub">Des questions ? Notre équipe est disponible.</p>
     </div>
     <div class="contact-grid fade-in">
       <div>
-        <a href="tel:+22996389249" class="contact-card" style="margin-bottom:1rem;display:flex"><div class="contact-icon ci-blue">📞</div><div><div class="contact-label">MTN MoMo</div><div class="contact-val">01 96 38 92 49</div></div></a>
-        <a href="tel:+22995511761" class="contact-card" style="display:flex"><div class="contact-icon ci-blue">📞</div><div><div class="contact-label">MOOV Money</div><div class="contact-val">01 95 51 17 61</div></div></a>
+        <a href="tel:+22996389249" class="contact-card" style="margin-bottom:.9rem">
+          <div class="contact-icon">📞</div>
+          <div><div class="contact-label">MTN MoMo</div><div class="contact-val">01 96 38 92 49</div></div>
+        </a>
+        <a href="tel:+22995511761" class="contact-card">
+          <div class="contact-icon">📞</div>
+          <div><div class="contact-label">MOOV Money</div><div class="contact-val">01 95 51 17 61</div></div>
+        </a>
       </div>
       <div>
-        <a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:1rem;display:flex"><div class="contact-icon ci-green">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val">01 96 38 92 49</div></div></a>
-        <div class="contact-card"><div class="contact-icon ci-blue">📍</div><div><div class="contact-label">Adresse</div><div class="contact-val">EPP Gbégamey Sud, Cotonou</div></div></div>
+        <a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:.9rem">
+          <div class="contact-icon" style="background:#d1fae5">💬</div>
+          <div><div class="contact-label">WhatsApp</div><div class="contact-val">01 96 38 92 49</div></div>
+        </a>
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <div><div class="contact-label">Adresse</div><div class="contact-val">EPP Gbégamey Sud, Cotonou</div></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ═══ FOOTER ═══ -->
 <footer>
-  <div class="footer-brand"><img src="/images/logo_certitude.png" alt="Logo"/><span>Groupe La Certitude</span></div>
-  <div class="stars">✦ ✦ ✦</div>
-  <p>Discipline · Travail · Excellence</p>
-  <p style="margin-top:.5rem">EPP Gbégamey Sud, Cotonou — Bénin</p>
-  <p style="margin-top:.3rem">01 96 38 92 49 · 01 95 51 17 61</p>
-  <p class="copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="/images/logo_certitude.png" alt="Logo La Certitude"/>
+          <span class="footer-brand-name">Groupe La Certitude</span>
+        </div>
+        <p class="footer-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C&D à Cotonou, Bénin.</p>
+        <div class="footer-social" style="margin-top:1rem">
+          <a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="#" class="footer-ig-btn">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            Instagram
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explorer</h4>
+        <ul>
+          <li><a href="#formations">Formations</a></li>
+          <li><a href="#professeurs">Professeurs</a></li>
+          <li><a href="#astuces">Astuces</a></li>
+          <li><a href="#galerie">Galerie</a></li>
+          <li><a href="#temoignages">Témoignages</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Niveaux</h4>
+        <ul>
+          <li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours de 3ème</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours de Terminale</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ressources</h4>
+        <ul>
+          <li><a href="{% url 'core:astuces' %}">Astuces Maths</a></li>
+          <li><a href="{% url 'core:astuces' %}">Astuces PCT</a></li>
+          <li><a href="{% url 'core:astuces' %}">Astuces SVT</a></li>
+          <li><a href="{% url 'core:astuces' %}">Astuces Anglais</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+22996389249">01 96 38 92 49</a></li>
+          <li><a href="tel:+22995511761">01 95 51 17 61</a></li>
+          <li><a href="https://wa.me/22996389249">WhatsApp</a></li>
+          <li><a href="#">EPP Gbégamey Sud</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Big text Vatcho style -->
+    <div class="footer-bigtext">La Certitude</div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+        <a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">
+          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Rejoindre WhatsApp
+        </a>
+        <a href="#" class="footer-ig-btn">
+          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Instagram
+        </a>
+      </div>
+      <span style="font-size:.72rem;opacity:.4">Fait avec ❤️ au Bénin</span>
+    </div>
+  </div>
 </footer>
 
+<!-- WA FLOAT -->
 <a href="https://wa.me/22996389249" target="_blank" class="wa-float" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <!-- VIDEO MODAL -->
-<div id="videoModal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:1rem">
-  <div style="width:100%;max-width:800px;position:relative">
-    <button onclick="closeVideo()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:white;font-size:1.8rem;cursor:pointer">✕</button>
-    <div style="padding-top:56.25%;position:relative;border-radius:16px;overflow:hidden">
-      <iframe id="videoFrame" src="" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen allow="autoplay"></iframe>
-    </div>
+<div id="videoModal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,8,24,.9);align-items:center;justify-content:center;padding:1rem">
+  <div class="vm-inner">
+    <button class="vm-close" onclick="closeVideo()">✕</button>
+    <div class="vm-frame"><iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe></div>
   </div>
 </div>
 
 <script>
-  /* Navbar */
-  const nav = document.getElementById('navbar');
-  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
-
+  /* Navbar scroll */
+  const nav = document.querySelector('.nav');
   /* Hamburger */
-  const ham = document.getElementById('hamburger'), menu = document.getElementById('mobileMenu');
-  ham.addEventListener('click', () => { ham.classList.toggle('open'); menu.classList.toggle('open'); document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : ''; });
-  document.querySelectorAll('.mob-link,.m-cta').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); menu.classList.remove('open'); document.body.style.overflow = ''; }));
+  const ham = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    menu.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mob-link, .m-cta').forEach(a => a.addEventListener('click', () => {
+    ham.classList.remove('open'); menu.classList.remove('open'); document.body.style.overflow = '';
+  }));
 
   /* Carousel */
   const track = document.getElementById('carouselTrack');
   const dotsEl = document.getElementById('carouselDots');
   const slides = track.querySelectorAll('.carousel-slide');
   let current = 0;
-  slides.forEach((_, i) => { const d = document.createElement('div'); d.className = 'dot'+(i===0?' active':''); d.addEventListener('click', () => goTo(i)); dotsEl.appendChild(d); });
-  function goTo(n) { current = (n+slides.length)%slides.length; track.style.transform = `translateX(-${current*100}%)`; dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===current)); }
-  document.getElementById('prevBtn').addEventListener('click', () => goTo(current-1));
-  document.getElementById('nextBtn').addEventListener('click', () => goTo(current+1));
-  let auto = setInterval(() => goTo(current+1), 4000);
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+  function goTo(n) {
+    current = (n + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  let auto = setInterval(() => goTo(current + 1), 4500);
   track.parentElement.addEventListener('mouseenter', () => clearInterval(auto));
-  track.parentElement.addEventListener('mouseleave', () => { auto = setInterval(() => goTo(current+1), 4000); });
+  track.parentElement.addEventListener('mouseleave', () => { auto = setInterval(() => goTo(current + 1), 4500); });
 
-  /* Video modal */
+  /* FAQ */
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  /* Video */
   function openVideo(id) {
     document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
     document.getElementById('videoModal').style.display = 'flex';
@@ -642,21 +1562,13 @@
     document.getElementById('videoFrame').src = '';
     document.body.style.overflow = '';
   }
-  document.getElementById('videoModal').addEventListener('click', function(e) { if(e.target===this) closeVideo(); });
-
-  /* FAQ Accordion */
-  document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    });
-  });
+  document.getElementById('videoModal').addEventListener('click', function(e) { if (e.target === this) closeVideo(); });
 
   /* Scroll reveal */
-  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, {threshold:.12});
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>

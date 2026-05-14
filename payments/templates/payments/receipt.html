@@ -3,33 +3,37 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
   <title>Reçu {{ payment.receipt_number }} — La Certitude</title>
+  <link rel="icon" href="{% static 'images/logo_certitude.png' %}" type="image/png"/>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --accent: #3a2bbf;
       --accent-10: rgba(58,43,191,.10);
+      --accent-20: rgba(58,43,191,.20);
       --btn: #635b7d;
-      --btn-hover: #4f4865;
       --bg-white: #ffffff;
       --bg-slate: #f8fafc;
       --ink: #0f172a;
       --ink-md: #475569;
       --ink-lt: #94a3b8;
       --border: #e2e8f0;
+      --border-md: #cbd5e1;
       --sh-sm: 0 4px 20px rgba(0,0,0,.06);
       --sh-md: 0 12px 40px rgba(0,0,0,.10);
       --sh-lg: 0 24px 60px rgba(0,0,0,.14);
-      --r-card: 24px;
+      --r-card: 20px;
       --r-pill: 999px;
       --font: 'Bricolage Grotesque', sans-serif;
       --green: #10b981;
-      --green-dark: #059669;
       --gold: #f59e0b;
-      --red: #ef4444;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: var(--font);
       min-height: 100vh;
@@ -37,7 +41,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       padding: 1.5rem;
     }
 
@@ -48,7 +52,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
     }
     .brand {
       display: flex;
@@ -80,6 +84,11 @@
       font-weight: 600;
       color: var(--ink);
       text-decoration: none;
+      transition: all 0.2s;
+    }
+    .home-link:hover {
+      background: rgba(255,255,255,0.8);
+      transform: translateX(-2px);
     }
 
     /* ACTION BUTTONS */
@@ -87,32 +96,29 @@
       max-width: 580px;
       width: 100%;
       display: flex;
-      gap: 0.8rem;
-      margin-bottom: 1.2rem;
-      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
     .btn-action {
       flex: 1;
-      min-width: 140px;
       padding: 0.8rem 1rem;
       border-radius: var(--r-pill);
       font-weight: 700;
       font-size: 0.85rem;
       cursor: pointer;
       border: none;
-      transition: transform 0.15s;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
+      gap: 0.5rem;
       text-decoration: none;
     }
     .btn-action:hover { transform: translateY(-2px); }
     .btn-download { background: var(--gold); color: var(--ink); }
     .btn-whatsapp { background: #25d366; color: white; }
-    .btn-home { background: rgba(255,255,255,0.2); color: var(--ink); border: 1px solid rgba(255,255,255,0.4); }
 
-    /* RECEIPT */
+    /* ========== RECEIPT - OPTIMISÉ POUR IMPRESSION ========== */
     .receipt {
       max-width: 580px;
       width: 100%;
@@ -122,143 +128,139 @@
       box-shadow: var(--sh-lg);
     }
 
-    /* RECEIPT HEADER */
+    /* HEADER */
     .receipt-header {
       background: linear-gradient(135deg, var(--accent), var(--btn));
-      padding: 1.8rem;
+      padding: 1.2rem 1.5rem 1rem;
       text-align: center;
       color: white;
-      position: relative;
-    }
-    .receipt-header::after {
-      content: '';
-      position: absolute;
-      bottom: -16px;
-      left: 0;
-      right: 0;
-      height: 32px;
-      background: white;
-      clip-path: ellipse(55% 100% at 50% 100%);
     }
     .receipt-logo {
-      width: 56px;
-      height: 56px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: white;
       padding: 4px;
       object-fit: contain;
-      margin: 0 auto 0.8rem;
+      margin: 0 auto 0.5rem;
     }
     .receipt-header h1 {
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
     .receipt-header p {
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       opacity: 0.8;
-      margin-top: 0.2rem;
     }
-
-    /* STATUS BADGE */
     .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.4rem 1rem;
+      gap: 0.3rem;
+      padding: 0.25rem 0.8rem;
       border-radius: var(--r-pill);
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      margin-top: 0.8rem;
+      margin-top: 0.5rem;
     }
     .status-pending { background: rgba(245,158,11,0.2); color: #fde68a; }
     .status-confirmed { background: rgba(16,185,129,0.2); color: #a7f3d0; }
 
-    /* RECEIPT BODY */
-    .receipt-body { padding: 2rem 1.5rem; }
+    /* CORPS DU REÇU - COMPACT POUR UNE PAGE */
+    .receipt-body {
+      padding: 1.2rem 1.5rem;
+    }
 
+    /* NUMÉRO REÇU */
     .receipt-num {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px dashed var(--border);
     }
     .receipt-num .rn-label {
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       color: var(--ink-lt);
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
     .receipt-num .rn-value {
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       font-weight: 800;
-      color: var(--ink);
+      color: var(--accent);
       letter-spacing: 0.05em;
-      margin-top: 0.2rem;
     }
     .receipt-num .rn-date {
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       color: var(--ink-lt);
-      margin-top: 0.1rem;
     }
 
-    /* AMOUNT SECTION */
+    /* MONTANT */
     .amount-section {
       background: linear-gradient(135deg, var(--accent), var(--btn));
-      border-radius: 20px;
-      padding: 1.2rem;
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: white;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
-    .am-label { font-size: 0.8rem; opacity: 0.8; }
-    .am-value { font-size: 1.6rem; font-weight: 800; }
+    .am-label { font-size: 0.65rem; opacity: 0.8; }
+    .am-value { font-size: 1.3rem; font-weight: 800; }
 
-    /* SECTIONS */
-    .section { margin-bottom: 1.2rem; }
+    /* GRILLE INFO */
+    .section {
+      margin-bottom: 0.8rem;
+    }
     .sec-title {
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       font-weight: 800;
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.07em;
-      margin-bottom: 0.6rem;
-      padding-bottom: 0.3rem;
-      border-bottom: 2px solid var(--accent-10);
+      margin-bottom: 0.4rem;
+      padding-bottom: 0.2rem;
+      border-bottom: 1.5px solid var(--accent-10);
     }
     .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem 0.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.8rem;
+    }
+    .info-item {
+      flex: 1;
+      min-width: 45%;
     }
     .info-label {
-      font-size: 0.65rem;
+      font-size: 0.55rem;
       color: var(--ink-lt);
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
     .info-val {
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.7rem;
       color: var(--ink);
-      margin-top: 0.1rem;
     }
-    .info-item.full { grid-column: 1/-1; }
+    .info-item.full {
+      flex: 100%;
+    }
 
-    /* PAYMENT INFO */
+    /* PAIEMENT INFO */
     .payment-info {
       background: var(--bg-slate);
-      border-radius: 20px;
-      padding: 1rem;
-      margin-bottom: 1.2rem;
+      border-radius: 12px;
+      padding: 0.7rem 0.8rem;
+      margin-bottom: 0.8rem;
     }
     .pi-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.8rem;
-      padding: 0.4rem 0;
-      border-bottom: 1px solid var(--border);
+      font-size: 0.68rem;
+      padding: 0.25rem 0;
+      border-bottom: 0.5px solid var(--border);
     }
     .pi-row:last-child { border-bottom: none; }
     .pi-key { color: var(--ink-lt); font-weight: 500; }
@@ -268,41 +270,81 @@
     .pending-notice {
       background: #fffbeb;
       border: 1px solid #fde68a;
-      border-radius: 20px;
-      padding: 1rem;
-      font-size: 0.75rem;
+      border-radius: 12px;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.6rem;
       color: #92400e;
-      line-height: 1.6;
+      line-height: 1.5;
     }
     .pending-notice strong { color: #78350f; }
 
-    /* RECEIPT FOOTER */
+    /* FOOTER */
     .receipt-footer {
       background: var(--bg-slate);
-      padding: 1rem 1.5rem;
+      padding: 0.7rem 1rem;
       text-align: center;
       border-top: 1px solid var(--border);
     }
     .receipt-footer p {
-      font-size: 0.7rem;
+      font-size: 0.55rem;
       color: var(--ink-lt);
-      line-height: 1.6;
+      line-height: 1.4;
     }
 
-    /* PRINT STYLES */
+    /* ========== STYLES POUR L'IMPRESSION ========== */
     @media print {
-      body { background: white; padding: 0; }
-      .top-bar, .action-btns { display: none; }
-      .receipt { box-shadow: none; max-width: 100%; }
+      body {
+        background: white;
+        padding: 0;
+        margin: 0;
+      }
+      .top-bar, .action-btns {
+        display: none;
+      }
+      .receipt {
+        max-width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+      }
+      .receipt-header {
+        background: linear-gradient(135deg, #3a2bbf, #635b7d);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .amount-section {
+        background: linear-gradient(135deg, #3a2bbf, #635b7d);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .status-badge {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .payment-info {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pending-notice {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      /* Force une seule page */
+      html, body {
+        height: auto;
+      }
+      .receipt {
+        page-break-after: avoid;
+        page-break-inside: avoid;
+      }
     }
 
+    /* RESPONSIVE MOBILE */
     @media (max-width: 540px) {
-      body { padding: 1rem; }
-      .receipt-body { padding: 1.2rem; }
-      .info-grid { grid-template-columns: 1fr; }
-      .amount-section { flex-direction: column; gap: 0.5rem; text-align: center; }
-      .action-btns { gap: 0.5rem; }
-      .btn-action { min-width: 100px; padding: 0.6rem 0.8rem; font-size: 0.75rem; }
+      body { padding: 0.8rem; }
+      .receipt-body { padding: 1rem; }
+      .info-item { min-width: 100%; }
+      .action-btns { gap: 0.6rem; }
+      .btn-action { padding: 0.6rem 0.8rem; font-size: 0.75rem; }
     }
   </style>
 </head>
@@ -313,26 +355,22 @@
     <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" onerror="this.src='https://placehold.co/32x32/3a2bbf/white?text=LC'"/>
     <span>LA CERTITUDE</span>
   </div>
-  <a href="{% url 'core:index' %}" class="home-link">← Accueil</a>
+  <a href="{% url 'core:index' %}" class="home-link">← Retour</a>
 </div>
 
-<!-- ACTION BUTTONS -->
 <div class="action-btns">
   <button class="btn-action btn-download" onclick="window.print()">
-    📥 Télécharger / Imprimer
+    📥 Imprimer le reçu
   </button>
   <a href="#" id="whatsappLink" class="btn-action btn-whatsapp" target="_blank">
     💬 Envoyer sur WhatsApp
   </a>
-  <a href="{% url 'core:index' %}" class="btn-action btn-home">
-    🏠 Accueil
-  </a>
 </div>
 
-<!-- RECEIPT -->
+<!-- RECEIPT - VERSION COMPACTE POUR UNE PAGE -->
 <div class="receipt" id="receipt">
   <div class="receipt-header">
-    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" class="receipt-logo" onerror="this.src='https://placehold.co/56x56/3a2bbf/white?text=LC'"/>
+    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" class="receipt-logo" onerror="this.src='https://placehold.co/50x50/3a2bbf/white?text=LC'"/>
     <h1>GROUPE LA CERTITUDE</h1>
     <p>Cours intensifs de renforcement — Juillet & Août 2026</p>
     <div class="status-badge {% if payment.status == 'confirmed' %}status-confirmed{% else %}status-pending{% endif %}">
@@ -345,14 +383,14 @@
   </div>
 
   <div class="receipt-body">
-    <!-- RECEIPT NUMBER -->
+    <!-- NUMÉRO DE REÇU -->
     <div class="receipt-num">
       <div class="rn-label">Numéro de reçu</div>
       <div class="rn-value">{{ payment.receipt_number }}</div>
       <div class="rn-date">{{ payment.created_at|date:"d/m/Y à H:i" }}</div>
     </div>
 
-    <!-- AMOUNT -->
+    <!-- MONTANT -->
     <div class="amount-section">
       <div>
         <div class="am-label">Montant total</div>
@@ -360,15 +398,13 @@
       </div>
       <div style="text-align:right">
         <div class="am-label">Moyen de paiement</div>
-        <div style="font-weight:800; font-size:0.9rem;">
-          {{ payment.get_method_display }}
-        </div>
+        <div style="font-weight:700; font-size:0.75rem;">{{ payment.get_method_display }}</div>
       </div>
     </div>
 
-    <!-- STUDENT INFO -->
+    <!-- INFORMATIONS ÉLÈVE -->
     <div class="section">
-      <div class="sec-title">👤 Informations de l'élève</div>
+      <div class="sec-title">📋 INFORMATIONS ÉLÈVE</div>
       <div class="info-grid">
         <div class="info-item">
           <div class="info-label">Nom complet</div>
@@ -382,71 +418,60 @@
           <div class="info-label">Établissement</div>
           <div class="info-val">{{ enrollment.school }}</div>
         </div>
-        {% if enrollment.parent_name %}
         <div class="info-item full">
-          <div class="info-label">Parent / Tuteur</div>
-          <div class="info-val">{{ enrollment.parent_name }} — {{ enrollment.parent_phone }}</div>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- COURSE INFO -->
-    <div class="section">
-      <div class="sec-title">📚 Formation inscrite</div>
-      <div class="info-grid">
-        <div class="info-item">
           <div class="info-label">Niveau</div>
           <div class="info-val">{{ enrollment.level_serie }}</div>
         </div>
-        <div class="info-item">
-          <div class="info-label">Tarif</div>
-          <div class="info-val">{{ enrollment.tarif|floatformat:0 }} FCFA</div>
+      </div>
+    </div>
+
+    <!-- DÉTAILS PAIEMENT -->
+    <div class="section">
+      <div class="sec-title">💰 DÉTAILS PAIEMENT</div>
+      <div class="payment-info">
+        <div class="pi-row">
+          <span class="pi-key">Numéro payeur</span>
+          <span class="pi-val">{{ payment.phone_used }}</span>
         </div>
+        <div class="pi-row">
+          <span class="pi-key">Numéro bénéficiaire</span>
+          <span class="pi-val">{{ payment.destination_phone }}</span>
+        </div>
+        <div class="pi-row">
+          <span class="pi-key">Bénéficiaire</span>
+          <span class="pi-val">{{ payment.destination_name }}</span>
+        </div>
+        <div class="pi-row">
+          <span class="pi-key">Référence MoMo</span>
+          <span class="pi-val">{{ payment.payment_reference|default:"Non fournie" }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFOS PRATIQUES -->
+    <div class="section">
+      <div class="sec-title">📅 INFOS PRATIQUES</div>
+      <div class="info-grid">
         <div class="info-item">
           <div class="info-label">Début des cours</div>
           <div class="info-val">1er juillet 2026</div>
         </div>
         <div class="info-item">
           <div class="info-label">Lieu</div>
-          <div class="info-val">EPP Gbégamey Sud, Cotonou</div>
+          <div class="info-val">EPP Gbégamey Sud</div>
         </div>
-      </div>
-    </div>
-
-    <!-- PAYMENT DETAILS -->
-    <div class="payment-info">
-      <div class="pi-row">
-        <span class="pi-key">Numéro payeur</span>
-        <span class="pi-val">{{ payment.phone_used }}</span>
-      </div>
-      <div class="pi-row">
-        <span class="pi-key">Numéro bénéficiaire</span>
-        <span class="pi-val">{{ payment.destination_phone }}</span>
-      </div>
-      <div class="pi-row">
-        <span class="pi-key">Bénéficiaire</span>
-        <span class="pi-val">{{ payment.destination_name }}</span>
-      </div>
-      <div class="pi-row">
-        <span class="pi-key">Réseau</span>
-        <span class="pi-val">{{ payment.get_method_display }}</span>
-      </div>
-      <div class="pi-row">
-        <span class="pi-key">Référence MoMo</span>
-        <span class="pi-val">{{ payment.payment_reference|default:"Non fournie" }}</span>
-      </div>
-      <div class="pi-row">
-        <span class="pi-key">Statut</span>
-        <span class="pi-val">{{ payment.get_status_display }}</span>
+        <div class="info-item">
+          <div class="info-label">Horaires</div>
+          <div class="info-val">Lun–Ven · 08h30 – 13h00</div>
+        </div>
       </div>
     </div>
 
     {% if payment.status == 'pending' %}
     <div class="pending-notice">
       ℹ️ <strong>Important :</strong> Ce reçu atteste de votre déclaration de paiement.<br/>
-      Notre équipe va vérifier votre transaction et <strong>confirmer votre inscription</strong> dans les plus brefs délais.<br/><br/>
-      📲 Envoyez une copie de ce reçu sur WhatsApp au <strong>01 96 38 92 49</strong> pour accélérer la confirmation.
+      Notre équipe va vérifier votre transaction et confirmer votre inscription.<br/>
+      📲 Envoyez ce reçu sur WhatsApp au <strong>01 96 38 92 49</strong> pour accélérer la confirmation.
     </div>
     {% endif %}
   </div>
@@ -454,80 +479,72 @@
   <div class="receipt-footer">
     <p>
       <strong>Groupe La Certitude</strong> — Discipline · Travail · Excellence<br/>
-      EPP Gbégamey Sud, Cotonou, Bénin<br/>
-      📞 01 96 38 92 49 · 01 95 51 17 61
+      EPP Gbégamey Sud, Cotonou, Bénin — 📞 01 96 38 92 49 | 01 95 51 17 61
     </p>
   </div>
 </div>
 
 <script>
-  // Construction du message WhatsApp avec TOUTES les informations
+  // Construction du message WhatsApp personnalisé
   function buildWhatsAppMessage() {
-    // Récupération des données depuis le DOM
     const receiptNumber = document.querySelector('.rn-value')?.textContent || '{{ payment.receipt_number }}';
-    const amount = document.querySelector('.am-value')?.textContent || '{{ payment.amount|floatformat:0 }} FCFA';
-    const method = document.querySelector('.amount-section div:last-child div:last-child')?.textContent || '{{ payment.get_method_display }}';
+    const amount = document.querySelector('.am-value')?.textContent || '{{ payment.amount|floatformat:0 }}';
+    const methodElement = document.querySelector('.amount-section div:last-child div:last-child');
+    let method = methodElement?.textContent?.trim() || '{{ payment.get_method_display }}';
     
-    const studentName = document.querySelector('.info-grid .info-item:first-child .info-val')?.textContent || '{{ enrollment.full_name }}';
-    const studentPhone = document.querySelectorAll('.info-grid .info-item')[1]?.querySelector('.info-val')?.textContent || '{{ enrollment.phone }}';
-    const school = document.querySelectorAll('.info-grid .info-item')[2]?.querySelector('.info-val')?.textContent || '{{ enrollment.school }}';
-    const levelSerie = document.querySelectorAll('.info-grid')[1]?.querySelectorAll('.info-val')[0]?.textContent || '{{ enrollment.level_serie }}';
+    const studentName = document.querySelectorAll('.info-item')[0]?.querySelector('.info-val')?.textContent || '{{ enrollment.full_name }}';
+    const studentPhone = document.querySelectorAll('.info-item')[1]?.querySelector('.info-val')?.textContent || '{{ enrollment.phone }}';
+    const school = document.querySelectorAll('.info-item')[2]?.querySelector('.info-val')?.textContent || '{{ enrollment.school }}';
+    const levelSerie = document.querySelectorAll('.info-item')[3]?.querySelector('.info-val')?.textContent || '{{ enrollment.level_serie }}';
     
     const payerPhone = document.querySelector('.payment-info .pi-row:first-child .pi-val')?.textContent || '{{ payment.phone_used }}';
     const beneficiaryPhone = document.querySelectorAll('.payment-info .pi-row')[1]?.querySelector('.pi-val')?.textContent || '{{ payment.destination_phone }}';
     const beneficiaryName = document.querySelectorAll('.payment-info .pi-row')[2]?.querySelector('.pi-val')?.textContent || '{{ payment.destination_name }}';
-    const momoReference = document.querySelectorAll('.payment-info .pi-row')[4]?.querySelector('.pi-val')?.textContent || '{{ payment.payment_reference|default:"Non fournie" }}';
+    let momoReference = document.querySelectorAll('.payment-info .pi-row')[3]?.querySelector('.pi-val')?.textContent || '{{ payment.payment_reference|default:"Non fournie" }}';
     
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleString('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     });
 
-    // Construction du message formaté
-    const message = `🏫 *NOUVEAU PAIEMENT - GROUPE LA CERTITUDE*
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    method = method.replace(/\s+/g, ' ').trim();
+    if (momoReference === 'Non fournie') momoReference = 'à préciser';
 
-📋 *INFORMATIONS ÉLÈVE*
-├─ Nom : ${studentName}
-├─ Contact : ${studentPhone}
-├─ Établissement : ${school}
-└─ Niveau : ${levelSerie}
+    const message = `Bonjour,
 
-💰 *DÉTAILS DU PAIEMENT*
-├─ Montant : ${amount}
-├─ Moyen : ${method}
-├─ Référence MoMo : ${momoReference}
-├─ Numéro payeur : ${payerPhone}
-├─ Numéro bénéficiaire : ${beneficiaryPhone}
-└─ Bénéficiaire : ${beneficiaryName}
+Je viens d'effectuer mon paiement pour les cours de renforcement du Groupe La Certitude.
 
-📄 *INFORMATIONS REÇU*
-├─ Numéro reçu : ${receiptNumber}
-├─ Date : ${formattedDate}
-└─ Statut : En attente de confirmation
+📋 *MES COORDONNÉES*
+Nom : ${studentName}
+Contact : ${studentPhone}
+École : ${school}
+Niveau : ${levelSerie}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔗 *Lien de confirmation :*
-https://votre-site.com/admin/confirm-payment/{{ payment.id }}/
+💰 *PAIEMENT EFFECTUÉ*
+Montant : ${amount} FCFA
+Moyen : ${method}
+Référence MoMo : ${momoReference}
+Depuis le numéro : ${payerPhone}
+Vers le numéro : ${beneficiaryPhone}
+Au nom de : ${beneficiaryName}
 
-⚠️ *Action requise :* Merci de confirmer ce paiement
-📎 Reçu attaché ci-joint
+📄 *REÇU N°* : ${receiptNumber}
+📅 Date : ${formattedDate}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Je vous remercie de bien vouloir vérifier et confirmer mon inscription.
+
+Cordialement,
+${studentName}
+
 🏫 Groupe La Certitude - Cours de renforcement 2026`;
     
     return encodeURIComponent(message);
   }
 
-  // Mise à jour du lien WhatsApp
   const whatsappLink = document.getElementById('whatsappLink');
   if (whatsappLink) {
-    const message = buildWhatsAppMessage();
-    whatsappLink.href = `https://wa.me/22996389249?text=${message}`;
+    whatsappLink.href = `https://wa.me/22996389249?text=${buildWhatsAppMessage()}`;
   }
 </script>
 

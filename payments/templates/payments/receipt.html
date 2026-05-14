@@ -19,10 +19,6 @@
       --ink-md: #475569;
       --ink-lt: #94a3b8;
       --border: #e2e8f0;
-      --border-md: #cbd5e1;
-      --sh-sm: 0 4px 20px rgba(0,0,0,.06);
-      --sh-md: 0 12px 40px rgba(0,0,0,.10);
-      --sh-lg: 0 24px 60px rgba(0,0,0,.14);
       --r-card: 20px;
       --r-pill: 999px;
       --font: 'Bricolage Grotesque', sans-serif;
@@ -42,12 +38,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem;
+      padding: 1rem;
     }
 
     /* TOP BAR */
     .top-bar {
-      max-width: 580px;
+      max-width: 600px;
       width: 100%;
       display: flex;
       align-items: center;
@@ -64,15 +60,15 @@
       border-radius: var(--r-pill);
     }
     .brand img {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: white;
       padding: 3px;
     }
     .brand span {
       font-weight: 800;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--ink);
     }
     .home-link {
@@ -80,20 +76,16 @@
       backdrop-filter: blur(8px);
       padding: 0.5rem 1rem;
       border-radius: var(--r-pill);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--ink);
       text-decoration: none;
       transition: all 0.2s;
     }
-    .home-link:hover {
-      background: rgba(255,255,255,0.8);
-      transform: translateX(-2px);
-    }
 
     /* ACTION BUTTONS */
     .action-btns {
-      max-width: 580px;
+      max-width: 600px;
       width: 100%;
       display: flex;
       gap: 1rem;
@@ -101,10 +93,10 @@
     }
     .btn-action {
       flex: 1;
-      padding: 0.8rem 1rem;
+      padding: 0.9rem 1rem;
       border-radius: var(--r-pill);
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       cursor: pointer;
       border: none;
       transition: all 0.2s;
@@ -118,130 +110,133 @@
     .btn-download { background: var(--gold); color: var(--ink); }
     .btn-whatsapp { background: #25d366; color: white; }
 
-    /* ========== RECEIPT - OPTIMISÉ POUR IMPRESSION ========== */
+    /* RECEIPT */
     .receipt {
-      max-width: 580px;
+      max-width: 600px;
       width: 100%;
       background: var(--bg-white);
       border-radius: var(--r-card);
       overflow: hidden;
-      box-shadow: var(--sh-lg);
+      box-shadow: 0 20px 40px rgba(0,0,0,.15);
     }
 
     /* HEADER */
     .receipt-header {
       background: linear-gradient(135deg, var(--accent), var(--btn));
-      padding: 1.2rem 1.5rem 1rem;
+      padding: 1.5rem;
       text-align: center;
       color: white;
     }
     .receipt-logo {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       background: white;
-      padding: 4px;
+      padding: 5px;
       object-fit: contain;
-      margin: 0 auto 0.5rem;
+      margin: 0 auto 0.8rem;
     }
     .receipt-header h1 {
-      font-size: 1rem;
+      font-size: 1.2rem;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
     .receipt-header p {
-      font-size: 0.65rem;
-      opacity: 0.8;
+      font-size: 0.75rem;
+      opacity: 0.85;
     }
     .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      padding: 0.25rem 0.8rem;
+      gap: 0.4rem;
+      padding: 0.35rem 1rem;
       border-radius: var(--r-pill);
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      margin-top: 0.5rem;
+      margin-top: 0.8rem;
     }
     .status-pending { background: rgba(245,158,11,0.2); color: #fde68a; }
     .status-confirmed { background: rgba(16,185,129,0.2); color: #a7f3d0; }
 
-    /* CORPS DU REÇU - COMPACT POUR UNE PAGE */
+    /* CORPS DU REÇU */
     .receipt-body {
-      padding: 1.2rem 1.5rem;
+      padding: 1.5rem;
     }
 
     /* NUMÉRO REÇU */
     .receipt-num {
       text-align: center;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
       border-bottom: 1px dashed var(--border);
     }
     .receipt-num .rn-label {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       color: var(--ink-lt);
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
     .receipt-num .rn-value {
-      font-size: 0.9rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: var(--accent);
       letter-spacing: 0.05em;
+      margin-top: 0.2rem;
     }
     .receipt-num .rn-date {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       color: var(--ink-lt);
+      margin-top: 0.2rem;
     }
 
     /* MONTANT */
     .amount-section {
       background: linear-gradient(135deg, var(--accent), var(--btn));
-      border-radius: 12px;
-      padding: 0.8rem 1rem;
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: white;
+      margin-bottom: 1.2rem;
+    }
+    .am-label { font-size: 0.75rem; opacity: 0.85; }
+    .am-value { font-size: 1.5rem; font-weight: 800; }
+
+    /* SECTIONS */
+    .section {
       margin-bottom: 1rem;
     }
-    .am-label { font-size: 0.65rem; opacity: 0.8; }
-    .am-value { font-size: 1.3rem; font-weight: 800; }
-
-    /* GRILLE INFO */
-    .section {
-      margin-bottom: 0.8rem;
-    }
     .sec-title {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       font-weight: 800;
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.07em;
-      margin-bottom: 0.4rem;
-      padding-bottom: 0.2rem;
-      border-bottom: 1.5px solid var(--accent-10);
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--accent-10);
     }
     .info-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem 0.8rem;
+      gap: 0.6rem 1rem;
     }
     .info-item {
       flex: 1;
       min-width: 45%;
     }
     .info-label {
-      font-size: 0.55rem;
+      font-size: 0.65rem;
       color: var(--ink-lt);
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
     .info-val {
       font-weight: 700;
-      font-size: 0.7rem;
+      font-size: 0.85rem;
       color: var(--ink);
+      margin-top: 0.2rem;
     }
     .info-item.full {
       flex: 100%;
@@ -250,16 +245,16 @@
     /* PAIEMENT INFO */
     .payment-info {
       background: var(--bg-slate);
-      border-radius: 12px;
-      padding: 0.7rem 0.8rem;
-      margin-bottom: 0.8rem;
+      border-radius: 16px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1rem;
     }
     .pi-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.68rem;
-      padding: 0.25rem 0;
+      font-size: 0.8rem;
+      padding: 0.4rem 0;
       border-bottom: 0.5px solid var(--border);
     }
     .pi-row:last-child { border-bottom: none; }
@@ -270,28 +265,28 @@
     .pending-notice {
       background: #fffbeb;
       border: 1px solid #fde68a;
-      border-radius: 12px;
-      padding: 0.6rem 0.8rem;
-      font-size: 0.6rem;
+      border-radius: 16px;
+      padding: 0.8rem 1rem;
+      font-size: 0.75rem;
       color: #92400e;
-      line-height: 1.5;
+      line-height: 1.6;
     }
     .pending-notice strong { color: #78350f; }
 
     /* FOOTER */
     .receipt-footer {
       background: var(--bg-slate);
-      padding: 0.7rem 1rem;
+      padding: 0.8rem 1rem;
       text-align: center;
       border-top: 1px solid var(--border);
     }
     .receipt-footer p {
-      font-size: 0.55rem;
+      font-size: 0.65rem;
       color: var(--ink-lt);
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
-    /* ========== STYLES POUR L'IMPRESSION ========== */
+    /* IMPRESSION */
     @media print {
       body {
         background: white;
@@ -316,21 +311,9 @@
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-      .status-badge {
+      .status-badge, .payment-info, .pending-notice {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
-      }
-      .payment-info {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .pending-notice {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      /* Force une seule page */
-      html, body {
-        height: auto;
       }
       .receipt {
         page-break-after: avoid;
@@ -338,13 +321,25 @@
       }
     }
 
-    /* RESPONSIVE MOBILE */
-    @media (max-width: 540px) {
+    /* RESPONSIVE MOBILE - TAILLES ADAPTÉES */
+    @media (max-width: 640px) {
       body { padding: 0.8rem; }
-      .receipt-body { padding: 1rem; }
+      .receipt-body { padding: 1.2rem; }
       .info-item { min-width: 100%; }
-      .action-btns { gap: 0.6rem; }
-      .btn-action { padding: 0.6rem 0.8rem; font-size: 0.75rem; }
+      .action-btns { gap: 0.8rem; }
+      .btn-action { padding: 0.8rem; font-size: 0.85rem; }
+      .receipt-logo { width: 50px; height: 50px; }
+      .receipt-header h1 { font-size: 1rem; }
+      .am-value { font-size: 1.3rem; }
+      .info-val { font-size: 0.8rem; }
+      .pi-row { font-size: 0.75rem; }
+      .pending-notice { font-size: 0.7rem; }
+    }
+
+    @media (max-width: 480px) {
+      .top-bar { flex-direction: column; gap: 0.5rem; align-items: stretch; }
+      .brand { justify-content: center; }
+      .home-link { text-align: center; }
     }
   </style>
 </head>
@@ -352,10 +347,10 @@
 
 <div class="top-bar">
   <div class="brand">
-    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" onerror="this.src='https://placehold.co/32x32/3a2bbf/white?text=LC'"/>
+    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" onerror="this.src='https://placehold.co/36x36/3a2bbf/white?text=LC'"/>
     <span>LA CERTITUDE</span>
   </div>
-  <a href="{% url 'core:index' %}" class="home-link">← Retour</a>
+  <a href="{% url 'core:index' %}" class="home-link">← Retour à l'accueil</a>
 </div>
 
 <div class="action-btns">
@@ -367,10 +362,9 @@
   </a>
 </div>
 
-<!-- RECEIPT - VERSION COMPACTE POUR UNE PAGE -->
 <div class="receipt" id="receipt">
   <div class="receipt-header">
-    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" class="receipt-logo" onerror="this.src='https://placehold.co/50x50/3a2bbf/white?text=LC'"/>
+    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" class="receipt-logo" onerror="this.src='https://placehold.co/60x60/3a2bbf/white?text=LC'"/>
     <h1>GROUPE LA CERTITUDE</h1>
     <p>Cours intensifs de renforcement — Juillet & Août 2026</p>
     <div class="status-badge {% if payment.status == 'confirmed' %}status-confirmed{% else %}status-pending{% endif %}">
@@ -383,14 +377,12 @@
   </div>
 
   <div class="receipt-body">
-    <!-- NUMÉRO DE REÇU -->
     <div class="receipt-num">
       <div class="rn-label">Numéro de reçu</div>
       <div class="rn-value">{{ payment.receipt_number }}</div>
       <div class="rn-date">{{ payment.created_at|date:"d/m/Y à H:i" }}</div>
     </div>
 
-    <!-- MONTANT -->
     <div class="amount-section">
       <div>
         <div class="am-label">Montant total</div>
@@ -398,11 +390,10 @@
       </div>
       <div style="text-align:right">
         <div class="am-label">Moyen de paiement</div>
-        <div style="font-weight:700; font-size:0.75rem;">{{ payment.get_method_display }}</div>
+        <div style="font-weight:700; font-size:0.85rem;">{{ payment.get_method_display }}</div>
       </div>
     </div>
 
-    <!-- INFORMATIONS ÉLÈVE -->
     <div class="section">
       <div class="sec-title">📋 INFORMATIONS ÉLÈVE</div>
       <div class="info-grid">
@@ -425,7 +416,6 @@
       </div>
     </div>
 
-    <!-- DÉTAILS PAIEMENT -->
     <div class="section">
       <div class="sec-title">💰 DÉTAILS PAIEMENT</div>
       <div class="payment-info">
@@ -448,7 +438,6 @@
       </div>
     </div>
 
-    <!-- INFOS PRATIQUES -->
     <div class="section">
       <div class="sec-title">📅 INFOS PRATIQUES</div>
       <div class="info-grid">
@@ -485,12 +474,10 @@
 </div>
 
 <script>
-  // Construction du message WhatsApp personnalisé
   function buildWhatsAppMessage() {
     const receiptNumber = document.querySelector('.rn-value')?.textContent || '{{ payment.receipt_number }}';
     const amount = document.querySelector('.am-value')?.textContent || '{{ payment.amount|floatformat:0 }}';
-    const methodElement = document.querySelector('.amount-section div:last-child div:last-child');
-    let method = methodElement?.textContent?.trim() || '{{ payment.get_method_display }}';
+    let method = document.querySelector('.amount-section div:last-child div:last-child')?.textContent?.trim() || '{{ payment.get_method_display }}';
     
     const studentName = document.querySelectorAll('.info-item')[0]?.querySelector('.info-val')?.textContent || '{{ enrollment.full_name }}';
     const studentPhone = document.querySelectorAll('.info-item')[1]?.querySelector('.info-val')?.textContent || '{{ enrollment.phone }}';

@@ -6,16 +6,20 @@ from django.shortcuts import render
 def home(request):
     return render(request, 'core/index.html')
 
-
 def galerie(request):
     """
-    Scanne le dossier images/ et catégorise automatiquement selon le nom :
+    Scanne le dossier static/images/ et catégorise automatiquement selon le nom :
     - groupe*.jpg  → catégorie "groupe"
     - prix*.jpg    → catégorie "prix"
-    - 1.jpg, 2.jpg → catégorie "cours"
     - autres       → catégorie "cours"
     """
-    images_dir = settings.MEDIA_ROOT
+    # Changez ici : utilisez STATIC_ROOT au lieu de MEDIA_ROOT
+    images_dir = os.path.join(settings.STATIC_ROOT, 'images')
+    
+    # Si STATIC_ROOT n'existe pas, utilisez STATICFILES_DIRS
+    if not os.path.exists(images_dir):
+        images_dir = os.path.join(settings.BASE_DIR, 'static', 'images')
+    
     images = []
 
     EXTENSIONS = ('.jpg', '.jpeg', '.png', '.webp', '.JPG', '.JPEG', '.PNG')
@@ -36,17 +40,18 @@ def galerie(request):
             # Détection de catégorie par préfixe
             if name_lower.startswith('groupe'):
                 category       = 'groupe'
-                category_label = 'Groupe & famille'
+                category_label = 'Photo de famille'
             elif name_lower.startswith('prix'):
                 category       = 'prix'
                 category_label = 'Remise de prix'
             else:
                 category       = 'cours'
-                category_label = 'Cours & apprenants'
+                category_label = 'Cours'
 
+            # Utilisez STATIC_URL pour le chemin
             images.append({
-                'src':      f'/images/{filename}',
-                'alt':      f'Édition 2025 — {filename}',
+                'src':      f'{settings.STATIC_URL}images/{filename}',  # Changé ici
+                'alt':      f'Édition 2025 — {filename.replace(".jpg", "").replace(".png", "").replace(".JPG", "")}',
                 'category': category,
                 'label':    category_label,
             })
@@ -63,7 +68,6 @@ def galerie(request):
         'images': images,
         'counts': counts,
     })
-
 
 def temoignages(request):
     """

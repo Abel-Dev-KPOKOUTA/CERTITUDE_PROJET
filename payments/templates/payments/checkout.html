@@ -3,271 +3,609 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Paiement — La Certitude</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  <title>Paiement — Groupe La Certitude</title>
+  <link rel="icon" href="{% static 'images/logo_certitude.png' %}" type="image/png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
   <style>
+    /* ═══════════════════════════════════════
+       TOKENS (identique aux autres pages)
+    ═══════════════════════════════════════ */
     :root {
-      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe;
-      --white:#fff; --navy:#0f172a; --gray-50:#f8fafc;
-      --gray-100:#f1f5f9; --gray-200:#e2e8f0; --gray-500:#64748b;
-      --green:#10b981; --gold:#f59e0b; --red:#ef4444; --r:14px;
+      --hero-from: #d7c8ff;
+      --hero-via:  #c2b0f8;
+      --hero-to:   #b79dee;
+      --accent:    #3a2bbf;
+      --accent-10: rgba(58,43,191,.10);
+      --accent-20: rgba(58,43,191,.20);
+      --btn:       #635b7d;
+      --btn-hover: #4f4865;
+      --bg-lav:    #f6f4ff;
+      --bg-white:  #ffffff;
+      --bg-slate:  #f8fafc;
+      --ink:       #0f172a;
+      --ink-md:    #475569;
+      --ink-lt:    #94a3b8;
+      --border:    #e2e8f0;
+      --border-md: #cbd5e1;
+      --sh-sm: 0 4px 20px rgba(0,0,0,.06);
+      --sh-md: 0 12px 40px rgba(0,0,0,.10);
+      --sh-lg: 0 24px 60px rgba(0,0,0,.14);
+      --r-card: 24px;
+      --r-pill: 999px;
+      --font: 'Bricolage Grotesque', sans-serif;
+      --dur: .4s;
+      --ease: cubic-bezier(.22,1,.36,1);
+      --green: #10b981;
+      --green-dark: #059669;
+      --gold: #f59e0b;
+      --red: #ef4444;
     }
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family:'DM Sans',sans-serif; min-height:100vh;
-      background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:flex-start; padding:2rem 1rem 4rem;
+      font-family: var(--font);
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--hero-from) 0%, var(--hero-via) 50%, var(--hero-to) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1.5rem;
+      position: relative;
     }
 
+    /* ═══ DECORATION ═══ */
+    .bg-deco {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .bg-deco svg {
+      position: absolute;
+      opacity: 0.12;
+    }
+    .deco-1 {
+      top: -80px;
+      right: -80px;
+      width: 280px;
+      animation: float 8s ease-in-out infinite;
+    }
+    .deco-2 {
+      bottom: -60px;
+      left: -60px;
+      width: 220px;
+      animation: float 6s ease-in-out infinite reverse;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    /* ═══ TOP BAR ═══ */
     .top-bar {
-      width:100%; max-width:540px;
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:1.5rem;
+      max-width: 560px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+      position: relative;
+      z-index: 10;
+      flex-wrap: wrap;
+      gap: 0.8rem;
     }
-    .back-link { color:rgba(255,255,255,.75); font-size:.85rem; text-decoration:none; }
-    .back-link:hover { color:white; }
-    .brand { display:flex; align-items:center; gap:.6rem; }
-    .brand img { width:34px; height:34px; border-radius:50%; background:white; padding:2px; object-fit:contain; }
-    .brand span { font-family:'Sora',sans-serif; font-weight:700; font-size:.88rem; color:white; }
-
-    .card {
-      width:100%; max-width:540px; background:white;
-      border-radius:24px; overflow:hidden;
-      box-shadow:0 20px 60px rgba(0,0,0,.22);
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(8px);
+      padding: 0.5rem 1rem;
+      border-radius: var(--r-pill);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink);
+      transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,0.6);
+      text-decoration: none;
+    }
+    .back-link:hover {
+      background: rgba(255,255,255,0.8);
+      transform: translateX(-2px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 1rem 0.4rem 0.6rem;
+      border-radius: var(--r-pill);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      padding: 3px;
+      object-fit: contain;
+    }
+    .brand span {
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--ink);
     }
 
-    /* RECAP HEADER */
+    /* ═══ MAIN CARD ═══ */
+    .payment-card {
+      max-width: 560px;
+      width: 100%;
+      background: var(--bg-white);
+      border-radius: var(--r-card);
+      box-shadow: var(--sh-lg);
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+      animation: slideUp 0.5s var(--ease);
+    }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ═══ RECAP HEADER ═══ */
     .recap-header {
-      background:linear-gradient(135deg,var(--blue-dk),var(--blue));
-      padding:1.8rem 2rem; color:white;
+      background: linear-gradient(135deg, var(--accent), var(--btn));
+      padding: 1.5rem 1.8rem;
+      color: white;
     }
     .recap-header h2 {
-      font-family:'Sora',sans-serif; font-size:1.1rem; font-weight:700;
-      margin-bottom:1rem;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .rrow { display:flex; justify-content:space-between; font-size:.88rem; padding:.3rem 0; border-bottom:1px solid rgba(255,255,255,.1); }
-    .rrow:last-of-type { border:none; }
-    .rk { opacity:.7; } .rv { font-weight:600; }
+    .recap-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      font-size: 0.85rem;
+    }
+    .recap-row:last-of-type { border-bottom: none; }
+    .recap-key { opacity: 0.75; }
+    .recap-val { font-weight: 700; }
     .amount-box {
-      margin-top:1.2rem; padding:1rem 1.2rem;
-      background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.3);
-      border-radius:var(--r); display:flex; justify-content:space-between; align-items:center;
+      margin-top: 1rem;
+      padding: 0.8rem 1.2rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
     }
-    .amount-box span { font-size:.88rem; opacity:.8; }
-    .amount-box strong { font-family:'Sora',sans-serif; font-size:1.8rem; font-weight:800; }
+    .amount-box span { font-size: 0.8rem; opacity: 0.8; }
+    .amount-box strong {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
 
-    .card-body { padding:1.8rem 2rem; }
+    /* ═══ CARD BODY ═══ */
+    .card-body {
+      padding: 1.5rem 1.8rem;
+    }
 
-    /* ÉTAPES */
+    /* ═══ STEPS ═══ */
     .steps-title {
-      font-size:.78rem; font-weight:700; color:var(--navy);
-      text-transform:uppercase; letter-spacing:.05em; margin-bottom:1rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.8rem;
     }
-    .step-list { display:flex; flex-direction:column; gap:.6rem; margin-bottom:1.6rem; }
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
     .step-item {
-      display:flex; align-items:flex-start; gap:.8rem;
-      padding:.8rem 1rem; background:var(--gray-50); border-radius:10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      padding: 0.8rem 1rem;
+      background: var(--bg-slate);
+      border-radius: 16px;
+      transition: transform 0.2s;
     }
-    .sn {
-      width:26px; height:26px; border-radius:50%; flex-shrink:0;
-      background:var(--blue-lt); color:var(--blue);
-      display:flex; align-items:center; justify-content:center;
-      font-family:'Sora',sans-serif; font-weight:700; font-size:.78rem;
+    .step-item:hover {
+      transform: translateX(4px);
     }
-    .step-item p { font-size:.88rem; color:var(--navy); line-height:1.5; }
-    .step-item p strong { color:var(--blue); }
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-10);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-text {
+      font-size: 0.85rem;
+      color: var(--ink);
+      line-height: 1.5;
+      flex: 1;
+    }
+    .step-text strong {
+      color: var(--accent);
+      font-weight: 800;
+    }
 
-    /* SÉLECTION RÉSEAU */
+    /* ═══ METHOD GRID ═══ */
     .method-title {
-      font-size:.78rem; font-weight:700; color:var(--navy);
-      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.7rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.8rem;
     }
-    .method-grid { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-bottom:1.4rem; }
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
     .method-card {
-      border:2px solid var(--gray-200); border-radius:var(--r);
-      padding:1.1rem; cursor:pointer; transition:border-color .2s, background .2s;
-      user-select:none;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--bg-white);
     }
-    .method-card:hover { border-color:var(--blue); }
-    .method-card.selected { border-color:var(--blue); background:var(--blue-lt); }
-    .method-card input { display:none; }
-    .mc-top { display:flex; align-items:center; gap:.6rem; margin-bottom:.5rem; }
-    .mc-logo { font-size:1.4rem; }
-    .mc-name { font-family:'Sora',sans-serif; font-weight:700; font-size:.9rem; color:var(--navy); }
-    .method-card.selected .mc-name { color:var(--blue); }
+    .method-card:hover {
+      border-color: var(--accent);
+      background: var(--bg-lav);
+      transform: translateY(-2px);
+    }
+    .method-card.selected {
+      border-color: var(--accent);
+      background: var(--accent-10);
+    }
+    .method-card input { display: none; }
+    .mc-logo { font-size: 1.5rem; display: block; margin-bottom: 0.4rem; }
+    .mc-name {
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--ink);
+    }
+    .mc-number {
+      font-size: 0.7rem;
+      color: var(--ink-lt);
+      margin-top: 0.2rem;
+      font-family: monospace;
+    }
+    .method-card.selected .mc-name { color: var(--accent); }
 
-    /* CADRE NUMÉRO À APPELER */
+    /* ═══ PAYMENT TARGET ═══ */
     .payment-target {
-      display:none; background:#f0fdf4; border:2px solid #a7f3d0;
-      border-radius:var(--r); padding:1.1rem 1.2rem; margin-bottom:1.2rem;
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border: 1px solid #a7f3d0;
+      border-radius: 20px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      animation: fadeIn 0.3s var(--ease);
     }
-    .payment-target.show { display:block; }
-    .pt-label { font-size:.75rem; font-weight:700; color:#065f46;
-      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.5rem; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .pt-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--green-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
     .pt-number {
-      font-family:'Sora',sans-serif; font-size:1.5rem; font-weight:800;
-      color:var(--navy); letter-spacing:.05em;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      font-family: monospace;
     }
-    .pt-name { font-size:.85rem; color:#065f46; margin-top:.2rem; font-weight:500; }
+    .pt-name {
+      font-size: 0.8rem;
+      color: var(--green-dark);
+      margin-top: 0.2rem;
+    }
     .pt-copy {
-      display:inline-block; margin-top:.6rem;
-      background:#d1fae5; color:#065f46; border:none;
-      padding:.35rem .9rem; border-radius:50px; font-size:.78rem; font-weight:700;
-      cursor:pointer; transition:background .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+      background: rgba(16,185,129,0.15);
+      color: var(--green-dark);
+      border: none;
+      padding: 0.35rem 0.9rem;
+      border-radius: var(--r-pill);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
     }
-    .pt-copy:hover { background:#a7f3d0; }
-    .pt-copy.copied { background:#10b981; color:white; }
+    .pt-copy:hover {
+      background: var(--green);
+      color: white;
+      transform: translateY(-1px);
+    }
+    .pt-copy.copied {
+      background: var(--green);
+      color: white;
+    }
 
-    /* CHAMP TÉLÉPHONE */
-    .field { margin-bottom:1.2rem; }
-    .field label {
-      display:block; font-size:.78rem; font-weight:700; color:var(--navy);
-      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.5rem;
+    /* ═══ FORM FIELDS ═══ */
+    .field-group {
+      margin-bottom: 1.2rem;
     }
-    .field input {
-      width:100%; padding:.85rem 1rem;
-      border:1.5px solid var(--gray-200); border-radius:var(--r);
-      font-family:'DM Sans',sans-serif; font-size:.95rem; color:var(--navy);
-      background:var(--gray-50); outline:none;
-      transition:border-color .2s, box-shadow .2s;
+    .field-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
     }
-    .field input:focus {
-      border-color:var(--blue);
-      box-shadow:0 0 0 3px rgba(26,86,219,.12); background:white;
+    .field-label .req {
+      color: var(--red);
     }
-    .field-hint { font-size:.76rem; color:var(--gray-500); margin-top:.35rem; }
+    .field-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      font-family: var(--font);
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: var(--bg-slate);
+      outline: none;
+      transition: all 0.2s;
+    }
+    .field-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-20);
+      background: var(--bg-white);
+    }
+    .field-hint {
+      font-size: 0.7rem;
+      color: var(--ink-lt);
+      margin-top: 0.3rem;
+    }
 
-    /* ERREUR */
+    /* ═══ ERROR BOX ═══ */
     .error-box {
-      background:#fef2f2; border:1px solid #fca5a5;
-      border-radius:var(--r); padding:.9rem 1rem;
-      font-size:.85rem; color:#b91c1c; margin-bottom:1.2rem;
-      display:flex; gap:.5rem; align-items:center;
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: 16px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      color: #b91c1c;
     }
 
-    /* CHECKBOX CONFIRMATION */
+    /* ═══ CONFIRM CHECKBOX ═══ */
     .confirm-check {
-      display:flex; align-items:flex-start; gap:.7rem;
-      padding:1rem; background:#fffbeb; border:1px solid #fde68a;
-      border-radius:var(--r); margin-bottom:1.4rem; cursor:pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      padding: 1rem;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 16px;
+      margin-bottom: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
     }
-    .confirm-check input { width:18px; height:18px; margin-top:2px; flex-shrink:0; accent-color:var(--blue); }
-    .confirm-check span { font-size:.85rem; color:#92400e; line-height:1.5; }
+    .confirm-check:hover {
+      background: #fef3c7;
+    }
+    .confirm-check input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+    }
+    .confirm-check span {
+      font-size: 0.8rem;
+      color: #92400e;
+      line-height: 1.5;
+    }
+    .confirm-check span strong {
+      font-weight: 800;
+    }
 
-    /* BOUTON */
+    /* ═══ BUTTON ═══ */
     .btn-confirm {
-      width:100%; padding:1rem;
-      background:linear-gradient(135deg,var(--green),#34d399);
-      color:white; border:none; border-radius:50px;
-      font-family:'Sora',sans-serif; font-size:1rem; font-weight:700;
-      cursor:pointer; box-shadow:0 4px 20px rgba(16,185,129,.4);
-      transition:transform .15s, opacity .15s;
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--accent), var(--btn));
+      color: white;
+      border: none;
+      border-radius: var(--r-pill);
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
     }
-    .btn-confirm:hover { transform:translateY(-2px); }
-    .btn-confirm:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+    .btn-confirm:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(58,43,191,0.3);
+    }
+    .btn-confirm:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
 
+    /* ═══ SECURE NOTE ═══ */
     .secure-note {
-      text-align:center; font-size:.75rem; color:var(--gray-500);
-      margin-top:.8rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--ink-lt);
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
     }
 
-    @media(max-width:540px) {
-      .card-body, .recap-header { padding:1.4rem 1.2rem; }
-      .method-grid { grid-template-columns:1fr 1fr; }
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 560px) {
+      body { padding: 1rem; }
+      .recap-header { padding: 1.2rem; }
+      .card-body { padding: 1.2rem; }
+      .amount-box strong { font-size: 1.3rem; }
+      .pt-number { font-size: 1.1rem; }
+      .method-grid { gap: 0.6rem; }
+      .step-text { font-size: 0.78rem; }
+    }
+
+    @media (max-width: 450px) {
+      .method-card { padding: 0.8rem; }
+      .mc-logo { font-size: 1.2rem; }
+      .mc-name { font-size: 0.75rem; }
     }
   </style>
 </head>
 <body>
 
+<!-- DECORATION -->
+<div class="bg-deco">
+  <svg class="deco-1" viewBox="0 0 200 200" fill="white">
+    <circle cx="100" cy="100" r="80" fill="white" opacity="0.3"/>
+    <circle cx="100" cy="100" r="60" fill="white" opacity="0.2"/>
+  </svg>
+  <svg class="deco-2" viewBox="0 0 200 200" fill="white">
+    <rect x="50" y="50" width="100" height="100" rx="20" fill="white" opacity="0.2"/>
+  </svg>
+</div>
+
+<!-- TOP BAR -->
 <div class="top-bar">
   <a href="{% url 'core:index' %}" class="back-link">← Retour</a>
   <div class="brand">
-    <img src="/images/logo_certitude.png" alt="Logo"/>
-    <span>La Certitude</span>
+    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" onerror="this.src='https://placehold.co/32x32/3a2bbf/white?text=LC'"/>
+    <span>LA CERTITUDE</span>
   </div>
 </div>
 
-<div class="card">
-
-  <!-- RÉCAP -->
+<!-- PAYMENT CARD -->
+<div class="payment-card">
   <div class="recap-header">
-    <h2>💳 Récapitulatif — Procédez au paiement</h2>
-    <div class="rrow"><span class="rk">Élève</span><span class="rv">{{ enrollment.full_name }}</span></div>
-    <div class="rrow"><span class="rk">Formation</span><span class="rv">{{ enrollment.level_serie }}</span></div>
-    <div class="rrow"><span class="rk">École</span><span class="rv">{{ enrollment.school }}</span></div>
+    <h2>💳 Paiement sécurisé</h2>
+    <div class="recap-row">
+      <span class="recap-key">Élève</span>
+      <span class="recap-val">{{ enrollment.full_name }}</span>
+    </div>
+    <div class="recap-row">
+      <span class="recap-key">Formation</span>
+      <span class="recap-val">{{ enrollment.level_serie }}</span>
+    </div>
+    <div class="recap-row">
+      <span class="recap-key">Établissement</span>
+      <span class="recap-val">{{ enrollment.school }}</span>
+    </div>
     <div class="amount-box">
-      <span>Montant à envoyer</span>
+      <span>Montant à payer</span>
       <strong>{{ enrollment.tarif|floatformat:0 }} FCFA</strong>
     </div>
   </div>
 
   <div class="card-body">
-
-    <!-- ÉTAPES -->
-    <p class="steps-title">📋 Comment payer ?</p>
+    <!-- STEPS -->
+    <div class="steps-title">📋 Procédure de paiement</div>
     <div class="step-list">
       <div class="step-item">
-        <div class="sn">1</div>
-        <p>Choisissez votre réseau ci-dessous (<strong>MTN</strong> ou <strong>MOOV</strong>)</p>
+        <div class="step-number">1</div>
+        <div class="step-text">Choisissez votre réseau (<strong>MTN MoMo</strong> ou <strong>MOOV Money</strong>)</div>
       </div>
       <div class="step-item">
-        <div class="sn">2</div>
-        <p>Ouvrez votre application Mobile Money et envoyez <strong>{{ enrollment.tarif|floatformat:0 }} FCFA</strong> au numéro affiché au nom de <strong>CODJO Abel Jean Eudes</strong></p>
+        <div class="step-number">2</div>
+        <div class="step-text">Ouvrez votre application Mobile Money et envoyez <strong>{{ enrollment.tarif|floatformat:0 }} FCFA</strong> au numéro affiché</div>
       </div>
       <div class="step-item">
-        <div class="sn">3</div>
-        <p>Revenez ici, indiquez votre numéro et confirmez — <strong>votre reçu sera généré immédiatement</strong> 🎉</p>
+        <div class="step-number">3</div>
+        <div class="step-text">Indiquez votre numéro et confirmez — <strong>votre reçu sera généré</strong> ✨</div>
       </div>
     </div>
 
     {% if error %}
-    <div class="error-box">⚠️ {{ error }}</div>
+    <div class="error-box">
+      ⚠️ {{ error }}
+    </div>
     {% endif %}
 
     <form method="post" id="payForm">
       {% csrf_token %}
 
-      <!-- CHOIX RÉSEAU -->
-      <p class="method-title">Choisissez votre réseau</p>
+      <!-- METHOD SELECTION -->
+      <div class="method-title">📱 Choisissez votre réseau</div>
       <div class="method-grid">
-
         <label class="method-card selected" id="card-mtn" data-method="mtn">
           <input type="radio" name="method" value="mtn" checked/>
-          <div class="mc-top">
-            <span class="mc-logo">🟡</span>
-            <span class="mc-name">MTN MoMo</span>
-          </div>
-          <div style="font-size:.78rem;color:var(--gray-500)">01 96 38 92 49</div>
+          <div class="mc-logo">🟡</div>
+          <div class="mc-name">MTN MoMo</div>
+          <div class="mc-number">01 96 38 92 49</div>
         </label>
-
         <label class="method-card" id="card-moov" data-method="moov">
           <input type="radio" name="method" value="moov"/>
-          <div class="mc-top">
-            <span class="mc-logo">🔵</span>
-            <span class="mc-name">MOOV Money</span>
-          </div>
-          <div style="font-size:.78rem;color:var(--gray-500)">01 95 51 17 61</div>
+          <div class="mc-logo">🔵</div>
+          <div class="mc-name">MOOV Money</div>
+          <div class="mc-number">01 95 51 17 61</div>
         </label>
-
       </div>
 
-      <!-- NUMÉRO BÉNÉFICIAIRE (change selon réseau) -->
-      <div class="payment-target show" id="targetBox">
-        <div class="pt-label">📲 Envoyez au numéro suivant</div>
+      <!-- PAYMENT TARGET -->
+      <div class="payment-target" id="targetBox">
+        <div class="pt-label">📲 Envoyez au numéro</div>
         <div class="pt-number" id="targetNumber">01 96 38 92 49</div>
         <div class="pt-name">Au nom de : <strong>CODJO Abel Jean Eudes</strong></div>
         <button type="button" class="pt-copy" id="copyBtn" onclick="copyNumber()">📋 Copier le numéro</button>
       </div>
 
-      <!-- NUMÉRO DU PAYEUR -->
-      <div class="field">
-        <label>Votre numéro ayant effectué le paiement *</label>
-        <input type="tel" name="phone_used"
-               placeholder="Ex : 01 96 38 92 49"
-               required/>
-        <p class="field-hint">Le numéro depuis lequel vous avez envoyé l'argent</p>
+      <!-- PAYER PHONE -->
+      <div class="field-group">
+        <div class="field-label">Votre numéro <span class="req">*</span></div>
+        <input type="tel" name="phone_used" class="field-input"
+               placeholder="Ex : 01 96 38 92 49" required/>
+        <div class="field-hint">Le numéro depuis lequel vous avez envoyé l'argent</div>
       </div>
 
       <!-- CONFIRMATION -->
@@ -276,7 +614,7 @@
         <span>
           ✅ Je confirme avoir envoyé <strong>{{ enrollment.tarif|floatformat:0 }} FCFA</strong>
           au <strong id="confirmNum">01 96 38 92 49</strong>
-          au nom de <strong>CODJO Abel Jean Eudes</strong> via Mobile Money.
+          au nom de <strong>CODJO Abel Jean Eudes</strong>
         </span>
       </label>
 
@@ -284,18 +622,21 @@
         📄 Valider et obtenir mon reçu
       </button>
 
-      <p class="secure-note">
-        Votre reçu sera généré immédiatement. L'admin vérifiera et confirmera votre inscription.
-      </p>
-
+      <div class="secure-note">
+        🔒 Paiement sécurisé · Reçu généré immédiatement après validation
+      </div>
     </form>
   </div>
 </div>
 
 <script>
-  const NUMBERS = { mtn: '01 96 38 92 49', moov: '01 95 51 17 61' };
+  const NUMBERS = {
+    mtn: '01 96 38 92 49',
+    moov: '01 95 51 17 61'
+  };
   let selected = 'mtn';
 
+  // Method selection
   document.querySelectorAll('.method-card').forEach(card => {
     card.addEventListener('click', () => {
       document.querySelectorAll('.method-card').forEach(c => c.classList.remove('selected'));
@@ -303,37 +644,53 @@
       card.querySelector('input').checked = true;
       selected = card.dataset.method;
 
-      // Mettre à jour le numéro affiché
-      document.getElementById('targetNumber').textContent = NUMBERS[selected];
-      document.getElementById('confirmNum').textContent   = NUMBERS[selected];
+      // Update displayed number
+      const targetNumber = document.getElementById('targetNumber');
+      const confirmNum = document.getElementById('confirmNum');
+      if (targetNumber) targetNumber.textContent = NUMBERS[selected];
+      if (confirmNum) confirmNum.textContent = NUMBERS[selected];
     });
   });
 
-  // Activer le bouton quand checkbox cochée
-  document.getElementById('confirmBox').addEventListener('change', function() {
-    document.getElementById('btnConfirm').disabled = !this.checked;
-  });
+  // Enable button when checkbox is checked
+  const confirmBox = document.getElementById('confirmBox');
+  const btnConfirm = document.getElementById('btnConfirm');
 
-  // Copier le numéro
-  function copyNumber() {
-    const num = NUMBERS[selected].replace(/ /g, '');
-    navigator.clipboard.writeText(num).then(() => {
-      const btn = document.getElementById('copyBtn');
-      btn.textContent = '✅ Copié !';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = '📋 Copier le numéro';
-        btn.classList.remove('copied');
-      }, 2000);
+  if (confirmBox && btnConfirm) {
+    confirmBox.addEventListener('change', function() {
+      btnConfirm.disabled = !this.checked;
     });
   }
 
-  // Désactiver le bouton à la soumission
-  document.getElementById('payForm').addEventListener('submit', function() {
-    const btn = document.getElementById('btnConfirm');
-    btn.disabled = true;
-    btn.textContent = '⏳ Génération du reçu...';
-  });
+  // Copy number function
+  window.copyNumber = function() {
+    const num = NUMBERS[selected];
+    navigator.clipboard.writeText(num).then(() => {
+      const btn = document.getElementById('copyBtn');
+      if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ Copié !';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = '📋 Copier le numéro';
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+    }).catch(() => {
+      alert('Impossible de copier. Veuillez noter le numéro : ' + num);
+    });
+  };
+
+  // Disable button on submit
+  const payForm = document.getElementById('payForm');
+  if (payForm) {
+    payForm.addEventListener('submit', function() {
+      if (btnConfirm) {
+        btnConfirm.disabled = true;
+        btnConfirm.innerHTML = '⏳ Génération du reçu...';
+      }
+    });
+  }
 </script>
 
 </body>

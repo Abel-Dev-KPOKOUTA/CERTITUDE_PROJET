@@ -5,263 +5,487 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Témoignages — Groupe La Certitude</title>
-  <link rel="icon" href="/images/logo_certitude.png" type="image/png"/>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="{% static 'images/logo_certitude.png' %}" type="image/png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
   <style>
+    /* ═══════════════════════════════════════
+       TOKENS (identique à index.html)
+    ═══════════════════════════════════════ */
     :root {
-      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe;
-      --navy:#0f172a; --white:#fff; --gray-50:#f8fafc;
-      --gray-100:#f1f5f9; --gray-200:#e2e8f0; --gray-500:#64748b;
-      --gold:#f59e0b; --green:#10b981; --r:14px; --r-lg:20px;
-      --shadow:0 4px 24px rgba(15,23,42,.10);
-      --shadow-lg:0 16px 48px rgba(15,23,42,.18);
+      --hero-from: #d7c8ff;
+      --hero-via:  #c2b0f8;
+      --hero-to:   #b79dee;
+      --accent:    #3a2bbf;
+      --accent-10: rgba(58,43,191,.10);
+      --accent-20: rgba(58,43,191,.20);
+      --btn:       #635b7d;
+      --btn-hover: #4f4865;
+      --bg-lav:    #f6f4ff;
+      --bg-white:  #ffffff;
+      --bg-slate:  #f8fafc;
+      --ink:       #0f172a;
+      --ink-md:    #475569;
+      --ink-lt:    #94a3b8;
+      --border:    #e2e8f0;
+      --border-md: #cbd5e1;
+      --sh-sm: 0 4px 20px rgba(0,0,0,.06);
+      --sh-md: 0 12px 40px rgba(0,0,0,.10);
+      --sh-lg: 0 24px 60px rgba(0,0,0,.14);
+      --r-card: 20px;
+      --r-pill: 999px;
+      --font: 'Bricolage Grotesque', sans-serif;
+      --dur: .6s;
+      --ease: cubic-bezier(.22,1,.36,1);
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--navy);min-height:100vh}
-    a{text-decoration:none;color:inherit}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font); background: var(--bg-white); color: var(--ink); overflow-x: hidden; line-height: 1.6; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
 
-    /* ── HEADER ── */
-    .page-header{
-      background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
-      padding:5rem 1.5rem 4rem;text-align:center;position:relative;overflow:hidden;
-    }
-    .page-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:50px 50px}
-    .header-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
-    .back-link{display:inline-flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:1.8rem;transition:color .2s}
-    .back-link:hover{color:white}
-    .header-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);padding:.35rem .9rem;border-radius:50px;font-size:.78rem;font-weight:600;margin-bottom:1rem}
-    .page-header h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;color:white;margin-bottom:.7rem;line-height:1.2}
-    .page-header p{color:rgba(255,255,255,.7);font-size:1rem;line-height:1.6;max-width:540px;margin:0 auto}
-    .video-count{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.35);color:#fde68a;padding:.4rem 1rem;border-radius:50px;font-size:.82rem;font-weight:700;margin-top:1rem}
-
-    /* ── STATS STRIP ── */
-    .stats-strip{
-      background:var(--white);border-bottom:1px solid var(--gray-200);
-      padding:1.5rem;
-    }
-    .stats-inner{
-      max-width:900px;margin:0 auto;
-      display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
-      text-align:center;
-    }
-    .stat-item{}
-    .stat-n{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;color:var(--blue);display:block}
-    .stat-l{font-size:.78rem;color:var(--gray-500);margin-top:.15rem}
-
-    /* ── GRILLE VIDÉOS ── */
-    .videos-section{padding:3rem 1.5rem 5rem;max-width:1100px;margin:0 auto}
-    .videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.8rem}
-
-    .video-card{
-      background:var(--white);border-radius:var(--r-lg);overflow:hidden;
-      box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;
-      display:flex;flex-direction:column;
-    }
-    .video-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
-
-    /* MINIATURE */
-    .video-thumb{
-      position:relative;padding-top:56.25%;
-      background:linear-gradient(135deg,#1040a8,#1a56db);
-      cursor:pointer;overflow:hidden;
-    }
-    .video-thumb img{
-      position:absolute;inset:0;width:100%;height:100%;
-      object-fit:cover;transition:transform .4s;
-    }
-    .video-card:hover .video-thumb img{transform:scale(1.06)}
-
-    /* OVERLAY PLAY */
-    .play-overlay{
-      position:absolute;inset:0;
-      background:linear-gradient(transparent 30%,rgba(5,15,40,.65));
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      transition:background .3s;
-    }
-    .video-card:hover .play-overlay{background:linear-gradient(transparent 20%,rgba(5,15,40,.75))}
-
-    .play-ring{
-      width:64px;height:64px;border-radius:50%;
-      background:rgba(255,255,255,.95);
-      display:flex;align-items:center;justify-content:center;
-      font-size:1.5rem;
-      box-shadow:0 4px 24px rgba(0,0,0,.35);
-      transition:transform .25s,background .2s;
-      margin-bottom:.6rem;
-    }
-    .video-card:hover .play-ring{transform:scale(1.12);background:white}
-
-    .play-label{
-      color:white;font-family:'Sora',sans-serif;
-      font-size:.78rem;font-weight:600;
-      background:rgba(0,0,0,.4);padding:.3rem .8rem;border-radius:50px;
+    /* ═══ SCROLL PROGRESS ═══ */
+    #scroll-bar {
+      position: fixed; top: 0; left: 0; width: 0%; height: 3px;
+      background: linear-gradient(90deg, var(--accent), #9986f6);
+      z-index: 9999; transition: width .1s linear;
+      border-radius: 0 2px 2px 0;
     }
 
-    /* DURÉE badge */
-    .duration-badge{
-      position:absolute;bottom:.6rem;right:.7rem;
-      background:rgba(0,0,0,.7);color:white;
-      font-size:.72rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;
+    /* ═══ BACK TO TOP ═══ */
+    #back-top {
+      position: fixed; bottom: 6rem; right: 1.4rem; z-index: 200;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--btn); color: #fff; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--sh-md); transition: opacity .3s, transform .3s, background .2s;
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+    }
+    #back-top.show { opacity: 1; transform: none; pointer-events: auto; }
+    #back-top:hover { background: var(--btn-hover); transform: translateY(-3px); }
+
+    /* ═══ NAVBAR (identique) ═══ */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .3s;
+    }
+    .nav.scrolled { box-shadow: var(--sh-sm); }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; gap: 2rem;
+      padding: .9rem 1.5rem;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: 1.15rem; font-weight: 800; letter-spacing: -.03em;
+      white-space: nowrap;
+    }
+    .nav-logo img { width: 34px; height: 34px; border-radius: 50%; object-fit: contain; flex-shrink: 0; }
+    .nav-menu { display: flex; align-items: center; gap: 1.8rem; margin-left: auto; }
+    .nav-item { position: relative; }
+    .nav-link {
+      font-size: .85rem; font-weight: 600; color: var(--ink-md);
+      padding: .5rem 0; display: flex; align-items: center; gap: .3rem;
+      transition: color .2s;
+      cursor: pointer;
+      background: none; border: none; font-family: var(--font);
+    }
+    .nav-link:hover { color: var(--ink); }
+    .nav-link.active { color: var(--accent); }
+    .dropdown-icon { width: 14px; height: 14px; transition: transform .25s; }
+    .nav-item:hover .dropdown-icon { transform: rotate(180deg); }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 0; min-width: 240px;
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--r-card); box-shadow: var(--sh-md);
+      opacity: 0; visibility: hidden; transform: translateY(-8px);
+      transition: opacity .25s, transform .25s, visibility .25s;
+      z-index: 101; padding: .5rem 0;
+    }
+    .nav-item:hover .dropdown-menu {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    .dropdown-item {
+      display: flex; align-items: center; gap: .8rem;
+      padding: .75rem 1.2rem; font-size: .8rem; font-weight: 500;
+      color: var(--ink-md); transition: background .2s, color .2s;
+    }
+    .dropdown-item:hover { background: var(--bg-lav); color: var(--accent); }
+    .dropdown-item svg { width: 18px; height: 18px; opacity: .7; }
+    .dropdown-divider { height: 1px; background: var(--border); margin: .5rem 0; }
+    .dropdown-title { padding: .6rem 1.2rem .3rem; font-size: .7rem; font-weight: 700; color: var(--ink-lt); text-transform: uppercase; letter-spacing: .05em; }
+    .btn-login {
+      border: 1px solid var(--border-md); border-radius: var(--r-pill);
+      padding: .45rem 1.2rem; font-size: .8rem; font-weight: 600;
+      background: var(--bg-white); color: var(--ink-md); cursor: pointer;
+      font-family: var(--font); transition: background .2s, border-color .2s;
+    }
+    .btn-login:hover { background: var(--bg-slate); border-color: var(--btn); }
+    .btn-register {
+      background: var(--btn); color: #fff; border: none; border-radius: var(--r-pill);
+      padding: .45rem 1.4rem; font-size: .8rem; font-weight: 700;
+      cursor: pointer; font-family: var(--font);
+      transition: background .2s, transform .15s;
+    }
+    .btn-register:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 99px; transition: .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: #fff; padding: 80px 1.5rem 2rem;
+      flex-direction: column; transform: translateX(100%); transition: transform .35s var(--ease);
+      overflow-y: auto;
+    }
+    .mobile-menu.open { display: flex; transform: none; }
+    .mobile-nav-item { border-bottom: 1px solid var(--border); }
+    .mobile-nav-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0; font-size: 1rem; font-weight: 600; color: var(--ink);
+      cursor: pointer;
+    }
+    .mobile-dropdown-content {
+      max-height: 0; overflow: hidden; transition: max-height .35s var(--ease);
+      padding-left: 1rem;
+    }
+    .mobile-dropdown-content.show { max-height: 500px; }
+    .mobile-dropdown-content a {
+      display: flex; align-items: center; gap: .8rem;
+      padding: .8rem 0; font-size: .88rem; font-weight: 500;
+      color: var(--ink-md); border-bottom: none;
+    }
+    .mobile-auth { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .mobile-auth .btn-login, .mobile-auth .btn-register { text-align: center; padding: .9rem; }
+
+    /* ═══ PAGE HEADER ═══ */
+    .page-header {
+      background: linear-gradient(140deg, var(--hero-from) 0%, var(--hero-via) 50%, var(--hero-to) 100%);
+      padding: 5rem 1.5rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,.2), transparent 60%);
+      pointer-events: none;
+    }
+    .header-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      color: var(--ink); background: rgba(255,255,255,.5);
+      border-radius: var(--r-pill); padding: .4rem 1rem;
+      font-size: .8rem; font-weight: 600;
+      margin-bottom: 1.8rem; transition: background .2s;
+    }
+    .back-link:hover { background: rgba(255,255,255,.8); }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.9);
+      backdrop-filter: blur(8px); border-radius: var(--r-pill);
+      padding: .38rem 1rem; font-size: .78rem; font-weight: 700;
+      color: var(--accent); margin-bottom: 1.3rem;
+    }
+    .page-header h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 900; line-height: 1.08; letter-spacing: -.04em;
+      color: var(--ink); margin-bottom: .7rem;
+    }
+    .page-header p { font-size: 1rem; color: rgba(15,23,42,.7); line-height: 1.78; }
+    .video-count {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--accent-10); color: var(--accent);
+      border-radius: var(--r-pill); padding: .4rem 1rem;
+      font-size: .82rem; font-weight: 700; margin-top: 1rem;
     }
 
-    /* INFOS */
-    .video-info{padding:1.3rem 1.4rem;flex:1;display:flex;flex-direction:column;gap:.5rem}
-    .video-name{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;color:var(--navy)}
-    .video-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-    .badge-niveau{
-      background:var(--blue-lt);color:var(--blue);
-      padding:.22rem .65rem;border-radius:50px;
-      font-size:.72rem;font-weight:700;
+    /* ═══ STATS STRIP ═══ */
+    .stats-strip {
+      background: var(--bg-white); border-bottom: 1px solid var(--border);
+      padding: 1.5rem;
     }
-    .badge-ecole{font-size:.78rem;color:var(--gray-500)}
+    .stats-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1rem; text-align: center;
+    }
+    .stat-n { font-size: 1.8rem; font-weight: 800; color: var(--accent); display: block; }
+    .stat-l { font-size: .78rem; color: var(--ink-lt); margin-top: .15rem; }
 
-    .video-quote{
-      font-size:.85rem;color:var(--gray-500);
-      line-height:1.55;font-style:italic;
-      border-left:3px solid var(--blue-lt);
-      padding-left:.8rem;margin-top:.3rem;
+    /* ═══ GRILLE VIDÉOS ═══ */
+    .videos-section { padding: 3rem 1.5rem 5rem; max-width: 1100px; margin: 0 auto; }
+    .videos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.8rem; }
+
+    .video-card {
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--r-card); overflow: hidden;
+      box-shadow: var(--sh-sm); transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+    }
+    .video-card:hover { transform: translateY(-4px); box-shadow: var(--sh-md); }
+
+    .video-thumb {
+      position: relative; padding-top: 56.25%;
+      background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+      cursor: pointer; overflow: hidden;
+    }
+    .video-thumb img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; transition: transform .4s var(--ease);
+    }
+    .video-card:hover .video-thumb img { transform: scale(1.05); }
+
+    .play-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(transparent 30%, rgba(15,23,42,.65));
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: background .3s;
+    }
+    .video-card:hover .play-overlay { background: linear-gradient(transparent 20%, rgba(15,23,42,.75)); }
+
+    .play-ring {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(255,255,255,.95);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: var(--sh-md);
+      transition: transform .25s, background .2s;
+      margin-bottom: .6rem;
+    }
+    .video-card:hover .play-ring { transform: scale(1.12); background: white; }
+
+    .play-label {
+      color: white; font-family: var(--font);
+      font-size: .78rem; font-weight: 600;
+      background: rgba(0,0,0,.5); padding: .3rem .8rem; border-radius: var(--r-pill);
     }
 
-    .btn-watch{
-      display:flex;align-items:center;justify-content:center;gap:.5rem;
-      margin-top:.8rem;padding:.7rem;
-      background:var(--blue-lt);color:var(--blue);
-      border-radius:var(--r);font-family:'Sora',sans-serif;
-      font-weight:700;font-size:.85rem;border:none;cursor:pointer;
-      transition:background .2s,color .2s; width:100%;
-    }
-    .btn-watch:hover{background:var(--blue);color:white}
-
-    /* ── MODAL VIDÉO ── */
-    .modal{
-      display:none;position:fixed;inset:0;z-index:999;
-      background:rgba(5,10,30,.92);
-      align-items:center;justify-content:center;
-      padding:1rem;
-    }
-    .modal.open{display:flex}
-    .modal-inner{width:100%;max-width:860px;position:relative}
-    .modal-close{
-      position:absolute;top:-48px;right:0;
-      background:rgba(255,255,255,.1);border:none;color:white;
-      width:40px;height:40px;border-radius:50%;font-size:1.3rem;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;
-      transition:background .2s;
-    }
-    .modal-close:hover{background:rgba(255,255,255,.25)}
-    .modal-header{
-      display:flex;align-items:center;gap:.8rem;
-      margin-bottom:.9rem;
-    }
-    .modal-name{font-family:'Sora',sans-serif;font-weight:700;color:white;font-size:1rem}
-    .modal-meta{font-size:.8rem;color:rgba(255,255,255,.6)}
-    .video-frame-wrap{
-      position:relative;padding-top:56.25%;
-      border-radius:var(--r-lg);overflow:hidden;background:#000;
-    }
-    .video-frame-wrap iframe{
-      position:absolute;inset:0;width:100%;height:100%;border:none;
+    .duration-badge {
+      position: absolute; bottom: .6rem; right: .7rem;
+      background: rgba(0,0,0,.7); color: white;
+      font-size: .72rem; font-weight: 700; padding: .2rem .5rem; border-radius: 4px;
     }
 
-    /* ── CITATION STARS ── */
-    .stars-row{color:var(--gold);font-size:1rem;letter-spacing:.15em}
-
-    /* ── CTA ── */
-    .temo-cta{
-      background:linear-gradient(135deg,var(--blue-dk),var(--blue));
-      padding:3.5rem 1.5rem;text-align:center;color:white;
+    .video-info { padding: 1.3rem 1.4rem; flex: 1; display: flex; flex-direction: column; gap: .5rem; }
+    .stars-row { color: #f59e0b; font-size: 1rem; letter-spacing: .15em; }
+    .video-name { font-family: var(--font); font-weight: 800; font-size: 1rem; color: var(--ink); }
+    .video-meta { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .badge-niveau {
+      background: var(--accent-10); color: var(--accent);
+      padding: .22rem .65rem; border-radius: var(--r-pill);
+      font-size: .72rem; font-weight: 700;
     }
-    .temo-cta h2{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:.6rem}
-    .temo-cta p{opacity:.8;margin-bottom:1.5rem}
-    .btn-white{background:white;color:var(--blue);padding:.85rem 2rem;border-radius:50px;font-family:'Sora',sans-serif;font-weight:700;font-size:.95rem;transition:transform .2s;display:inline-block}
-    .btn-white:hover{transform:translateY(-2px)}
+    .badge-ecole { font-size: .78rem; color: var(--ink-lt); }
+    .video-quote {
+      font-size: .85rem; color: var(--ink-md);
+      line-height: 1.55; font-style: italic;
+      border-left: 3px solid var(--accent-20);
+      padding-left: .8rem; margin-top: .3rem;
+    }
+    .btn-watch {
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+      margin-top: .8rem; padding: .7rem;
+      background: var(--accent-10); color: var(--accent);
+      border-radius: var(--r-pill); font-family: var(--font);
+      font-weight: 700; font-size: .85rem; border: none; cursor: pointer;
+      transition: background .2s, color .2s; width: 100%;
+    }
+    .btn-watch:hover { background: var(--btn); color: #fff; }
 
-    .fade-in{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
-    .fade-in.visible{opacity:1;transform:none}
+    /* ═══ MODAL VIDÉO ═══ */
+    .modal {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(10,8,24,.92);
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .modal.open { display: flex; }
+    .modal-inner { width: 100%; max-width: 860px; position: relative; }
+    .modal-close {
+      position: absolute; top: -48px; right: 0;
+      background: rgba(255,255,255,.1); border: none; color: white;
+      width: 40px; height: 40px; border-radius: 50%; font-size: 1.3rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,.25); }
+    .modal-header {
+      display: flex; align-items: center; gap: .8rem;
+      margin-bottom: .9rem;
+    }
+    .modal-name { font-family: var(--font); font-weight: 800; color: white; font-size: 1rem; }
+    .modal-meta { font-size: .8rem; color: rgba(255,255,255,.6); }
+    .video-frame-wrap {
+      position: relative; padding-top: 56.25%;
+      border-radius: var(--r-card); overflow: hidden; background: #000;
+    }
+    .video-frame-wrap iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+    }
 
-    @media(max-width:700px){
-      .videos-grid{grid-template-columns:1fr}
-      .stats-inner{grid-template-columns:repeat(2,1fr)}
+    /* ═══ CTA ═══ */
+    .temo-cta {
+      background: linear-gradient(140deg, var(--hero-from), var(--hero-via), var(--hero-to));
+      padding: 3.5rem 1.5rem; text-align: center;
+    }
+    .temo-cta h2 { font-family: var(--font); font-size: 1.6rem; font-weight: 900; margin-bottom: .6rem; }
+    .temo-cta p { color: rgba(15,23,42,.7); margin-bottom: 1.5rem; }
+    .btn-white {
+      background: var(--ink); color: #fff; border-radius: var(--r-pill);
+      padding: .85rem 2rem; font-family: var(--font); font-weight: 700;
+      font-size: .95rem; transition: transform .2s, box-shadow .2s;
+      display: inline-block;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: var(--sh-md); background: #1e293b; }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      background: linear-gradient(180deg, #3d3658 0%, #4f486d 50%, #635b7d 100%);
+      color: rgba(255,255,255,.7); padding: 4rem 1.5rem 1.5rem;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; max-width: 1200px; margin: 0 auto 3rem; }
+    .footer-brand { display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
+    .footer-brand img { width: 36px; height: 36px; border-radius: 50%; background: #fff; padding: 2px; }
+    .footer-brand-name { font-size: 1rem; font-weight: 800; color: #fff; }
+    .footer-desc { font-size: .8rem; line-height: 1.8; margin-bottom: 1.2rem; }
+    .footer-col h4 { font-size: .85rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+    .footer-col ul li a { font-size: .78rem; color: rgba(255,255,255,.6); transition: color .2s; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8rem; max-width: 1200px; margin: 0 auto; }
+    .footer-copy { font-size: .73rem; opacity: .4; }
+
+    /* ═══ ANIMATIONS ═══ */
+    .fade-in { opacity: 0; transform: translateY(28px); transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 960px) {
+      .nav-menu { display: none; }
+      .hamburger { display: flex; margin-left: auto; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      .videos-grid { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .footer-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- SCROLL PROGRESS -->
+<div id="scroll-bar"></div>
+
+<!-- BACK TO TOP -->
+<button id="back-top" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- NAVBAR -->
+<header class="nav" id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <img src="{% static 'images/logo_certitude.png' %}" alt="La Certitude" onerror="this.src='https://placehold.co/34x34/3a2bbf/white?text=LC'"/>
+      LA CERTITUDE
+    </div>
+    <div class="nav-menu">
+      <div class="nav-item"><a href="{% url 'core:index' %}" class="nav-link">Accueil</a></div>
+      <div class="nav-item">
+        <button class="nav-link">Cours<svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="dropdown-menu">
+          <div class="dropdown-title">Édition actuelle</div>
+          <a href="#" class="dropdown-item">Programme 2026</a>
+          <a href="{% url 'enrollments:create' %}" class="dropdown-item">S'inscrire</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-title">Éditions précédentes</div>
+          <a href="#" class="dropdown-item">Archives</a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="#" class="nav-link">Ressources</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">Soutien scolaire</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">Épreuves</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">Annonces</a></div>
+    </div>
+    <div class="nav-menu" style="margin-left: 0;">
+      <button class="btn-login" onclick="location.href='#'">Connexion</button>
+      <button class="btn-register" onclick="location.href='#'">Inscription</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='{% url 'core:index' %}'">Accueil</div></div>
+  <div class="mobile-nav-item">
+    <div class="mobile-nav-link" onclick="toggleMobileDropdown(this)">Cours<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="mobile-dropdown-content">
+      <a href="#">Programme 2026</a>
+      <a href="{% url 'enrollments:create' %}">S'inscrire</a>
+      <a href="#">Archives</a>
+    </div>
+  </div>
+  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='#'">Ressources</div></div>
+  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='#'">Soutien scolaire</div></div>
+  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='#'">Épreuves</div></div>
+  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='#'">Annonces</div></div>
+  <div class="mobile-auth">
+    <button class="btn-login" onclick="location.href='#'">Connexion</button>
+    <button class="btn-register" onclick="location.href='#'">Inscription</button>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
 <div class="page-header">
   <div class="header-inner">
     <a href="{% url 'core:index' %}" class="back-link">← Retour à l'accueil</a>
-    <div class="header-badge">🎥 Témoignages vidéo</div>
-    <h1>Ils ont vécu l'expérience<br/>La Certitude</h1>
+    <div class="header-badge">Témoignages</div>
+    <h1>Ils ont vécu l'expérience La Certitude</h1>
     <p>Découvrez les témoignages authentiques de nos anciens apprenants et de leurs parents — édition 2025.</p>
-    <div class="video-count">🎥 {{ videos|length }} témoignages vidéo</div>
+    <div class="video-count">{{ videos|length }} témoignages vidéo</div>
   </div>
 </div>
 
 <!-- STATS -->
 <div class="stats-strip">
   <div class="stats-inner">
-    <div class="stat-item">
-      <span class="stat-n">100%</span>
-      <div class="stat-l">Programme couvert</div>
-    </div>
-    <div class="stat-item">
-      <span class="stat-n">3</span>
-      <div class="stat-l">Niveaux enseignés</div>
-    </div>
-    <div class="stat-item">
-      <span class="stat-n">9</span>
-      <div class="stat-l">Semaines intensives</div>
-    </div>
-    <div class="stat-item">
-      <span class="stat-n">⭐⭐⭐⭐⭐</span>
-      <div class="stat-l">Satisfaction apprenants</div>
-    </div>
+    <div class="stat-item"><span class="stat-n">100%</span><div class="stat-l">Programme couvert</div></div>
+    <div class="stat-item"><span class="stat-n">5</span><div class="stat-l">Niveaux enseignés</div></div>
+    <div class="stat-item"><span class="stat-n">8</span><div class="stat-l">Semaines intensives</div></div>
+    <div class="stat-item"><span class="stat-n">95%</span><div class="stat-l">Satisfaction</div></div>
   </div>
 </div>
 
 <!-- GRILLE VIDÉOS -->
 <div class="videos-section">
   <div class="videos-grid">
-
     {% for video in videos %}
-    <div class="video-card fade-in" style="animation-delay:{{ forloop.counter0 }}00ms">
-
-      <!-- MINIATURE -->
+    <div class="video-card fade-in">
       <div class="video-thumb" onclick="openModal('{{ video.youtube_id }}', '{{ video.nom }}', '{{ video.niveau }}', '{{ video.ecole }}')">
-        <img
-          src="https://img.youtube.com/vi/{{ video.youtube_id }}/hqdefault.jpg"
-          alt="Témoignage {{ video.nom }}"
-          loading="lazy"
-          onerror="this.src='/images/{{ forloop.counter }}.jpg'"
-        />
-        <div class="play-overlay">
-          <div class="play-ring">▶</div>
-          <div class="play-label">Regarder le témoignage</div>
-        </div>
-        <div class="duration-badge">📹 Témoignage</div>
+        <img src="https://img.youtube.com/vi/{{ video.youtube_id }}/hqdefault.jpg" alt="Témoignage {{ video.nom }}" loading="lazy" onerror="this.src='https://placehold.co/400x225/e2e8f0/475569?text=Video+non+disponible'"/>
+        <div class="play-overlay"><div class="play-ring">▶</div><div class="play-label">Regarder</div></div>
+        <div class="duration-badge">Témoignage</div>
       </div>
-
-      <!-- INFOS -->
       <div class="video-info">
         <div class="stars-row">★★★★★</div>
         <div class="video-name">{{ video.nom }}</div>
-        <div class="video-meta">
-          <span class="badge-niveau">{{ video.niveau }}</span>
-          <span class="badge-ecole">{{ video.ecole }}</span>
-        </div>
-        <p class="video-quote">
-          "Grâce au Groupe La Certitude, j'ai maîtrisé tout mon programme en seulement 2 mois."
-        </p>
-        <button class="btn-watch" onclick="openModal('{{ video.youtube_id }}', '{{ video.nom }}', '{{ video.niveau }}', '{{ video.ecole }}')">
-          ▶ Regarder le témoignage
-        </button>
+        <div class="video-meta"><span class="badge-niveau">{{ video.niveau }}</span><span class="badge-ecole">{{ video.ecole }}</span></div>
+        <p class="video-quote">"{{ video.quote }}"</p>
+        <button class="btn-watch" onclick="openModal('{{ video.youtube_id }}', '{{ video.nom }}', '{{ video.niveau }}', '{{ video.ecole }}')">▶ Regarder le témoignage</button>
       </div>
-
     </div>
     {% endfor %}
-
   </div>
 </div>
 
@@ -269,20 +493,8 @@
 <div class="modal" id="videoModal" onclick="handleModalClick(event)">
   <div class="modal-inner">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-header">
-      <div>
-        <div class="modal-name" id="modalName"></div>
-        <div class="modal-meta" id="modalMeta"></div>
-      </div>
-    </div>
-    <div class="video-frame-wrap">
-      <iframe
-        id="videoFrame"
-        src=""
-        allowfullscreen
-        allow="autoplay; encrypted-media"
-      ></iframe>
-    </div>
+    <div class="modal-header"><div><div class="modal-name" id="modalName"></div><div class="modal-meta" id="modalMeta"></div></div></div>
+    <div class="video-frame-wrap"><iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>
   </div>
 </div>
 
@@ -290,13 +502,57 @@
 <div class="temo-cta">
   <h2>Prêt à rejoindre leur succès ?</h2>
   <p>Inscrivez-vous aux cours intensifs de l'édition 2026.</p>
-  <a href="{% url 'enrollments:create' %}" class="btn-white">🚀 S'inscrire maintenant</a>
+  <a href="{% url 'enrollments:create' %}" class="btn-white">S'inscrire maintenant</a>
 </div>
 
+<!-- FOOTER -->
+<footer>
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" onerror="this.src='https://placehold.co/36x36/fff/3a2bbf?text=LC'"/>
+          <span class="footer-brand-name">Groupe La Certitude</span>
+        </div>
+        <p class="footer-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou, Bénin.</p>
+      </div>
+      <div class="footer-col"><h4>Explorer</h4><ul><li><a href="{% url 'core:index' %}#formations">Formations</a></li><li><a href="{% url 'core:index' %}#professeurs">Professeurs</a></li><li><a href="#">Ressources</a></li></ul></div>
+      <div class="footer-col"><h4>Niveaux</h4><ul><li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours 3ème</a></li><li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours 1ère</a></li><li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours Terminale</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+22996389249">01 96 38 92 49</a></li><li><a href="https://wa.me/22996389249">WhatsApp</a></li><li><a href="#">EPP Gbégamey Sud</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p class="footer-copy">© 2026 Groupe La Certitude — Tous droits réservés</p><span style="font-size:.72rem;opacity:.4">Fait avec ❤️ au Bénin</span></div>
+  </div>
+</footer>
+
 <script>
+  // Scroll progress
+  const scrollBar = document.getElementById('scroll-bar');
+  const backTop = document.getElementById('back-top');
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    scrollBar.style.width = pct + '%';
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+    backTop.classList.toggle('show', window.scrollY > 400);
+  });
+
+  // Hamburger
+  const ham = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    menu.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  function toggleMobileDropdown(element) {
+    const content = element.nextElementSibling;
+    content.classList.toggle('show');
+  }
+
+  // Modal video
   function openModal(youtubeId, nom, niveau, ecole) {
-    document.getElementById('videoFrame').src =
-      `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+    document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
     document.getElementById('modalName').textContent = nom;
     document.getElementById('modalMeta').textContent = `${niveau} · ${ecole} · Édition 2025`;
     document.getElementById('videoModal').classList.add('open');
@@ -309,20 +565,13 @@
     document.body.style.overflow = '';
   }
 
-  function handleModalClick(e) {
-    if (e.target === document.getElementById('videoModal')) closeModal();
-  }
+  function handleModalClick(e) { if (e.target === document.getElementById('videoModal')) closeModal(); }
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
-  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  /* Scroll reveal */
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: .1 });
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: .1 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
-
 </body>
 </html>

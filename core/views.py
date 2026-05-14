@@ -6,6 +6,12 @@ from django.shortcuts import render
 def home(request):
     return render(request, 'core/index.html')
 
+# core/views.py
+def about(request):
+    """Page À propos"""
+    return render(request, 'core/about.html')
+
+
 def galerie(request):
     """
     Scanne le dossier static/images/ et catégorise automatiquement selon le nom :
@@ -151,5 +157,4 @@ def temoignages(request):
 
     return render(request, 'core/temoignages.html', {'videos': videos})
 
-def astuces(request):
-    pass
+

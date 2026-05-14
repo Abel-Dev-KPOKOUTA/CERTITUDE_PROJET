@@ -1,0 +1,57 @@
+{% load static %}
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="{% static 'images/logo_certitude.png' %}" alt="Logo"/>
+          <span class="footer-brand-name">Groupe La Certitude</span>
+        </div>
+        <p class="footer-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou, Bénin. Discipline · Travail · Excellence.</p>
+        <div class="footer-social-btns" style="margin-top:1rem">
+          <a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">WhatsApp</a>
+          <a href="#" class="footer-ig-btn">Instagram</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explorer</h4>
+        <ul>
+          <li><a href="{% url 'core:index' %}#formations">Formations</a></li>
+          <li><a href="{% url 'core:index' %}#professeurs">Professeurs</a></li>
+          <li><a href="{% url 'core:index' %}#astuces">Astuces</a></li>
+          <li><a href="{% url 'core:galerie' %}">Galerie</a></li>
+          <li><a href="{% url 'core:temoignages' %}">Témoignages</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Niveaux</h4>
+        <ul>
+          <li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours de 3ème</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours de Terminale</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+22996389249">01 96 38 92 49</a></li>
+          <li><a href="tel:+22995511761">01 95 51 17 61</a></li>
+          <li><a href="https://wa.me/22996389249">WhatsApp</a></li>
+          <li><a href="#">EPP Gbégamey Sud</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bigtext">La Certitude</div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+        <a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">Rejoindre WhatsApp</a>
+        <a href="#" class="footer-ig-btn">Instagram</a>
+      </div>
+      <span style="font-size:.72rem;opacity:.4">Fait avec ❤️ au Bénin</span>
+    </div>
+  </div>
+</footer>

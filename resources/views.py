@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+def astuces(request):
+    return render(request, 'resources/astuces.html')
+
+def cours(request):
+    return render(request, 'resources/cours.html')

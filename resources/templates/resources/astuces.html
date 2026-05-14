@@ -1,0 +1,651 @@
+{% extends 'includes/base.html' %}
+{% load static %}
+
+{% block title %}Astuces & Méthodes — Groupe La Certitude{% endblock %}
+
+{% block content %}
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="header-inner">
+    <div class="header-badge">Astuces & Méthodes</div>
+    <h1>Astuces pour réussir vos examens</h1>
+    <p>Des conseils pratiques, méthodes de travail et techniques de mémorisation par matière.</p>
+  </div>
+</div>
+
+<!-- BARRE DE RECHERCHE -->
+<div class="search-bar">
+  <div class="container">
+    <div class="search-wrapper">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="searchInput" class="search-input" placeholder="Rechercher une astuce par matière, niveau ou mot-clé...">
+    </div>
+  </div>
+</div>
+
+<!-- FILTRES -->
+<div class="filters-section">
+  <div class="container">
+    <div class="filters-wrapper">
+      <button class="filter-chip active" data-filter="all">Toutes</button>
+      <button class="filter-chip" data-filter="maths">Mathématiques</button>
+      <button class="filter-chip" data-filter="pct">Physique-Chimie</button>
+      <button class="filter-chip" data-filter="svt">SVT</button>
+      <button class="filter-chip" data-filter="anglais">Anglais</button>
+      <button class="filter-chip" data-filter="philo">Philosophie</button>
+    </div>
+    <div class="level-filters">
+      <button class="level-chip active" data-level="all">Tous niveaux</button>
+      <button class="level-chip" data-level="3eme">3ème</button>
+      <button class="level-chip" data-level="1ere">1ère</button>
+      <button class="level-chip" data-level="tle">Terminale</button>
+    </div>
+  </div>
+</div>
+
+<!-- GRILLE ASTUCES -->
+<section class="section">
+  <div class="container">
+    <div class="result-count" id="resultCount">6 astuces trouvées</div>
+    <div class="astuces-grid" id="astucesGrid">
+      
+      <!-- Carte 1 - Maths 3ème -->
+      <div class="astuce-card" data-title="Mathématiques 3ème - Algèbre" data-subject="maths" data-level="3eme">
+        <div class="astuce-icon" style="background:#ede9fe">📐</div>
+        <div class="astuce-content">
+          <div class="astuce-matiere">Mathématiques · 3ème</div>
+          <h3 class="astuce-title">5 astuces pour réussir en Algèbre</h3>
+          <p class="astuce-preview">Identités remarquables, factorisation, équations du second degré...</p>
+          <div class="astuce-tags">
+            <span class="tag">Algèbre</span>
+            <span class="tag">Équations</span>
+            <span class="tag">Factorisation</span>
+          </div>
+          <button class="astuce-btn" onclick="openAstuceModal('maths-3eme-algebre')">Accéder →</button>
+        </div>
+      </div>
+
+      <!-- Carte 2 - PCT 1ère -->
+      <div class="astuce-card" data-title="Physique-Chimie 1ère - Calculs PCT" data-subject="pct" data-level="1ere">
+        <div class="astuce-icon" style="background:#fef9c3">⚗️</div>
+        <div class="astuce-content">
+          <div class="astuce-matiere" style="color:#a16207">Physique-Chimie · 1ère</div>
+          <h3 class="astuce-title">Maîtriser les calculs en Physique-Chimie</h3>
+          <p class="astuce-preview">Unités SI, lois de Newton, réactions chimiques, électricité...</p>
+          <div class="astuce-tags">
+            <span class="tag">Mécanique</span>
+            <span class="tag">Chimie</span>
+            <span class="tag">Électricité</span>
+          </div>
+          <button class="astuce-btn" onclick="openAstuceModal('pct-1ere-calculs')">Accéder →</button>
+        </div>
+      </div>
+
+      <!-- Carte 3 - SVT Terminale -->
+      <div class="astuce-card" data-title="SVT Terminale - Mémorisation" data-subject="svt" data-level="tle">
+        <div class="astuce-icon" style="background:#d1fae5">🌿</div>
+        <div class="astuce-content">
+          <div class="astuce-matiere" style="color:#059669">SVT · Terminale</div>
+          <h3 class="astuce-title">Mémorisation efficace en SVT</h3>
+          <p class="astuce-preview">Schémas légendés, génétique, cycles biologiques, immunologie...</p>
+          <div class="astuce-tags">
+            <span class="tag">Biologie</span>
+            <span class="tag">Génétique</span>
+            <span class="tag">Immunologie</span>
+          </div>
+          <button class="astuce-btn" onclick="openAstuceModal('svt-tle-memoire')">Accéder →</button>
+        </div>
+      </div>
+
+      <!-- Carte 4 - Anglais 3ème -->
+      <div class="astuce-card" data-title="Anglais 3ème - Compréhension" data-subject="anglais" data-level="3eme">
+        <div class="astuce-icon" style="background:#dbeafe">🇬🇧</div>
+        <div class="astuce-content">
+          <div class="astuce-matiere" style="color:#1d4ed8">Anglais · 3ème</div>
+          <h3 class="astuce-title">Améliorer sa compréhension écrite</h3>
+          <p class="astuce-preview">Lecture quotidienne, conjugaison, expression écrite, compréhension...</p>
+          <div class="astuce-tags">
+            <span class="tag">Lecture</span>
+            <span class="tag">Conjugaison</span>
+            <span class="tag">Vocabulaire</span>
+          </div>
+          <button class="astuce-btn" onclick="openAstuceModal('anglais-3eme-comprehension')">Accéder →</button>
+        </div>
+      </div>
+
+      <!-- Carte 5 - Maths Terminale -->
+      <div class="astuce-card" data-title="Maths Terminale - Probabilités" data-subject="maths" data-level="tle">
+        <div class="astuce-icon" style="background:#ede9fe">📐</div>
+        <div class="astuce-content">
+          <div class="astuce-matiere">Mathématiques · Terminale</div>
+          <h3 class="astuce-title">Réussir les probabilités au BAC</h3>
+          <p class="astuce-preview">Arbre pondéré, formule de Bayes, loi binomiale, espérance...</p>
+          <div class="astuce-tags">
+            <span class="tag">Probabilités</span>
+            <span class="tag">Statistiques</span>
+            <span class="tag">BAC</span>
+          </div>
+          <button class="astuce-btn" onclick="openAstuceModal('maths-tle-probas')">Accéder →</button>
+        </div>
+      </div>
+
+      <!-- Carte 6 - Philosophie Terminale -->
+      <div class="astuce-card" data-title="Philosophie Terminale - Dissertation" data-subject="philo" data-level="tle">
+        <div class="astuce-icon" style="background:#fce7f3">📖</div>
+        <div class="astuce-content">
+          <div class="astuce-matiere" style="color:#be185d">Philosophie · Terminale</div>
+          <h3 class="astuce-title">Méthode pour la dissertation</h3>
+          <p class="astuce-preview">Analyse du sujet, problématique, plan détaillé, auteurs clés...</p>
+          <div class="astuce-tags">
+            <span class="tag">Méthodologie</span>
+            <span class="tag">Dissertation</span>
+            <span class="tag">BAC</span>
+          </div>
+          <button class="astuce-btn" onclick="openAstuceModal('philo-tle-dissertation')">Accéder →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL POUR LE CONTENU DES ASTRUCES -->
+<div id="astuceModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Astuce</h2>
+      <button class="modal-close" onclick="closeAstuceModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Contenu chargé dynamiquement -->
+    </div>
+  </div>
+</div>
+
+<style>
+  .page-header {
+    background: linear-gradient(140deg, var(--hero-from) 0%, var(--hero-via) 50%, var(--hero-to) 100%);
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+  }
+  .header-inner { max-width: 700px; margin: 0 auto; }
+  .header-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.9);
+    backdrop-filter: blur(8px); border-radius: var(--r-pill);
+    padding: .38rem 1rem; font-size: .78rem; font-weight: 700;
+    color: var(--accent); margin-bottom: 1.3rem;
+  }
+  .page-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: .7rem;
+  }
+  .page-header p { font-size: 1rem; color: rgba(15,23,42,.7); }
+
+  /* SEARCH BAR */
+  .search-bar {
+    background: var(--bg-white);
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-lt);
+  }
+  .search-input {
+    width: 100%;
+    padding: 0.9rem 1rem 0.9rem 2.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    font-size: 0.9rem;
+    font-family: var(--font);
+    background: var(--bg-slate);
+    transition: all 0.2s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-20);
+    background: var(--bg-white);
+  }
+
+  /* FILTERS */
+  .filters-section {
+    background: var(--bg-white);
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 70px;
+    z-index: 49;
+  }
+  .filters-wrapper, .level-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+  }
+  .level-filters { margin-bottom: 0; }
+  .filter-chip, .level-chip {
+    padding: 0.45rem 1.2rem;
+    border-radius: var(--r-pill);
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--bg-white);
+    color: var(--ink-md);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-chip:hover, .level-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .filter-chip.active, .level-chip.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  .result-count {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--ink-lt);
+    margin-bottom: 1.5rem;
+  }
+
+  /* ASTUCES GRID */
+  .astuces-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.5rem;
+  }
+  .astuce-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .astuce-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sh-md);
+  }
+  .astuce-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+  .astuce-content { flex: 1; }
+  .astuce-matiere {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.3rem;
+  }
+  .astuce-title {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .astuce-preview {
+    font-size: 0.8rem;
+    color: var(--ink-md);
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+  }
+  .astuce-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  .tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--bg-slate);
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--r-pill);
+    color: var(--ink-md);
+  }
+  .astuce-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0;
+    font-family: var(--font);
+    transition: color 0.2s;
+  }
+  .astuce-btn:hover {
+    color: var(--btn-hover);
+  }
+
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal.open {
+    display: flex;
+  }
+  .modal-content {
+    background: var(--bg-white);
+    border-radius: var(--r-card);
+    max-width: 700px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: modalFadeIn 0.3s ease;
+  }
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg-white);
+  }
+  .modal-header h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--ink-lt);
+    transition: color 0.2s;
+  }
+  .modal-close:hover {
+    color: var(--ink);
+  }
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  /* CONTENU MODAL */
+  .modal-astuce-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+  .modal-astuce-matiere {
+    display: inline-block;
+    background: var(--accent-10);
+    color: var(--accent);
+    padding: 0.2rem 0.8rem;
+    border-radius: var(--r-pill);
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .tip-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tip-item:last-child {
+    border-bottom: none;
+  }
+  .tip-number {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .tip-text {
+    flex: 1;
+  }
+  .tip-text strong {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  .tip-text p {
+    font-size: 0.85rem;
+    color: var(--ink-md);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .astuces-grid { grid-template-columns: 1fr; }
+    .filters-section { top: 60px; }
+    .filter-chip, .level-chip { font-size: 0.7rem; padding: 0.35rem 0.8rem; }
+  }
+</style>
+
+<script>
+  // Données des astuces
+  const astucesData = {
+    'maths-3eme-algebre': {
+      title: '5 astuces pour réussir en Algèbre',
+      matiere: 'Mathématiques · 3ème',
+      tips: [
+        { title: 'Identités remarquables', content: 'Mémorisez (a+b)² = a² + 2ab + b², (a-b)² = a² - 2ab + b², (a+b)(a-b) = a² - b². Entraînez-vous avec des exemples numériques chaque jour.' },
+        { title: 'Factorisation', content: 'Cherchez toujours le facteur commun avant toute autre méthode. Exemple : 3x² + 6x = 3x(x + 2).' },
+        { title: 'Équations du second degré', content: 'Pour une équation ax² + bx + c = 0, calculez toujours Δ = b² - 4ac en premier. Ensuite, selon le signe de Δ, appliquez la formule appropriée.' },
+        { title: 'Suites numériques', content: 'Identifiez d\'abord si la suite est arithmétique (différence constante r) ou géométrique (quotient constant q).' },
+        { title: 'Pratique quotidienne', content: 'Résolvez 3 exercices par jour sur des thèmes variés. La régularité est la clé du succès en mathématiques.' }
+      ]
+    },
+    'pct-1ere-calculs': {
+      title: 'Maîtriser les calculs en Physique-Chimie',
+      matiere: 'Physique-Chimie · 1ère',
+      tips: [
+        { title: 'Unités SI', content: 'Toujours convertir dans les unités du Système International avant tout calcul. Exemple : kJ → J, km/h → m/s, etc.' },
+        { title: 'Lois de Newton', content: 'Dessinez systématiquement le bilan des forces sur un schéma avant d\'écrire les équations vectorielles.' },
+        { title: 'Réactions chimiques', content: 'Pour équilibrer une équation, commencez par les atomes, puis équilibrez les charges.' },
+        { title: 'Loi d\'Ohm', content: 'En électricité, appliquez U = R × I avant de chercher la puissance P = U × I.' },
+        { title: 'Vérification', content: 'Vérifiez toujours l\'homogénéité des unités de votre résultat final pour éviter les erreurs.' }
+      ]
+    },
+    'svt-tle-memoire': {
+      title: 'Mémorisation efficace en SVT',
+      matiere: 'SVT · Terminale',
+      tips: [
+        { title: 'Schémas légendés', content: 'Dessinez chaque organe ou cellule de mémoire. La visualisation est 3 fois plus efficace que la simple lecture.' },
+        { title: 'Tableau de génétique', content: 'Pour chaque exercice de génétique, construisez le tableau phénotype/génotype avant de commencer.' },
+        { title: 'Cycles biologiques', content: 'Entraînez-vous à tracer la méiose et la mitose sans regarder votre cours. Répétez jusqu\'à maîtrise.' },
+        { title: 'Immunologie', content: 'Mémorisez l\'ordre : barrière non-spécifique → réaction spécifique → mémoire immunitaire.' },
+        { title: 'Révision active', content: 'Récitez les définitions à voix haute. L\'oral active une zone mémoire différente de la lecture silencieuse.' }
+      ]
+    },
+    'anglais-3eme-comprehension': {
+      title: 'Améliorer sa compréhension écrite',
+      matiere: 'Anglais · 3ème',
+      tips: [
+        { title: 'Lecture quotidienne', content: 'Consacrez 15 minutes par jour à la lecture d\'un texte en anglais (news, articles, livres simplifiés).' },
+        { title: 'Tableau des temps', content: 'Créez un tableau des 12 temps en anglais et révisez-le chaque semaine avec des exemples.' },
+        { title: 'Structure d\'écriture', content: 'Pour une bonne expression écrite, suivez toujours : Introduction → 2 arguments → Conclusion.' },
+        { title: 'Compréhension', content: 'Lisez d\'abord les questions, puis le texte. Vous saurez ainsi quoi chercher dans le texte.' },
+        { title: 'BBC Learning English', content: 'Suivez 10 minutes par jour de contenu audio/vidéo pour améliorer votre compréhension orale.' }
+      ]
+    },
+    'maths-tle-probas': {
+      title: 'Réussir les probabilités au BAC',
+      matiere: 'Mathématiques · Terminale',
+      tips: [
+        { title: 'Arbre pondéré', content: 'Dessinez systématiquement l\'arbre des probabilités. Cela vous aidera à visualiser tous les cas possibles.' },
+        { title: 'Formule de Bayes', content: 'Gardez en tête : P(A|B) = P(B|A) × P(A) / P(B). Très utile pour les probabilités conditionnelles.' },
+        { title: 'Loi binomiale', content: 'Vérifiez toujours les conditions : n épreuves indépendantes, 2 issues possibles, probabilité p constante.' },
+        { title: 'Espérance', content: 'Pour vérifier votre résultat, calculez E(X) = Σ xᵢ × pᵢ. Le résultat doit être cohérent avec l\'énoncé.' },
+        { title: 'Interprétation', content: 'À la fin de chaque exercice, interprétez vos résultats en français. Cela montre votre compréhension.' }
+      ]
+    },
+    'philo-tle-dissertation': {
+      title: 'Méthode pour la dissertation',
+      matiere: 'Philosophie · Terminale',
+      tips: [
+        { title: 'Analyse du sujet', content: 'Repérez les notions clés et le questionnement implicite. Soulevez les tensions entre les termes.' },
+        { title: 'Problématique', content: 'Transformez la question en problème philosophique. Une bonne problématique oppose deux thèses.' },
+        { title: 'Plan détaillé', content: 'Utilisez le plan thèse/antithèse/synthèse ou un plan progressif. Chaque partie doit répondre à une sous-question.' },
+        { title: 'Mobilisation des auteurs', content: 'Citez 2 à 3 auteurs par partie (Platon, Kant, Sartre, etc.) et expliquez leur pensée.' },
+        { title: 'Conclusion', content: 'Répondez clairement à la problématique et terminez par une ouverture (lien avec le monde contemporain).' }
+      ]
+    }
+  };
+
+  // Filtres
+  let currentSubject = 'all';
+  let currentLevel = 'all';
+  let searchTerm = '';
+
+  function filterCards() {
+    const cards = document.querySelectorAll('.astuce-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const subject = card.dataset.subject;
+      const level = card.dataset.level;
+      const title = card.dataset.title.toLowerCase();
+
+      const subjectMatch = currentSubject === 'all' || subject === currentSubject;
+      const levelMatch = currentLevel === 'all' || level === currentLevel;
+      const searchMatch = searchTerm === '' || title.includes(searchTerm);
+
+      const isVisible = subjectMatch && levelMatch && searchMatch;
+      card.style.display = isVisible ? 'flex' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    document.getElementById('resultCount').textContent = `${visibleCount} astuce${visibleCount > 1 ? 's' : ''} trouvée${visibleCount > 1 ? 's' : ''}`;
+  }
+
+  // Écouteurs filtres
+  document.querySelectorAll('.filter-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSubject = btn.dataset.filter;
+      filterCards();
+    });
+  });
+
+  document.querySelectorAll('.level-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.level-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentLevel = btn.dataset.level;
+      filterCards();
+    });
+  });
+
+  // Recherche
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', (e) => {
+    searchTerm = e.target.value.toLowerCase();
+    filterCards();
+  });
+
+  // Modal
+  function openAstuceModal(id) {
+    const data = astucesData[id];
+    if (!data) return;
+
+    document.getElementById('modalTitle').textContent = data.title;
+    
+    let tipsHtml = `<div class="modal-astuce-matiere">${data.matiere}</div>`;
+    data.tips.forEach((tip, index) => {
+      tipsHtml += `
+        <div class="tip-item">
+          <div class="tip-number">${index + 1}</div>
+          <div class="tip-text">
+            <strong>${tip.title}</strong>
+            <p>${tip.content}</p>
+          </div>
+        </div>
+      `;
+    });
+    
+    document.getElementById('modalBody').innerHTML = tipsHtml;
+    document.getElementById('astuceModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAstuceModal() {
+    document.getElementById('astuceModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('astuceModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('astuceModal')) closeAstuceModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAstuceModal();
+  });
+</script>
+
+<!-- STYLES SUPPLEMENTAIRES POUR LE MODAL (identique à la page d'accueil) -->
+<style>
+  .modal-body {
+    background: var(--bg-white);
+  }
+  .tip-item {
+    margin-bottom: 0;
+  }
+  .modal-astuce-matiere {
+    display: inline-block;
+    background: var(--accent-10);
+    color: var(--accent);
+    padding: 0.3rem 1rem;
+    border-radius: var(--r-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+  }
+</style>
+{% endblock %}

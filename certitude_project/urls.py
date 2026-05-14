@@ -10,7 +10,8 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include('courses.urls')),
     path('', include('enrollments.urls')),
-    path('', include('payments.urls'))
+    path('', include('payments.urls')),
+    path('', include('resources.urls')),
 ]
 
 if settings.DEBUG:

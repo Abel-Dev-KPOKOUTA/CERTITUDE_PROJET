@@ -910,11 +910,11 @@
           </svg>
         </button>
         <div class="dropdown-menu">
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'resources:astuces' %}" class="dropdown-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3M12 8h.01M12 16h.01"/><path d="M12 2a10 10 0 1 0 10 10"/></svg>
             Astuces & Méthodes
           </a>
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'resources:cours' %}" class="dropdown-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             Cours & Résumés
           </a>
@@ -973,8 +973,8 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="mobile-dropdown-content">
-      <a href="#">Astuces & Méthodes</a>
-      <a href="#">Cours & Résumés</a>
+      <a href="{% url 'resources:astuces' %}">Astuces & Méthodes</a>
+      <a href="{% url 'resources:cours' %}">Cours & Résumés</a>
     </div>
   </div>
   <div class="mobile-nav-item">

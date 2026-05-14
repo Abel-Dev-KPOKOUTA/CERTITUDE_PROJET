@@ -837,6 +837,12 @@
       .hero-h1 { font-size: 1.65rem; }
       .sec-title { font-size: 1.5rem; }
     }
+
+    @media (max-width: 640px) {
+      .formation-card img {
+        height: 180px !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -859,9 +865,13 @@
     
     <!-- Menu Desktop -->
     <div class="nav-menu">
-      <!-- Accueil -->
       <div class="nav-item">
         <a href="{% url 'core:index' %}" class="nav-link active">Accueil</a>
+      </div>
+      
+      <!-- À propos -->
+      <div class="nav-item">
+        <a href="#" class="nav-link">À propos</a>
       </div>
       
       <!-- Cours avec dropdown -->
@@ -888,45 +898,47 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M7 4v3M17 4v3"/><rect x="3" y="8" width="18" height="13" rx="1"/></svg>
             Édition 2025
           </a>
+        </div>
+      </div>
+      
+      <!-- Ressources avec dropdown -->
+      <div class="nav-item">
+        <button class="nav-link">
+          Ressources
+          <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div class="dropdown-menu">
           <a href="#" class="dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M7 4v3M17 4v3"/><rect x="3" y="8" width="18" height="13" rx="1"/></svg>
-            Édition 2024
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3M12 8h.01M12 16h.01"/><path d="M12 2a10 10 0 1 0 10 10"/></svg>
+            Astuces & Méthodes
           </a>
           <a href="#" class="dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/><path d="M12 7v4l2 2"/></svg>
-            Archives complètes
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Cours & Résumés
           </a>
         </div>
       </div>
       
-      <!-- Ressources -->
-      <div class="nav-item">
-        <a href="#" class="nav-link">Ressources</a>
-      </div>
-      
-      <!-- Soutien scolaire -->
       <div class="nav-item">
         <a href="#" class="nav-link">Soutien scolaire</a>
       </div>
       
-      <!-- Épreuves -->
       <div class="nav-item">
         <a href="#" class="nav-link">Épreuves</a>
       </div>
       
-      <!-- Annonces -->
       <div class="nav-item">
         <a href="#" class="nav-link">Annonces</a>
       </div>
     </div>
     
-    <!-- Boutons auth -->
     <div class="nav-menu" style="margin-left: 0;">
       <button class="btn-login" onclick="location.href=''">Connexion</button>
       <button class="btn-register" onclick="location.href=''">Inscription</button>
     </div>
     
-    <!-- Hamburger -->
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -938,7 +950,9 @@
   <div class="mobile-nav-item">
     <div class="mobile-nav-link" onclick="location.href='{% url 'core:index' %}'">Accueil</div>
   </div>
-  
+  <div class="mobile-nav-item">
+    <div class="mobile-nav-link" onclick="location.href='#'">À propos</div>
+  </div>
   <div class="mobile-nav-item">
     <div class="mobile-nav-link" onclick="toggleMobileDropdown(this)">
       Cours
@@ -951,34 +965,34 @@
       <div class="dropdown-divider" style="margin: .5rem 0;"></div>
       <div class="dropdown-title">Éditions précédentes</div>
       <a href="#">Édition 2025</a>
-      <a href="#">Édition 2024</a>
-      <a href="#">Archives complètes</a>
     </div>
   </div>
-  
   <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="location.href='#'">Ressources</div>
+    <div class="mobile-nav-link" onclick="toggleMobileDropdown(this)">
+      Ressources
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="mobile-dropdown-content">
+      <a href="#">Astuces & Méthodes</a>
+      <a href="#">Cours & Résumés</a>
+    </div>
   </div>
-  
   <div class="mobile-nav-item">
     <div class="mobile-nav-link" onclick="location.href='#'">Soutien scolaire</div>
   </div>
-  
   <div class="mobile-nav-item">
     <div class="mobile-nav-link" onclick="location.href='#'">Épreuves</div>
   </div>
-  
   <div class="mobile-nav-item">
     <div class="mobile-nav-link" onclick="location.href='#'">Annonces</div>
   </div>
-  
   <div class="mobile-auth">
     <button class="btn-login" onclick="location.href='#'">Connexion</button>
     <button class="btn-register" onclick="location.href='#'">Inscription</button>
   </div>
 </div>
 
-<!-- HERO -->
+<!-- HERO SECTION -->
 <section class="hero">
   <svg class="hero-deco hero-deco-blob" aria-hidden="true" viewBox="0 0 884 578" fill="white">
     <path d="M77.978 55.4516C245.177 -111.529 296.923 154.357 535.599 128.113C909.567 87.0169 938.305 347.546 826.648 525.777C714.974 704.007 550.407 814.987 320.862 731.954C54.1102 635.466 -103.473 236.656 77.978 55.4516Z"/>
@@ -1005,51 +1019,30 @@
         <a href="#professeurs" class="btn-hero-ghost">Nos professeurs</a>
       </div>
       <div class="hero-stats">
-        <div class="stat-pill">
-          <span class="stat-n" data-target="5">0</span>
-          <span class="stat-l">Niveaux</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-n" data-target="4">0</span>
-          <span class="stat-l">Matières</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-n" data-target="8">0</span>
-          <span class="stat-l">Semaines</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-n">100%</span>
-          <span class="stat-l">Programme</span>
-        </div>
+        <div class="stat-pill"><span class="stat-n" data-target="5">0</span><span class="stat-l">Niveaux</span></div>
+        <div class="stat-pill"><span class="stat-n" data-target="4">0</span><span class="stat-l">Matières</span></div>
+        <div class="stat-pill"><span class="stat-n" data-target="8">0</span><span class="stat-l">Semaines</span></div>
+        <div class="stat-pill"><span class="stat-n">100%</span><span class="stat-l">Programme</span></div>
       </div>
     </div>
 
     <div class="hero-img-panel">
       <div class="hero-card">
         <div class="hero-card-title">Informations pratiques</div>
-        <div class="hero-card-row">
-          <div class="hero-card-icon">📅</div>
-          <div><div class="hero-card-label">Période</div><div class="hero-card-val">1er juillet — 31 août 2026</div></div>
-        </div>
-        <div class="hero-card-row">
-          <div class="hero-card-icon">📍</div>
-          <div><div class="hero-card-label">Lieu</div><div class="hero-card-val">EPP Gbégamey Sud, Cotonou</div></div>
-        </div>
-        <div class="hero-card-row">
-          <div class="hero-card-icon">⏰</div>
-          <div><div class="hero-card-label">Horaires</div><div class="hero-card-val">Lundi–Vendredi · 08h30 – 13h00</div></div>
-        </div>
-        <div class="hero-card-row">
-          <div class="hero-card-icon">📞</div>
-          <div><div class="hero-card-label">Contact</div><div class="hero-card-val">01 96 38 92 49</div></div>
-        </div>
+        <div class="hero-card-row"><div class="hero-card-icon">📅</div><div><div class="hero-card-label">Période</div><div class="hero-card-val">1er juillet — 31 août 2026</div></div></div>
+        <div class="hero-card-row"><div class="hero-card-icon">📍</div><div><div class="hero-card-label">Lieu</div><div class="hero-card-val">EPP Gbégamey Sud, Cotonou</div></div></div>
+        <div class="hero-card-row"><div class="hero-card-icon">⏰</div><div><div class="hero-card-label">Horaires</div><div class="hero-card-val">Lundi–Vendredi · 08h30 – 13h00</div></div></div>
+        <div class="hero-card-row"><div class="hero-card-icon">📞</div><div><div class="hero-card-label">Contact</div><div class="hero-card-val">01 96 38 92 49</div></div></div>
         <div class="hero-deadline">⏳ Date limite : 22 juin 2026</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FORMATIONS -->
+
+
+<!-- FORMATIONS AVEC IMAGES DANS LES CARDS -->
+<!-- FORMATIONS AVEC IMAGES PLUS GRANDES DANS LES CARDS -->
 <section class="section" id="formations">
   <div class="container">
     <div class="sec-head text-center fade-in">
@@ -1058,60 +1051,72 @@
       <p class="sec-sub">Programme complet — toutes les matières scientifiques couvertes par des experts.</p>
     </div>
     <div class="formations-grid">
-      <div class="formation-card fade-in stagger-1">
-        <div class="level-tag">3ème</div>
-        <h3>Cours de 3ème</h3>
-        <p class="formation-desc">Programme complet pour réussir le BEPC et intégrer le lycée en toute confiance.</p>
-        <div class="subjects">
-          <span class="subject-tag">Mathématiques</span>
-          <span class="subject-tag">Physique-Chimie</span>
-          <span class="subject-tag">SVT</span>
-          <span class="subject-tag">Anglais</span>
-        </div>
-        <div class="price-row"><span class="price">11 500</span><span class="price-unit">FCFA</span></div>
-        <div class="card-foot-row">
-          <a href="{% url 'enrollments:create' %}?niveau=3eme" class="btn-view">S'inscrire</a>
-        </div>
-      </div>
-
-      <div class="formation-card featured fade-in stagger-2">
-        <span class="badge-pop">Populaire</span>
-        <div class="level-tag">1ères C & D</div>
-        <h3>Cours de 1ère</h3>
-        <p class="formation-desc">Maîtrisez les bases de Terminale avec de l'avance sur tout le programme.</p>
-        <div class="subjects">
-          <span class="subject-tag">Mathématiques</span>
-          <span class="subject-tag">Physique-Chimie</span>
-          <span class="subject-tag">SVT</span>
-          <span class="subject-tag">Anglais</span>
-        </div>
-        <div class="price-row"><span class="price">12 500</span><span class="price-unit">FCFA</span></div>
-        <div class="card-foot-row">
-          <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-view">S'inscrire</a>
-          <span class="card-deadline">Limite : 22 juin</span>
+      <!-- Card 3ème avec image agrandie -->
+      <div class="formation-card fade-in stagger-1" style="padding: 0; overflow: hidden;">
+        <img src="{% static 'images/affiche3.png' %}" alt="Cours 3ème" style="width: 100%; height: 200px; object-fit: cover;">
+        <div style="padding: 1.5rem;">
+          <div class="level-tag">3ème</div>
+          <h3>Cours de 3ème</h3>
+          <p class="formation-desc">Programme complet pour réussir le BEPC et intégrer le lycée en toute confiance.</p>
+          <div class="subjects">
+            <span class="subject-tag">Mathématiques</span>
+            <span class="subject-tag">Physique-Chimie</span>
+            <span class="subject-tag">SVT</span>
+            <span class="subject-tag">Anglais</span>
+          </div>
+          <div class="price-row"><span class="price">11 500</span><span class="price-unit">FCFA</span></div>
+          <div class="card-foot-row">
+            <a href="{% url 'enrollments:create' %}?niveau=3eme" class="btn-view">S'inscrire</a>
+          </div>
         </div>
       </div>
 
-      <div class="formation-card fade-in stagger-3">
-        <div class="level-tag">Terminales C & D</div>
-        <h3>Cours de Terminale</h3>
-        <p class="formation-desc">Préparation intensive au BAC — 100 % du programme couvert en profondeur.</p>
-        <div class="subjects">
-          <span class="subject-tag">Mathématiques</span>
-          <span class="subject-tag">Physique-Chimie</span>
-          <span class="subject-tag">SVT</span>
-          <span class="subject-tag">Anglais</span>
+      <!-- Card 1ère avec image agrandie -->
+      <div class="formation-card featured fade-in stagger-2" style="padding: 0; overflow: hidden;">
+        <img src="{% static 'images/affiche1.png' %}" alt="Cours 1ère" style="width: 100%; height: 200px; object-fit: cover;">
+        <div style="padding: 1.5rem;">
+          <span class="badge-pop">Populaire</span>
+          <div class="level-tag">1ères C & D</div>
+          <h3>Cours de 1ère</h3>
+          <p class="formation-desc">Maîtrisez les bases de Terminale avec de l'avance sur tout le programme.</p>
+          <div class="subjects">
+            <span class="subject-tag">Mathématiques</span>
+            <span class="subject-tag">Physique-Chimie</span>
+            <span class="subject-tag">SVT</span>
+            <span class="subject-tag">Anglais</span>
+          </div>
+          <div class="price-row"><span class="price">12 500</span><span class="price-unit">FCFA</span></div>
+          <div class="card-foot-row">
+            <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-view">S'inscrire</a>
+            <span class="card-deadline">Limite : 22 juin</span>
+          </div>
         </div>
-        <div class="price-row"><span class="price">15 500</span><span class="price-unit">FCFA</span></div>
-        <div class="card-foot-row">
-          <a href="{% url 'enrollments:create' %}?niveau=tle" class="btn-view">S'inscrire</a>
+      </div>
+
+      <!-- Card Terminale avec image agrandie -->
+      <div class="formation-card fade-in stagger-3" style="padding: 0; overflow: hidden;">
+        <img src="{% static 'images/affiche2.png' %}" alt="Cours Terminale" style="width: 100%; height: 200px; object-fit: cover;">
+        <div style="padding: 1.5rem;">
+          <div class="level-tag">Terminales C & D</div>
+          <h3>Cours de Terminale</h3>
+          <p class="formation-desc">Préparation intensive au BAC — 100 % du programme couvert en profondeur.</p>
+          <div class="subjects">
+            <span class="subject-tag">Mathématiques</span>
+            <span class="subject-tag">Physique-Chimie</span>
+            <span class="subject-tag">SVT</span>
+            <span class="subject-tag">Anglais</span>
+          </div>
+          <div class="price-row"><span class="price">15 500</span><span class="price-unit">FCFA</span></div>
+          <div class="card-foot-row">
+            <a href="{% url 'enrollments:create' %}?niveau=tle" class="btn-view">S'inscrire</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROFESSEURS -->
+<!-- PROFESSEURS - UNIQUEMENT M. CODJO ABEL -->
 <section class="section section-alt" id="professeurs">
   <div class="container">
     <div class="sec-head text-center fade-in">
@@ -1119,8 +1124,8 @@
       <h2 class="sec-title">Des experts à votre service</h2>
       <p class="sec-sub">Cours à domicile ou en ligne — contactez directement le professeur de votre choix.</p>
     </div>
-    <div class="profs-grid">
-      <div class="prof-card fade-in stagger-1">
+    <div class="profs-grid" style="display: flex; justify-content: center;">
+      <div class="prof-card fade-in stagger-1" style="max-width: 380px; width: 100%;">
         <div class="prof-avatar"><span>👨‍🏫</span><span class="prof-matiere-badge">Maths</span></div>
         <div class="prof-body">
           <div class="prof-mode-badges"><span class="mode-badge mode-home">À domicile</span><span class="mode-badge mode-online">En ligne</span></div>
@@ -1131,36 +1136,6 @@
           <div class="prof-contact-row">
             <a href="https://wa.me/22996389249" target="_blank" class="btn-contact-wa">WhatsApp</a>
             <a href="tel:+22996389249" class="btn-contact-call">📞</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="prof-card fade-in stagger-2">
-        <div class="prof-avatar" style="background:linear-gradient(135deg,#bbf7d0,#86efac)"><span>👩‍🔬</span><span class="prof-matiere-badge" style="background:#059669">SVT</span></div>
-        <div class="prof-body">
-          <div class="prof-mode-badges"><span class="mode-badge mode-home">À domicile</span><span class="mode-badge mode-online">En ligne</span></div>
-          <div class="prof-name">Mme Agbossou Faïda</div>
-          <div class="prof-role">Professeure de SVT</div>
-          <p class="prof-bio">Biologie, Géologie, Écologie. Méthode visuelle et schémas innovants.</p>
-          <div class="prof-tags"><span class="prof-tag">Biologie</span><span class="prof-tag">Génétique</span><span class="prof-tag">Géologie</span></div>
-          <div class="prof-contact-row">
-            <a href="https://wa.me/22997000001" target="_blank" class="btn-contact-wa">WhatsApp</a>
-            <a href="tel:+22997000001" class="btn-contact-call">📞</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="prof-card fade-in stagger-3">
-        <div class="prof-avatar" style="background:linear-gradient(135deg,#fde68a,#fbbf24)"><span>🔬</span><span class="prof-matiere-badge" style="background:#d97706">PCT</span></div>
-        <div class="prof-body">
-          <div class="prof-mode-badges"><span class="mode-badge mode-home">À domicile</span><span class="mode-badge mode-online">En ligne</span></div>
-          <div class="prof-name">M. Dossou Romaric</div>
-          <div class="prof-role">Professeur de Physique-Chimie</div>
-          <p class="prof-bio">Docteur en chimie, 7 ans d'enseignement. Spécialiste mécanique et thermodynamique.</p>
-          <div class="prof-tags"><span class="prof-tag">Mécanique</span><span class="prof-tag">Électricité</span><span class="prof-tag">Chimie</span></div>
-          <div class="prof-contact-row">
-            <a href="https://wa.me/22997000002" target="_blank" class="btn-contact-wa">WhatsApp</a>
-            <a href="tel:+22997000002" class="btn-contact-call">📞</a>
           </div>
         </div>
       </div>
@@ -1181,10 +1156,7 @@
     </div>
     <div class="astuces-grid">
       <div class="astuce-card slide-left stagger-1">
-        <div class="astuce-header">
-          <div class="astuce-icon" style="background:#ede9fe">📐</div>
-          <div><div class="astuce-matiere">Mathématiques</div><div class="astuce-title">5 astuces pour l'Algèbre</div></div>
-        </div>
+        <div class="astuce-header"><div class="astuce-icon" style="background:#ede9fe">📐</div><div><div class="astuce-matiere">Mathématiques</div><div class="astuce-title">5 astuces pour l'Algèbre</div></div></div>
         <div class="astuce-body">
           <div class="astuce-tip"><div class="tip-num">1</div><div class="tip-text"><strong>Identités remarquables :</strong> Mémorisez (a+b)², (a-b)², (a+b)(a-b) avec des exemples numériques.</div></div>
           <div class="astuce-tip"><div class="tip-num">2</div><div class="tip-text"><strong>Factorisation :</strong> Cherchez toujours le facteur commun avant toute autre méthode.</div></div>
@@ -1192,12 +1164,8 @@
         </div>
         <a href="#" class="astuce-cta">Voir toutes les astuces Maths</a>
       </div>
-
       <div class="astuce-card slide-right stagger-1">
-        <div class="astuce-header">
-          <div class="astuce-icon" style="background:#fef9c3">⚗️</div>
-          <div><div class="astuce-matiere" style="color:#a16207">Physique-Chimie</div><div class="astuce-title">Maîtriser les calculs PCT</div></div>
-        </div>
+        <div class="astuce-header"><div class="astuce-icon" style="background:#fef9c3">⚗️</div><div><div class="astuce-matiere" style="color:#a16207">Physique-Chimie</div><div class="astuce-title">Maîtriser les calculs PCT</div></div></div>
         <div class="astuce-body">
           <div class="astuce-tip"><div class="tip-num" style="background:#d97706">1</div><div class="tip-text"><strong>Unités SI :</strong> Toujours convertir avant tout calcul (kJ → J, km/h → m/s).</div></div>
           <div class="astuce-tip"><div class="tip-num" style="background:#d97706">2</div><div class="tip-text"><strong>Lois de Newton :</strong> Dessinez le bilan des forces avant les équations.</div></div>
@@ -1206,9 +1174,7 @@
         <a href="#" class="astuce-cta" style="color:#a16207;background:#fef9c3">Voir toutes les astuces PCT</a>
       </div>
     </div>
-    <div class="text-center">
-      <a href="#" class="btn-voir">Voir toutes les astuces</a>
-    </div>
+    <div class="text-center"><a href="#" class="btn-voir">Voir toutes les astuces</a></div>
   </div>
 </section>
 
@@ -1221,25 +1187,15 @@
       <p class="sec-sub">Des avantages exclusifs réservés aux premiers inscrits.</p>
     </div>
     <div class="avantages-grid">
-      <div class="avantage-card scale-in stagger-1">
-        <div class="av-icon">📦</div>
-        <div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements du Bénin.</p></div>
-      </div>
-      <div class="avantage-card scale-in stagger-2">
-        <div class="av-icon" style="background:#d1fae5">📄</div>
-        <div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div>
-      </div>
-      <div class="avantage-card scale-in stagger-3">
-        <div class="av-icon" style="background:#fef9c3">🏆</div>
-        <div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div>
-      </div>
-      <div class="avantage-card scale-in stagger-4">
-        <div class="av-icon" style="background:#dbeafe">🚗</div>
-        <div><div class="av-title">Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div>
-      </div>
+      <div class="avantage-card scale-in stagger-1"><div class="av-icon">📦</div><div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements du Bénin.</p></div></div>
+      <div class="avantage-card scale-in stagger-2"><div class="av-icon" style="background:#d1fae5">📄</div><div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div></div>
+      <div class="avantage-card scale-in stagger-3"><div class="av-icon" style="background:#fef9c3">🏆</div><div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div></div>
+      <div class="avantage-card scale-in stagger-4"><div class="av-icon" style="background:#dbeafe">🚗</div><div><div class="av-title">Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div></div>
     </div>
   </div>
 </section>
+
+
 
 <!-- GALERIE -->
 <section id="galerie">
@@ -1277,30 +1233,10 @@
       <p class="sec-sub">Découvrez ce que nos anciens apprenants pensent de l'expérience La Certitude.</p>
     </div>
     <div class="temo-grid">
-      <div class="temo-card slide-left">
-        <div class="video-thumb" onclick="openVideo('VOTRE_ID_1')">
-          <img src="https://img.youtube.com/vi/VOTRE_ID_1/hqdefault.jpg" alt="Koffi Emmanuel"/>
-          <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
-        </div>
-        <div class="temo-info">
-          <div class="temo-name">Koffi Emmanuel</div>
-          <div class="temo-meta"><span class="temo-badge">1ère C</span> CEG Zogbo · Édition 2025</div>
-        </div>
-      </div>
-      <div class="temo-card slide-right">
-        <div class="video-thumb" onclick="openVideo('VOTRE_ID_2')">
-          <img src="https://img.youtube.com/vi/VOTRE_ID_2/hqdefault.jpg" alt="Adjoua Marie"/>
-          <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
-        </div>
-        <div class="temo-info">
-          <div class="temo-name">Adjoua Marie</div>
-          <div class="temo-meta"><span class="temo-badge">Terminale D</span> Lycée Béhanzin · Édition 2025</div>
-        </div>
-      </div>
+      <div class="temo-card slide-left"><div class="video-thumb" onclick="openVideo('VOTRE_ID_1')"><img src="https://img.youtube.com/vi/VOTRE_ID_1/hqdefault.jpg" alt="Koffi Emmanuel"/><div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div></div><div class="temo-info"><div class="temo-name">Koffi Emmanuel</div><div class="temo-meta"><span class="temo-badge">1ère C</span> CEG Zogbo · Édition 2025</div></div></div>
+      <div class="temo-card slide-right"><div class="video-thumb" onclick="openVideo('VOTRE_ID_2')"><img src="https://img.youtube.com/vi/VOTRE_ID_2/hqdefault.jpg" alt="Adjoua Marie"/><div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div></div><div class="temo-info"><div class="temo-name">Adjoua Marie</div><div class="temo-meta"><span class="temo-badge">Terminale D</span> Lycée Béhanzin · Édition 2025</div></div></div>
     </div>
-    <div class="text-center">
-      <a href="{% url 'core:temoignages' %}" class="btn-voir">Voir tous les témoignages</a>
-    </div>
+    <div class="text-center"><a href="{% url 'core:temoignages' %}" class="btn-voir">Voir tous les témoignages</a></div>
   </div>
 </section>
 
@@ -1313,24 +1249,9 @@
       <p class="sec-sub">3 façons simples pour rejoindre le programme.</p>
     </div>
     <div class="modalites-grid fade-in">
-      <div class="modalite-card mc-lavender">
-        <span class="modalite-icon">🌐</span>
-        <h3>En ligne</h3>
-        <p>Formulaire + paiement MTN MoMo ou Moov Money en quelques clics.</p>
-        <a href="{% url 'enrollments:create' %}" class="mc-pill">Commencer</a>
-      </div>
-      <div class="modalite-card mc-white">
-        <span class="modalite-icon">🏫</span>
-        <h3>Sur place</h3>
-        <p>EPP Gbégamey Sud, tous les samedis de l'après-midi.</p>
-        <span class="mc-pill">Samedis 14h–18h30</span>
-      </div>
-      <div class="modalite-card mc-dark">
-        <span class="modalite-icon">💬</span>
-        <h3>WhatsApp</h3>
-        <p>Envoyez Nom, Établissement & Contact au 01 96 38 92 49 après paiement.</p>
-        <a href="https://wa.me/22996389249" target="_blank" class="mc-pill">Envoyer</a>
-      </div>
+      <div class="modalite-card mc-lavender"><span class="modalite-icon">🌐</span><h3>En ligne</h3><p>Formulaire + paiement MTN MoMo ou Moov Money en quelques clics.</p><a href="{% url 'enrollments:create' %}" class="mc-pill">Commencer</a></div>
+      <div class="modalite-card mc-white"><span class="modalite-icon">🏫</span><h3>Sur place</h3><p>EPP Gbégamey Sud, tous les samedis de l'après-midi.</p><span class="mc-pill">Samedis 14h–18h30</span></div>
+      <div class="modalite-card mc-dark"><span class="modalite-icon">💬</span><h3>WhatsApp</h3><p>Envoyez Nom, Établissement & Contact au 01 96 38 92 49 après paiement.</p><a href="https://wa.me/22996389249" target="_blank" class="mc-pill">Envoyer</a></div>
     </div>
   </div>
 </section>
@@ -1339,41 +1260,12 @@
 <section class="section" id="faq">
   <div class="container">
     <div class="faq-layout">
-      <div class="faq-left slide-left">
-        <div class="sec-label">FAQ</div>
-        <h2 class="sec-title">Tout savoir sur l'inscription</h2>
-        <p>Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses sont ici.</p>
-        <a href="{% url 'enrollments:create' %}" class="btn-register" style="font-size:.9rem;padding:.75rem 1.8rem">S'inscrire maintenant</a>
-      </div>
+      <div class="faq-left slide-left"><div class="sec-label">FAQ</div><h2 class="sec-title">Tout savoir sur l'inscription</h2><p>Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses sont ici.</p><a href="{% url 'enrollments:create' %}" class="btn-register" style="font-size:.9rem;padding:.75rem 1.8rem">S'inscrire maintenant</a></div>
       <div class="faq-list slide-right" id="faqList">
-        <div class="faq-item open">
-          <button class="faq-question">
-            <span class="faq-q-text">Comment se déroule l'inscription en ligne ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer"><div class="faq-answer-inner">L'inscription se fait en quelques minutes. Choisissez votre profil (élève ou parent), remplissez le formulaire, sélectionnez votre niveau, effectuez le paiement via MTN MoMo ou Moov Money, puis téléchargez votre reçu automatiquement.</div></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Quels modes de paiement sont acceptés ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer"><div class="faq-answer-inner">Nous acceptons <strong>MTN Mobile Money</strong> (01 96 38 92 49) et <strong>Moov Money</strong> (01 95 51 17 61), au nom de <strong>CODJO Abel Jean Eudes</strong>.</div></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Quelle est la date limite pour s'inscrire ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer"><div class="faq-answer-inner">Les inscriptions sont ouvertes du <strong>1er avril au 22 juin 2026</strong>. Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong> réservé aux 10 premiers inscrits par classe.</div></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            <span class="faq-q-text">Comment contacter un professeur pour des cours à domicile ?</span>
-            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
-          </button>
-          <div class="faq-answer"><div class="faq-answer-inner">Rendez-vous dans la section <strong>Professeurs</strong>, choisissez le professeur souhaité, puis cliquez sur le bouton WhatsApp pour le contacter directement.</div></div>
-        </div>
+        <div class="faq-item open"><button class="faq-question"><span class="faq-q-text">Comment se déroule l'inscription en ligne ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-answer"><div class="faq-answer-inner">L'inscription se fait en quelques minutes. Choisissez votre profil (élève ou parent), remplissez le formulaire, sélectionnez votre niveau, effectuez le paiement via MTN MoMo ou Moov Money, puis téléchargez votre reçu automatiquement.</div></div></div>
+        <div class="faq-item"><button class="faq-question"><span class="faq-q-text">Quels modes de paiement sont acceptés ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-answer"><div class="faq-answer-inner">Nous acceptons <strong>MTN Mobile Money</strong> (01 96 38 92 49) et <strong>Moov Money</strong> (01 95 51 17 61), au nom de <strong>CODJO Abel Jean Eudes</strong>.</div></div></div>
+        <div class="faq-item"><button class="faq-question"><span class="faq-q-text">Quelle est la date limite pour s'inscrire ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-answer"><div class="faq-answer-inner">Les inscriptions sont ouvertes du <strong>1er avril au 22 juin 2026</strong>. Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong> réservé aux 10 premiers inscrits par classe.</div></div></div>
+        <div class="faq-item"><button class="faq-question"><span class="faq-q-text">Comment contacter un professeur pour des cours à domicile ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-answer"><div class="faq-answer-inner">Rendez-vous dans la section <strong>Professeurs</strong>, choisissez le professeur souhaité, puis cliquez sur le bouton WhatsApp pour le contacter directement.</div></div></div>
       </div>
     </div>
   </div>
@@ -1396,10 +1288,7 @@
       <div class="sec-label">Newsletter</div>
       <h2 class="sec-title">Restez informé</h2>
       <p class="sec-sub" style="margin:0 auto">Recevez chaque semaine les astuces, les dates importantes et les actualités du Groupe La Certitude.</p>
-      <form class="newsletter-form" onsubmit="return false">
-        <input type="email" placeholder="votre@email.com" required/>
-        <button type="submit">S'abonner</button>
-      </form>
+      <form class="newsletter-form" onsubmit="return false"><input type="email" placeholder="votre@email.com" required/><button type="submit">S'abonner</button></form>
       <p style="font-size:.75rem;color:var(--ink-lt);margin-top:.7rem">Pas de spam. Désabonnement à tout moment.</p>
     </div>
   </div>
@@ -1414,26 +1303,8 @@
       <p class="sec-sub">Des questions ? Notre équipe est disponible pour vous aider.</p>
     </div>
     <div class="contact-grid fade-in">
-      <div>
-        <a href="tel:+22996389249" class="contact-card" style="margin-bottom:.9rem">
-          <div class="contact-icon">📞</div>
-          <div><div class="contact-label">MTN MoMo</div><div class="contact-val">01 96 38 92 49</div></div>
-        </a>
-        <a href="tel:+22995511761" class="contact-card">
-          <div class="contact-icon">📞</div>
-          <div><div class="contact-label">Moov Money</div><div class="contact-val">01 95 51 17 61</div></div>
-        </a>
-      </div>
-      <div>
-        <a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:.9rem">
-          <div class="contact-icon" style="background:#d1fae5">💬</div>
-          <div><div class="contact-label">WhatsApp</div><div class="contact-val">01 96 38 92 49</div></div>
-        </a>
-        <div class="contact-card">
-          <div class="contact-icon">📍</div>
-          <div><div class="contact-label">Adresse</div><div class="contact-val">EPP Gbégamey Sud, Cotonou</div></div>
-        </div>
-      </div>
+      <div><a href="tel:+22996389249" class="contact-card" style="margin-bottom:.9rem"><div class="contact-icon">📞</div><div><div class="contact-label">MTN MoMo</div><div class="contact-val">01 96 38 92 49</div></div></a><a href="tel:+22995511761" class="contact-card"><div class="contact-icon">📞</div><div><div class="contact-label">Moov Money</div><div class="contact-val">01 95 51 17 61</div></div></a></div>
+      <div><a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:.9rem"><div class="contact-icon" style="background:#d1fae5">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val">01 96 38 92 49</div></div></a><div class="contact-card"><div class="contact-icon">📍</div><div><div class="contact-label">Adresse</div><div class="contact-val">EPP Gbégamey Sud, Cotonou</div></div></div></div>
     </div>
   </div>
 </section>
@@ -1442,56 +1313,13 @@
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div>
-        <div class="footer-brand">
-          <img src="{% static 'images/logo_certitude.png' %}" alt="Logo"/>
-          <span class="footer-brand-name">Groupe La Certitude</span>
-        </div>
-        <p class="footer-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou, Bénin. Discipline · Travail · Excellence.</p>
-        <div class="footer-social-btns" style="margin-top:1rem">
-          <a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">WhatsApp</a>
-          <a href="#" class="footer-ig-btn">Instagram</a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Explorer</h4>
-        <ul>
-          <li><a href="#formations">Formations</a></li>
-          <li><a href="#professeurs">Professeurs</a></li>
-          <li><a href="#astuces">Astuces</a></li>
-          <li><a href="#galerie">Galerie</a></li>
-          <li><a href="#temoignages">Témoignages</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Niveaux</h4>
-        <ul>
-          <li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours de 3ème</a></li>
-          <li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère</a></li>
-          <li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours de Terminale</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="tel:+22996389249">01 96 38 92 49</a></li>
-          <li><a href="tel:+22995511761">01 95 51 17 61</a></li>
-          <li><a href="https://wa.me/22996389249">WhatsApp</a></li>
-          <li><a href="#">EPP Gbégamey Sud</a></li>
-        </ul>
-      </div>
+      <div><div class="footer-brand"><img src="{% static 'images/logo_certitude.png' %}" alt="Logo"/><span class="footer-brand-name">Groupe La Certitude</span></div><p class="footer-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou, Bénin. Discipline · Travail · Excellence.</p><div class="footer-social-btns" style="margin-top:1rem"><a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">WhatsApp</a><a href="#" class="footer-ig-btn">Instagram</a></div></div>
+      <div class="footer-col"><h4>Explorer</h4><ul><li><a href="#formations">Formations</a></li><li><a href="#professeurs">Professeurs</a></li><li><a href="#astuces">Astuces</a></li><li><a href="#galerie">Galerie</a></li><li><a href="#temoignages">Témoignages</a></li></ul></div>
+      <div class="footer-col"><h4>Niveaux</h4><ul><li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours de 3ème</a></li><li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère</a></li><li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours de Terminale</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+22996389249">01 96 38 92 49</a></li><li><a href="tel:+22995511761">01 95 51 17 61</a></li><li><a href="https://wa.me/22996389249">WhatsApp</a></li><li><a href="#">EPP Gbégamey Sud</a></li></ul></div>
     </div>
-
     <div class="footer-bigtext">La Certitude</div>
-
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-        <a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">Rejoindre WhatsApp</a>
-        <a href="#" class="footer-ig-btn">Instagram</a>
-      </div>
-      <span style="font-size:.72rem;opacity:.4">Fait avec ❤️ au Bénin</span>
-    </div>
+    <div class="footer-bottom"><p class="footer-copy">© 2026 Groupe La Certitude — Tous droits réservés</p><div style="display:flex;gap:.6rem;flex-wrap:wrap"><a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">Rejoindre WhatsApp</a><a href="#" class="footer-ig-btn">Instagram</a></div><span style="font-size:.72rem;opacity:.4">Fait avec ❤️ au Bénin</span></div>
   </div>
 </footer>
 
@@ -1502,10 +1330,7 @@
 
 <!-- VIDEO MODAL -->
 <div id="videoModal" onclick="if(event.target===this)closeVideo()" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,8,24,.9);align-items:center;justify-content:center;padding:1rem">
-  <div class="vm-inner">
-    <button class="vm-close" onclick="closeVideo()">✕</button>
-    <div class="vm-frame"><iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe></div>
-  </div>
+  <div class="vm-inner"><button class="vm-close" onclick="closeVideo()">✕</button><div class="vm-frame"><iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe></div></div>
 </div>
 
 <script>
@@ -1530,14 +1355,11 @@
     document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
   });
 
-  /* Mobile dropdown toggle */
   function toggleMobileDropdown(element) {
     const content = element.nextElementSibling;
     content.classList.toggle('show');
     const icon = element.querySelector('svg');
-    if (icon) {
-      icon.style.transform = content.classList.contains('show') ? 'rotate(180deg)' : '';
-    }
+    if (icon) icon.style.transform = content.classList.contains('show') ? 'rotate(180deg)' : '';
   }
 
   /* CAROUSEL */
@@ -1556,9 +1378,7 @@
   function goTo(n) {
     current = (n + slides.length) % slides.length;
     track.style.transform = `translateX(-${current * 100}%)`;
-    if (dotsEl) {
-      dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
-    }
+    if (dotsEl) dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
   }
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
@@ -1610,26 +1430,38 @@
   /* SCROLL REVEAL */
   const ANIMATE_CLASSES = ['.fade-in', '.slide-left', '.slide-right', '.scale-in'];
   const animEls = document.querySelectorAll(ANIMATE_CLASSES.join(','));
-
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        entry.target.querySelectorAll('[data-target]').forEach(counter => {
-          animateCounter(counter, parseInt(counter.dataset.target));
-        });
+        entry.target.querySelectorAll('[data-target]').forEach(counter => animateCounter(counter, parseInt(counter.dataset.target)));
         revealObserver.unobserve(entry.target);
       }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
   animEls.forEach(el => revealObserver.observe(el));
-
-  setTimeout(() => {
-    document.querySelectorAll('[data-target]').forEach(counter => {
-      animateCounter(counter, parseInt(counter.dataset.target));
-    });
-  }, 600);
+  setTimeout(() => document.querySelectorAll('[data-target]').forEach(counter => animateCounter(counter, parseInt(counter.dataset.target))), 600);
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

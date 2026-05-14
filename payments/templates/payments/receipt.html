@@ -5,168 +5,304 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Reçu {{ payment.receipt_number }} — La Certitude</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --blue:#1a56db; --blue-dk:#1040a8; --blue-lt:#e8f0fe;
-      --white:#fff; --navy:#0f172a; --gray-100:#f1f5f9;
-      --gray-200:#e2e8f0; --gray-500:#64748b; --green:#10b981;
-      --gold:#f59e0b; --r:14px;
+      --accent: #3a2bbf;
+      --accent-10: rgba(58,43,191,.10);
+      --btn: #635b7d;
+      --btn-hover: #4f4865;
+      --bg-white: #ffffff;
+      --bg-slate: #f8fafc;
+      --ink: #0f172a;
+      --ink-md: #475569;
+      --ink-lt: #94a3b8;
+      --border: #e2e8f0;
+      --sh-sm: 0 4px 20px rgba(0,0,0,.06);
+      --sh-md: 0 12px 40px rgba(0,0,0,.10);
+      --sh-lg: 0 24px 60px rgba(0,0,0,.14);
+      --r-card: 24px;
+      --r-pill: 999px;
+      --font: 'Bricolage Grotesque', sans-serif;
+      --green: #10b981;
+      --green-dark: #059669;
+      --gold: #f59e0b;
+      --red: #ef4444;
     }
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family:'DM Sans',sans-serif; min-height:100vh;
-      background:linear-gradient(135deg,#1040a8,#1a56db,#3b82f6);
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:flex-start;
-      padding:2rem 1rem 4rem;
+      font-family: var(--font);
+      min-height: 100vh;
+      background: linear-gradient(135deg, #d7c8ff, #c2b0f8, #b79dee);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1.5rem;
     }
 
+    /* TOP BAR */
     .top-bar {
-      width:100%; max-width:580px;
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:1.5rem;
+      max-width: 580px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
     }
-    .brand { display:flex; align-items:center; gap:.6rem; }
-    .brand img { width:36px; height:36px; border-radius:50%; background:white; padding:2px; object-fit:contain; }
-    .brand span { font-family:'Sora',sans-serif; font-weight:700; color:white; font-size:.9rem; }
-    .home-link { color:rgba(255,255,255,.75); font-size:.85rem; text-decoration:none; }
-    .home-link:hover { color:white; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 1rem 0.4rem 0.6rem;
+      border-radius: var(--r-pill);
+    }
+    .brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      padding: 3px;
+    }
+    .brand span {
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--ink);
+    }
+    .home-link {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(8px);
+      padding: 0.5rem 1rem;
+      border-radius: var(--r-pill);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+    }
 
     /* ACTION BUTTONS */
     .action-btns {
-      width:100%; max-width:580px;
-      display:flex; gap:.8rem; margin-bottom:1.2rem; flex-wrap:wrap;
+      max-width: 580px;
+      width: 100%;
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
     }
     .btn-action {
-      flex:1; min-width:140px; padding:.8rem 1rem;
-      border-radius:50px; font-family:'Sora',sans-serif;
-      font-weight:700; font-size:.88rem; cursor:pointer;
-      border:none; transition:transform .15s;
-      display:flex; align-items:center; justify-content:center; gap:.4rem;
+      flex: 1;
+      min-width: 140px;
+      padding: 0.8rem 1rem;
+      border-radius: var(--r-pill);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      text-decoration: none;
     }
-    .btn-action:hover { transform:translateY(-2px); }
-    .btn-download { background:var(--gold); color:var(--navy); }
-    .btn-whatsapp { background:#25d366; color:white; }
-    .btn-home     { background:rgba(255,255,255,.15); color:white; border:1px solid rgba(255,255,255,.3); }
+    .btn-action:hover { transform: translateY(-2px); }
+    .btn-download { background: var(--gold); color: var(--ink); }
+    .btn-whatsapp { background: #25d366; color: white; }
+    .btn-home { background: rgba(255,255,255,0.2); color: var(--ink); border: 1px solid rgba(255,255,255,0.4); }
 
-    /* REÇU */
+    /* RECEIPT */
     .receipt {
-      width:100%; max-width:580px; background:white;
-      border-radius:24px; overflow:hidden;
-      box-shadow:0 20px 60px rgba(0,0,0,.25);
+      max-width: 580px;
+      width: 100%;
+      background: var(--bg-white);
+      border-radius: var(--r-card);
+      overflow: hidden;
+      box-shadow: var(--sh-lg);
     }
 
-    /* HEADER REÇU */
+    /* RECEIPT HEADER */
     .receipt-header {
-      background:linear-gradient(135deg,var(--blue-dk),var(--blue));
-      padding:2rem; text-align:center; color:white; position:relative;
+      background: linear-gradient(135deg, var(--accent), var(--btn));
+      padding: 1.8rem;
+      text-align: center;
+      color: white;
+      position: relative;
     }
     .receipt-header::after {
-      content:'';
-      position:absolute; bottom:-16px; left:0; right:0; height:32px;
-      background:white;
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background: white;
       clip-path: ellipse(55% 100% at 50% 100%);
     }
     .receipt-logo {
-      width:64px; height:64px; border-radius:50%;
-      background:white; padding:4px; object-fit:contain;
-      margin:0 auto 1rem; display:block;
-      box-shadow:0 4px 16px rgba(0,0,0,.2);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: white;
+      padding: 4px;
+      object-fit: contain;
+      margin: 0 auto 0.8rem;
     }
     .receipt-header h1 {
-      font-family:'Sora',sans-serif; font-size:1.3rem; font-weight:800;
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
-    .receipt-header p { font-size:.85rem; opacity:.8; margin-top:.3rem; }
+    .receipt-header p {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-top: 0.2rem;
+    }
 
     /* STATUS BADGE */
     .status-badge {
-      display:inline-flex; align-items:center; gap:.4rem;
-      padding:.4rem 1.1rem; border-radius:50px;
-      font-family:'Sora',sans-serif; font-size:.82rem; font-weight:700;
-      margin-top:1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 1rem;
+      border-radius: var(--r-pill);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 0.8rem;
     }
-    .status-pending   { background:rgba(245,158,11,.2); color:#fde68a; }
-    .status-confirmed { background:rgba(16,185,129,.2); color:#a7f3d0; }
+    .status-pending { background: rgba(245,158,11,0.2); color: #fde68a; }
+    .status-confirmed { background: rgba(16,185,129,0.2); color: #a7f3d0; }
 
-    /* CORPS REÇU */
-    .receipt-body { padding:2.5rem 2rem 2rem; }
+    /* RECEIPT BODY */
+    .receipt-body { padding: 2rem 1.5rem; }
 
     .receipt-num {
-      text-align:center; margin-bottom:1.8rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
     }
-    .receipt-num .rn-label { font-size:.75rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:.06em; }
+    .receipt-num .rn-label {
+      font-size: 0.7rem;
+      color: var(--ink-lt);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
     .receipt-num .rn-value {
-      font-family:'Sora',sans-serif; font-size:1.2rem; font-weight:800;
-      color:var(--navy); letter-spacing:.08em; margin-top:.2rem;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: 0.05em;
+      margin-top: 0.2rem;
     }
-    .receipt-num .rn-date { font-size:.8rem; color:var(--gray-500); margin-top:.15rem; }
+    .receipt-num .rn-date {
+      font-size: 0.7rem;
+      color: var(--ink-lt);
+      margin-top: 0.1rem;
+    }
+
+    /* AMOUNT SECTION */
+    .amount-section {
+      background: linear-gradient(135deg, var(--accent), var(--btn));
+      border-radius: 20px;
+      padding: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    .am-label { font-size: 0.8rem; opacity: 0.8; }
+    .am-value { font-size: 1.6rem; font-weight: 800; }
 
     /* SECTIONS */
-    .section { margin-bottom:1.5rem; }
+    .section { margin-bottom: 1.2rem; }
     .sec-title {
-      font-size:.72rem; font-weight:700; color:var(--blue);
-      text-transform:uppercase; letter-spacing:.07em;
-      margin-bottom:.7rem; padding-bottom:.4rem;
-      border-bottom:2px solid var(--blue-lt);
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.6rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--accent-10);
     }
-    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:.5rem .8rem; }
-    .info-item {}
-    .info-label { font-size:.72rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:.04em; }
-    .info-val   { font-weight:600; font-size:.92rem; color:var(--navy); margin-top:.15rem; }
-    .info-item.full { grid-column:1/-1; }
-
-    /* MONTANT */
-    .amount-section {
-      background:linear-gradient(135deg,var(--blue),#3b82f6);
-      border-radius:var(--r); padding:1.3rem 1.5rem;
-      display:flex; justify-content:space-between; align-items:center;
-      color:white; margin-bottom:1.5rem;
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 0.8rem;
     }
-    .am-label { font-size:.88rem; opacity:.8; }
-    .am-value { font-family:'Sora',sans-serif; font-size:2rem; font-weight:800; }
+    .info-label {
+      font-size: 0.65rem;
+      color: var(--ink-lt);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .info-val {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--ink);
+      margin-top: 0.1rem;
+    }
+    .info-item.full { grid-column: 1/-1; }
 
-    /* PAIEMENT INFO */
+    /* PAYMENT INFO */
     .payment-info {
-      background:var(--gray-100); border-radius:var(--r);
-      padding:1.1rem; margin-bottom:1.5rem;
+      background: var(--bg-slate);
+      border-radius: 20px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
     }
     .pi-row {
-      display:flex; justify-content:space-between; align-items:center;
-      font-size:.88rem; padding:.3rem 0;
-      border-bottom:1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
     }
-    .pi-row:last-child { border:none; }
-    .pi-key { color:var(--gray-500); }
-    .pi-val { font-weight:600; color:var(--navy); }
+    .pi-row:last-child { border-bottom: none; }
+    .pi-key { color: var(--ink-lt); font-weight: 500; }
+    .pi-val { font-weight: 700; color: var(--ink); }
 
-    /* AVERTISSEMENT PENDING */
+    /* PENDING NOTICE */
     .pending-notice {
-      background:#fffbeb; border:1.5px solid #fde68a;
-      border-radius:var(--r); padding:1rem 1.1rem; margin-bottom:1.5rem;
-      font-size:.85rem; color:#92400e; line-height:1.6;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 20px;
+      padding: 1rem;
+      font-size: 0.75rem;
+      color: #92400e;
+      line-height: 1.6;
     }
-    .pending-notice strong { color:#78350f; }
+    .pending-notice strong { color: #78350f; }
 
-    /* FOOTER REÇU */
+    /* RECEIPT FOOTER */
     .receipt-footer {
-      background:var(--gray-100); padding:1.2rem 2rem;
-      text-align:center; border-top:1px solid var(--gray-200);
+      background: var(--bg-slate);
+      padding: 1rem 1.5rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
     }
-    .receipt-footer p { font-size:.78rem; color:var(--gray-500); line-height:1.7; }
-    .receipt-footer strong { color:var(--navy); }
+    .receipt-footer p {
+      font-size: 0.7rem;
+      color: var(--ink-lt);
+      line-height: 1.6;
+    }
 
     /* PRINT STYLES */
     @media print {
-      body { background:white; padding:0; }
-      .top-bar, .action-btns { display:none; }
-      .receipt { box-shadow:none; border-radius:0; max-width:100%; }
+      body { background: white; padding: 0; }
+      .top-bar, .action-btns { display: none; }
+      .receipt { box-shadow: none; max-width: 100%; }
     }
 
-    @media(max-width:540px) {
-      .receipt-body { padding:2rem 1.2rem 1.5rem; }
-      .info-grid { grid-template-columns:1fr; }
-      .amount-section { flex-direction:column; gap:.5rem; text-align:center; }
+    @media (max-width: 540px) {
+      body { padding: 1rem; }
+      .receipt-body { padding: 1.2rem; }
+      .info-grid { grid-template-columns: 1fr; }
+      .amount-section { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .action-btns { gap: 0.5rem; }
+      .btn-action { min-width: 100px; padding: 0.6rem 0.8rem; font-size: 0.75rem; }
     }
   </style>
 </head>
@@ -174,19 +310,18 @@
 
 <div class="top-bar">
   <div class="brand">
-    <img src="/images/logo_certitude.png" alt="Logo"/>
-    <span>La Certitude</span>
+    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" onerror="this.src='https://placehold.co/32x32/3a2bbf/white?text=LC'"/>
+    <span>LA CERTITUDE</span>
   </div>
-  <a href="{% url 'core:index' %}" class="home-link">Retour à l'accueil</a>
+  <a href="{% url 'core:index' %}" class="home-link">← Accueil</a>
 </div>
 
-<!-- BOUTONS D'ACTION -->
+<!-- ACTION BUTTONS -->
 <div class="action-btns">
   <button class="btn-action btn-download" onclick="window.print()">
     📥 Télécharger / Imprimer
   </button>
-  <a href="https://wa.me/22996389249?text=Bonjour%2C+j'ai+effectue+mon+paiement+pour+{{ enrollment.full_name|urlencode }}+%28Recu+{{ payment.receipt_number }}%29.+Merci+de+confirmer+mon+inscription."
-     target="_blank" class="btn-action btn-whatsapp">
+  <a href="#" id="whatsappLink" class="btn-action btn-whatsapp" target="_blank">
     💬 Envoyer sur WhatsApp
   </a>
   <a href="{% url 'core:index' %}" class="btn-action btn-home">
@@ -194,12 +329,10 @@
   </a>
 </div>
 
-<!-- REÇU -->
+<!-- RECEIPT -->
 <div class="receipt" id="receipt">
-
-  <!-- HEADER -->
   <div class="receipt-header">
-    <img src="/images/logo_certitude.png" alt="Logo" class="receipt-logo"/>
+    <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" class="receipt-logo" onerror="this.src='https://placehold.co/56x56/3a2bbf/white?text=LC'"/>
     <h1>GROUPE LA CERTITUDE</h1>
     <p>Cours intensifs de renforcement — Juillet & Août 2026</p>
     <div class="status-badge {% if payment.status == 'confirmed' %}status-confirmed{% else %}status-pending{% endif %}">
@@ -211,31 +344,29 @@
     </div>
   </div>
 
-  <!-- CORPS -->
   <div class="receipt-body">
-
-    <!-- NUMÉRO DE REÇU -->
+    <!-- RECEIPT NUMBER -->
     <div class="receipt-num">
       <div class="rn-label">Numéro de reçu</div>
       <div class="rn-value">{{ payment.receipt_number }}</div>
       <div class="rn-date">{{ payment.created_at|date:"d/m/Y à H:i" }}</div>
     </div>
 
-    <!-- MONTANT -->
+    <!-- AMOUNT -->
     <div class="amount-section">
       <div>
         <div class="am-label">Montant total</div>
         <div class="am-value">{{ payment.amount|floatformat:0 }} FCFA</div>
       </div>
       <div style="text-align:right">
-        <div class="am-label">Réseau</div>
-        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;">
+        <div class="am-label">Moyen de paiement</div>
+        <div style="font-weight:800; font-size:0.9rem;">
           {{ payment.get_method_display }}
         </div>
       </div>
     </div>
 
-    <!-- INFORMATIONS ÉLÈVE -->
+    <!-- STUDENT INFO -->
     <div class="section">
       <div class="sec-title">👤 Informations de l'élève</div>
       <div class="info-grid">
@@ -260,7 +391,7 @@
       </div>
     </div>
 
-    <!-- FORMATION -->
+    <!-- COURSE INFO -->
     <div class="section">
       <div class="sec-title">📚 Formation inscrite</div>
       <div class="info-grid">
@@ -278,12 +409,12 @@
         </div>
         <div class="info-item">
           <div class="info-label">Lieu</div>
-          <div class="info-val">EPP Gbégamey Sud</div>
+          <div class="info-val">EPP Gbégamey Sud, Cotonou</div>
         </div>
       </div>
     </div>
 
-    <!-- DÉTAILS PAIEMENT -->
+    <!-- PAYMENT DETAILS -->
     <div class="payment-info">
       <div class="pi-row">
         <span class="pi-key">Numéro payeur</span>
@@ -302,6 +433,10 @@
         <span class="pi-val">{{ payment.get_method_display }}</span>
       </div>
       <div class="pi-row">
+        <span class="pi-key">Référence MoMo</span>
+        <span class="pi-val">{{ payment.payment_reference|default:"Non fournie" }}</span>
+      </div>
+      <div class="pi-row">
         <span class="pi-key">Statut</span>
         <span class="pi-val">{{ payment.get_status_display }}</span>
       </div>
@@ -309,17 +444,13 @@
 
     {% if payment.status == 'pending' %}
     <div class="pending-notice">
-      ℹ️ <strong>Important :</strong> Ce reçu atteste de votre déclaration de paiement.
-      Notre équipe va vérifier votre transaction et <strong>confirmer votre inscription</strong> dans les plus brefs délais.
-      Conservez ce reçu et votre numéro <strong>{{ payment.receipt_number }}</strong>.
-      <br/><br/>
-      📲 Envoyez une copie de votre reçu Mobile Money sur WhatsApp au <strong>01 96 38 92 49</strong> pour accélérer la confirmation.
+      ℹ️ <strong>Important :</strong> Ce reçu atteste de votre déclaration de paiement.<br/>
+      Notre équipe va vérifier votre transaction et <strong>confirmer votre inscription</strong> dans les plus brefs délais.<br/><br/>
+      📲 Envoyez une copie de ce reçu sur WhatsApp au <strong>01 96 38 92 49</strong> pour accélérer la confirmation.
     </div>
     {% endif %}
-
   </div>
 
-  <!-- FOOTER -->
   <div class="receipt-footer">
     <p>
       <strong>Groupe La Certitude</strong> — Discipline · Travail · Excellence<br/>
@@ -327,8 +458,78 @@
       📞 01 96 38 92 49 · 01 95 51 17 61
     </p>
   </div>
-
 </div>
+
+<script>
+  // Construction du message WhatsApp avec TOUTES les informations
+  function buildWhatsAppMessage() {
+    // Récupération des données depuis le DOM
+    const receiptNumber = document.querySelector('.rn-value')?.textContent || '{{ payment.receipt_number }}';
+    const amount = document.querySelector('.am-value')?.textContent || '{{ payment.amount|floatformat:0 }} FCFA';
+    const method = document.querySelector('.amount-section div:last-child div:last-child')?.textContent || '{{ payment.get_method_display }}';
+    
+    const studentName = document.querySelector('.info-grid .info-item:first-child .info-val')?.textContent || '{{ enrollment.full_name }}';
+    const studentPhone = document.querySelectorAll('.info-grid .info-item')[1]?.querySelector('.info-val')?.textContent || '{{ enrollment.phone }}';
+    const school = document.querySelectorAll('.info-grid .info-item')[2]?.querySelector('.info-val')?.textContent || '{{ enrollment.school }}';
+    const levelSerie = document.querySelectorAll('.info-grid')[1]?.querySelectorAll('.info-val')[0]?.textContent || '{{ enrollment.level_serie }}';
+    
+    const payerPhone = document.querySelector('.payment-info .pi-row:first-child .pi-val')?.textContent || '{{ payment.phone_used }}';
+    const beneficiaryPhone = document.querySelectorAll('.payment-info .pi-row')[1]?.querySelector('.pi-val')?.textContent || '{{ payment.destination_phone }}';
+    const beneficiaryName = document.querySelectorAll('.payment-info .pi-row')[2]?.querySelector('.pi-val')?.textContent || '{{ payment.destination_name }}';
+    const momoReference = document.querySelectorAll('.payment-info .pi-row')[4]?.querySelector('.pi-val')?.textContent || '{{ payment.payment_reference|default:"Non fournie" }}';
+    
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    // Construction du message formaté
+    const message = `🏫 *NOUVEAU PAIEMENT - GROUPE LA CERTITUDE*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 *INFORMATIONS ÉLÈVE*
+├─ Nom : ${studentName}
+├─ Contact : ${studentPhone}
+├─ Établissement : ${school}
+└─ Niveau : ${levelSerie}
+
+💰 *DÉTAILS DU PAIEMENT*
+├─ Montant : ${amount}
+├─ Moyen : ${method}
+├─ Référence MoMo : ${momoReference}
+├─ Numéro payeur : ${payerPhone}
+├─ Numéro bénéficiaire : ${beneficiaryPhone}
+└─ Bénéficiaire : ${beneficiaryName}
+
+📄 *INFORMATIONS REÇU*
+├─ Numéro reçu : ${receiptNumber}
+├─ Date : ${formattedDate}
+└─ Statut : En attente de confirmation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔗 *Lien de confirmation :*
+https://votre-site.com/admin/confirm-payment/{{ payment.id }}/
+
+⚠️ *Action requise :* Merci de confirmer ce paiement
+📎 Reçu attaché ci-joint
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🏫 Groupe La Certitude - Cours de renforcement 2026`;
+    
+    return encodeURIComponent(message);
+  }
+
+  // Mise à jour du lien WhatsApp
+  const whatsappLink = document.getElementById('whatsappLink');
+  if (whatsappLink) {
+    const message = buildWhatsAppMessage();
+    whatsappLink.href = `https://wa.me/22996389249?text=${message}`;
+  }
+</script>
 
 </body>
 </html>

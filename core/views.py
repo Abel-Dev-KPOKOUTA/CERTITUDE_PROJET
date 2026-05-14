@@ -34,6 +34,8 @@ def galerie(request):
             # Ignorer le logo
             if 'logo' in filename.lower():
                 continue
+            if 'affiche' in filename.lower():
+                continue
 
             name_lower = filename.lower()
 

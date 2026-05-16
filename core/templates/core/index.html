@@ -843,6 +843,34 @@
         height: 180px !important;
       }
     }
+    /* Styles pour uniformiser les images dans les cartes de formation */
+    .formation-card {
+        /* on garde le padding global mais on va positionner l'image en haut sans dépasser */
+        padding: 0;
+        overflow: hidden;
+    }
+    .formation-card img {
+        width: 100%;
+        height: 120px; /* taille réduite et plus cohérente */
+        object-fit: cover;
+        transition: transform 0.4s var(--ease);
+    }
+    .formation-card:hover img {
+        transform: scale(1.03);
+    }
+    /* Le contenu texte sous l'image */
+    .formation-card > div:last-child {
+        padding: 1.2rem 1.5rem 1.5rem;
+    }
+    /* Ajustement pour mobile */
+    @media (max-width: 640px) {
+        .formation-card img {
+            height: 100px;
+        }
+        .formation-card > div:last-child {
+            padding: 1rem;
+        }
+    }
   </style>
 </head>
 <body>
@@ -1053,7 +1081,7 @@
     <div class="formations-grid">
       <!-- Card 3ème avec image agrandie -->
       <div class="formation-card fade-in stagger-1" style="padding: 0; overflow: hidden;">
-        <img src="{% static 'images/affiche3.png' %}" alt="Cours 3ème" style="width: 100%; height: 200px; object-fit: cover;">
+        <img src="{% static 'images/affiche5.png' %}" alt="Cours 3ème" style="width: 100%; height: 200px; object-fit: cover;">
         <div style="padding: 1.5rem;">
           <div class="level-tag">3ème</div>
           <h3>Cours de 3ème</h3>
@@ -1233,8 +1261,8 @@
       <p class="sec-sub">Découvrez ce que nos anciens apprenants pensent de l'expérience La Certitude.</p>
     </div>
     <div class="temo-grid">
-      <div class="temo-card slide-left"><div class="video-thumb" onclick="openVideo('VOTRE_ID_1')"><img src="https://img.youtube.com/vi/VOTRE_ID_1/hqdefault.jpg" alt="Koffi Emmanuel"/><div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div></div><div class="temo-info"><div class="temo-name">Koffi Emmanuel</div><div class="temo-meta"><span class="temo-badge">1ère C</span> CEG Zogbo · Édition 2025</div></div></div>
-      <div class="temo-card slide-right"><div class="video-thumb" onclick="openVideo('VOTRE_ID_2')"><img src="https://img.youtube.com/vi/VOTRE_ID_2/hqdefault.jpg" alt="Adjoua Marie"/><div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div></div><div class="temo-info"><div class="temo-name">Adjoua Marie</div><div class="temo-meta"><span class="temo-badge">Terminale D</span> Lycée Béhanzin · Édition 2025</div></div></div>
+      <div class="temo-card slide-left"><div class="video-thumb" onclick="openVideo('FPDlX2tcvR8')"><img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Koffi Emmanuel"/><div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div></div><div class="temo-info"><div class="temo-name">Koffi Emmanuel</div><div class="temo-meta"><span class="temo-badge">1ère C</span> CEG Zogbo · Édition 2025</div></div></div>
+      <div class="temo-card slide-right"><div class="video-thumb" onclick="openVideo('FPDlX2tcvR8')"><img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Adjoua Marie"/><div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div></div><div class="temo-info"><div class="temo-name">Adjoua Marie</div><div class="temo-meta"><span class="temo-badge">Terminale D</span> Lycée Béhanzin · Édition 2025</div></div></div>
     </div>
     <div class="text-center"><a href="{% url 'core:temoignages' %}" class="btn-voir">Voir tous les témoignages</a></div>
   </div>

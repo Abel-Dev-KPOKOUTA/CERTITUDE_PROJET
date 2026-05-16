@@ -1,0 +1,54 @@
+{% extends 'includes/base.html' %}
+{% load static %}
+
+{% block title %}{{ tip.title }} — Groupe La Certitude{% endblock %}
+
+{% block content %}
+<div class="tip-detail">
+    <div class="container">
+        <div class="tip-header">
+            <h1>{{ tip.title }}</h1>
+            <div class="tip-meta">{{ tip.subject.name }} · {{ tip.level.name }}</div>
+        </div>
+
+        <div class="tip-media">
+            {% if tip.media_type == 'image' and tip.media_file %}
+                <img src="{{ tip.media_file.url }}" alt="{{ tip.title }}" style="max-width:100%; border-radius: var(--r-card);">
+                {% if tip.is_downloadable and tip.download_file %}
+                    <a href="{{ tip.download_file.url }}" class="btn-download" download>Télécharger l'image</a>
+                {% endif %}
+            {% elif tip.media_type == 'video' %}
+                {% if tip.video_url %}
+                    <div class="video-wrapper">
+                        <iframe src="{{ tip.video_url|default:'' }}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                {% elif tip.media_file %}
+                    <video controls src="{{ tip.media_file.url }}" style="width:100%; border-radius: var(--r-card);"></video>
+                {% endif %}
+            {% elif tip.media_type == 'pdf' and tip.media_file %}
+                <embed src="{{ tip.media_file.url }}" type="application/pdf" width="100%" height="600px">
+                {% if tip.is_downloadable %}
+                    <a href="{{ tip.download_file.url|default:tip.media_file.url }}" class="btn-download" download>Télécharger le PDF</a>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="tip-content">
+            {{ tip.detailed_content|linebreaks }}
+        </div>
+
+        <a href="{% url 'resources:astuces' %}" class="btn-back">← Retour aux astuces</a>
+    </div>
+</div>
+<style>
+    .tip-detail { padding: 3rem 1.5rem; }
+    .tip-header { margin-bottom: 2rem; text-align: center; }
+    .tip-header h1 { font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
+    .tip-meta { color: var(--accent); font-weight: 600; }
+    .tip-media { margin-bottom: 2rem; text-align: center; }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+    .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: var(--r-card); }
+    .btn-download { display: inline-block; margin-top: 1rem; background: var(--accent); color: white; padding: 0.6rem 1.5rem; border-radius: var(--r-pill); }
+    .tip-content { max-width: 800px; margin: 0 auto; font-size: 1rem; line-height: 1.7; color: var(--ink-md); }
+</style>
+{% endblock %}

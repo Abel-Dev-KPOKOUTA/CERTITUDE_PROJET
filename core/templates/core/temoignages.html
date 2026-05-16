@@ -8,9 +8,6 @@
   <link rel="icon" href="{% static 'images/logo_certitude.png' %}" type="image/png"/>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
   <style>
-    /* ═══════════════════════════════════════
-       TOKENS (identique à index.html)
-    ═══════════════════════════════════════ */
     :root {
       --hero-from: #d7c8ff;
       --hero-via:  #c2b0f8;
@@ -63,7 +60,7 @@
     #back-top.show { opacity: 1; transform: none; pointer-events: auto; }
     #back-top:hover { background: var(--btn-hover); transform: translateY(-3px); }
 
-    /* ═══ NAVBAR (identique) ═══ */
+    /* ═══ NAVBAR ═══ */
     .nav {
       position: sticky; top: 0; z-index: 100;
       background: rgba(255,255,255,.96);
@@ -88,8 +85,7 @@
     .nav-link {
       font-size: .85rem; font-weight: 600; color: var(--ink-md);
       padding: .5rem 0; display: flex; align-items: center; gap: .3rem;
-      transition: color .2s;
-      cursor: pointer;
+      transition: color .2s; cursor: pointer;
       background: none; border: none; font-family: var(--font);
     }
     .nav-link:hover { color: var(--ink); }
@@ -104,16 +100,13 @@
       transition: opacity .25s, transform .25s, visibility .25s;
       z-index: 101; padding: .5rem 0;
     }
-    .nav-item:hover .dropdown-menu {
-      opacity: 1; visibility: visible; transform: translateY(0);
-    }
+    .nav-item:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
     .dropdown-item {
       display: flex; align-items: center; gap: .8rem;
       padding: .75rem 1.2rem; font-size: .8rem; font-weight: 500;
       color: var(--ink-md); transition: background .2s, color .2s;
     }
     .dropdown-item:hover { background: var(--bg-lav); color: var(--accent); }
-    .dropdown-item svg { width: 18px; height: 18px; opacity: .7; }
     .dropdown-divider { height: 1px; background: var(--border); margin: .5rem 0; }
     .dropdown-title { padding: .6rem 1.2rem .3rem; font-size: .7rem; font-weight: 700; color: var(--ink-lt); text-transform: uppercase; letter-spacing: .05em; }
     .btn-login {
@@ -141,36 +134,26 @@
     .mobile-menu {
       display: none; position: fixed; inset: 0; z-index: 99;
       background: #fff; padding: 80px 1.5rem 2rem;
-      flex-direction: column; transform: translateX(100%); transition: transform .35s var(--ease);
-      overflow-y: auto;
+      flex-direction: column; overflow-y: auto;
     }
-    .mobile-menu.open { display: flex; transform: none; }
+    .mobile-menu.open { display: flex; }
     .mobile-nav-item { border-bottom: 1px solid var(--border); }
     .mobile-nav-link {
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 0; font-size: 1rem; font-weight: 600; color: var(--ink);
       cursor: pointer;
     }
-    .mobile-dropdown-content {
-      max-height: 0; overflow: hidden; transition: max-height .35s var(--ease);
-      padding-left: 1rem;
-    }
+    .mobile-dropdown-content { max-height: 0; overflow: hidden; transition: max-height .35s var(--ease); padding-left: 1rem; }
     .mobile-dropdown-content.show { max-height: 500px; }
-    .mobile-dropdown-content a {
-      display: flex; align-items: center; gap: .8rem;
-      padding: .8rem 0; font-size: .88rem; font-weight: 500;
-      color: var(--ink-md); border-bottom: none;
-    }
+    .mobile-dropdown-content a { display: flex; align-items: center; gap: .8rem; padding: .8rem 0; font-size: .88rem; font-weight: 500; color: var(--ink-md); }
     .mobile-auth { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
     .mobile-auth .btn-login, .mobile-auth .btn-register { text-align: center; padding: .9rem; }
 
     /* ═══ PAGE HEADER ═══ */
     .page-header {
       background: linear-gradient(140deg, var(--hero-from) 0%, var(--hero-via) 50%, var(--hero-to) 100%);
-      padding: 5rem 1.5rem 4rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      padding: 5rem 1.5rem 4rem; text-align: center;
+      position: relative; overflow: hidden;
     }
     .page-header::before {
       content: ''; position: absolute; inset: 0;
@@ -207,10 +190,7 @@
     }
 
     /* ═══ STATS STRIP ═══ */
-    .stats-strip {
-      background: var(--bg-white); border-bottom: 1px solid var(--border);
-      padding: 1.5rem;
-    }
+    .stats-strip { background: var(--bg-white); border-bottom: 1px solid var(--border); padding: 1.5rem; }
     .stats-inner {
       max-width: 900px; margin: 0 auto;
       display: grid; grid-template-columns: repeat(4, 1fr);
@@ -240,7 +220,6 @@
       object-fit: cover; transition: transform .4s var(--ease);
     }
     .video-card:hover .video-thumb img { transform: scale(1.05); }
-
     .play-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(transparent 30%, rgba(15,23,42,.65));
@@ -248,24 +227,18 @@
       transition: background .3s;
     }
     .video-card:hover .play-overlay { background: linear-gradient(transparent 20%, rgba(15,23,42,.75)); }
-
     .play-ring {
       width: 64px; height: 64px; border-radius: 50%;
       background: rgba(255,255,255,.95);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: var(--sh-md);
-      transition: transform .25s, background .2s;
-      margin-bottom: .6rem;
+      font-size: 1.5rem; box-shadow: var(--sh-md);
+      transition: transform .25s, background .2s; margin-bottom: .6rem;
     }
     .video-card:hover .play-ring { transform: scale(1.12); background: white; }
-
     .play-label {
-      color: white; font-family: var(--font);
-      font-size: .78rem; font-weight: 600;
+      color: white; font-family: var(--font); font-size: .78rem; font-weight: 600;
       background: rgba(0,0,0,.5); padding: .3rem .8rem; border-radius: var(--r-pill);
     }
-
     .duration-badge {
       position: absolute; bottom: .6rem; right: .7rem;
       background: rgba(0,0,0,.7); color: white;
@@ -283,10 +256,8 @@
     }
     .badge-ecole { font-size: .78rem; color: var(--ink-lt); }
     .video-quote {
-      font-size: .85rem; color: var(--ink-md);
-      line-height: 1.55; font-style: italic;
-      border-left: 3px solid var(--accent-20);
-      padding-left: .8rem; margin-top: .3rem;
+      font-size: .85rem; color: var(--ink-md); line-height: 1.55; font-style: italic;
+      border-left: 3px solid var(--accent-20); padding-left: .8rem; margin-top: .3rem;
     }
     .btn-watch {
       display: flex; align-items: center; justify-content: center; gap: .5rem;
@@ -298,10 +269,13 @@
     }
     .btn-watch:hover { background: var(--btn); color: #fff; }
 
-    /* ═══ MODAL VIDÉO ═══ */
+    /* ═══════════════════════════════════════════
+       MODAL VIDÉO — avec système fallback complet
+    ═══════════════════════════════════════════ */
     .modal {
       display: none; position: fixed; inset: 0; z-index: 999;
       background: rgba(10,8,24,.92);
+      backdrop-filter: blur(6px);
       align-items: center; justify-content: center;
       padding: 1rem;
     }
@@ -309,25 +283,68 @@
     .modal-inner { width: 100%; max-width: 860px; position: relative; }
     .modal-close {
       position: absolute; top: -48px; right: 0;
-      background: rgba(255,255,255,.1); border: none; color: white;
-      width: 40px; height: 40px; border-radius: 50%; font-size: 1.3rem;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.1rem;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
       transition: background .2s;
     }
     .modal-close:hover { background: rgba(255,255,255,.25); }
-    .modal-header {
-      display: flex; align-items: center; gap: .8rem;
-      margin-bottom: .9rem;
-    }
+    .modal-header { display: flex; align-items: center; gap: .8rem; margin-bottom: .9rem; }
     .modal-name { font-family: var(--font); font-weight: 800; color: white; font-size: 1rem; }
     .modal-meta { font-size: .8rem; color: rgba(255,255,255,.6); }
+
+    /* Wrapper vidéo */
     .video-frame-wrap {
       position: relative; padding-top: 56.25%;
       border-radius: var(--r-card); overflow: hidden; background: #000;
     }
-    .video-frame-wrap iframe {
+    #videoFrame {
       position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+      display: block;
     }
+
+    /* ── FALLBACK quand la vidéo bloque l'embed ── */
+    .embed-fallback {
+      position: absolute; inset: 0;
+      background: linear-gradient(145deg, #1a1630 0%, #2d2050 100%);
+      display: none; /* caché par défaut, JS l'affiche si besoin */
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 1.2rem; padding: 2rem; text-align: center;
+      border-radius: var(--r-card);
+    }
+    .embed-fallback.show { display: flex; }
+    .ef-icon { font-size: 3.5rem; line-height: 1; }
+    .ef-title { font-size: 1.05rem; font-weight: 800; color: #fff; letter-spacing: -.02em; }
+    .ef-msg {
+      font-size: .82rem; color: rgba(255,255,255,.65); line-height: 1.65;
+      max-width: 360px;
+    }
+    /* Bouton YouTube rouge */
+    .btn-yt {
+      display: inline-flex; align-items: center; gap: .55rem;
+      background: #ff0000; color: #fff; border: none;
+      border-radius: var(--r-pill); padding: .75rem 1.9rem;
+      font-size: .92rem; font-weight: 800; font-family: var(--font);
+      cursor: pointer; transition: opacity .2s, transform .15s;
+      text-decoration: none;
+    }
+    .btn-yt:hover { opacity: .88; transform: translateY(-1px); }
+    .ef-note { font-size: .7rem; color: rgba(255,255,255,.38); }
+
+    /* Loader dans le modal */
+    .video-loader {
+      position: absolute; inset: 0;
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: var(--r-card);
+    }
+    .loader-spinner {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 3px solid rgba(255,255,255,.15);
+      border-top-color: #fff;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ═══ CTA ═══ */
     .temo-cta {
@@ -339,8 +356,7 @@
     .btn-white {
       background: var(--ink); color: #fff; border-radius: var(--r-pill);
       padding: .85rem 2rem; font-family: var(--font); font-weight: 700;
-      font-size: .95rem; transition: transform .2s, box-shadow .2s;
-      display: inline-block;
+      font-size: .95rem; transition: transform .2s, box-shadow .2s; display: inline-block;
     }
     .btn-white:hover { transform: translateY(-2px); box-shadow: var(--sh-md); background: #1e293b; }
 
@@ -349,7 +365,7 @@
       background: linear-gradient(180deg, #3d3658 0%, #4f486d 50%, #635b7d 100%);
       color: rgba(255,255,255,.7); padding: 4rem 1.5rem 1.5rem;
     }
-    .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; max-width: 1200px; margin: 0 auto 3rem; }
+    .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto 3rem; }
     .footer-brand { display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
     .footer-brand img { width: 36px; height: 36px; border-radius: 50%; background: #fff; padding: 2px; }
     .footer-brand-name { font-size: 1rem; font-weight: 800; color: #fff; }
@@ -360,6 +376,11 @@
     .footer-col ul li a:hover { color: #fff; }
     .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8rem; max-width: 1200px; margin: 0 auto; }
     .footer-copy { font-size: .73rem; opacity: .4; }
+
+    /* WA float */
+    .wa-float { position: fixed; bottom: 1.4rem; right: 1.4rem; z-index: 99; width: 50px; height: 50px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,.4); transition: transform .2s; }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 25px; height: 25px; fill: #fff; }
 
     /* ═══ ANIMATIONS ═══ */
     .fade-in { opacity: 0; transform: translateY(28px); transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
@@ -375,22 +396,18 @@
       .videos-grid { grid-template-columns: 1fr; }
       .stats-inner { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (max-width: 640px) {
-      .footer-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 640px) { .footer-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-<!-- SCROLL PROGRESS -->
 <div id="scroll-bar"></div>
 
-<!-- BACK TO TOP -->
 <button id="back-top" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">
   <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<!-- NAVBAR -->
+<!-- ═══ NAVBAR ═══ -->
 <header class="nav" id="navbar">
   <div class="nav-inner">
     <div class="nav-logo">
@@ -400,7 +417,9 @@
     <div class="nav-menu">
       <div class="nav-item"><a href="{% url 'core:index' %}" class="nav-link">Accueil</a></div>
       <div class="nav-item">
-        <button class="nav-link">Cours<svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="nav-link">Cours
+          <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
         <div class="dropdown-menu">
           <div class="dropdown-title">Édition actuelle</div>
           <a href="#" class="dropdown-item">Programme 2026</a>
@@ -415,9 +434,9 @@
       <div class="nav-item"><a href="#" class="nav-link">Épreuves</a></div>
       <div class="nav-item"><a href="#" class="nav-link">Annonces</a></div>
     </div>
-    <div class="nav-menu" style="margin-left: 0;">
-      <button class="btn-login" onclick="location.href='#'">Connexion</button>
-      <button class="btn-register" onclick="location.href='#'">Inscription</button>
+    <div class="nav-menu" style="margin-left:0">
+      <button class="btn-login">Connexion</button>
+      <a href="{% url 'enrollments:create' %}" class="btn-register">Inscription</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -425,39 +444,46 @@
   </div>
 </header>
 
-<!-- MOBILE MENU -->
+<!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='{% url 'core:index' %}'">Accueil</div></div>
   <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="toggleMobileDropdown(this)">Cours<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="mobile-nav-link" onclick="location.href='{% url 'core:index' %}'">Accueil</div>
+  </div>
+  <div class="mobile-nav-item">
+    <div class="mobile-nav-link" onclick="toggleMobileDropdown(this)">
+      Cours <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
     <div class="mobile-dropdown-content">
       <a href="#">Programme 2026</a>
       <a href="{% url 'enrollments:create' %}">S'inscrire</a>
       <a href="#">Archives</a>
     </div>
   </div>
-  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='#'">Ressources</div></div>
-  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='#'">Soutien scolaire</div></div>
-  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='#'">Épreuves</div></div>
-  <div class="mobile-nav-item"><div class="mobile-nav-link" onclick="location.href='#'">Annonces</div></div>
+  <div class="mobile-nav-item"><div class="mobile-nav-link">Ressources</div></div>
+  <div class="mobile-nav-item"><div class="mobile-nav-link">Soutien scolaire</div></div>
+  <div class="mobile-nav-item"><div class="mobile-nav-link">Épreuves</div></div>
+  <div class="mobile-nav-item"><div class="mobile-nav-link">Annonces</div></div>
   <div class="mobile-auth">
-    <button class="btn-login" onclick="location.href='#'">Connexion</button>
-    <button class="btn-register" onclick="location.href='#'">Inscription</button>
+    <button class="btn-login">Connexion</button>
+    <a href="{% url 'enrollments:create' %}" class="btn-register" style="text-align:center;padding:.9rem;display:block">Inscription</a>
   </div>
 </div>
 
-<!-- PAGE HEADER -->
+<!-- ═══ PAGE HEADER ═══ -->
 <div class="page-header">
   <div class="header-inner">
     <a href="{% url 'core:index' %}" class="back-link">← Retour à l'accueil</a>
-    <div class="header-badge">Témoignages</div>
+    <div class="header-badge">🎥 Témoignages</div>
     <h1>Ils ont vécu l'expérience La Certitude</h1>
     <p>Découvrez les témoignages authentiques de nos anciens apprenants et de leurs parents — édition 2025.</p>
-    <div class="video-count">{{ videos|length }} témoignages vidéo</div>
+    <div class="video-count">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      {{ videos|length }} témoignage{{ videos|length|pluralize }} vidéo{{ videos|length|pluralize }}
+    </div>
   </div>
 </div>
 
-<!-- STATS -->
+<!-- ═══ STATS ═══ -->
 <div class="stats-strip">
   <div class="stats-inner">
     <div class="stat-item"><span class="stat-n">100%</span><div class="stat-l">Programme couvert</div></div>
@@ -467,45 +493,112 @@
   </div>
 </div>
 
-<!-- GRILLE VIDÉOS -->
+<!-- ═══ GRILLE VIDÉOS ═══ -->
 <div class="videos-section">
   <div class="videos-grid">
     {% for video in videos %}
     <div class="video-card fade-in">
-      <div class="video-thumb" onclick="openModal('{{ video.youtube_id }}', '{{ video.nom }}', '{{ video.niveau }}', '{{ video.ecole }}')">
-        <img src="https://img.youtube.com/vi/{{ video.youtube_id }}/hqdefault.jpg" alt="Témoignage {{ video.nom }}" loading="lazy" onerror="this.src='https://placehold.co/400x225/e2e8f0/475569?text=Video+non+disponible'"/>
-        <div class="play-overlay"><div class="play-ring">▶</div><div class="play-label">Regarder</div></div>
+
+      <!-- Vignette cliquable -->
+      <div class="video-thumb"
+           onclick="openModal('{{ video.youtube_id }}', '{{ video.nom|escapejs }}', '{{ video.niveau|escapejs }}', '{{ video.ecole|escapejs }}')">
+        <img
+          src="https://img.youtube.com/vi/{{ video.youtube_id }}/hqdefault.jpg"
+          alt="Témoignage {{ video.nom }}"
+          loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/{{ video.youtube_id }}/mqdefault.jpg'"
+        />
+        <div class="play-overlay">
+          <div class="play-ring">▶</div>
+          <div class="play-label">Regarder</div>
+        </div>
         <div class="duration-badge">Témoignage</div>
       </div>
+
+      <!-- Infos -->
       <div class="video-info">
         <div class="stars-row">★★★★★</div>
         <div class="video-name">{{ video.nom }}</div>
-        <div class="video-meta"><span class="badge-niveau">{{ video.niveau }}</span><span class="badge-ecole">{{ video.ecole }}</span></div>
+        <div class="video-meta">
+          <span class="badge-niveau">{{ video.niveau }}</span>
+          <span class="badge-ecole">{{ video.ecole }}</span>
+        </div>
         <p class="video-quote">"{{ video.quote }}"</p>
-        <button class="btn-watch" onclick="openModal('{{ video.youtube_id }}', '{{ video.nom }}', '{{ video.niveau }}', '{{ video.ecole }}')">▶ Regarder le témoignage</button>
+        <button class="btn-watch"
+                onclick="openModal('{{ video.youtube_id }}', '{{ video.nom|escapejs }}', '{{ video.niveau|escapejs }}', '{{ video.ecole|escapejs }}')">
+          ▶ Regarder le témoignage
+        </button>
       </div>
+
     </div>
     {% endfor %}
   </div>
 </div>
 
-<!-- MODAL VIDÉO -->
+<!-- ═══ MODAL VIDÉO ═══ -->
 <div class="modal" id="videoModal" onclick="handleModalClick(event)">
   <div class="modal-inner">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-header"><div><div class="modal-name" id="modalName"></div><div class="modal-meta" id="modalMeta"></div></div></div>
-    <div class="video-frame-wrap"><iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>
-  </div>
-</div>
 
-<!-- CTA -->
+    <button class="modal-close" onclick="closeModal()" aria-label="Fermer">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <div class="modal-header">
+      <div>
+        <div class="modal-name" id="modalName"></div>
+        <div class="modal-meta" id="modalMeta"></div>
+      </div>
+    </div>
+
+    <div class="video-frame-wrap">
+      <!-- Loader pendant le chargement -->
+      <div class="video-loader" id="videoLoader">
+        <div class="loader-spinner"></div>
+      </div>
+
+      <!-- IFrame vidéo -->
+      <iframe
+        id="videoFrame"
+        src=""
+        allowfullscreen
+        allow="autoplay; encrypted-media; picture-in-picture"
+        referrerpolicy="strict-origin-when-cross-origin"
+        onload="onFrameLoad()"
+        onerror="showFallback()"
+      ></iframe>
+
+      <!-- Fallback si l'embed est bloqué -->
+      <div class="embed-fallback" id="embedFallback">
+        <div class="ef-icon">🎬</div>
+        <div class="ef-title">Vidéo non intégrable ici</div>
+        <div class="ef-msg">
+          YouTube a activé une restriction d'intégration sur cette vidéo.
+          Cliquez ci-dessous pour la regarder directement sur YouTube — c'est gratuit et immédiat.
+        </div>
+        <a class="btn-yt" id="ytBtn" href="#" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+            <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/>
+          </svg>
+          Ouvrir sur YouTube
+        </a>
+        <div class="ef-note">Aucun compte requis · Gratuit</div>
+      </div>
+
+    </div><!-- /video-frame-wrap -->
+  </div><!-- /modal-inner -->
+</div><!-- /modal -->
+
+<!-- ═══ CTA ═══ -->
 <div class="temo-cta">
   <h2>Prêt à rejoindre leur succès ?</h2>
   <p>Inscrivez-vous aux cours intensifs de l'édition 2026.</p>
   <a href="{% url 'enrollments:create' %}" class="btn-white">S'inscrire maintenant</a>
 </div>
 
-<!-- FOOTER -->
+<!-- ═══ FOOTER ═══ -->
 <footer>
   <div style="max-width:1200px;margin:0 auto">
     <div class="footer-grid">
@@ -514,64 +607,232 @@
           <img src="{% static 'images/logo_certitude.png' %}" alt="Logo" onerror="this.src='https://placehold.co/36x36/fff/3a2bbf?text=LC'"/>
           <span class="footer-brand-name">Groupe La Certitude</span>
         </div>
-        <p class="footer-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou, Bénin.</p>
+        <p class="footer-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C &amp; D à Cotonou, Bénin.</p>
       </div>
-      <div class="footer-col"><h4>Explorer</h4><ul><li><a href="{% url 'core:index' %}#formations">Formations</a></li><li><a href="{% url 'core:index' %}#professeurs">Professeurs</a></li><li><a href="#">Ressources</a></li></ul></div>
-      <div class="footer-col"><h4>Niveaux</h4><ul><li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours 3ème</a></li><li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours 1ère</a></li><li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours Terminale</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+22996389249">01 96 38 92 49</a></li><li><a href="https://wa.me/22996389249">WhatsApp</a></li><li><a href="#">EPP Gbégamey Sud</a></li></ul></div>
+      <div class="footer-col">
+        <h4>Explorer</h4>
+        <ul>
+          <li><a href="{% url 'core:index' %}#formations">Formations</a></li>
+          <li><a href="{% url 'core:index' %}#professeurs">Professeurs</a></li>
+          <li><a href="#">Ressources</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Niveaux</h4>
+        <ul>
+          <li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours 3ème</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours 1ère</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours Terminale</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+22996389249">01 96 38 92 49</a></li>
+          <li><a href="https://wa.me/22996389249">WhatsApp</a></li>
+          <li><a href="#">EPP Gbégamey Sud</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-bottom"><p class="footer-copy">© 2026 Groupe La Certitude — Tous droits réservés</p><span style="font-size:.72rem;opacity:.4">Fait avec ❤️ au Bénin</span></div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
+      <span style="font-size:.72rem;opacity:.4">Fait avec ❤️ au Bénin</span>
+    </div>
   </div>
 </footer>
 
+<a href="https://wa.me/22996389249" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
 <script>
-  // Scroll progress
-  const scrollBar = document.getElementById('scroll-bar');
-  const backTop = document.getElementById('back-top');
-  const nav = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    scrollBar.style.width = pct + '%';
-    nav.classList.toggle('scrolled', window.scrollY > 50);
-    backTop.classList.toggle('show', window.scrollY > 400);
-  });
+/* ══════════════════════════════════════════════════════
+   VARIABLES
+══════════════════════════════════════════════════════ */
+let currentYtId = '';
+let embedCheckTimer = null;
+let embedCheckAttempts = 0;
+const MAX_ATTEMPTS = 3;
 
-  // Hamburger
-  const ham = document.getElementById('hamburger');
-  const menu = document.getElementById('mobileMenu');
-  ham.addEventListener('click', () => {
-    ham.classList.toggle('open');
-    menu.classList.toggle('open');
-    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-  });
+/* ══════════════════════════════════════════════════════
+   SCROLL + NAV
+══════════════════════════════════════════════════════ */
+const scrollBar = document.getElementById('scroll-bar');
+const backTop   = document.getElementById('back-top');
+const nav       = document.getElementById('navbar');
 
-  function toggleMobileDropdown(element) {
-    const content = element.nextElementSibling;
-    content.classList.toggle('show');
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  scrollBar.style.width = pct + '%';
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+  backTop.classList.toggle('show', window.scrollY > 400);
+}, { passive: true });
+
+/* ══════════════════════════════════════════════════════
+   HAMBURGER
+══════════════════════════════════════════════════════ */
+const ham  = document.getElementById('hamburger');
+const mmenu = document.getElementById('mobileMenu');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  mmenu.classList.toggle('open');
+  document.body.style.overflow = mmenu.classList.contains('open') ? 'hidden' : '';
+});
+function toggleMobileDropdown(el) {
+  el.nextElementSibling.classList.toggle('show');
+}
+
+/* ══════════════════════════════════════════════════════
+   OUVERTURE MODAL
+══════════════════════════════════════════════════════ */
+function openModal(ytId, nom, niveau, ecole) {
+  currentYtId = ytId;
+  embedCheckAttempts = 0;
+
+  // Remplir les infos texte
+  document.getElementById('modalName').textContent = nom;
+  document.getElementById('modalMeta').textContent = niveau + ' · ' + ecole + ' · Édition 2025';
+
+  // Mettre le lien YouTube de secours
+  document.getElementById('ytBtn').href = 'https://www.youtube.com/watch?v=' + ytId;
+
+  // Réinitialiser l'état
+  const frame    = document.getElementById('videoFrame');
+  const loader   = document.getElementById('videoLoader');
+  const fallback = document.getElementById('embedFallback');
+  frame.style.display    = 'block';
+  loader.style.display   = 'flex';
+  fallback.classList.remove('show');
+
+  /* ─────────────────────────────────────────────
+     STRATÉGIE D'EMBED — 3 domaines essayés en cascade
+     1. youtube-nocookie.com  → le plus permissif
+     2. youtube.com           → standard
+     3. youtube.com/embed     → avec origin
+  ───────────────────────────────────────────── */
+  const origin = encodeURIComponent(window.location.origin);
+  const params = 'autoplay=1&rel=0&modestbranding=1&enablejsapi=1&origin=' + origin;
+  frame.src = 'https://www.youtube-nocookie.com/embed/' + ytId + '?' + params;
+
+  // Ouvrir le modal
+  document.getElementById('videoModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Lancer la vérification différée (4 sec)
+  clearTimeout(embedCheckTimer);
+  embedCheckTimer = setTimeout(() => verifyEmbed(ytId), 4000);
+}
+
+/* ══════════════════════════════════════════════════════
+   CALLBACK ONLOAD IFRAME
+══════════════════════════════════════════════════════ */
+function onFrameLoad() {
+  // Cacher le loader quand l'iframe a fini de charger
+  document.getElementById('videoLoader').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════════════
+   VÉRIFICATION EMBED VIA YOUTUBE oEmbed API
+   (détecte si la vidéo autorise l'intégration)
+══════════════════════════════════════════════════════ */
+function verifyEmbed(ytId) {
+  if (ytId !== currentYtId) return; // Modal fermé entre-temps
+
+  fetch('https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D' + ytId + '&format=json')
+    .then(response => {
+      if (!response.ok) {
+        // 401 = embedding désactivé par le propriétaire
+        showFallback();
+      }
+      // Si 200 : la vidéo devrait fonctionner, rien à faire
+    })
+    .catch(() => {
+      // Erreur CORS/réseau : on ne force pas le fallback car ce n'est pas certain
+    });
+}
+
+/* ══════════════════════════════════════════════════════
+   ÉCOUTE DES MESSAGES DE L'API YOUTUBE PLAYER
+   Erreur 150 = embedding disabled by request
+   Erreur 101 = same (pour les domaines non autorisés)
+══════════════════════════════════════════════════════ */
+window.addEventListener('message', function(event) {
+  if (!event.data) return;
+
+  let data;
+  try {
+    data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+  } catch (e) {
+    return;
   }
 
-  // Modal video
-  function openModal(youtubeId, nom, niveau, ecole) {
-    document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
-    document.getElementById('modalName').textContent = nom;
-    document.getElementById('modalMeta').textContent = `${niveau} · ${ecole} · Édition 2025`;
-    document.getElementById('videoModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
+  // API YouTube Player v2
+  if (data && data.info && (data.info.error === 150 || data.info.error === 101)) {
+    showFallback();
+    return;
   }
 
-  function closeModal() {
-    document.getElementById('videoModal').classList.remove('open');
-    document.getElementById('videoFrame').src = '';
-    document.body.style.overflow = '';
+  // API YouTube Player v1
+  if (data && data.event === 'infoDelivery' && data.info && data.info.error) {
+    showFallback();
+    return;
   }
+});
 
-  function handleModalClick(e) { if (e.target === document.getElementById('videoModal')) closeModal(); }
+/* ══════════════════════════════════════════════════════
+   AFFICHAGE DU FALLBACK
+══════════════════════════════════════════════════════ */
+function showFallback() {
+  const frame    = document.getElementById('videoFrame');
+  const loader   = document.getElementById('videoLoader');
+  const fallback = document.getElementById('embedFallback');
 
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  // Arrêter la vidéo qui bug
+  frame.src = '';
+  frame.style.display = 'none';
+  loader.style.display = 'none';
 
-  // Scroll reveal
-  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: .1 });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  // Afficher le message de fallback avec lien direct YouTube
+  document.getElementById('ytBtn').href = 'https://www.youtube.com/watch?v=' + currentYtId;
+  fallback.classList.add('show');
+}
+
+/* ══════════════════════════════════════════════════════
+   FERMETURE MODAL
+══════════════════════════════════════════════════════ */
+function closeModal() {
+  clearTimeout(embedCheckTimer);
+  currentYtId = '';
+
+  const frame    = document.getElementById('videoFrame');
+  const loader   = document.getElementById('videoLoader');
+  const fallback = document.getElementById('embedFallback');
+
+  // Arrêter proprement la vidéo (évite que l'audio continue)
+  frame.src = '';
+  frame.style.display = 'block';
+  loader.style.display = 'flex';
+  fallback.classList.remove('show');
+
+  document.getElementById('videoModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleModalClick(e) {
+  if (e.target === document.getElementById('videoModal')) closeModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ══════════════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════════════ */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>

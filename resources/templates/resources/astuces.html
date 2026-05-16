@@ -26,130 +26,83 @@
   </div>
 </div>
 
-<!-- FILTRES -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- FILTRES (générés dynamiquement) -->
 <div class="filters-section">
   <div class="container">
     <div class="filters-wrapper">
       <button class="filter-chip active" data-filter="all">Toutes</button>
-      <button class="filter-chip" data-filter="maths">Mathématiques</button>
-      <button class="filter-chip" data-filter="pct">Physique-Chimie</button>
-      <button class="filter-chip" data-filter="svt">SVT</button>
-      <button class="filter-chip" data-filter="anglais">Anglais</button>
-      <button class="filter-chip" data-filter="philo">Philosophie</button>
+      {% for subject in subjects %}
+        <button class="filter-chip" data-filter="{{ subject.slug }}">{{ subject.name }}</button>
+      {% endfor %}
     </div>
     <div class="level-filters">
       <button class="level-chip active" data-level="all">Tous niveaux</button>
-      <button class="level-chip" data-level="3eme">3ème</button>
-      <button class="level-chip" data-level="1ere">1ère</button>
-      <button class="level-chip" data-level="tle">Terminale</button>
+      {% for level in levels %}
+        <button class="level-chip" data-level="{{ level.slug }}">{{ level.name }}</button>
+      {% endfor %}
     </div>
   </div>
 </div>
 
-<!-- GRILLE ASTUCES -->
+<!-- GRILLE ASTUCES (dynamique) -->
 <section class="section">
   <div class="container">
-    <div class="result-count" id="resultCount">6 astuces trouvées</div>
+    <div class="result-count" id="resultCount">{{ tips|length }} astuce{{ tips|pluralize }} trouvée{{ tips|pluralize }}</div>
     <div class="astuces-grid" id="astucesGrid">
-      
-      <!-- Carte 1 - Maths 3ème -->
-      <div class="astuce-card" data-title="Mathématiques 3ème - Algèbre" data-subject="maths" data-level="3eme">
-        <div class="astuce-icon" style="background:#ede9fe">📐</div>
+      {% for tip in tips %}
+      <div class="astuce-card" 
+           data-title="{{ tip.title|lower }}" 
+           data-subject="{{ tip.subject.slug }}" 
+           data-level="{{ tip.level.slug }}"
+           data-search="{{ tip.title|lower }} {{ tip.summary|lower }} {{ tip.tags|lower }}">
+        
+        <div class="astuce-icon" style="background:{{ tip.subject.color|default:'#ede9fe' }}">
+          {% if tip.media_type == 'image' %}🖼️
+          {% elif tip.media_type == 'video' %}🎬
+          {% elif tip.media_type == 'pdf' %}📄
+          {% else %}📝
+          {% endif %}
+        </div>
+        
         <div class="astuce-content">
-          <div class="astuce-matiere">Mathématiques · 3ème</div>
-          <h3 class="astuce-title">5 astuces pour réussir en Algèbre</h3>
-          <p class="astuce-preview">Identités remarquables, factorisation, équations du second degré...</p>
+          <div class="astuce-matiere">{{ tip.subject.name }} · {{ tip.level.name }}</div>
+          <h3 class="astuce-title">{{ tip.title }}</h3>
+          <p class="astuce-preview">{{ tip.summary|default:tip.detailed_content|truncatewords:15 }}</p>
           <div class="astuce-tags">
-            <span class="tag">Algèbre</span>
-            <span class="tag">Équations</span>
-            <span class="tag">Factorisation</span>
+            {% for tag in tip.tags.split|slice:":3" %}
+              <span class="tag">{{ tag }}</span>
+            {% endfor %}
           </div>
-          <button class="astuce-btn" onclick="openAstuceModal('maths-3eme-algebre')">Accéder →</button>
+          <a href="{{ tip.get_absolute_url }}" class="astuce-btn">Accéder →</a>
         </div>
       </div>
-
-      <!-- Carte 2 - PCT 1ère -->
-      <div class="astuce-card" data-title="Physique-Chimie 1ère - Calculs PCT" data-subject="pct" data-level="1ere">
-        <div class="astuce-icon" style="background:#fef9c3">⚗️</div>
-        <div class="astuce-content">
-          <div class="astuce-matiere" style="color:#a16207">Physique-Chimie · 1ère</div>
-          <h3 class="astuce-title">Maîtriser les calculs en Physique-Chimie</h3>
-          <p class="astuce-preview">Unités SI, lois de Newton, réactions chimiques, électricité...</p>
-          <div class="astuce-tags">
-            <span class="tag">Mécanique</span>
-            <span class="tag">Chimie</span>
-            <span class="tag">Électricité</span>
-          </div>
-          <button class="astuce-btn" onclick="openAstuceModal('pct-1ere-calculs')">Accéder →</button>
-        </div>
-      </div>
-
-      <!-- Carte 3 - SVT Terminale -->
-      <div class="astuce-card" data-title="SVT Terminale - Mémorisation" data-subject="svt" data-level="tle">
-        <div class="astuce-icon" style="background:#d1fae5">🌿</div>
-        <div class="astuce-content">
-          <div class="astuce-matiere" style="color:#059669">SVT · Terminale</div>
-          <h3 class="astuce-title">Mémorisation efficace en SVT</h3>
-          <p class="astuce-preview">Schémas légendés, génétique, cycles biologiques, immunologie...</p>
-          <div class="astuce-tags">
-            <span class="tag">Biologie</span>
-            <span class="tag">Génétique</span>
-            <span class="tag">Immunologie</span>
-          </div>
-          <button class="astuce-btn" onclick="openAstuceModal('svt-tle-memoire')">Accéder →</button>
-        </div>
-      </div>
-
-      <!-- Carte 4 - Anglais 3ème -->
-      <div class="astuce-card" data-title="Anglais 3ème - Compréhension" data-subject="anglais" data-level="3eme">
-        <div class="astuce-icon" style="background:#dbeafe">🇬🇧</div>
-        <div class="astuce-content">
-          <div class="astuce-matiere" style="color:#1d4ed8">Anglais · 3ème</div>
-          <h3 class="astuce-title">Améliorer sa compréhension écrite</h3>
-          <p class="astuce-preview">Lecture quotidienne, conjugaison, expression écrite, compréhension...</p>
-          <div class="astuce-tags">
-            <span class="tag">Lecture</span>
-            <span class="tag">Conjugaison</span>
-            <span class="tag">Vocabulaire</span>
-          </div>
-          <button class="astuce-btn" onclick="openAstuceModal('anglais-3eme-comprehension')">Accéder →</button>
-        </div>
-      </div>
-
-      <!-- Carte 5 - Maths Terminale -->
-      <div class="astuce-card" data-title="Maths Terminale - Probabilités" data-subject="maths" data-level="tle">
-        <div class="astuce-icon" style="background:#ede9fe">📐</div>
-        <div class="astuce-content">
-          <div class="astuce-matiere">Mathématiques · Terminale</div>
-          <h3 class="astuce-title">Réussir les probabilités au BAC</h3>
-          <p class="astuce-preview">Arbre pondéré, formule de Bayes, loi binomiale, espérance...</p>
-          <div class="astuce-tags">
-            <span class="tag">Probabilités</span>
-            <span class="tag">Statistiques</span>
-            <span class="tag">BAC</span>
-          </div>
-          <button class="astuce-btn" onclick="openAstuceModal('maths-tle-probas')">Accéder →</button>
-        </div>
-      </div>
-
-      <!-- Carte 6 - Philosophie Terminale -->
-      <div class="astuce-card" data-title="Philosophie Terminale - Dissertation" data-subject="philo" data-level="tle">
-        <div class="astuce-icon" style="background:#fce7f3">📖</div>
-        <div class="astuce-content">
-          <div class="astuce-matiere" style="color:#be185d">Philosophie · Terminale</div>
-          <h3 class="astuce-title">Méthode pour la dissertation</h3>
-          <p class="astuce-preview">Analyse du sujet, problématique, plan détaillé, auteurs clés...</p>
-          <div class="astuce-tags">
-            <span class="tag">Méthodologie</span>
-            <span class="tag">Dissertation</span>
-            <span class="tag">BAC</span>
-          </div>
-          <button class="astuce-btn" onclick="openAstuceModal('philo-tle-dissertation')">Accéder →</button>
-        </div>
-      </div>
+      {% empty %}
+        <p class="no-results">Aucune astuce disponible pour le moment.</p>
+      {% endfor %}
     </div>
   </div>
 </section>
+
+
+
 
 <!-- MODAL POUR LE CONTENU DES ASTRUCES -->
 <div id="astuceModal" class="modal">

@@ -84,10 +84,10 @@ def temoignages(request):
     """
     videos = [
         {
-            'youtube_id': 'VOTRE_ID_1',
-            'nom':    'Koffi Emmanuel',
-            'niveau': '1ère C',
-            'ecole':  'CEG Zogbo',
+            'youtube_id': 'FPDlX2tcvR8',
+            'nom':    'AGASSOUNON Ange',
+            'niveau': 'Terminale C',
+            'ecole':  'CEG Sainte RITA',
             'quote':  "Grâce à La Certitude, j'ai tout compris en 2 mois !",
         },
         {

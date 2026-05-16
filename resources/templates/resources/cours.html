@@ -13,154 +13,151 @@
   </div>
 </div>
 
-<!-- FILTRES PAR NIVEAU -->
+<!-- FILTRES PAR NIVEAU (générés dynamiquement) -->
 <div class="filters-bar">
   <div class="container">
     <div class="filters-wrapper">
       <button class="filter-btn active" data-filter="all">Tous les niveaux</button>
-      <button class="filter-btn" data-filter="6eme">6ème</button>
-      <button class="filter-btn" data-filter="5eme">5ème</button>
-      <button class="filter-btn" data-filter="4eme">4ème</button>
-      <button class="filter-btn" data-filter="3eme">3ème</button>
-      <button class="filter-btn" data-filter="seconde">Seconde</button>
-      <button class="filter-btn" data-filter="1ere">1ère C & D</button>
-      <button class="filter-btn" data-filter="tle">Terminale C & D</button>
+      {% for level in levels %}
+        <button class="filter-btn" data-filter="{{ level.slug }}">{{ level.name }}</button>
+      {% endfor %}
     </div>
   </div>
 </div>
 
-<!-- STATISTIQUES -->
+<!-- STATISTIQUES (peuvent être calculées dynamiquement ou laissées statiques) -->
 <div class="stats-strip">
   <div class="container">
     <div class="stats-grid">
-      <div class="stat-item"><div class="stat-number">50+</div><div class="stat-label">Fiches de cours</div></div>
-      <div class="stat-item"><div class="stat-number">200+</div><div class="stat-label">Exercices corrigés</div></div>
-      <div class="stat-item"><div class="stat-number">6</div><div class="stat-label">Matières disponibles</div></div>
+      <div class="stat-item"><div class="stat-number">{{ total_sheets|default:"50+" }}</div><div class="stat-label">Fiches de cours</div></div>
+      <div class="stat-item"><div class="stat-number">{{ total_exercises|default:"200+" }}</div><div class="stat-label">Exercices corrigés</div></div>
+      <div class="stat-item"><div class="stat-number">{{ subjects_count|default:"6" }}</div><div class="stat-label">Matières disponibles</div></div>
       <div class="stat-item"><div class="stat-number">100%</div><div class="stat-label">Programme officiel</div></div>
     </div>
   </div>
 </div>
 
-<!-- GRILLE COURS -->
+<!-- GRILLE COURS (dynamique) -->
 <section class="section">
   <div class="container">
     <div class="cours-grid" id="coursGrid">
-      
-      <!-- Pack 3ème -->
-      <div class="cours-card fade-in" data-level="3eme">
-        <div class="cours-badge">Pack complet</div>
-        <div class="cours-icon">🎓</div>
+      {% for course in courses %}
+      <div class="cours-card fade-in" data-level="{{ course.level.slug }}">
+        <div class="cours-badge">{{ course.badge_text|default:"Résumé" }}</div>
+        <div class="cours-icon">
+          {% if course.subject.slug == 'mathematiques' %}📐
+          {% elif course.subject.slug == 'physique-chimie' %}⚗️
+          {% elif course.subject.slug == 'svt' %}🌿
+          {% elif course.subject.slug == 'anglais' %}🇬🇧
+          {% elif course.subject.slug == 'philosophie' %}📖
+          {% else %}📘
+          {% endif %}
+        </div>
         <div class="cours-content">
-          <h3>Programme complet de 3ème</h3>
-          <p class="cours-desc">Préparez-vous efficacement pour le BEPC avec nos fiches de révision et exercices corrigés.</p>
+          <h3>{{ course.title }}</h3>
+          <p class="cours-desc">{{ course.short_description|truncatewords:20 }}</p>
           <div class="cours-meta">
-            <span class="meta-item">Mathématiques</span>
-            <span class="meta-item">Physique-Chimie</span>
-            <span class="meta-item">SVT</span>
-            <span class="meta-item">Anglais</span>
+            {% for sub in course.sub_subjects|slice:":4" %}
+              <span class="meta-item">{{ sub }}</span>
+            {% endfor %}
           </div>
-          <div class="cours-details"><span>📄 35 fiches</span><span>📝 80 exercices</span><span>⭐ Corrigés inclus</span></div>
-          <div class="cours-actions"><a href="#" class="btn-download">📥 Télécharger (PDF)</a><a href="#" class="btn-preview">👁️ Aperçu</a></div>
+          <div class="cours-details">
+            <span>📄 {{ course.nb_sheets }} fiches</span>
+            <span>📝 {{ course.nb_exercises }} exercices</span>
+            {% if course.has_corrections %}<span>⭐ Corrigés inclus</span>{% endif %}
+            {% if course.has_audio %}<span>🎧 Audio inclus</span>{% endif %}
+          </div>
+          <div class="cours-actions">
+            {% if course.is_downloadable and course.pdf_file %}
+              <a href="{{ course.pdf_file.url }}" class="btn-download" download="{{ course.title }}.pdf">📥 Télécharger (PDF)</a>
+            {% else %}
+              <a href="#" class="btn-download disabled" style="opacity:0.5; cursor:not-allowed;">📥 Non téléchargeable</a>
+            {% endif %}
+            <button class="btn-preview" onclick="openPreviewModal('{{ course.slug }}')">👁️ Aperçu</button>
+            <a href="{{ course.get_absolute_url }}" class="btn-view-course">Accéder au cours →</a>
+          </div>
         </div>
       </div>
-
-      <!-- Maths 1ère -->
-      <div class="cours-card fade-in" data-level="1ere">
-        <div class="cours-badge">Série C & D</div>
-        <div class="cours-icon">📐</div>
-        <div class="cours-content">
-          <h3>Mathématiques - 1ère C & D</h3>
-          <p class="cours-desc">Cours complets et exercices types sur l'algèbre, l'analyse, la géométrie et les probabilités.</p>
-          <div class="cours-meta"><span class="meta-item">Algèbre</span><span class="meta-item">Analyse</span><span class="meta-item">Géométrie</span><span class="meta-item">Probabilités</span></div>
-          <div class="cours-details"><span>📄 28 fiches</span><span>📝 65 exercices</span><span>⭐ Corrigés inclus</span></div>
-          <div class="cours-actions"><a href="#" class="btn-download">📥 Télécharger (PDF)</a><a href="#" class="btn-preview">👁️ Aperçu</a></div>
-        </div>
-      </div>
-
-      <!-- PCT 1ère -->
-      <div class="cours-card fade-in" data-level="1ere">
-        <div class="cours-badge">Série C</div>
-        <div class="cours-icon">⚗️</div>
-        <div class="cours-content">
-          <h3>Physique-Chimie - 1ère C</h3>
-          <p class="cours-desc">Mécanique, électricité, chimie organique et minérale. Programme complet.</p>
-          <div class="cours-meta"><span class="meta-item">Mécanique</span><span class="meta-item">Électricité</span><span class="meta-item">Chimie</span></div>
-          <div class="cours-details"><span>📄 22 fiches</span><span>📝 50 exercices</span><span>⭐ Corrigés inclus</span></div>
-          <div class="cours-actions"><a href="#" class="btn-download">📥 Télécharger (PDF)</a><a href="#" class="btn-preview">👁️ Aperçu</a></div>
-        </div>
-      </div>
-
-      <!-- SVT 1ère D -->
-      <div class="cours-card fade-in" data-level="1ere">
-        <div class="cours-badge">Série D</div>
-        <div class="cours-icon">🌿</div>
-        <div class="cours-content">
-          <h3>SVT - 1ère D</h3>
-          <p class="cours-desc">Biologie, génétique, immunologie, géologie - résumés et schémas.</p>
-          <div class="cours-meta"><span class="meta-item">Biologie</span><span class="meta-item">Génétique</span><span class="meta-item">Immunologie</span><span class="meta-item">Géologie</span></div>
-          <div class="cours-details"><span>📄 25 fiches</span><span>📝 55 exercices</span><span>⭐ Schémas inclus</span></div>
-          <div class="cours-actions"><a href="#" class="btn-download">📥 Télécharger (PDF)</a><a href="#" class="btn-preview">👁️ Aperçu</a></div>
-        </div>
-      </div>
-
-      <!-- Maths Terminale -->
-      <div class="cours-card fade-in" data-level="tle">
-        <div class="cours-badge">BAC C & D</div>
-        <div class="cours-icon">📐</div>
-        <div class="cours-content">
-          <h3>Mathématiques - Terminale C & D</h3>
-          <p class="cours-desc">Préparation intensive au BAC : limites, dérivées, intégrales, nombres complexes.</p>
-          <div class="cours-meta"><span class="meta-item">Limites</span><span class="meta-item">Dérivées</span><span class="meta-item">Intégrales</span><span class="meta-item">Nombres complexes</span></div>
-          <div class="cours-details"><span>📄 32 fiches</span><span>📝 90 exercices</span><span>⭐ Annales BAC</span></div>
-          <div class="cours-actions"><a href="#" class="btn-download">📥 Télécharger (PDF)</a><a href="#" class="btn-preview">👁️ Aperçu</a></div>
-        </div>
-      </div>
-
-      <!-- PCT Terminale C -->
-      <div class="cours-card fade-in" data-level="tle">
-        <div class="cours-badge">BAC C</div>
-        <div class="cours-icon">⚗️</div>
-        <div class="cours-content">
-          <h3>Physique-Chimie - Terminale C</h3>
-          <p class="cours-desc">Mécanique quantique, relativité, chimie avancée - préparation BAC.</p>
-          <div class="cours-meta"><span class="meta-item">Mécanique quantique</span><span class="meta-item">Relativité</span><span class="meta-item">Chimie avancée</span></div>
-          <div class="cours-details"><span>📄 28 fiches</span><span>📝 70 exercices</span><span>⭐ Annales BAC</span></div>
-          <div class="cours-actions"><a href="#" class="btn-download">📥 Télécharger (PDF)</a><a href="#" class="btn-preview">👁️ Aperçu</a></div>
-        </div>
-      </div>
-
-      <!-- SVT Terminale D -->
-      <div class="cours-card fade-in" data-level="tle">
-        <div class="cours-badge">BAC D</div>
-        <div class="cours-icon">🌿</div>
-        <div class="cours-content">
-          <h3>SVT - Terminale D</h3>
-          <p class="cours-desc">Biologie moléculaire, génétique des populations, neurosciences - préparation BAC.</p>
-          <div class="cours-meta"><span class="meta-item">Biologie moléculaire</span><span class="meta-item">Génétique</span><span class="meta-item">Neurosciences</span><span class="meta-item">Écologie</span></div>
-          <div class="cours-details"><span>📄 30 fiches</span><span>📝 75 exercices</span><span>⭐ Schémas + corrigés</span></div>
-          <div class="cours-actions"><a href="#" class="btn-download">📥 Télécharger (PDF)</a><a href="#" class="btn-preview">👁️ Aperçu</a></div>
-        </div>
-      </div>
-
-      <!-- Anglais Tous niveaux -->
-      <div class="cours-card fade-in" data-level="all">
-        <div class="cours-badge">Tous niveaux</div>
-        <div class="cours-icon">🇬🇧</div>
-        <div class="cours-content">
-          <h3>Anglais - Fiches de grammaire et vocabulaire</h3>
-          <p class="cours-desc">Les bases essentielles : conjugaison, grammaire, vocabulaire thématique.</p>
-          <div class="cours-meta"><span class="meta-item">Conjugaison</span><span class="meta-item">Grammaire</span><span class="meta-item">Vocabulaire</span><span class="meta-item">Expressions</span></div>
-          <div class="cours-details"><span>📄 40 fiches</span><span>📝 60 exercices</span><span>⭐ Audio inclus</span></div>
-          <div class="cours-actions"><a href="#" class="btn-download">📥 Télécharger (PDF)</a><a href="#" class="btn-preview">👁️ Aperçu</a></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center">
-      <a href="#" class="btn-voir">Voir tous les cours →</a>
+      {% empty %}
+        <p class="no-courses">Aucun cours disponible pour le moment.</p>
+      {% endfor %}
     </div>
   </div>
 </section>
+
+<!-- MODAL POUR L'APERÇU -->
+<div id="previewModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="previewTitle">Aperçu du cours</h2>
+      <button class="modal-close" onclick="closePreviewModal()">✕</button>
+    </div>
+    <div class="modal-body" id="previewBody">
+      <!-- Contenu chargé dynamiquement via JavaScript (ou pré-rempli) -->
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ... tous les styles existants (page-header, filters-bar, stats-strip, .cours-grid, etc.) ... */
+  /* Ajout du style pour le modal si non présent */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal.open { display: flex; }
+  .modal-content {
+    background: var(--bg-white);
+    border-radius: var(--r-card);
+    max-width: 700px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  .modal-body { padding: 1.5rem; }
+  .preview-image { max-width: 100%; border-radius: var(--r-card); margin-bottom: 1rem; }
+  .preview-text { line-height: 1.6; color: var(--ink-md); }
+  .btn-view-course {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--r-pill);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-view-course:hover { background: var(--btn-hover); transform: translateY(-1px); }
+  .no-courses { text-align: center; padding: 3rem; color: var(--ink-md); }
+
+  @media (max-width: 768px) {
+    .cours-actions { flex-wrap: wrap; }
+    .btn-download, .btn-preview, .btn-view-course { flex: 1; text-align: center; }
+  }
+</style>
+
 
 <style>
   .page-header {
@@ -280,6 +277,7 @@
 </style>
 
 <script>
+  // Filtrage par niveau
   const filterBtns = document.querySelectorAll('.filter-btn');
   const coursCards = document.querySelectorAll('.cours-card');
   let currentFilter = 'all';
@@ -299,5 +297,40 @@
       filterCards();
     });
   });
+
+  // Gestion du modal d'aperçu
+  // On stocke les données d'aperçu dans un attribut data-preview de chaque carte ou via une requête AJAX.
+  // Ici on utilise une requête fetch pour récupérer l'aperçu depuis une vue dédiée.
+  function openPreviewModal(courseSlug) {
+    fetch(`/api/courses/${courseSlug}/preview/`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('previewTitle').innerHTML = data.title;
+        let html = '';
+        if (data.preview_image) html += `<img src="${data.preview_image}" class="preview-image" alt="Aperçu">`;
+        if (data.preview_text) html += `<div class="preview-text">${data.preview_text}</div>`;
+        if (data.pdf_url && data.is_downloadable) html += `<p><a href="${data.pdf_url}" class="btn-download" download>Télécharger le PDF complet</a></p>`;
+        document.getElementById('previewBody').innerHTML = html;
+        document.getElementById('previewModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      })
+      .catch(error => {
+        console.error('Erreur lors du chargement de l\'aperçu:', error);
+        document.getElementById('previewBody').innerHTML = '<p>Impossible de charger l’aperçu.</p>';
+        document.getElementById('previewModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+  }
+
+  function closePreviewModal() {
+    document.getElementById('previewModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Fermeture en cliquant en dehors du modal
+  document.getElementById('previewModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('previewModal')) closePreviewModal();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePreviewModal(); });
 </script>
 {% endblock %}

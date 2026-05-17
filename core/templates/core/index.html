@@ -5,871 +5,847 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Groupe La Certitude — Plateforme Éducative 2026</title>
+  <meta name="description" content="Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou. Juillet & Août 2026."/>
   <link rel="icon" href="{% static 'images/logo_certitude.png' %}" type="image/png"/>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
   <style>
-    /* ═══════════════════════════════════════
-       TOKENS
-    ═══════════════════════════════════════ */
+    /* ══════════════════════════════════════════
+       TOKENS — calqués sur la palette Vatcho
+    ══════════════════════════════════════════ */
     :root {
-      --hero-from: #d7c8ff;
-      --hero-via:  #c2b0f8;
-      --hero-to:   #b79dee;
-      --accent:    #3a2bbf;
-      --accent-10: rgba(58,43,191,.10);
-      --accent-20: rgba(58,43,191,.20);
-      --btn:       #635b7d;
-      --btn-hover: #4f4865;
-      --bg-lav:    #f6f4ff;
-      --bg-white:  #ffffff;
-      --bg-slate:  #f8fafc;
-      --ink:       #0f172a;
-      --ink-md:    #475569;
-      --ink-lt:    #94a3b8;
-      --border:    #e2e8f0;
-      --border-md: #cbd5e1;
-      --sh-sm: 0 4px 20px rgba(0,0,0,.06);
-      --sh-md: 0 12px 40px rgba(0,0,0,.10);
-      --sh-lg: 0 24px 60px rgba(0,0,0,.14);
+      --hero-from : #d7c8ff;
+      --hero-via  : #c2b0f8;
+      --hero-to   : #b79dee;
+      --accent    : #3a2bbf;
+      --accent-10 : rgba(58,43,191,.10);
+      --accent-20 : rgba(58,43,191,.20);
+      --btn       : #635b7d;
+      --btn-hover : #4f4865;
+      --bg-lav    : #f6f4ff;
+      --bg-white  : #ffffff;
+      --bg-slate  : #f8fafc;
+      --ink       : #0f172a;
+      --ink-md    : #475569;
+      --ink-lt    : #94a3b8;
+      --border    : #e2e8f0;
+      --border-md : #cbd5e1;
+      --sh-sm : 0 4px 20px rgba(0,0,0,.06);
+      --sh-md : 0 8px 30px rgba(0,0,0,.10);
+      --sh-lg : 0 24px 60px rgba(0,0,0,.14);
       --r-card: 20px;
       --r-pill: 999px;
-      --font: 'Bricolage Grotesque', sans-serif;
-      --dur: .6s;
-      --ease: cubic-bezier(.22,1,.36,1);
+      --font  : 'Bricolage Grotesque', sans-serif;
+      --dur   : .5s;
+      --ease  : cubic-bezier(.22,1,.36,1);
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-    body { font-family: var(--font); background: var(--bg-white); color: var(--ink); overflow-x: hidden; line-height: 1.6; }
-    img { max-width: 100%; display: block; }
-    a { text-decoration: none; color: inherit; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+    body{font-family:var(--font);background:var(--bg-white);color:var(--ink);overflow-x:hidden;line-height:1.6;}
+    img{max-width:100%;display:block;}
+    a{text-decoration:none;color:inherit;}
 
-    /* ═══ SCROLL PROGRESS ═══ */
-    #scroll-bar {
-      position: fixed; top: 0; left: 0; width: 0%; height: 3px;
-      background: linear-gradient(90deg, var(--accent), #9986f6);
-      z-index: 9999; transition: width .1s linear;
-      border-radius: 0 2px 2px 0;
-    }
-
-    /* ═══ BACK TO TOP ═══ */
-    #back-top {
-      position: fixed; bottom: 6rem; right: 1.4rem; z-index: 200;
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--btn); color: #fff; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--sh-md); transition: opacity .3s, transform .3s, background .2s;
-      opacity: 0; transform: translateY(10px); pointer-events: none;
-    }
-    #back-top.show { opacity: 1; transform: none; pointer-events: auto; }
-    #back-top:hover { background: var(--btn-hover); transform: translateY(-3px); }
-
-    /* ═══ NAVBAR ═══ */
-    .nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,.96);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-      transition: box-shadow .3s;
-    }
-    .nav.scrolled { box-shadow: var(--sh-sm); }
-    .nav-inner {
-      max-width: 1280px; margin: 0 auto;
-      display: flex; align-items: center; gap: 2rem;
-      padding: .9rem 1.5rem;
-    }
-    .nav-logo {
-      display: flex; align-items: center; gap: .6rem;
-      font-size: 1.15rem; font-weight: 800; letter-spacing: -.03em;
-      white-space: nowrap;
-    }
-    .nav-logo img { width: 34px; height: 34px; border-radius: 50%; object-fit: contain; flex-shrink: 0; }
-
-    /* Navigation principale */
-    .nav-menu {
-      display: flex; align-items: center; gap: 1.8rem;
-      margin-left: auto;
-    }
-    .nav-item {
-      position: relative;
-    }
-    .nav-link {
-      font-size: .85rem; font-weight: 600; color: var(--ink-md);
-      padding: .5rem 0; display: flex; align-items: center; gap: .3rem;
-      transition: color .2s;
-      cursor: pointer;
-      background: none; border: none; font-family: var(--font);
-    }
-    .nav-link:hover { color: var(--ink); }
-    .nav-link.active { color: var(--accent); }
-    .dropdown-icon {
-      width: 14px; height: 14px; transition: transform .25s;
-    }
-    .nav-item:hover .dropdown-icon {
-      transform: rotate(180deg);
+    /* ── SCROLL PROGRESS ── */
+    #scroll-bar{
+      position:fixed;top:0;left:0;width:0%;height:3px;
+      background:linear-gradient(90deg,var(--accent),#9986f6);
+      z-index:9999;transition:width .1s linear;border-radius:0 2px 2px 0;
     }
 
-    /* Dropdown menu */
-    .dropdown-menu {
-      position: absolute; top: 100%; left: 0; min-width: 240px;
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--r-card); box-shadow: var(--sh-md);
-      opacity: 0; visibility: hidden; transform: translateY(-8px);
-      transition: opacity .25s, transform .25s, visibility .25s;
-      z-index: 101; padding: .5rem 0;
+    /* ── BACK TO TOP ── */
+    #back-top{
+      position:fixed;bottom:6rem;right:1.4rem;z-index:200;
+      width:44px;height:44px;border-radius:50%;
+      background:var(--btn);color:#fff;border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:var(--sh-md);transition:opacity .3s,transform .3s,background .2s;
+      opacity:0;transform:translateY(10px);pointer-events:none;
     }
-    .nav-item:hover .dropdown-menu {
-      opacity: 1; visibility: visible; transform: translateY(0);
+    #back-top.show{opacity:1;transform:none;pointer-events:auto;}
+    #back-top:hover{background:var(--btn-hover);transform:translateY(-3px);}
+
+    /* ══════════════════════════════════════════
+       NAVBAR — identique au style Vatcho
+    ══════════════════════════════════════════ */
+    .nav{
+      position:sticky;top:0;z-index:100;
+      background:rgba(255,255,255,.96);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
+      transition:box-shadow .3s;
+      print-color-adjust:exact;
     }
-    .dropdown-item {
-      display: flex; align-items: center; gap: .8rem;
-      padding: .75rem 1.2rem; font-size: .8rem; font-weight: 500;
-      color: var(--ink-md); transition: background .2s, color .2s;
-    }
-    .dropdown-item:hover { background: var(--bg-lav); color: var(--accent); }
-    .dropdown-item svg { width: 18px; height: 18px; opacity: .7; }
-    .dropdown-divider {
-      height: 1px; background: var(--border); margin: .5rem 0;
-    }
-    .dropdown-title {
-      padding: .6rem 1.2rem .3rem; font-size: .7rem; font-weight: 700;
-      color: var(--ink-lt); text-transform: uppercase; letter-spacing: .05em;
+    .nav.scrolled{box-shadow:var(--sh-sm);}
+    .nav-inner{
+      max-width:1280px;margin:0 auto;
+      display:flex;align-items:center;gap:1.5rem;
+      padding:.85rem 1.5rem;
     }
 
-    /* Boutons navbar */
-    .btn-login {
-      border: 1px solid var(--border-md); border-radius: var(--r-pill);
-      padding: .45rem 1.2rem; font-size: .8rem; font-weight: 600;
-      background: var(--bg-white); color: var(--ink-md); cursor: pointer;
-      font-family: var(--font); transition: background .2s, border-color .2s;
+    /* Logo */
+    .nav-logo{
+      display:flex;align-items:center;gap:.55rem;
+      font-size:1rem;font-weight:800;letter-spacing:-.02em;
+      white-space:nowrap;color:var(--ink);
     }
-    .btn-login:hover { background: var(--bg-slate); border-color: var(--btn); }
-    .btn-register {
-      background: var(--btn); color: #fff; border: none; border-radius: var(--r-pill);
-      padding: .45rem 1.4rem; font-size: .8rem; font-weight: 700;
-      cursor: pointer; font-family: var(--font);
-      transition: background .2s, transform .15s;
-    }
-    .btn-register:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .nav-logo img{width:32px;height:32px;border-radius:50%;object-fit:contain;flex-shrink:0;}
 
-    /* hamburger */
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      cursor: pointer; background: none; border: none; padding: 4px;
+    /* Search bar — comme Vatcho */
+    .nav-search{
+      display:flex;align-items:center;gap:.5rem;
+      border:1px solid var(--border);border-radius:var(--r-pill);
+      background:var(--bg-white);padding:.4rem 1rem;
+      box-shadow:0 1px 4px rgba(0,0,0,.06);
+      transition:border-color .2s,box-shadow .2s;
+      flex:1;max-width:360px;
     }
-    .hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--ink); border-radius: 99px; transition: .3s;
+    .nav-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-10);}
+    .nav-search svg{width:14px;height:14px;stroke:var(--ink-lt);flex-shrink:0;}
+    .nav-search input{
+      border:none;outline:none;background:transparent;
+      font-size:.8rem;font-family:var(--font);color:var(--ink);
+      width:100%;
     }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-search input::placeholder{color:var(--ink-lt);}
 
-    /* mobile menu */
-    .mobile-menu {
-      display: none; position: fixed; inset: 0; z-index: 99;
-      background: #fff; padding: 80px 1.5rem 2rem;
-      flex-direction: column; transform: translateX(100%); transition: transform .35s var(--ease);
-      overflow-y: auto;
+    /* Menu desktop */
+    .nav-menu{display:flex;align-items:center;gap:1.5rem;margin-left:auto;}
+    .nav-item{position:relative;}
+    .nav-link{
+      font-size:.8rem;font-weight:600;color:var(--ink-md);
+      padding:.45rem 0;display:flex;align-items:center;gap:.3rem;
+      transition:color .2s;cursor:pointer;
+      background:none;border:none;font-family:var(--font);
     }
-    .mobile-menu.open { display: flex; transform: none; }
-    .mobile-menu .mobile-nav-item {
-      border-bottom: 1px solid var(--border);
-    }
-    .mobile-menu .mobile-nav-link {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 0; font-size: 1rem; font-weight: 600; color: var(--ink);
-      cursor: pointer;
-    }
-    .mobile-dropdown-content {
-      max-height: 0; overflow: hidden; transition: max-height .35s var(--ease);
-      padding-left: 1rem;
-    }
-    .mobile-dropdown-content.show { max-height: 500px; }
-    .mobile-dropdown-content a {
-      display: flex; align-items: center; gap: .8rem;
-      padding: .8rem 0; font-size: .88rem; font-weight: 500;
-      color: var(--ink-md); border-bottom: none;
-    }
-    .mobile-auth {
-      margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;
-    }
-    .mobile-auth .btn-login, .mobile-auth .btn-register {
-      text-align: center; padding: .9rem;
-    }
+    .nav-link:hover,.nav-link.active{color:var(--ink);}
+    .nav-link.active{text-decoration:underline;text-underline-offset:4px;}
+    .drop-icon{width:12px;height:12px;transition:transform .25s;}
+    .nav-item:hover .drop-icon{transform:rotate(180deg);}
 
-    /* ═══ HERO ═══ */
-    .hero {
-      background: linear-gradient(140deg, var(--hero-from) 0%, var(--hero-via) 50%, var(--hero-to) 100%);
-      padding: 5rem 1.5rem 0; overflow: hidden; position: relative;
+    /* Dropdown */
+    .dropdown{
+      position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(-6px);
+      min-width:220px;background:var(--bg-white);
+      border:1px solid var(--border);border-radius:var(--r-card);
+      box-shadow:var(--sh-md);padding:.5rem 0;
+      opacity:0;visibility:hidden;
+      transition:opacity .2s,transform .2s,visibility .2s;
+      z-index:110;
     }
-    @keyframes blob-float {
-      0%,100% { transform: translate(0,0) scale(1); }
-      33%      { transform: translate(20px,-15px) scale(1.05); }
-      66%      { transform: translate(-15px,10px) scale(.97); }
+    .nav-item:hover .dropdown{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
+    .drop-title{padding:.5rem 1rem .25rem;font-size:.68rem;font-weight:800;color:var(--ink-lt);text-transform:uppercase;letter-spacing:.06em;}
+    .drop-link{
+      display:flex;align-items:center;gap:.7rem;
+      padding:.65rem 1rem;font-size:.8rem;font-weight:500;color:var(--ink-md);
+      transition:background .15s,color .15s;
     }
-    @keyframes circle-rotate {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-    .hero-deco { position: absolute; pointer-events: none; }
-    .hero-deco-blob {
-      top: -60px; right: -80px; width: 480px; opacity: .4;
-      animation: blob-float 8s ease-in-out infinite;
-    }
-    .hero-deco-circle {
-      top: 30px; right: 60px; width: 56px; opacity: .65;
-      animation: circle-rotate 20s linear infinite;
-    }
+    .drop-link:hover{background:var(--bg-lav);color:var(--accent);}
+    .drop-link svg{width:16px;height:16px;opacity:.65;flex-shrink:0;}
+    .drop-divider{height:1px;background:var(--border);margin:.4rem 0;}
 
-    .hero-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 420px;
-      gap: 3rem; align-items: flex-end;
+    /* Boutons auth */
+    .btn-login{
+      border:1px solid var(--border-md);border-radius:var(--r-pill);
+      padding:.42rem 1.1rem;font-size:.8rem;font-weight:600;
+      background:var(--bg-white);color:var(--ink-md);cursor:pointer;
+      font-family:var(--font);transition:background .2s,border-color .2s;
+      white-space:nowrap;
     }
-    .hero-text { padding-bottom: 4rem; }
+    .btn-login:hover{background:var(--bg-slate);border-color:var(--btn);}
+    .btn-register{
+      background:var(--btn);color:#fff;border:none;border-radius:var(--r-pill);
+      padding:.42rem 1.3rem;font-size:.8rem;font-weight:700;
+      cursor:pointer;font-family:var(--font);
+      transition:background .2s,transform .15s;white-space:nowrap;
+    }
+    .btn-register:hover{background:var(--btn-hover);transform:translateY(-1px);}
 
-    @keyframes badge-pulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(58,43,191,.3); }
-      50%      { box-shadow: 0 0 0 6px rgba(58,43,191,.0); }
+    /* Hamburger */
+    .hamburger{
+      display:none;flex-direction:column;gap:5px;
+      cursor:pointer;background:none;border:none;padding:4px;margin-left:auto;
     }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.9);
-      backdrop-filter: blur(8px); border-radius: var(--r-pill);
-      padding: .38rem 1rem; font-size: .78rem; font-weight: 700;
-      color: var(--accent); margin-bottom: 1.3rem;
-      animation: badge-pulse 3s ease-in-out infinite;
-    }
-    .hero-badge::before {
-      content: ''; width: 7px; height: 7px; border-radius: 50%;
-      background: var(--accent); animation: badge-pulse 1.5s ease-in-out infinite;
-    }
+    .hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:99px;transition:.3s;}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
-    .hero-h1 {
-      font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 900;
-      line-height: 1.08; letter-spacing: -.04em; margin-bottom: 1.3rem;
+    /* Mobile menu */
+    .mobile-menu{
+      display:none;position:fixed;inset:0;z-index:99;
+      background:#fff;padding:72px 1.5rem 2rem;
+      flex-direction:column;
+      transform:translateX(100%);transition:transform .35s var(--ease);
+      overflow-y:auto;
     }
-    .word-box {
-      display: inline-block; background: #fff; color: var(--ink);
-      padding: .08em .28em; box-shadow: 5px 5px 0 #ddd4fc;
-      margin-bottom: .2rem; margin-right: .2rem;
-      transition: transform .2s, box-shadow .2s;
+    .mobile-menu.open{display:flex;transform:none;}
+    .mob-item{border-bottom:1px solid var(--border);}
+    .mob-link{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.9rem 0;font-size:.95rem;font-weight:600;color:var(--ink);cursor:pointer;
     }
-    .word-box:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 #ddd4fc; }
+    .mob-drop{max-height:0;overflow:hidden;transition:max-height .35s var(--ease);padding-left:1rem;}
+    .mob-drop.show{max-height:400px;}
+    .mob-drop a{display:block;padding:.7rem 0;font-size:.85rem;font-weight:500;color:var(--ink-md);}
+    .mob-auth{margin-top:2rem;display:flex;flex-direction:column;gap:.8rem;}
+    .mob-auth .btn-login,.mob-auth .btn-register{text-align:center;padding:.85rem;font-size:.9rem;}
 
-    .hero-sub {
-      font-size: 1rem; color: rgba(15,23,42,.72);
-      max-width: 520px; line-height: 1.78; margin-bottom: 2rem;
+    /* ══════════════════════════════════════════
+       HERO — style Vatcho (gradient lavande,
+       texte blanc encadré, image côté droit)
+    ══════════════════════════════════════════ */
+    .hero{
+      background:linear-gradient(135deg,var(--hero-from) 0%,var(--hero-via) 55%,var(--hero-to) 100%);
+      padding:4.5rem 1.5rem 0;overflow:hidden;position:relative;
     }
-    .hero-btns { display: flex; gap: .8rem; flex-wrap: wrap; margin-bottom: 2rem; }
-    .btn-hero-primary {
-      background: var(--ink); color: #fff; border-radius: var(--r-pill);
-      padding: .75rem 1.9rem; font-size: .9rem; font-weight: 700;
-      font-family: var(--font); transition: background .2s, transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 16px rgba(15,23,42,.25);
+    /* Décos SVG flottantes — copie fidèle de Vatcho */
+    .hero-deco{position:absolute;pointer-events:none;}
+    @keyframes blob-float{
+      0%,100%{transform:translate(0,0) scale(1);}
+      40%{transform:translate(18px,-14px) scale(1.04);}
+      70%{transform:translate(-12px,8px) scale(.97);}
     }
-    .btn-hero-primary:hover { background: #1e293b; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,.3); }
-    .btn-hero-ghost {
-      background: rgba(255,255,255,.45); color: var(--ink); border-radius: var(--r-pill);
-      padding: .75rem 1.9rem; font-size: .9rem; font-weight: 600;
-      font-family: var(--font); transition: background .2s;
-      border: 1px solid rgba(255,255,255,.7);
+    @keyframes circ-rot{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+    @keyframes badge-pulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(58,43,191,.3);}
+      50%{box-shadow:0 0 0 6px rgba(58,43,191,0);}
     }
-    .btn-hero-ghost:hover { background: rgba(255,255,255,.7); }
+    .deco-blob{top:-50px;right:-60px;width:460px;opacity:.38;animation:blob-float 8s ease-in-out infinite;}
+    .deco-circle-lg{top:28px;right:56px;width:52px;opacity:.65;animation:circ-rot 22s linear infinite;}
+    .deco-wave{bottom:0;right:0;width:360px;opacity:.22;}
 
-    .hero-stats { display: flex; flex-wrap: wrap; gap: .8rem; }
-    .stat-pill {
-      background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.85);
-      border-radius: var(--r-pill); padding: .55rem 1.3rem;
-      display: flex; flex-direction: column; align-items: center;
-      backdrop-filter: blur(8px); transition: transform .2s, background .2s;
+    .hero-inner{
+      max-width:1200px;margin:0 auto;
+      display:grid;grid-template-columns:1fr 420px;
+      gap:2.5rem;align-items:flex-end;
     }
-    .stat-pill:hover { transform: translateY(-2px); background: rgba(255,255,255,.75); }
-    .stat-n { font-size: 1.5rem; font-weight: 900; letter-spacing: -.04em; }
-    .stat-l { font-size: .68rem; font-weight: 600; color: rgba(15,23,42,.55); margin-top: 1px; }
+    .hero-text{padding-bottom:4.5rem;}
 
-    .hero-img-panel { position: relative; padding-bottom: 0; }
-    .hero-card {
-      background: rgba(255,255,255,.88); backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,.95); border-radius: var(--r-card);
-      padding: 1.4rem 1.5rem; box-shadow: var(--sh-lg);
-      animation: float 5s ease-in-out infinite;
+    /* Badge animé */
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.85);
+      backdrop-filter:blur(8px);border-radius:var(--r-pill);
+      padding:.35rem .95rem;font-size:.76rem;font-weight:700;color:var(--accent);
+      margin-bottom:1.2rem;animation:badge-pulse 3s ease-in-out infinite;
     }
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-8px); }
-    }
-    .hero-card-title {
-      font-size: .72rem; font-weight: 800; color: var(--ink-md);
-      text-transform: uppercase; letter-spacing: .07em; margin-bottom: 1rem;
-    }
-    .hero-card-row {
-      display: flex; align-items: center; gap: .8rem;
-      padding: .6rem 0; border-bottom: 1px solid rgba(0,0,0,.06);
-    }
-    .hero-card-row:last-of-type { border-bottom: none; }
-    .hero-card-icon {
-      width: 34px; height: 34px; border-radius: 10px;
-      background: var(--bg-lav); display: flex; align-items: center;
-      justify-content: center; font-size: .95rem; flex-shrink: 0;
-    }
-    .hero-card-label { font-size: .65rem; color: var(--ink-lt); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
-    .hero-card-val { font-size: .88rem; font-weight: 700; }
-    .hero-deadline {
-      margin-top: 1rem; background: rgba(58,43,191,.08);
-      border: 1px solid rgba(58,43,191,.18); border-radius: var(--r-card);
-      padding: .65rem .9rem; font-size: .82rem; font-weight: 700;
-      color: var(--accent); display: flex; align-items: center; gap: .5rem;
+    .hero-badge::before{
+      content:'';width:7px;height:7px;border-radius:50%;
+      background:var(--accent);animation:badge-pulse 1.5s ease-in-out infinite;
     }
 
-    /* ═══ SECTIONS ═══ */
-    .section { padding: 5rem 1.5rem; }
-    .section-alt { background: var(--bg-lav); }
-    .section-dark { background: #1e1b2e; }
-    .container { max-width: 1200px; margin: 0 auto; }
-    .sec-head { margin-bottom: 2.8rem; }
-    .sec-label {
-      display: inline-block; font-size: .72rem; font-weight: 800;
-      letter-spacing: .09em; text-transform: uppercase;
-      color: var(--accent); background: var(--accent-10);
-      border-radius: var(--r-pill); padding: .3rem 1rem; margin-bottom: .8rem;
+    /* Titre avec les word-boxes blanches — signature Vatcho */
+    .hero-h1{
+      font-size:clamp(1.9rem,4.5vw,3.2rem);font-weight:900;
+      line-height:1.1;letter-spacing:-.04em;margin-bottom:1.2rem;
     }
-    .sec-title {
-      font-size: clamp(1.7rem, 3.5vw, 2.5rem); font-weight: 900;
-      letter-spacing: -.04em; line-height: 1.1; margin-bottom: .5rem;
+    .word-box{
+      display:inline-block;background:#fff;color:var(--ink);
+      padding:.06em .22em;box-shadow:4px 4px 0 #ddd4fc;
+      margin-bottom:.18rem;margin-right:.15rem;
+      transition:transform .2s,box-shadow .2s;
     }
-    .sec-sub { font-size: .95rem; color: var(--ink-md); max-width: 520px; line-height: 1.78; }
-    .text-center { text-align: center; }
-    .text-center .sec-sub { margin: 0 auto; }
+    .word-box:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #ddd4fc;}
 
-    /* ═══ ANIMATIONS ═══ */
-    .fade-in {
-      opacity: 0; transform: translateY(28px);
-      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-    }
-    .fade-in.visible { opacity: 1; transform: none; }
-    .slide-left {
-      opacity: 0; transform: translateX(-32px);
-      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-    }
-    .slide-left.visible { opacity: 1; transform: none; }
-    .slide-right {
-      opacity: 0; transform: translateX(32px);
-      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-    }
-    .slide-right.visible { opacity: 1; transform: none; }
-    .scale-in {
-      opacity: 0; transform: scale(.92);
-      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-    }
-    .scale-in.visible { opacity: 1; transform: none; }
-    .stagger-1 { transition-delay: .08s; }
-    .stagger-2 { transition-delay: .16s; }
-    .stagger-3 { transition-delay: .24s; }
-    .stagger-4 { transition-delay: .32s; }
-    .stagger-5 { transition-delay: .40s; }
-    .stagger-6 { transition-delay: .48s; }
+    .hero-sub{font-size:.95rem;color:rgba(15,23,42,.72);max-width:500px;line-height:1.78;margin-bottom:1.8rem;}
 
-    /* ═══ FORMATIONS ═══ */
-    .formations-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-    .formation-card {
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--r-card); padding: 1.7rem;
-      position: relative; overflow: hidden;
-      transition: border-color .25s, box-shadow .25s, transform .25s;
+    /* Tagline animée — comme Vatcho */
+    .hero-tagline{
+      display:inline-flex;align-items:center;gap:.4rem;
+      font-size:.82rem;font-weight:600;color:rgba(15,23,42,.7);margin-bottom:1.6rem;
     }
-    .formation-card::after {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--accent), #9986f6);
-      transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease);
+    .hero-tagline .logo-chip{
+      background:rgba(0,0,0,.45);border-radius:6px;padding:.18rem .55rem;
+      display:inline-flex;align-items:center;
     }
-    .formation-card:hover { border-color: var(--accent); box-shadow: var(--sh-md); transform: translateY(-4px); }
-    .formation-card:hover::after { transform: scaleX(1); }
-    .formation-card.featured { border-color: var(--accent); border-width: 2px; }
-    .formation-card.featured::after { transform: scaleX(1); }
-    .badge-pop {
-      position: absolute; top: 1.1rem; right: 1.1rem;
-      background: var(--accent-10); color: var(--accent);
-      border-radius: var(--r-pill); padding: .22rem .65rem;
-      font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em;
+    .hero-tagline .logo-chip img{height:14px;width:auto;object-fit:contain;}
+    @keyframes typing{
+      0%{clip-path:inset(0 100% 0 0);}
+      40%{clip-path:inset(0 0% 0 0);}
+      60%{clip-path:inset(0 0% 0 0);}
+      100%{clip-path:inset(0 100% 0 0);}
     }
-    .level-tag {
-      display: inline-block; background: var(--accent-10); color: var(--accent);
-      border-radius: var(--r-pill); padding: .28rem .85rem;
-      font-size: .72rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: .05em; margin-bottom: 1rem;
-    }
-    .formation-card h3 { font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .4rem; }
-    .formation-desc { font-size: .85rem; color: var(--ink-md); line-height: 1.65; margin-bottom: 1rem; }
-    .subjects { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.2rem; }
-    .subject-tag {
-      background: var(--bg-slate); color: var(--ink-md); font-size: .75rem; font-weight: 600;
-      padding: .28rem .7rem; border-radius: 8px; border: 1px solid var(--border);
-      transition: background .2s, border-color .2s;
-    }
-    .formation-card:hover .subject-tag { border-color: var(--accent-20); background: var(--accent-10); }
-    .price-row { display: flex; align-items: baseline; gap: .3rem; margin-bottom: 1.2rem; }
-    .price { font-size: 2rem; font-weight: 900; letter-spacing: -.04em; }
-    .price-unit { font-size: .82rem; color: var(--ink-lt); font-weight: 600; }
-    .card-foot-row { display: flex; align-items: center; gap: .6rem; }
-    .btn-view {
-      display: inline-flex; align-items: center; gap: .4rem;
-      background: var(--btn); color: #fff; border-radius: var(--r-pill);
-      padding: .52rem 1.2rem; font-size: .76rem; font-weight: 700;
-      font-family: var(--font); transition: background .2s, transform .15s;
-    }
-    .btn-view:hover { background: var(--btn-hover); transform: translateY(-1px); }
-    .card-deadline { font-size: .72rem; font-weight: 600; color: var(--ink-md); margin-left: auto; }
+    .typed{display:inline-block;overflow:hidden;white-space:nowrap;animation:typing 6s steps(25) infinite;}
 
-    /* ═══ PROFESSEURS ═══ */
-    .profs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-    .prof-card {
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--r-card); overflow: hidden;
-      box-shadow: var(--sh-sm); transition: box-shadow .25s, transform .25s;
+    .hero-btns{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem;}
+    .btn-hero-primary{
+      background:var(--ink);color:#fff;border-radius:var(--r-pill);
+      padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;
+      font-family:var(--font);transition:background .2s,transform .2s,box-shadow .2s;
+      box-shadow:0 4px 16px rgba(15,23,42,.22);
     }
-    .prof-card:hover { box-shadow: var(--sh-md); transform: translateY(-4px); }
-    .prof-avatar {
-      aspect-ratio: 16/9;
-      background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3rem; position: relative; overflow: hidden;
+    .btn-hero-primary:hover{background:#1e293b;transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,.3);}
+    .btn-hero-ghost{
+      background:rgba(255,255,255,.4);color:var(--ink);border-radius:var(--r-pill);
+      padding:.72rem 1.8rem;font-size:.88rem;font-weight:600;
+      font-family:var(--font);border:1px solid rgba(255,255,255,.7);
+      transition:background .2s;
     }
-    .prof-matiere-badge {
-      position: absolute; top: .8rem; left: .8rem;
-      background: var(--btn); color: #fff; border-radius: var(--r-pill);
-      padding: .28rem .75rem; font-size: .7rem; font-weight: 800;
-    }
-    .prof-body { padding: 1.2rem 1.3rem; }
-    .prof-mode-badges { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .8rem; }
-    .mode-badge {
-      font-size: .68rem; font-weight: 700; padding: .2rem .55rem;
-      border-radius: var(--r-pill); border: 1px solid;
-    }
-    .mode-home { background: #fef3c7; color: #92400e; border-color: #fde68a; }
-    .mode-online { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
-    .prof-name { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .2rem; }
-    .prof-role { font-size: .78rem; color: var(--accent); font-weight: 700; margin-bottom: .6rem; }
-    .prof-bio { font-size: .82rem; color: var(--ink-md); line-height: 1.65; margin-bottom: 1rem; }
-    .prof-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.1rem; }
-    .prof-tag {
-      background: var(--accent-10); color: var(--accent);
-      border-radius: var(--r-pill); padding: .22rem .6rem;
-      font-size: .72rem; font-weight: 700;
-    }
-    .prof-contact-row { display: flex; gap: .6rem; }
-    .btn-contact-wa {
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: .4rem;
-      background: #25d366; color: #fff; border-radius: var(--r-pill);
-      padding: .55rem 1rem; font-size: .78rem; font-weight: 700;
-      font-family: var(--font); transition: opacity .2s, transform .15s;
-    }
-    .btn-contact-wa:hover { opacity: .88; transform: translateY(-1px); }
-    .btn-contact-call {
-      display: flex; align-items: center; justify-content: center;
-      width: 38px; height: 38px; border-radius: 50%;
-      border: 1px solid var(--border); background: var(--bg-white);
-      transition: border-color .2s, transform .2s;
-    }
-    .btn-contact-call:hover { border-color: var(--accent); transform: scale(1.1); }
+    .btn-hero-ghost:hover{background:rgba(255,255,255,.65);}
 
-    /* ═══ ASTUCES ═══ */
-    .astuces-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
-    .astuce-card {
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--r-card); overflow: hidden;
-      box-shadow: var(--sh-sm); display: flex; flex-direction: column;
-      transition: box-shadow .25s, transform .25s;
+    /* Stats pills */
+    .hero-stats{display:flex;flex-wrap:wrap;gap:.7rem;}
+    .stat-pill{
+      background:rgba(255,255,255,.52);border:1px solid rgba(255,255,255,.82);
+      border-radius:var(--r-pill);padding:.5rem 1.2rem;
+      display:flex;flex-direction:column;align-items:center;
+      backdrop-filter:blur(8px);transition:transform .2s,background .2s;
     }
-    .astuce-card:hover { box-shadow: var(--sh-md); transform: translateY(-4px); }
-    .astuce-header {
-      padding: 1.4rem 1.5rem 1rem;
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .astuce-icon {
-      width: 52px; height: 52px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem; flex-shrink: 0;
-      transition: transform .3s var(--ease);
-    }
-    .astuce-card:hover .astuce-icon { transform: scale(1.15) rotate(-5deg); }
-    .astuce-matiere { font-size: .7rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .2rem; }
-    .astuce-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -.02em; }
-    .astuce-body { padding: 0 1.5rem 1.5rem; }
-    .astuce-tip {
-      display: flex; gap: .75rem; padding: .7rem 0;
-      border-bottom: 1px solid var(--border); align-items: flex-start;
-    }
-    .astuce-tip:last-child { border-bottom: none; }
-    .tip-num {
-      width: 26px; height: 26px; border-radius: 50%; background: var(--btn); color: #fff;
-      font-size: .72rem; font-weight: 800; display: flex; align-items: center;
-      justify-content: center; flex-shrink: 0; margin-top: 1px;
-    }
-    .tip-text { font-size: .85rem; color: var(--ink-md); line-height: 1.65; }
-    .tip-text strong { color: var(--ink); }
-    .astuce-cta {
-      display: block; text-align: center;
-      background: var(--accent-10); color: var(--accent);
-      border-radius: var(--r-pill); padding: .65rem 1.2rem;
-      font-size: .82rem; font-weight: 700;
-      margin: 1rem 1.5rem 1.5rem;
-      transition: background .2s, transform .15s;
-    }
-    .astuce-cta:hover { background: var(--accent-20); transform: translateY(-1px); }
+    .stat-pill:hover{transform:translateY(-2px);background:rgba(255,255,255,.7);}
+    .stat-n{font-size:1.45rem;font-weight:900;letter-spacing:-.04em;}
+    .stat-l{font-size:.66rem;font-weight:600;color:rgba(15,23,42,.52);margin-top:1px;}
 
-    /* ═══ AVANTAGES ═══ */
-    .avantages-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.2rem; }
-    .avantage-card {
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--r-card); padding: 1.5rem;
-      display: flex; gap: 1rem; align-items: flex-start;
-      box-shadow: var(--sh-sm); transition: box-shadow .25s, transform .25s, border-color .25s;
+    /* Panel flottant côté droit */
+    .hero-panel{position:relative;padding-bottom:0;}
+    .hero-card{
+      background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,.95);border-radius:var(--r-card);
+      padding:1.3rem 1.4rem;box-shadow:var(--sh-lg);
+      animation:float 5s ease-in-out infinite;
     }
-    .avantage-card:hover { box-shadow: var(--sh-md); transform: translateY(-3px); border-color: var(--accent-20); }
-    .av-icon {
-      width: 50px; height: 50px; border-radius: 14px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
-      background: var(--bg-lav); transition: transform .3s;
+    .hc-title{font-size:.7rem;font-weight:800;color:var(--ink-md);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.9rem;}
+    .hc-row{
+      display:flex;align-items:center;gap:.75rem;
+      padding:.55rem 0;border-bottom:1px solid rgba(0,0,0,.06);
     }
-    .avantage-card:hover .av-icon { transform: scale(1.12); }
-    .av-title { font-size: .96rem; font-weight: 800; margin-bottom: .3rem; }
-    .av-desc { font-size: .83rem; color: var(--ink-md); line-height: 1.65; }
-
-    /* ═══ GALERIE ═══ */
-    #galerie { background: #1e1b2e; padding: 5rem 1.5rem; }
-    .carousel { position: relative; border-radius: var(--r-card); overflow: hidden; box-shadow: var(--sh-lg); }
-    .carousel-track { display: flex; transition: transform .55s var(--ease); }
-    .carousel-slide { min-width: 100%; position: relative; }
-    .carousel-slide img { width: 100%; height: 440px; object-fit: cover; display: block; }
-    .slide-caption {
-      position: absolute; bottom: 0; left: 0; right: 0; padding: 1.4rem;
-      background: linear-gradient(transparent, rgba(0,0,0,.7)); color: #fff;
-      font-size: .88rem; font-weight: 600;
+    .hc-row:last-of-type{border-bottom:none;}
+    .hc-icon{
+      width:32px;height:32px;border-radius:9px;
+      background:var(--bg-lav);display:flex;align-items:center;
+      justify-content:center;font-size:.9rem;flex-shrink:0;
     }
-    .carousel-btn {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      width: 42px; height: 42px; border-radius: 50%;
-      background: rgba(255,255,255,.9); border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; color: var(--ink); z-index: 2;
-      transition: background .2s, transform .2s;
-    }
-    .carousel-btn:hover { background: #fff; transform: translateY(-50%) scale(1.1); }
-    .carousel-prev { left: 1rem; } .carousel-next { right: 1rem; }
-    .carousel-dots { display: flex; justify-content: center; gap: .5rem; margin-top: 1.1rem; }
-    .dot {
-      width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25);
-      cursor: pointer; transition: background .25s, transform .25s;
-    }
-    .dot.active { background: #fff; transform: scale(1.4); }
-
-    /* ═══ TÉMOIGNAGES ═══ */
-    .temo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; }
-    .temo-card {
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--r-card); overflow: hidden;
-      box-shadow: var(--sh-sm); transition: box-shadow .25s, transform .25s;
-    }
-    .temo-card:hover { box-shadow: var(--sh-md); transform: translateY(-4px); }
-    .video-thumb {
-      position: relative; padding-top: 56.25%; cursor: pointer;
-      overflow: hidden; background: var(--bg-slate);
-    }
-    .video-thumb img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; transition: transform .4s;
-    }
-    .temo-card:hover .video-thumb img { transform: scale(1.05); }
-    .play-overlay {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; background: rgba(30,27,46,.42);
-      transition: background .3s;
-    }
-    .temo-card:hover .play-overlay { background: rgba(30,27,46,.55); }
-    .play-circle {
-      width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,.95);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; margin-bottom: .4rem; transition: transform .25s;
-    }
-    .temo-card:hover .play-circle { transform: scale(1.15); }
-    .play-overlay span { color: #fff; font-size: .75rem; font-weight: 700; opacity: .9; }
-    .temo-info { padding: 1rem 1.2rem; }
-    .temo-name { font-size: .93rem; font-weight: 800; margin-bottom: .25rem; }
-    .temo-meta { font-size: .75rem; color: var(--ink-lt); display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
-    .temo-badge { background: var(--accent-10); color: var(--accent); padding: .18rem .55rem; border-radius: var(--r-pill); font-weight: 700; font-size: .7rem; }
-
-    /* ═══ MODALITÉS ═══ */
-    .modalites-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
-    .modalite-card { border-radius: var(--r-card); padding: 2rem 1.7rem; text-align: center; transition: transform .2s; }
-    .modalite-card:hover { transform: translateY(-3px); }
-    .mc-lavender { background: linear-gradient(135deg, var(--hero-from), var(--hero-via)); }
-    .mc-white { background: var(--bg-white); border: 1px solid var(--border); box-shadow: var(--sh-sm); }
-    .mc-dark { background: var(--btn-hover); color: #fff; }
-    .modalite-icon { font-size: 2rem; display: block; margin-bottom: .9rem; }
-    .modalite-card h3 { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .5rem; }
-    .mc-lavender h3, .mc-white h3 { color: var(--ink); }
-    .modalite-card p { font-size: .83rem; line-height: 1.68; margin-bottom: 1rem; }
-    .mc-white p, .mc-lavender p { color: var(--ink-md); }
-    .mc-dark p { color: rgba(255,255,255,.75); }
-    .mc-pill { display: inline-block; font-size: .8rem; font-weight: 700; padding: .45rem 1.1rem; border-radius: var(--r-pill); }
-    .mc-lavender .mc-pill { background: rgba(255,255,255,.55); color: var(--ink); }
-    .mc-white .mc-pill { background: var(--accent-10); color: var(--accent); }
-    .mc-dark .mc-pill { background: rgba(255,255,255,.15); color: #fff; }
-
-    /* ═══ FAQ ═══ */
-    .faq-layout { display: grid; grid-template-columns: 360px 1fr; gap: 4rem; align-items: start; }
-    .faq-left p { font-size: .9rem; color: var(--ink-md); line-height: 1.78; margin-bottom: 1.8rem; }
-    .faq-item { border-bottom: 1px solid var(--border); }
-    .faq-item:first-child { border-top: 1px solid var(--border); }
-    .faq-question {
-      width: 100%; display: flex; align-items: center; justify-content: space-between;
-      padding: 1.1rem 0; background: none; border: none; cursor: pointer;
-      text-align: left; gap: 1rem; transition: color .2s;
-    }
-    .faq-question:hover .faq-q-text { color: var(--accent); }
-    .faq-q-text { font-size: .93rem; font-weight: 700; color: var(--ink); transition: color .2s; }
-    .faq-icon {
-      width: 28px; height: 28px; border-radius: 50%; background: var(--bg-slate);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      transition: background .25s, transform .35s var(--ease);
-    }
-    .faq-icon svg { stroke: var(--ink-md); transition: stroke .2s; }
-    .faq-item.open .faq-icon { background: var(--btn); transform: rotate(180deg); }
-    .faq-item.open .faq-icon svg { stroke: #fff; }
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .4s var(--ease); }
-    .faq-answer-inner { padding: .2rem 0 1.3rem; font-size: .88rem; color: var(--ink-md); line-height: 1.8; }
-    .faq-item.open .faq-answer { max-height: 600px; }
-
-    /* ═══ NEWSLETTER ═══ */
-    .newsletter-wrap {
-      background: var(--bg-lav); border-radius: var(--r-card);
-      padding: 3.5rem 2rem; text-align: center; max-width: 680px; margin: 0 auto;
-    }
-    .newsletter-form { display: flex; gap: .6rem; max-width: 480px; margin: 1.5rem auto 0; flex-wrap: wrap; }
-    .newsletter-form input {
-      flex: 1; min-width: 200px; border: 1px solid var(--border);
-      border-radius: var(--r-pill); padding: .75rem 1.3rem;
-      font-size: .88rem; font-family: var(--font); outline: none;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .newsletter-form input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(58,43,191,.12);
-    }
-    .newsletter-form button {
-      background: var(--btn-hover); color: #fff; border: none;
-      border-radius: var(--r-pill); padding: .75rem 1.6rem;
-      font-size: .88rem; font-weight: 700; font-family: var(--font); cursor: pointer;
-      transition: background .2s, transform .15s;
-    }
-    .newsletter-form button:hover { background: var(--accent); transform: translateY(-1px); }
-
-    /* ═══ CTA BANNER ═══ */
-    .cta-banner {
-      background: linear-gradient(140deg, var(--hero-from), var(--hero-via), var(--hero-to));
-      padding: 5rem 1.5rem; text-align: center; position: relative; overflow: hidden;
-    }
-    .cta-banner::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,.2), transparent 60%),
-                  radial-gradient(circle at 70% 50%, rgba(58,43,191,.15), transparent 60%);
-    }
-    .cta-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
-    .cta-pill {
-      display: inline-flex; align-items: center; gap: .4rem;
-      background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.9);
-      border-radius: var(--r-pill); padding: .4rem 1.1rem;
-      font-size: .78rem; font-weight: 700; margin-bottom: 1.2rem;
-    }
-    .cta-banner h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; letter-spacing: -.04em; margin-bottom: .6rem; }
-    .cta-banner p { font-size: .95rem; color: rgba(15,23,42,.7); margin-bottom: 1.8rem; }
-
-    /* ═══ CONTACT ═══ */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .contact-card {
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--r-card); padding: 1.3rem 1.4rem;
-      display: flex; align-items: center; gap: 1rem;
-      box-shadow: var(--sh-sm); transition: box-shadow .2s, border-color .2s, transform .2s;
-    }
-    .contact-card:hover { box-shadow: var(--sh-md); border-color: var(--btn); transform: translateY(-2px); }
-    .contact-icon {
-      width: 44px; height: 44px; border-radius: 13px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; background: var(--bg-lav);
-    }
-    .contact-label { font-size: .68rem; font-weight: 800; color: var(--ink-lt); text-transform: uppercase; letter-spacing: .07em; }
-    .contact-val { font-size: 1rem; font-weight: 900; margin-top: .1rem; }
-
-    /* ═══ FOOTER ═══ */
-    footer {
-      background: linear-gradient(180deg, #3d3658 0%, #4f486d 50%, #635b7d 100%);
-      color: rgba(255,255,255,.7); padding: 4rem 1.5rem 1.5rem;
-      position: relative; overflow: hidden;
-    }
-    .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; }
-    .footer-brand { display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
-    .footer-brand img { width: 36px; height: 36px; border-radius: 50%; background: #fff; padding: 2px; object-fit: contain; }
-    .footer-brand-name { font-size: 1rem; font-weight: 800; color: #fff; }
-    .footer-desc { font-size: .8rem; line-height: 1.8; margin-bottom: 1.2rem; }
-    .footer-col h4 { font-size: .85rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
-    .footer-col ul li a { font-size: .78rem; color: rgba(255,255,255,.6); transition: color .2s; }
-    .footer-col ul li a:hover { color: #fff; }
-    .footer-social-btns { display: flex; gap: .6rem; flex-wrap: wrap; }
-    .footer-wa-btn {
-      display: inline-flex; align-items: center; gap: .45rem;
-      background: rgba(37,211,102,.15); border: 1px solid rgba(37,211,102,.35);
-      border-radius: var(--r-pill); padding: .4rem 1rem;
-      font-size: .75rem; font-weight: 700; color: #6ee7a0;
-      transition: background .2s;
-    }
-    .footer-wa-btn:hover { background: rgba(37,211,102,.25); }
-    .footer-ig-btn {
-      display: inline-flex; align-items: center; gap: .45rem;
-      background: rgba(255,100,130,.12); border: 1px solid rgba(255,100,130,.28);
-      border-radius: var(--r-pill); padding: .4rem 1rem;
-      font-size: .75rem; font-weight: 700; color: #fca5b9;
-      transition: background .2s;
-    }
-    .footer-ig-btn:hover { background: rgba(255,100,130,.22); }
-    .footer-bigtext {
-      text-align: center; margin: 1rem 0;
-      font-size: clamp(50px, 12vw, 160px); font-weight: 900;
-      letter-spacing: -.04em; color: rgba(255,255,255,.06);
-      user-select: none; line-height: 1;
-    }
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,.1); padding-top: 1.5rem;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: .8rem;
-    }
-    .footer-copy { font-size: .73rem; opacity: .4; }
-
-    /* ═══ WA FLOAT ═══ */
-    .wa-float {
-      position: fixed; bottom: 1.4rem; right: 1.4rem; z-index: 99;
-      width: 52px; height: 52px; border-radius: 50%; background: #25d366;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 20px rgba(37,211,102,.45); transition: transform .2s;
-    }
-    .wa-float:hover { transform: scale(1.1); }
-    .wa-float svg { width: 26px; height: 26px; fill: #fff; }
-
-    /* ═══ VIDEO MODAL ═══ */
-    #videoModal {
-      display: none; position: fixed; inset: 0; z-index: 999;
-      background: rgba(10,8,24,.92); align-items: center; justify-content: center;
-      padding: 1rem; animation: modal-in .3s var(--ease);
-    }
-    @keyframes modal-in { from { opacity: 0; } to { opacity: 1; } }
-    .vm-inner { width: 100%; max-width: 860px; position: relative; }
-    .vm-close {
-      position: absolute; top: -48px; right: 0;
-      background: rgba(255,255,255,.12); border: none; color: #fff;
-      width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background .2s;
-    }
-    .vm-close:hover { background: rgba(255,255,255,.25); }
-    .vm-frame { padding-top: 56.25%; position: relative; border-radius: var(--r-card); overflow: hidden; }
-    .vm-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
-
-    /* ═══ BTN VOIR ═══ */
-    .btn-voir {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: var(--accent-10); color: var(--accent);
-      border-radius: var(--r-pill); padding: .75rem 2rem;
-      font-size: .88rem; font-weight: 700; font-family: var(--font);
-      margin-top: 1.8rem; transition: background .2s, color .2s, transform .15s;
-    }
-    .btn-voir:hover { background: var(--btn); color: #fff; transform: translateY(-2px); }
-    .btn-voir-dark {
-      background: rgba(255,255,255,.1); color: rgba(255,255,255,.85);
-      border: 1px solid rgba(255,255,255,.2);
-    }
-    .btn-voir-dark:hover { background: rgba(255,255,255,.2); color: #fff; }
-
-    /* ═══ RESPONSIVE ═══ */
-    @media (max-width: 1100px) {
-      .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
-      .footer-grid > div:first-child { grid-column: 1 / -1; }
+    .hc-label{font-size:.62rem;color:var(--ink-lt);font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+    .hc-val{font-size:.84rem;font-weight:700;}
+    .hc-deadline{
+      margin-top:.9rem;background:var(--accent-10);border:1px solid var(--accent-20);
+      border-radius:12px;padding:.55rem .85rem;
+      font-size:.8rem;font-weight:700;color:var(--accent);
+      display:flex;align-items:center;gap:.45rem;
     }
 
-    @media (max-width: 960px) {
-      .nav-menu { display: none; }
-      .hamburger { display: flex; margin-left: auto; }
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-img-panel { display: none; }
-      .hero-text { padding-bottom: 3rem; }
-      .hero-h1 { font-size: 2.2rem; }
-      .formations-grid { grid-template-columns: repeat(2,1fr); }
-      .profs-grid { grid-template-columns: repeat(2,1fr); }
-      .astuces-grid { grid-template-columns: repeat(2,1fr); }
-      .temo-grid { grid-template-columns: repeat(2,1fr); }
-      .modalites-grid { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .faq-layout { grid-template-columns: 1fr; gap: 2rem; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+    /* ══════════════════════════════════════════
+       SECTIONS COMMUNES
+    ══════════════════════════════════════════ */
+    .section{padding:5rem 1.5rem;}
+    .section-alt{background:var(--bg-lav);}
+    .container{max-width:1200px;margin:0 auto;}
+    .sec-head{margin-bottom:2.5rem;}
+    .sec-label{
+      display:inline-block;font-size:.7rem;font-weight:800;
+      letter-spacing:.09em;text-transform:uppercase;
+      color:var(--accent);background:var(--accent-10);
+      border-radius:var(--r-pill);padding:.28rem .9rem;margin-bottom:.75rem;
     }
+    .sec-title{
+      font-size:clamp(1.6rem,3.2vw,2.4rem);font-weight:900;
+      letter-spacing:-.04em;line-height:1.1;margin-bottom:.45rem;
+    }
+    .sec-sub{font-size:.92rem;color:var(--ink-md);max-width:500px;line-height:1.78;}
+    .text-center{text-align:center;}
+    .text-center .sec-sub{margin:0 auto;}
+    .flex-between{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.2rem;}
+    .link-view-all{font-size:.78rem;font-weight:700;color:var(--accent);transition:opacity .2s;}
+    .link-view-all:hover{opacity:.7;}
 
-    @media (max-width: 640px) {
-      .formations-grid { grid-template-columns: 1fr; }
-      .profs-grid { grid-template-columns: 1fr; }
-      .astuces-grid { grid-template-columns: 1fr; }
-      .avantages-grid { grid-template-columns: 1fr; }
-      .temo-grid { grid-template-columns: 1fr; }
-      .hero-h1 { font-size: 1.9rem; }
-      .hero-stats { gap: .6rem; }
-      .stat-pill { padding: .45rem 1rem; }
-      .stat-n { font-size: 1.3rem; }
-      .hero-btns { flex-direction: column; }
-      .hero-btns a { text-align: center; justify-content: center; }
-      .carousel-slide img { height: 240px; }
-      .section { padding: 3.5rem 1.2rem; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .newsletter-form { flex-direction: column; }
-      .newsletter-form input, .newsletter-form button { width: 100%; }
-    }
+    /* Animations */
+    .fade-in{opacity:0;transform:translateY(24px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
+    .fade-in.visible{opacity:1;transform:none;}
+    .slide-left{opacity:0;transform:translateX(-28px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
+    .slide-left.visible{opacity:1;transform:none;}
+    .slide-right{opacity:0;transform:translateX(28px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
+    .slide-right.visible{opacity:1;transform:none;}
+    .scale-in{opacity:0;transform:scale(.93);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
+    .scale-in.visible{opacity:1;transform:none;}
+    .s1{transition-delay:.07s;}.s2{transition-delay:.14s;}.s3{transition-delay:.21s;}
+    .s4{transition-delay:.28s;}.s5{transition-delay:.35s;}.s6{transition-delay:.42s;}
 
-    @media (max-width: 400px) {
-      .hero-h1 { font-size: 1.65rem; }
-      .sec-title { font-size: 1.5rem; }
+    /* ══════════════════════════════════════════
+       CATÉGORIES — grille style Vatcho
+       (image pleine + badge label arrondi)
+    ══════════════════════════════════════════ */
+    .cat-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
     }
+    .cat-card{
+      border:1px solid var(--border);border-radius:var(--r-card);
+      overflow:hidden;background:var(--bg-white);
+      transition:border-color .25s,box-shadow .25s,transform .25s;
+      cursor:pointer;
+    }
+    .cat-card:hover{border-color:var(--accent);box-shadow:var(--sh-md);transform:translateY(-3px);}
+    .cat-img{
+      aspect-ratio:16/9;overflow:hidden;background:var(--bg-slate);
+    }
+    .cat-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);}
+    .cat-card:hover .cat-img img{transform:scale(1.08);}
+    .cat-body{padding:1rem 1.1rem 1.2rem;}
+    /* Badge couleur pleine width — comme Vatcho */
+    .cat-badge{
+      display:block;width:100%;text-align:center;
+      border-radius:var(--r-pill);padding:.38rem .8rem;
+      font-size:.82rem;font-weight:800;
+      margin-bottom:.55rem;
+      transform:translateY(0);transition:transform .25s,filter .25s,box-shadow .25s;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
+    .cat-card:hover .cat-badge{transform:translateY(-2px);filter:brightness(.95);box-shadow:0 4px 14px rgba(0,0,0,.12);}
+    .cat-desc{font-size:.72rem;color:var(--ink-lt);}
 
-    @media (max-width: 640px) {
-      .formation-card img {
-        height: 180px !important;
-      }
+    /* Couleurs des badges (palette Vatcho) */
+    .cb-red   {background:#fde2e4;color:#9d174d;}
+    .cb-amber {background:#fef3c7;color:#854d0e;}
+    .cb-green {background:#dcfce7;color:#166534;}
+    .cb-blue  {background:#dbeafe;color:#1e40af;}
+    .cb-orange{background:#ffe4cc;color:#9a3412;}
+    .cb-teal  {background:#d1f0e8;color:#065f46;}
+    .cb-violet{background:#e2d9fd;color:#3a2bbf;}
+    .cb-pink  {background:#fce4ec;color:#9d174d;}
+
+    /* ══════════════════════════════════════════
+       FORMATIONS (cards avec image top)
+    ══════════════════════════════════════════ */
+    .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+    .form-card{
+      background:var(--bg-white);border:1px solid var(--border);
+      border-radius:var(--r-card);overflow:hidden;
+      box-shadow:var(--sh-sm);
+      transition:border-color .25s,box-shadow .25s,transform .25s;
+      display:flex;flex-direction:column;
     }
-    /* Styles pour uniformiser les images dans les cartes de formation */
-    .formation-card {
-        /* on garde le padding global mais on va positionner l'image en haut sans dépasser */
-        padding: 0;
-        overflow: hidden;
+    .form-card::after{
+      content:'';display:block;position:absolute;top:0;left:0;right:0;height:3px;
+      background:linear-gradient(90deg,var(--accent),#9986f6);
+      transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);
     }
-    .formation-card img {
-        width: 100%;
-        height: 120px; /* taille réduite et plus cohérente */
-        object-fit: cover;
-        transition: transform 0.4s var(--ease);
+    .form-card{position:relative;}
+    .form-card:hover{border-color:var(--accent);box-shadow:var(--sh-md);transform:translateY(-4px);}
+    .form-card:hover::after{transform:scaleX(1);}
+    .form-card.featured{border-color:var(--accent);border-width:2px;}
+    .form-card.featured::after{transform:scaleX(1);}
+    .form-card-img{aspect-ratio:16/10;overflow:hidden;background:var(--bg-slate);}
+    .form-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease);}
+    .form-card:hover .form-card-img img{transform:scale(1.04);}
+    .form-card-body{padding:1.3rem 1.4rem 1.4rem;flex:1;display:flex;flex-direction:column;}
+    .badge-popular{
+      position:absolute;top:.9rem;right:.9rem;
+      background:var(--accent-10);color:var(--accent);
+      border-radius:var(--r-pill);padding:.2rem .6rem;
+      font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
     }
-    .formation-card:hover img {
-        transform: scale(1.03);
+    .level-tag{
+      display:inline-block;background:var(--accent-10);color:var(--accent);
+      border-radius:var(--r-pill);padding:.25rem .8rem;
+      font-size:.7rem;font-weight:800;text-transform:uppercase;
+      letter-spacing:.05em;margin-bottom:.8rem;
     }
-    /* Le contenu texte sous l'image */
-    .formation-card > div:last-child {
-        padding: 1.2rem 1.5rem 1.5rem;
+    .form-card h3{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.35rem;}
+    .form-desc{font-size:.82rem;color:var(--ink-md);line-height:1.65;margin-bottom:.9rem;flex:1;}
+    .subjects{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem;}
+    .sub-tag{
+      background:var(--bg-slate);color:var(--ink-md);font-size:.72rem;font-weight:600;
+      padding:.24rem .65rem;border-radius:8px;border:1px solid var(--border);
+      transition:background .2s,border-color .2s;
     }
-    /* Ajustement pour mobile */
-    @media (max-width: 640px) {
-        .formation-card img {
-            height: 100px;
-        }
-        .formation-card > div:last-child {
-            padding: 1rem;
-        }
+    .form-card:hover .sub-tag{border-color:var(--accent-20);background:var(--accent-10);}
+    .price-row{display:flex;align-items:baseline;gap:.25rem;margin-bottom:1rem;}
+    .price{font-size:1.9rem;font-weight:900;letter-spacing:-.04em;}
+    .price-unit{font-size:.8rem;color:var(--ink-lt);font-weight:600;}
+    .card-foot{display:flex;align-items:center;gap:.5rem;}
+    .btn-view{
+      display:inline-flex;align-items:center;gap:.35rem;
+      background:var(--btn);color:#fff;border-radius:var(--r-pill);
+      padding:.48rem 1.1rem;font-size:.75rem;font-weight:700;
+      font-family:var(--font);transition:background .2s,transform .15s;
+    }
+    .btn-view:hover{background:var(--btn-hover);transform:translateY(-1px);}
+    .card-deadline{font-size:.7rem;font-weight:600;color:var(--ink-md);margin-left:auto;}
+
+    /* ══════════════════════════════════════════
+       PROFESSEURS
+    ══════════════════════════════════════════ */
+    .profs-wrap{display:flex;justify-content:center;}
+    .prof-card{
+      background:var(--bg-white);border:1px solid var(--border);
+      border-radius:var(--r-card);overflow:hidden;
+      box-shadow:var(--sh-sm);max-width:370px;width:100%;
+      transition:box-shadow .25s,transform .25s;
+    }
+    .prof-card:hover{box-shadow:var(--sh-md);transform:translateY(-4px);}
+    .prof-avatar{
+      aspect-ratio:16/9;
+      background:linear-gradient(135deg,var(--hero-from),var(--hero-to));
+      display:flex;align-items:center;justify-content:center;
+      font-size:2.8rem;position:relative;
+    }
+    .prof-mat-badge{
+      position:absolute;top:.7rem;left:.7rem;
+      background:var(--btn);color:#fff;border-radius:var(--r-pill);
+      padding:.24rem .7rem;font-size:.68rem;font-weight:800;
+    }
+    .prof-body{padding:1.1rem 1.25rem;}
+    .mode-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.7rem;}
+    .mode-b{font-size:.67rem;font-weight:700;padding:.18rem .5rem;border-radius:var(--r-pill);border:1px solid;}
+    .mode-home{background:#fef3c7;color:#92400e;border-color:#fde68a;}
+    .mode-online{background:#dbeafe;color:#1e40af;border-color:#bfdbfe;}
+    .prof-name{font-size:.97rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.18rem;}
+    .prof-role{font-size:.76rem;color:var(--accent);font-weight:700;margin-bottom:.5rem;}
+    .prof-bio{font-size:.8rem;color:var(--ink-md);line-height:1.65;margin-bottom:.9rem;}
+    .prof-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem;}
+    .prof-tag{background:var(--accent-10);color:var(--accent);border-radius:var(--r-pill);padding:.2rem .55rem;font-size:.7rem;font-weight:700;}
+    .prof-contact{display:flex;gap:.5rem;}
+    .btn-wa{
+      flex:1;display:flex;align-items:center;justify-content:center;gap:.35rem;
+      background:#25d366;color:#fff;border-radius:var(--r-pill);
+      padding:.52rem 1rem;font-size:.76rem;font-weight:700;
+      font-family:var(--font);transition:opacity .2s,transform .15s;
+    }
+    .btn-wa:hover{opacity:.88;transform:translateY(-1px);}
+    .btn-call{
+      display:flex;align-items:center;justify-content:center;
+      width:36px;height:36px;border-radius:50%;
+      border:1px solid var(--border);background:var(--bg-white);
+      transition:border-color .2s,transform .2s;
+    }
+    .btn-call:hover{border-color:var(--accent);transform:scale(1.1);}
+
+    /* ══════════════════════════════════════════
+       AVANTAGES / PACK PRIVILÈGE
+    ══════════════════════════════════════════ */
+    .av-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;}
+    .av-card{
+      background:var(--bg-white);border:1px solid var(--border);
+      border-radius:var(--r-card);padding:1.4rem;
+      display:flex;gap:.9rem;align-items:flex-start;
+      box-shadow:var(--sh-sm);transition:box-shadow .25s,transform .25s,border-color .25s;
+    }
+    .av-card:hover{box-shadow:var(--sh-md);transform:translateY(-3px);border-color:var(--accent-20);}
+    .av-icon{
+      width:48px;height:48px;border-radius:13px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;font-size:1.35rem;
+      background:var(--bg-lav);transition:transform .3s;
+    }
+    .av-card:hover .av-icon{transform:scale(1.12);}
+    .av-title{font-size:.93rem;font-weight:800;margin-bottom:.25rem;}
+    .av-desc{font-size:.81rem;color:var(--ink-md);line-height:1.65;}
+
+    /* ══════════════════════════════════════════
+       GALERIE (carrousel)
+    ══════════════════════════════════════════ */
+    #galerie{background:#1e1b2e;padding:5rem 1.5rem;}
+    .carousel{position:relative;border-radius:var(--r-card);overflow:hidden;box-shadow:var(--sh-lg);}
+    .car-track{display:flex;transition:transform .55s var(--ease);}
+    .car-slide{min-width:100%;position:relative;}
+    .car-slide img{width:100%;height:420px;object-fit:cover;display:block;}
+    .car-caption{
+      position:absolute;bottom:0;left:0;right:0;padding:1.2rem;
+      background:linear-gradient(transparent,rgba(0,0,0,.68));
+      color:#fff;font-size:.85rem;font-weight:600;
+    }
+    .car-btn{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:40px;height:40px;border-radius:50%;
+      background:rgba(255,255,255,.9);border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.95rem;color:var(--ink);z-index:2;
+      transition:background .2s,transform .2s;
+    }
+    .car-btn:hover{background:#fff;transform:translateY(-50%) scale(1.1);}
+    .car-prev{left:.9rem;}.car-next{right:.9rem;}
+    .car-dots{display:flex;justify-content:center;gap:.45rem;margin-top:1rem;}
+    .dot{
+      width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);
+      cursor:pointer;transition:background .25s,transform .25s;
+    }
+    .dot.active{background:#fff;transform:scale(1.4);}
+
+    /* ══════════════════════════════════════════
+       TÉMOIGNAGES (vidéos)
+    ══════════════════════════════════════════ */
+    .temo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
+    .temo-card{
+      background:var(--bg-white);border:1px solid var(--border);
+      border-radius:var(--r-card);overflow:hidden;
+      box-shadow:var(--sh-sm);transition:box-shadow .25s,transform .25s;
+    }
+    .temo-card:hover{box-shadow:var(--sh-md);transform:translateY(-4px);}
+    .vid-thumb{position:relative;padding-top:56.25%;cursor:pointer;overflow:hidden;background:var(--bg-slate);}
+    .vid-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .temo-card:hover .vid-thumb img{transform:scale(1.05);}
+    .play-overlay{
+      position:absolute;inset:0;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;background:rgba(30,27,46,.42);
+      transition:background .3s;
+    }
+    .temo-card:hover .play-overlay{background:rgba(30,27,46,.55);}
+    .play-circle{
+      width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.94);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.1rem;margin-bottom:.35rem;transition:transform .25s;
+    }
+    .temo-card:hover .play-circle{transform:scale(1.14);}
+    .play-overlay span{color:#fff;font-size:.73rem;font-weight:700;opacity:.9;}
+    .temo-info{padding:.9rem 1.1rem;}
+    .temo-name{font-size:.9rem;font-weight:800;margin-bottom:.22rem;}
+    .temo-meta{font-size:.73rem;color:var(--ink-lt);display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;}
+    .temo-badge{background:var(--accent-10);color:var(--accent);padding:.16rem .5rem;border-radius:var(--r-pill);font-weight:700;font-size:.68rem;}
+
+    /* ══════════════════════════════════════════
+       MODALITÉS
+    ══════════════════════════════════════════ */
+    .mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;}
+    .mod-card{border-radius:var(--r-card);padding:1.9rem 1.5rem;text-align:center;transition:transform .2s;}
+    .mod-card:hover{transform:translateY(-3px);}
+    .mc-lav{background:linear-gradient(135deg,var(--hero-from),var(--hero-via));}
+    .mc-wh{background:var(--bg-white);border:1px solid var(--border);box-shadow:var(--sh-sm);}
+    .mc-dk{background:var(--btn-hover);color:#fff;}
+    .mod-icon{font-size:1.9rem;display:block;margin-bottom:.85rem;}
+    .mod-card h3{font-size:.97rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.45rem;}
+    .mc-lav h3,.mc-wh h3{color:var(--ink);}
+    .mod-card p{font-size:.81rem;line-height:1.65;margin-bottom:.9rem;}
+    .mc-wh p,.mc-lav p{color:var(--ink-md);}
+    .mc-dk p{color:rgba(255,255,255,.72);}
+    .mod-pill{display:inline-block;font-size:.78rem;font-weight:700;padding:.42rem 1rem;border-radius:var(--r-pill);}
+    .mc-lav .mod-pill{background:rgba(255,255,255,.52);color:var(--ink);}
+    .mc-wh .mod-pill{background:var(--accent-10);color:var(--accent);}
+    .mc-dk .mod-pill{background:rgba(255,255,255,.14);color:#fff;}
+
+    /* ══════════════════════════════════════════
+       FAQ
+    ══════════════════════════════════════════ */
+    .faq-layout{display:grid;grid-template-columns:340px 1fr;gap:4rem;align-items:start;}
+    .faq-left p{font-size:.88rem;color:var(--ink-md);line-height:1.78;margin-bottom:1.6rem;}
+    .faq-item{border-bottom:1px solid var(--border);}
+    .faq-item:first-child{border-top:1px solid var(--border);}
+    .faq-q{
+      width:100%;display:flex;align-items:center;justify-content:space-between;
+      padding:1rem 0;background:none;border:none;cursor:pointer;
+      text-align:left;gap:1rem;transition:color .2s;font-family:var(--font);
+    }
+    .faq-q:hover .faq-qt{color:var(--accent);}
+    .faq-qt{font-size:.9rem;font-weight:700;color:var(--ink);transition:color .2s;}
+    .faq-icon{
+      width:26px;height:26px;border-radius:50%;background:var(--bg-slate);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      transition:background .25s,transform .35s var(--ease);
+    }
+    .faq-icon svg{stroke:var(--ink-md);transition:stroke .2s;}
+    .faq-item.open .faq-icon{background:var(--btn);transform:rotate(180deg);}
+    .faq-item.open .faq-icon svg{stroke:#fff;}
+    .faq-ans{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
+    .faq-ans-inner{padding:.15rem 0 1.2rem;font-size:.86rem;color:var(--ink-md);line-height:1.8;}
+    .faq-item.open .faq-ans{max-height:500px;}
+
+    /* ══════════════════════════════════════════
+       NEWSLETTER — style Vatcho
+    ══════════════════════════════════════════ */
+    .nl-wrap{
+      background:var(--bg-lav);border-radius:var(--r-card);
+      padding:3.2rem 2rem;text-align:center;max-width:660px;margin:0 auto;
+    }
+    .nl-form{display:flex;gap:.55rem;max-width:460px;margin:1.4rem auto 0;flex-wrap:wrap;}
+    .nl-form input{
+      flex:1;min-width:190px;border:1px solid var(--border);
+      border-radius:var(--r-pill);padding:.72rem 1.2rem;
+      font-size:.86rem;font-family:var(--font);outline:none;
+      transition:border-color .2s,box-shadow .2s;
+    }
+    .nl-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-10);}
+    .nl-form button{
+      background:var(--btn-hover);color:#fff;border:none;
+      border-radius:var(--r-pill);padding:.72rem 1.5rem;
+      font-size:.86rem;font-weight:700;font-family:var(--font);cursor:pointer;
+      transition:background .2s,transform .15s;
+    }
+    .nl-form button:hover{background:var(--accent);transform:translateY(-1px);}
+
+    /* ══════════════════════════════════════════
+       SÉPARATEUR chevrons — comme Vatcho
+    ══════════════════════════════════════════ */
+    .sep-wrap{padding:.5rem 1.5rem;}
+    .sep-inner{max-width:1200px;margin:0 auto;}
+    .sep-arrow{
+      height:28px;width:100%;
+      clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%,14px 50%);
+    }
+    .sep-a{background:linear-gradient(90deg,#ece7f3 0%,#cabfdb 30%,#9b8eb6 65%,#6f6390 90%,#463e5c 100%);}
+    .sep-b{background:linear-gradient(90deg,#463e5c 0%,#6f6390 10%,#9b8eb6 35%,#cabfdb 70%,#ece7f3 100%);margin-top:-1px;}
+
+    /* ══════════════════════════════════════════
+       CTA BANNER
+    ══════════════════════════════════════════ */
+    .cta-banner{
+      background:linear-gradient(140deg,var(--hero-from),var(--hero-via),var(--hero-to));
+      padding:4.5rem 1.5rem;text-align:center;position:relative;overflow:hidden;
+    }
+    .cta-banner::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 30% 50%,rgba(255,255,255,.18),transparent 55%),
+                  radial-gradient(circle at 70% 50%,rgba(58,43,191,.12),transparent 55%);
+    }
+    .cta-inner{max-width:620px;margin:0 auto;position:relative;z-index:1;}
+    .cta-pill{
+      display:inline-flex;align-items:center;gap:.4rem;
+      background:rgba(255,255,255,.52);border:1px solid rgba(255,255,255,.88);
+      border-radius:var(--r-pill);padding:.38rem 1rem;
+      font-size:.76rem;font-weight:700;margin-bottom:1.1rem;
+    }
+    .cta-banner h2{font-size:clamp(1.7rem,3.8vw,2.5rem);font-weight:900;letter-spacing:-.04em;margin-bottom:.5rem;}
+    .cta-banner p{font-size:.92rem;color:rgba(15,23,42,.68);margin-bottom:1.7rem;}
+
+    /* ══════════════════════════════════════════
+       CONTACT
+    ══════════════════════════════════════════ */
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+    .contact-card{
+      background:var(--bg-white);border:1px solid var(--border);
+      border-radius:var(--r-card);padding:1.2rem 1.3rem;
+      display:flex;align-items:center;gap:.9rem;
+      box-shadow:var(--sh-sm);transition:box-shadow .2s,border-color .2s,transform .2s;
+    }
+    .contact-card:hover{box-shadow:var(--sh-md);border-color:var(--btn);transform:translateY(-2px);}
+    .con-icon{
+      width:42px;height:42px;border-radius:12px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.15rem;background:var(--bg-lav);
+    }
+    .con-label{font-size:.66rem;font-weight:800;color:var(--ink-lt);text-transform:uppercase;letter-spacing:.07em;}
+    .con-val{font-size:.97rem;font-weight:900;margin-top:.08rem;}
+
+    /* ══════════════════════════════════════════
+       FOOTER — style Vatcho (dark violet)
+    ══════════════════════════════════════════ */
+    footer{
+      background:linear-gradient(180deg,#3d3658 0%,#4f486d 45%,#635b7d 100%);
+      color:rgba(255,255,255,.68);padding:4rem 1.5rem 1.5rem;
+      position:relative;overflow:hidden;
+    }
+    .ft-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:2rem;margin-bottom:3rem;}
+    .ft-brand{display:flex;align-items:center;gap:.65rem;margin-bottom:.9rem;}
+    .ft-brand img{width:34px;height:34px;border-radius:50%;background:#fff;padding:2px;object-fit:contain;}
+    .ft-brand-name{font-size:.97rem;font-weight:800;color:#fff;}
+    .ft-desc{font-size:.78rem;line-height:1.8;margin-bottom:1.1rem;}
+    .ft-col h4{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.9rem;}
+    .ft-col ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+    .ft-col ul li a{font-size:.76rem;color:rgba(255,255,255,.58);transition:color .2s;}
+    .ft-col ul li a:hover{color:#fff;}
+    .ft-social{display:flex;gap:.55rem;flex-wrap:wrap;}
+    .ft-wa{
+      display:inline-flex;align-items:center;gap:.4rem;
+      background:rgba(37,211,102,.14);border:1px solid rgba(37,211,102,.32);
+      border-radius:var(--r-pill);padding:.38rem .9rem;
+      font-size:.73rem;font-weight:700;color:#6ee7a0;transition:background .2s;
+    }
+    .ft-wa:hover{background:rgba(37,211,102,.24);}
+    .ft-ig{
+      display:inline-flex;align-items:center;gap:.4rem;
+      background:rgba(255,100,130,.11);border:1px solid rgba(255,100,130,.26);
+      border-radius:var(--r-pill);padding:.38rem .9rem;
+      font-size:.73rem;font-weight:700;color:#fca5b9;transition:background .2s;
+    }
+    .ft-ig:hover{background:rgba(255,100,130,.2);}
+    /* Grand texte fantôme — signature Vatcho */
+    .ft-bigtext{
+      text-align:center;margin:1rem 0;
+      font-size:clamp(52px,12vw,160px);font-weight:900;
+      letter-spacing:-.04em;color:rgba(255,255,255,.055);
+      user-select:none;line-height:1;
+    }
+    .ft-bottom{
+      border-top:1px solid rgba(255,255,255,.1);padding-top:1.4rem;
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:.7rem;
+    }
+    .ft-copy{font-size:.71rem;opacity:.4;}
+    .ft-made{font-size:.71rem;opacity:.4;}
+
+    /* ══════════════════════════════════════════
+       WA FLOAT
+    ══════════════════════════════════════════ */
+    .wa-float{
+      position:fixed;bottom:1.4rem;right:1.4rem;z-index:99;
+      width:50px;height:50px;border-radius:50%;background:#25d366;
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 4px 20px rgba(37,211,102,.42);transition:transform .2s;
+    }
+    .wa-float:hover{transform:scale(1.1);}
+    .wa-float svg{width:24px;height:24px;fill:#fff;}
+
+    /* ══════════════════════════════════════════
+       BOUTON "Voir tout" / BTN VOIR
+    ══════════════════════════════════════════ */
+    .btn-voir{
+      display:inline-flex;align-items:center;gap:.45rem;
+      background:var(--accent-10);color:var(--accent);
+      border-radius:var(--r-pill);padding:.7rem 1.9rem;
+      font-size:.85rem;font-weight:700;font-family:var(--font);
+      margin-top:1.6rem;transition:background .2s,color .2s,transform .15s;
+    }
+    .btn-voir:hover{background:var(--btn);color:#fff;transform:translateY(-2px);}
+    .btn-voir-dk{
+      background:rgba(255,255,255,.1);color:rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.2);
+    }
+    .btn-voir-dk:hover{background:rgba(255,255,255,.2);color:#fff;}
+
+    /* VIDEO MODAL */
+    #videoModal{
+      display:none;position:fixed;inset:0;z-index:999;
+      background:rgba(10,8,24,.92);align-items:center;justify-content:center;padding:1rem;
+    }
+    .vm-inner{width:100%;max-width:860px;position:relative;}
+    .vm-close{
+      position:absolute;top:-46px;right:0;
+      background:rgba(255,255,255,.12);border:none;color:#fff;
+      width:38px;height:38px;border-radius:50%;font-size:1.1rem;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .2s;
+    }
+    .vm-close:hover{background:rgba(255,255,255,.25);}
+    .vm-frame{padding-top:56.25%;position:relative;border-radius:var(--r-card);overflow:hidden;}
+    .vm-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════ */
+    @media(max-width:1100px){
+      .ft-grid{grid-template-columns:1fr 1fr 1fr;}
+      .ft-grid>div:first-child{grid-column:1/-1;}
+    }
+    @media(max-width:960px){
+      .nav-menu{display:none;}
+      .nav-search{display:none;}
+      .hamburger{display:flex;}
+      .hero-inner{grid-template-columns:1fr;}
+      .hero-panel{display:none;}
+      .hero-text{padding-bottom:3rem;}
+      .cat-grid{grid-template-columns:repeat(2,1fr);}
+      .form-grid{grid-template-columns:repeat(2,1fr);}
+      .av-grid{grid-template-columns:1fr;}
+      .temo-grid{grid-template-columns:repeat(2,1fr);}
+      .mod-grid{grid-template-columns:1fr;}
+      .contact-grid{grid-template-columns:1fr;}
+      .faq-layout{grid-template-columns:1fr;gap:2rem;}
+      .ft-grid{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:640px){
+      .cat-grid{grid-template-columns:repeat(2,1fr);}
+      .form-grid{grid-template-columns:1fr;}
+      .temo-grid{grid-template-columns:1fr;}
+      .hero-h1{font-size:1.85rem;}
+      .hero-stats{gap:.55rem;}
+      .stat-pill{padding:.42rem .95rem;}
+      .stat-n{font-size:1.25rem;}
+      .hero-btns{flex-direction:column;}
+      .hero-btns a{text-align:center;justify-content:center;}
+      .car-slide img{height:220px;}
+      .section{padding:3.5rem 1.2rem;}
+      .ft-grid{grid-template-columns:1fr;}
+      .nl-form{flex-direction:column;}
+      .nl-form input,.nl-form button{width:100%;}
+    }
+    @media(max-width:400px){
+      .hero-h1{font-size:1.6rem;}
+      .sec-title{font-size:1.5rem;}
     }
   </style>
 </head>
@@ -880,93 +856,94 @@
 
 <!-- BACK TO TOP -->
 <button id="back-top" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<!-- NAVBAR -->
+<!-- ════════════════════════════════════
+     NAVBAR — fidèle à Vatcho
+════════════════════════════════════ -->
 <header class="nav" id="navbar">
   <div class="nav-inner">
-    <div class="nav-logo">
+
+    <!-- Logo -->
+    <a class="nav-logo" href="{% url 'core:index' %}">
       <img src="{% static 'images/logo_certitude.png' %}" alt="La Certitude"/>
       LA CERTITUDE
+    </a>
+
+    <!-- Barre de recherche centrale (style Vatcho) -->
+    <div class="nav-search">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" placeholder="Rechercher des cours, ressources..."/>
     </div>
 
     <!-- Menu Desktop -->
-    <div class="nav-menu">
+    <nav class="nav-menu">
+
       <div class="nav-item">
         <a href="{% url 'core:index' %}" class="nav-link active">Accueil</a>
       </div>
-      
-      <!-- À propos -->
+
       <div class="nav-item">
         <a href="{% url 'core:about' %}" class="nav-link">À propos</a>
       </div>
-      
-      <!-- Cours avec dropdown -->
+
+      <!-- Cours + dropdown -->
       <div class="nav-item">
         <button class="nav-link">
           Cours
-          <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
+          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
-        <div class="dropdown-menu">
-          <div class="dropdown-title">Édition actuelle</div>
-          <a href="#" class="dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+        <div class="dropdown">
+          <div class="drop-title">Édition actuelle</div>
+          <a href="#" class="drop-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             Programme 2026
           </a>
-          <a href="{% url 'enrollments:create' %}" class="dropdown-item">
+          <a href="{% url 'enrollments:create' %}" class="drop-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             S'inscrire
           </a>
-          <div class="dropdown-divider"></div>
-          <div class="dropdown-title">Éditions précédentes</div>
-          <a href="#" class="dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M7 4v3M17 4v3"/><rect x="3" y="8" width="18" height="13" rx="1"/></svg>
+          <div class="drop-divider"></div>
+          <div class="drop-title">Éditions passées</div>
+          <a href="#" class="drop-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M4 7h16M7 4v3M17 4v3"/></svg>
             Édition 2025
           </a>
         </div>
       </div>
-      
-      <!-- Ressources avec dropdown -->
+
+      <!-- Ressources + dropdown -->
       <div class="nav-item">
         <button class="nav-link">
           Ressources
-          <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
+          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
-        <div class="dropdown-menu">
-          <a href="{% url 'resources:astuces' %}" class="dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3M12 8h.01M12 16h.01"/><path d="M12 2a10 10 0 1 0 10 10"/></svg>
+        <div class="dropdown">
+          <a href="{% url 'resources:astuces' %}" class="drop-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
             Astuces & Méthodes
           </a>
-          <a href="{% url 'resources:cours' %}" class="dropdown-item">
+          <a href="{% url 'resources:cours' %}" class="drop-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             Cours & Résumés
           </a>
         </div>
       </div>
-      
-      <div class="nav-item">
-        <a href="#" class="nav-link">Soutien scolaire</a>
-      </div>
-      
-      <div class="nav-item">
-        <a href="#" class="nav-link">Épreuves</a>
-      </div>
-      
-      <div class="nav-item">
-        <a href="#" class="nav-link">Annonces</a>
-      </div>
-    </div>
-    
-    <div class="nav-menu" style="margin-left: 0;">
+
+      <div class="nav-item"><a href="#" class="nav-link">Soutien scolaire</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">Épreuves</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">Annonces</a></div>
+    </nav>
+
+    <!-- Auth buttons -->
+    <div class="nav-menu" style="margin-left:0;">
       <button class="btn-login" onclick="location.href=''">Connexion</button>
       <button class="btn-register" onclick="location.href=''">Inscription</button>
     </div>
-    
+
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -975,77 +952,73 @@
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="location.href='{% url 'core:index' %}'">Accueil</div>
-  </div>
-  <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="location.href='{% url 'core:about' %}'">À propos</div>
-  </div>
-  <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="toggleMobileDropdown(this)">
-      Cours
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="mobile-dropdown-content">
-      <div class="dropdown-title">Édition actuelle</div>
+  <div class="mob-item"><div class="mob-link" onclick="location.href='{% url 'core:index' %}'">Accueil</div></div>
+  <div class="mob-item"><div class="mob-link" onclick="location.href='{% url 'core:about' %}'">À propos</div></div>
+  <div class="mob-item">
+    <div class="mob-link" onclick="toggleMobDrop(this)">Cours <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="mob-drop">
       <a href="#">Programme 2026</a>
       <a href="{% url 'enrollments:create' %}">S'inscrire</a>
-      <div class="dropdown-divider" style="margin: .5rem 0;"></div>
-      <div class="dropdown-title">Éditions précédentes</div>
       <a href="#">Édition 2025</a>
     </div>
   </div>
-  <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="toggleMobileDropdown(this)">
-      Ressources
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="mobile-dropdown-content">
+  <div class="mob-item">
+    <div class="mob-link" onclick="toggleMobDrop(this)">Ressources <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="mob-drop">
       <a href="{% url 'resources:astuces' %}">Astuces & Méthodes</a>
       <a href="{% url 'resources:cours' %}">Cours & Résumés</a>
     </div>
   </div>
-  <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="location.href='#'">Soutien scolaire</div>
-  </div>
-  <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="location.href='#'">Épreuves</div>
-  </div>
-  <div class="mobile-nav-item">
-    <div class="mobile-nav-link" onclick="location.href='#'">Annonces</div>
-  </div>
-  <div class="mobile-auth">
-    <button class="btn-login" onclick="location.href='#'">Connexion</button>
-    <button class="btn-register" onclick="location.href='#'">Inscription</button>
+  <div class="mob-item"><div class="mob-link" onclick="location.href='#'">Soutien scolaire</div></div>
+  <div class="mob-item"><div class="mob-link" onclick="location.href='#'">Épreuves</div></div>
+  <div class="mob-item"><div class="mob-link" onclick="location.href='#'">Annonces</div></div>
+  <div class="mob-auth">
+    <button class="btn-login" onclick="location.href=''">Connexion</button>
+    <button class="btn-register" onclick="location.href=''">Inscription</button>
   </div>
 </div>
 
-<!-- HERO SECTION -->
+<!-- ════════════════════════════════════
+     HERO — gradient lavande + word-boxes
+════════════════════════════════════ -->
 <section class="hero">
-  <svg class="hero-deco hero-deco-blob" aria-hidden="true" viewBox="0 0 884 578" fill="white">
+  <!-- Décos SVG (reprise fidèle de Vatcho) -->
+  <svg class="hero-deco deco-blob" aria-hidden="true" viewBox="0 0 884 578" fill="white">
     <path d="M77.978 55.4516C245.177 -111.529 296.923 154.357 535.599 128.113C909.567 87.0169 938.305 347.546 826.648 525.777C714.974 704.007 550.407 814.987 320.862 731.954C54.1102 635.466 -103.473 236.656 77.978 55.4516Z"/>
   </svg>
-  <svg class="hero-deco hero-deco-circle" aria-hidden="true" viewBox="0 0 152 152" fill="none">
-    <circle cx="76" cy="76" r="63.74" stroke="#A992C9" stroke-width="18"/>
+  <svg class="hero-deco deco-circle-lg" aria-hidden="true" viewBox="0 0 152 152" fill="none">
+    <circle cx="76" cy="76" r="63.74" stroke="#D6CCE9" stroke-width="18"/>
   </svg>
 
   <div class="hero-inner">
+    <!-- Texte gauche -->
     <div class="hero-text">
       <div class="hero-badge">Inscriptions 2026 ouvertes</div>
+
       <h1 class="hero-h1">
         <span class="word-box">Maîtrisez 100 %</span>
         <span class="word-box">de votre programme</span>
         <span class="word-box">en 2 mois.</span>
       </h1>
+
       <p class="hero-sub">
         Cours intensifs de renforcement — Juillet & Août 2026.
-        Mathématiques, Physique-Chimie, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C & D.
-        Des professeurs expérimentés, un programme complet.
+        Mathématiques, Physique-Chimie, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C & D. Des professeurs expérimentés, un programme complet.
       </p>
+
+      <div class="hero-tagline">
+        <span class="logo-chip">
+          <img src="{% static 'images/logo_certitude.png' %}" alt=""/>
+        </span>
+        <span>Un endroit où chaque&nbsp;</span>
+        <span class="typed">élève réussit.</span>
+      </div>
+
       <div class="hero-btns">
         <a href="{% url 'enrollments:create' %}" class="btn-hero-primary">S'inscrire maintenant</a>
         <a href="#professeurs" class="btn-hero-ghost">Nos professeurs</a>
       </div>
+
       <div class="hero-stats">
         <div class="stat-pill"><span class="stat-n" data-target="5">0</span><span class="stat-l">Niveaux</span></div>
         <div class="stat-pill"><span class="stat-n" data-target="4">0</span><span class="stat-l">Matières</span></div>
@@ -1054,110 +1027,202 @@
       </div>
     </div>
 
-    <div class="hero-img-panel">
+    <!-- Carte flottante droite -->
+    <div class="hero-panel">
       <div class="hero-card">
-        <div class="hero-card-title">Informations pratiques</div>
-        <div class="hero-card-row"><div class="hero-card-icon">📅</div><div><div class="hero-card-label">Période</div><div class="hero-card-val">1er juillet — 31 août 2026</div></div></div>
-        <div class="hero-card-row"><div class="hero-card-icon">📍</div><div><div class="hero-card-label">Lieu</div><div class="hero-card-val">EPP Gbégamey Sud, Cotonou</div></div></div>
-        <div class="hero-card-row"><div class="hero-card-icon">⏰</div><div><div class="hero-card-label">Horaires</div><div class="hero-card-val">Lundi–Vendredi · 08h30 – 13h00</div></div></div>
-        <div class="hero-card-row"><div class="hero-card-icon">📞</div><div><div class="hero-card-label">Contact</div><div class="hero-card-val">01 96 38 92 49</div></div></div>
-        <div class="hero-deadline">⏳ Date limite : 22 juin 2026</div>
+        <div class="hc-title">Informations pratiques</div>
+        <div class="hc-row"><div class="hc-icon">📅</div><div><div class="hc-label">Période</div><div class="hc-val">1er juillet — 31 août 2026</div></div></div>
+        <div class="hc-row"><div class="hc-icon">📍</div><div><div class="hc-label">Lieu</div><div class="hc-val">EPP Gbégamey Sud, Cotonou</div></div></div>
+        <div class="hc-row"><div class="hc-icon">⏰</div><div><div class="hc-label">Horaires</div><div class="hc-val">Lun–Ven · 08h30 – 13h00</div></div></div>
+        <div class="hc-row"><div class="hc-icon">📞</div><div><div class="hc-label">Contact</div><div class="hc-val">01 96 38 92 49</div></div></div>
+        <div class="hc-deadline">⏳ Date limite : 22 juin 2026</div>
       </div>
     </div>
   </div>
 </section>
 
-
-
-<!-- FORMATIONS AVEC IMAGES DANS LES CARDS -->
-<!-- FORMATIONS AVEC IMAGES PLUS GRANDES DANS LES CARDS -->
-<section class="section" id="formations">
+<!-- ════════════════════════════════════
+     PARCOURIR PAR CATÉGORIE — style Vatcho
+     (grille 4 colonnes, image + badge)
+════════════════════════════════════ -->
+<section class="section" id="categories">
   <div class="container">
     <div class="sec-head text-center fade-in">
-      <div class="sec-label">Nos formations</div>
-      <h2 class="sec-title">Choisissez votre niveau</h2>
-      <p class="sec-sub">Programme complet — toutes les matières scientifiques couvertes par des experts.</p>
+      <h2 class="sec-title">Parcourir par niveau</h2>
+      <p class="sec-sub">Trouvez ce qui correspond à vos objectifs — programme complet, matières au choix.</p>
     </div>
-    <div class="formations-grid">
-      <!-- Card 3ème avec image agrandie -->
-      <div class="formation-card fade-in stagger-1" style="padding: 0; overflow: hidden;">
-        <img src="{% static 'images/affiche5.png' %}" alt="Cours 3ème" style="width: 100%; height: 200px; object-fit: cover;">
-        <div style="padding: 1.5rem;">
+    <div class="cat-grid">
+
+      <a class="cat-card fade-in s1" href="{% url 'enrollments:create' %}?niveau=3eme">
+        <div class="cat-img"><img src="{% static 'images/affiche5.png' %}" alt="3ème" loading="lazy"/></div>
+        <div class="cat-body">
+          <span class="cat-badge cb-red">3ème</span>
+          <p class="cat-desc">Réussir le BEPC et préparer le lycée.</p>
+        </div>
+      </a>
+
+      <a class="cat-card fade-in s2" href="{% url 'enrollments:create' %}?niveau=1ere">
+        <div class="cat-img"><img src="{% static 'images/affiche1.png' %}" alt="1ère C" loading="lazy"/></div>
+        <div class="cat-body">
+          <span class="cat-badge cb-amber">1ère C</span>
+          <p class="cat-desc">Avancer sur le programme de Terminale.</p>
+        </div>
+      </a>
+
+      <a class="cat-card fade-in s3" href="{% url 'enrollments:create' %}?niveau=1ere">
+        <div class="cat-img"><img src="{% static 'images/affiche2.png' %}" alt="1ère D" loading="lazy"/></div>
+        <div class="cat-body">
+          <span class="cat-badge cb-green">1ère D</span>
+          <p class="cat-desc">Consolider les bases scientifiques.</p>
+        </div>
+      </a>
+
+      <a class="cat-card fade-in s4" href="{% url 'enrollments:create' %}?niveau=tle">
+        <div class="cat-img"><img src="{% static 'images/affiche2.png' %}" alt="Terminale C" loading="lazy"/></div>
+        <div class="cat-body">
+          <span class="cat-badge cb-blue">Terminale C</span>
+          <p class="cat-desc">Préparation intensive au BAC.</p>
+        </div>
+      </a>
+
+      <a class="cat-card fade-in s1" href="{% url 'enrollments:create' %}?niveau=tle">
+        <div class="cat-img"><img src="{% static 'images/affiche2.png' %}" alt="Terminale D" loading="lazy"/></div>
+        <div class="cat-body">
+          <span class="cat-badge cb-violet">Terminale D</span>
+          <p class="cat-desc">100 % du programme couvert en profondeur.</p>
+        </div>
+      </a>
+
+      <a class="cat-card fade-in s2" href="{% url 'resources:astuces' %}">
+        <div class="cat-img"><img src="{% static 'images/affiche5.png' %}" alt="Astuces" loading="lazy"/></div>
+        <div class="cat-body">
+          <span class="cat-badge cb-orange">Astuces</span>
+          <p class="cat-desc">Méthodes et conseils pour mieux réviser.</p>
+        </div>
+      </a>
+
+      <a class="cat-card fade-in s3" href="{% url 'resources:cours' %}">
+        <div class="cat-img"><img src="{% static 'images/affiche1.png' %}" alt="Cours" loading="lazy"/></div>
+        <div class="cat-body">
+          <span class="cat-badge cb-teal">Cours & PDF</span>
+          <p class="cat-desc">Résumés et fiches téléchargeables.</p>
+        </div>
+      </a>
+
+      <a class="cat-card fade-in s4" href="#">
+        <div class="cat-img"><img src="{% static 'images/affiche5.png' %}" alt="Épreuves" loading="lazy"/></div>
+        <div class="cat-body">
+          <span class="cat-badge cb-pink">Épreuves</span>
+          <p class="cat-desc">BEPC, BAC, examens blancs corrigés.</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     DERNIÈRES FORMATIONS (like "Latest opportunities")
+════════════════════════════════════ -->
+<section class="section section-alt" id="formations">
+  <div class="container">
+    <div class="flex-between fade-in">
+      <div>
+        <h2 class="sec-title">Nos formations</h2>
+        <p class="sec-sub">Fraîchement ouvertes. Inscrivez-vous avant la date limite.</p>
+      </div>
+      <a href="#" class="link-view-all">Voir tout →</a>
+    </div>
+    <div class="form-grid">
+
+      <!-- 3ème -->
+      <a class="form-card fade-in s1" href="{% url 'enrollments:create' %}?niveau=3eme">
+        <div class="form-card-img">
+          <img src="{% static 'images/affiche5.png' %}" alt="3ème" loading="lazy"/>
+        </div>
+        <div class="form-card-body">
           <div class="level-tag">3ème</div>
           <h3>Cours de 3ème</h3>
-          <p class="formation-desc">Programme complet pour réussir le BEPC et intégrer le lycée en toute confiance.</p>
+          <p class="form-desc">Programme complet pour réussir le BEPC et intégrer le lycée en toute confiance.</p>
           <div class="subjects">
-            <span class="subject-tag">Mathématiques</span>
-            <span class="subject-tag">Physique-Chimie</span>
-            <span class="subject-tag">SVT</span>
-            <span class="subject-tag">Anglais</span>
+            <span class="sub-tag">Mathématiques</span>
+            <span class="sub-tag">Physique-Chimie</span>
+            <span class="sub-tag">SVT</span>
+            <span class="sub-tag">Anglais</span>
           </div>
           <div class="price-row"><span class="price">11 500</span><span class="price-unit">FCFA</span></div>
-          <div class="card-foot-row">
-            <a href="{% url 'enrollments:create' %}?niveau=3eme" class="btn-view">S'inscrire</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 1ère avec image agrandie -->
-      <div class="formation-card featured fade-in stagger-2" style="padding: 0; overflow: hidden;">
-        <img src="{% static 'images/affiche1.png' %}" alt="Cours 1ère" style="width: 100%; height: 200px; object-fit: cover;">
-        <div style="padding: 1.5rem;">
-          <span class="badge-pop">Populaire</span>
-          <div class="level-tag">1ères C & D</div>
-          <h3>Cours de 1ère</h3>
-          <p class="formation-desc">Maîtrisez les bases de Terminale avec de l'avance sur tout le programme.</p>
-          <div class="subjects">
-            <span class="subject-tag">Mathématiques</span>
-            <span class="subject-tag">Physique-Chimie</span>
-            <span class="subject-tag">SVT</span>
-            <span class="subject-tag">Anglais</span>
-          </div>
-          <div class="price-row"><span class="price">12 500</span><span class="price-unit">FCFA</span></div>
-          <div class="card-foot-row">
-            <a href="{% url 'enrollments:create' %}?niveau=1ere" class="btn-view">S'inscrire</a>
+          <div class="card-foot">
+            <span class="btn-view">S'inscrire →</span>
             <span class="card-deadline">Limite : 22 juin</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- Card Terminale avec image agrandie -->
-      <div class="formation-card fade-in stagger-3" style="padding: 0; overflow: hidden;">
-        <img src="{% static 'images/affiche2.png' %}" alt="Cours Terminale" style="width: 100%; height: 200px; object-fit: cover;">
-        <div style="padding: 1.5rem;">
-          <div class="level-tag">Terminales C & D</div>
-          <h3>Cours de Terminale</h3>
-          <p class="formation-desc">Préparation intensive au BAC — 100 % du programme couvert en profondeur.</p>
+      <!-- 1ère — Populaire -->
+      <a class="form-card featured fade-in s2" href="{% url 'enrollments:create' %}?niveau=1ere">
+        <span class="badge-popular">Populaire</span>
+        <div class="form-card-img">
+          <img src="{% static 'images/affiche1.png' %}" alt="1ère" loading="lazy"/>
+        </div>
+        <div class="form-card-body">
+          <div class="level-tag">1ères C & D</div>
+          <h3>Cours de 1ère</h3>
+          <p class="form-desc">Maîtrisez les bases de Terminale avec de l'avance sur tout le programme.</p>
           <div class="subjects">
-            <span class="subject-tag">Mathématiques</span>
-            <span class="subject-tag">Physique-Chimie</span>
-            <span class="subject-tag">SVT</span>
-            <span class="subject-tag">Anglais</span>
+            <span class="sub-tag">Mathématiques</span>
+            <span class="sub-tag">Physique-Chimie</span>
+            <span class="sub-tag">SVT</span>
+            <span class="sub-tag">Anglais</span>
           </div>
-          <div class="price-row"><span class="price">15 500</span><span class="price-unit">FCFA</span></div>
-          <div class="card-foot-row">
-            <a href="{% url 'enrollments:create' %}?niveau=tle" class="btn-view">S'inscrire</a>
+          <div class="price-row"><span class="price">12 500</span><span class="price-unit">FCFA</span></div>
+          <div class="card-foot">
+            <span class="btn-view">S'inscrire →</span>
+            <span class="card-deadline">Limite : 22 juin</span>
           </div>
         </div>
-      </div>
+      </a>
+
+      <!-- Terminale -->
+      <a class="form-card fade-in s3" href="{% url 'enrollments:create' %}?niveau=tle">
+        <div class="form-card-img">
+          <img src="{% static 'images/affiche2.png' %}" alt="Terminale" loading="lazy"/>
+        </div>
+        <div class="form-card-body">
+          <div class="level-tag">Terminales C & D</div>
+          <h3>Cours de Terminale</h3>
+          <p class="form-desc">Préparation intensive au BAC — 100 % du programme couvert en profondeur.</p>
+          <div class="subjects">
+            <span class="sub-tag">Mathématiques</span>
+            <span class="sub-tag">Physique-Chimie</span>
+            <span class="sub-tag">SVT</span>
+            <span class="sub-tag">Anglais</span>
+          </div>
+          <div class="price-row"><span class="price">15 500</span><span class="price-unit">FCFA</span></div>
+          <div class="card-foot">
+            <span class="btn-view">S'inscrire →</span>
+          </div>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
 
-<!-- PROFESSEURS - UNIQUEMENT M. CODJO ABEL -->
-<!-- PROFESSEURS -->
-<section class="section section-alt" id="professeurs">
+<!-- ════════════════════════════════════
+     PROFESSEURS
+════════════════════════════════════ -->
+<section class="section" id="professeurs">
   <div class="container">
     <div class="sec-head text-center fade-in">
       <div class="sec-label">Nos professeurs</div>
       <h2 class="sec-title">Des experts à votre service</h2>
       <p class="sec-sub">Cours à domicile ou en ligne — contactez directement le professeur de votre choix.</p>
     </div>
-    <div class="profs-grid" style="display: flex; justify-content: center;">
-      <div class="prof-card fade-in stagger-1" style="max-width: 380px; width: 100%;">
-        <div class="prof-avatar"><span>👨‍🔬</span><span class="prof-matiere-badge">PCT</span></div>
+    <div class="profs-wrap">
+      <div class="prof-card fade-in">
+        <div class="prof-avatar"><span>👨‍🔬</span><span class="prof-mat-badge">PCT</span></div>
         <div class="prof-body">
-          <div class="prof-mode-badges"><span class="mode-badge mode-home">À domicile</span><span class="mode-badge mode-online">En ligne</span></div>
+          <div class="mode-badges"><span class="mode-b mode-home">À domicile</span><span class="mode-b mode-online">En ligne</span></div>
           <div class="prof-name">M. Codjo Abel</div>
           <div class="prof-role">Professeur de Physique-Chimie</div>
           <p class="prof-bio">10 ans d'expérience, spécialiste Terminale C & D. Taux de réussite au BAC de 92 %.</p>
@@ -1167,9 +1232,9 @@
             <span class="prof-tag">Chimie organique</span>
             <span class="prof-tag">Thermodynamique</span>
           </div>
-          <div class="prof-contact-row">
-            <a href="https://wa.me/22996389249" target="_blank" class="btn-contact-wa">WhatsApp</a>
-            <a href="tel:+22996389249" class="btn-contact-call">📞</a>
+          <div class="prof-contact">
+            <a href="https://wa.me/22996389249" target="_blank" class="btn-wa">WhatsApp</a>
+            <a href="tel:+22996389249" class="btn-call">📞</a>
           </div>
         </div>
       </div>
@@ -1180,57 +1245,9 @@
   </div>
 </section>
 
-<!-- ASTUCES -->
-
-
-<!-- ASTUCES & MÉTHODES -->
-<section class="section" id="astuces">
-  <div class="container">
-    <div class="sec-head text-center fade-in">
-      <div class="sec-label">Astuces & méthodes</div>
-      <h2 class="sec-title">Réussir avec les bonnes stratégies</h2>
-      <p class="sec-sub">Des astuces pratiques par matière pour booster vos résultats avant les examens.</p>
-    </div>
-    <div class="astuces-grid">
-      {% for tip in tips %}
-      <div class="astuce-card slide-{% cycle 'left' 'right' %} stagger-{{ forloop.counter }}">
-        <div class="astuce-header">
-          <div class="astuce-icon" style="background:{{ tip.subject.color|default:'#ede9fe' }}">
-            {% if tip.media_type == 'image' %}🖼️{% elif tip.media_type == 'video' %}🎬{% elif tip.media_type == 'pdf' %}📄{% else %}📝{% endif %}
-          </div>
-          <div>
-            <div class="astuce-matiere">{{ tip.subject.name }} · {{ tip.level.name }}</div>
-            <div class="astuce-title">{{ tip.title }}</div>
-          </div>
-        </div>
-        <div class="astuce-body">
-          {% if tip.media_type == 'text' and tip.content %}
-            {% for item in tip.content|slice:":3" %}
-            <div class="astuce-tip">
-              <div class="tip-num">{{ forloop.counter }}</div>
-              <div class="tip-text"><strong>{{ item.title }}</strong> {{ item.content|truncatewords:20 }}</div>
-            </div>
-            {% endfor %}
-          {% else %}
-            <p class="astuce-preview">{{ tip.summary|default:tip.detailed_content|truncatewords:30 }}</p>
-          {% endif %}
-        </div>
-        <a href="{{ tip.get_absolute_url }}" class="astuce-cta">Voir l'astuce →</a>
-      </div>
-      {% empty %}
-      <div style="text-align: center; padding: 3rem; color: #94a3b8;">
-           Aucune astuce pour le moment.
-      </div>
-     
-      {% endfor %}
-    </div>
-    <div class="text-center">
-      <a href="{% url 'resources:astuces' %}" class="btn-voir">Voir toutes les astuces</a>
-    </div>
-  </div>
-</section>
-
-<!-- AVANTAGES -->
+<!-- ════════════════════════════════════
+     AVANTAGES / PACK PRIVILÈGE
+════════════════════════════════════ -->
 <section class="section section-alt" id="avantages">
   <div class="container">
     <div class="sec-head text-center fade-in">
@@ -1238,61 +1255,85 @@
       <h2 class="sec-title">Les 10 premiers inscrits par classe</h2>
       <p class="sec-sub">Des avantages exclusifs réservés aux premiers inscrits.</p>
     </div>
-    <div class="avantages-grid">
-      <div class="avantage-card scale-in stagger-1"><div class="av-icon">📦</div><div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements du Bénin.</p></div></div>
-      <div class="avantage-card scale-in stagger-2"><div class="av-icon" style="background:#d1fae5">📄</div><div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div></div>
-      <div class="avantage-card scale-in stagger-3"><div class="av-icon" style="background:#fef9c3">🏆</div><div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div></div>
-      <div class="avantage-card scale-in stagger-4"><div class="av-icon" style="background:#dbeafe">🚗</div><div><div class="av-title">Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div></div>
+    <div class="av-grid">
+      <div class="av-card scale-in s1"><div class="av-icon">📦</div><div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements du Bénin.</p></div></div>
+      <div class="av-card scale-in s2"><div class="av-icon" style="background:#d1fae5">📄</div><div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div></div>
+      <div class="av-card scale-in s3"><div class="av-icon" style="background:#fef9c3">🏆</div><div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div></div>
+      <div class="av-card scale-in s4"><div class="av-icon" style="background:#dbeafe">🚗</div><div><div class="av-title">Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div></div>
     </div>
   </div>
 </section>
 
-
-
-<!-- GALERIE -->
+<!-- ════════════════════════════════════
+     GALERIE
+════════════════════════════════════ -->
 <section id="galerie">
   <div class="container">
     <div class="sec-head text-center fade-in">
       <div class="sec-label" style="background:rgba(191,179,245,.12);color:#c2b0f8">Galerie</div>
       <h2 class="sec-title" style="color:#fff">Aperçu de l'édition passée</h2>
-      <p class="sec-sub" style="color:rgba(255,255,255,.5)">Cours, ambiance et remise de prix.</p>
+      <p class="sec-sub" style="color:rgba(255,255,255,.45)">Cours, ambiance et remise de prix.</p>
     </div>
     <div class="carousel fade-in">
-      <div class="carousel-track" id="carouselTrack">
-        <div class="carousel-slide"><img src="{% static 'images/1.jpg' %}" alt="Cours"/><div class="slide-caption">Nos apprenants en plein cours</div></div>
-        <div class="carousel-slide"><img src="{% static 'images/2.jpg' %}" alt="Groupe"/><div class="slide-caption">Photo de famille — Groupe La Certitude</div></div>
-        <div class="carousel-slide"><img src="{% static 'images/10.jpg' %}" alt="Profs"/><div class="slide-caption">Les professeurs et les élèves</div></div>
-        <div class="carousel-slide"><img src="{% static 'images/4.jpg' %}" alt="TP"/><div class="slide-caption">Séance de travaux pratiques</div></div>
-        <div class="carousel-slide"><img src="{% static 'images/5.jpg' %}" alt="Prix"/><div class="slide-caption">Remise de prix</div></div>
-        <div class="carousel-slide"><img src="{% static 'images/7.jpg' %}" alt="Maths"/><div class="slide-caption">Cours de mathématiques intensif</div></div>
+      <div class="car-track" id="carTrack">
+        <div class="car-slide"><img src="{% static 'images/1.jpg' %}" alt="Cours"/><div class="car-caption">Nos apprenants en plein cours</div></div>
+        <div class="car-slide"><img src="{% static 'images/2.jpg' %}" alt="Groupe"/><div class="car-caption">Photo de famille — Groupe La Certitude</div></div>
+        <div class="car-slide"><img src="{% static 'images/10.jpg' %}" alt="Profs"/><div class="car-caption">Les professeurs et les élèves</div></div>
+        <div class="car-slide"><img src="{% static 'images/4.jpg' %}" alt="TP"/><div class="car-caption">Séance de travaux pratiques</div></div>
+        <div class="car-slide"><img src="{% static 'images/5.jpg' %}" alt="Prix"/><div class="car-caption">Remise de prix</div></div>
+        <div class="car-slide"><img src="{% static 'images/7.jpg' %}" alt="Maths"/><div class="car-caption">Cours de mathématiques intensif</div></div>
       </div>
-      <button class="carousel-btn carousel-prev" id="prevBtn">‹</button>
-      <button class="carousel-btn carousel-next" id="nextBtn">›</button>
+      <button class="car-btn car-prev" id="carPrev">‹</button>
+      <button class="car-btn car-next" id="carNext">›</button>
     </div>
-    <div class="carousel-dots" id="carouselDots"></div>
+    <div class="car-dots" id="carDots"></div>
     <div class="text-center">
-      <a href="{% url 'core:galerie' %}" class="btn-voir btn-voir-dark">Voir toutes les photos</a>
+      <a href="{% url 'core:galerie' %}" class="btn-voir btn-voir-dk">Voir toutes les photos</a>
     </div>
   </div>
 </section>
 
-<!-- TÉMOIGNAGES -->
+<!-- ════════════════════════════════════
+     TÉMOIGNAGES
+════════════════════════════════════ -->
 <section class="section" id="temoignages">
   <div class="container">
     <div class="sec-head text-center fade-in">
       <div class="sec-label">Témoignages</div>
       <h2 class="sec-title">Ils ont suivi nos cours</h2>
-      <p class="sec-sub">Découvrez ce que nos anciens apprenants pensent de l'expérience La Certitude.</p>
+      <p class="sec-sub">Découvrez ce que nos anciens apprenants pensent de La Certitude.</p>
     </div>
     <div class="temo-grid">
-      <div class="temo-card slide-left"><div class="video-thumb" onclick="openVideo('FPDlX2tcvR8')"><img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Koffi Emmanuel"/><div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div></div><div class="temo-info"><div class="temo-name">Koffi Emmanuel</div><div class="temo-meta"><span class="temo-badge">1ère C</span> CEG Zogbo · Édition 2025</div></div></div>
-      <div class="temo-card slide-right"><div class="video-thumb" onclick="openVideo('FPDlX2tcvR8')"><img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Adjoua Marie"/><div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div></div><div class="temo-info"><div class="temo-name">Adjoua Marie</div><div class="temo-meta"><span class="temo-badge">Terminale D</span> Lycée Béhanzin · Édition 2025</div></div></div>
+      <div class="temo-card slide-left">
+        <div class="vid-thumb" onclick="openVideo('FPDlX2tcvR8')">
+          <img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Koffi Emmanuel"/>
+          <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
+        </div>
+        <div class="temo-info">
+          <div class="temo-name">Koffi Emmanuel</div>
+          <div class="temo-meta"><span class="temo-badge">1ère C</span> CEG Zogbo · Édition 2025</div>
+        </div>
+      </div>
+      <div class="temo-card slide-right">
+        <div class="vid-thumb" onclick="openVideo('FPDlX2tcvR8')">
+          <img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Adjoua Marie"/>
+          <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
+        </div>
+        <div class="temo-info">
+          <div class="temo-name">Adjoua Marie</div>
+          <div class="temo-meta"><span class="temo-badge">Terminale D</span> Lycée Béhanzin · Édition 2025</div>
+        </div>
+      </div>
     </div>
-    <div class="text-center"><a href="{% url 'core:temoignages' %}" class="btn-voir">Voir tous les témoignages</a></div>
+    <div class="text-center">
+      <a href="{% url 'core:temoignages' %}" class="btn-voir">Voir tous les témoignages</a>
+    </div>
   </div>
 </section>
 
-<!-- MODALITÉS -->
+<!-- ════════════════════════════════════
+     MODALITÉS
+════════════════════════════════════ -->
 <section class="section section-alt" id="modalites">
   <div class="container">
     <div class="sec-head text-center fade-in">
@@ -1300,53 +1341,106 @@
       <h2 class="sec-title">Comment s'inscrire ?</h2>
       <p class="sec-sub">3 façons simples pour rejoindre le programme.</p>
     </div>
-    <div class="modalites-grid fade-in">
-      <div class="modalite-card mc-lavender"><span class="modalite-icon">🌐</span><h3>En ligne</h3><p>Formulaire + paiement MTN MoMo ou Moov Money en quelques clics.</p><a href="{% url 'enrollments:create' %}" class="mc-pill">Commencer</a></div>
-      <div class="modalite-card mc-white"><span class="modalite-icon">🏫</span><h3>Sur place</h3><p>EPP Gbégamey Sud, tous les samedis de l'après-midi.</p><span class="mc-pill">Samedis 14h–18h30</span></div>
-      <div class="modalite-card mc-dark"><span class="modalite-icon">💬</span><h3>WhatsApp</h3><p>Envoyez Nom, Établissement & Contact au 01 96 38 92 49 après paiement.</p><a href="https://wa.me/22996389249" target="_blank" class="mc-pill">Envoyer</a></div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section" id="faq">
-  <div class="container">
-    <div class="faq-layout">
-      <div class="faq-left slide-left"><div class="sec-label">FAQ</div><h2 class="sec-title">Tout savoir sur l'inscription</h2><p>Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses sont ici.</p><a href="{% url 'enrollments:create' %}" class="btn-register" style="font-size:.9rem;padding:.75rem 1.8rem">S'inscrire maintenant</a></div>
-      <div class="faq-list slide-right" id="faqList">
-        <div class="faq-item open"><button class="faq-question"><span class="faq-q-text">Comment se déroule l'inscription en ligne ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-answer"><div class="faq-answer-inner">L'inscription se fait en quelques minutes. Choisissez votre profil (élève ou parent), remplissez le formulaire, sélectionnez votre niveau, effectuez le paiement via MTN MoMo ou Moov Money, puis téléchargez votre reçu automatiquement.</div></div></div>
-        <div class="faq-item"><button class="faq-question"><span class="faq-q-text">Quels modes de paiement sont acceptés ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-answer"><div class="faq-answer-inner">Nous acceptons <strong>MTN Mobile Money</strong> (01 96 38 92 49) et <strong>Moov Money</strong> (01 95 51 17 61), au nom de <strong>CODJO Abel Jean Eudes</strong>.</div></div></div>
-        <div class="faq-item"><button class="faq-question"><span class="faq-q-text">Quelle est la date limite pour s'inscrire ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-answer"><div class="faq-answer-inner">Les inscriptions sont ouvertes du <strong>1er avril au 22 juin 2026</strong>. Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong> réservé aux 10 premiers inscrits par classe.</div></div></div>
-        <div class="faq-item"><button class="faq-question"><span class="faq-q-text">Comment contacter un professeur pour des cours à domicile ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-answer"><div class="faq-answer-inner">Rendez-vous dans la section <strong>Professeurs</strong>, choisissez le professeur souhaité, puis cliquez sur le bouton WhatsApp pour le contacter directement.</div></div></div>
+    <div class="mod-grid fade-in">
+      <div class="mod-card mc-lav">
+        <span class="mod-icon">🌐</span>
+        <h3>En ligne</h3>
+        <p>Formulaire + paiement MTN MoMo ou Moov Money en quelques clics.</p>
+        <a href="{% url 'enrollments:create' %}" class="mod-pill">Commencer</a>
+      </div>
+      <div class="mod-card mc-wh">
+        <span class="mod-icon">🏫</span>
+        <h3>Sur place</h3>
+        <p>EPP Gbégamey Sud, tous les samedis de l'après-midi.</p>
+        <span class="mod-pill">Samedis 14h – 18h30</span>
+      </div>
+      <div class="mod-card mc-dk">
+        <span class="mod-icon">💬</span>
+        <h3>WhatsApp</h3>
+        <p>Envoyez Nom, Établissement & Contact au 01 96 38 92 49 après paiement.</p>
+        <a href="https://wa.me/22996389249" target="_blank" class="mod-pill">Envoyer</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
+<!-- ════════════════════════════════════
+     FAQ
+════════════════════════════════════ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="slide-left">
+        <div class="sec-label">FAQ</div>
+        <h2 class="sec-title">Tout savoir sur l'inscription</h2>
+        <p style="font-size:.88rem;color:var(--ink-md);line-height:1.78;margin-bottom:1.6rem;">Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses ici.</p>
+        <a href="{% url 'enrollments:create' %}" class="btn-register" style="font-size:.88rem;padding:.72rem 1.7rem;">S'inscrire maintenant</a>
+      </div>
+      <div class="slide-right" id="faqList">
+        <div class="faq-item open">
+          <button class="faq-q"><span class="faq-qt">Comment se déroule l'inscription en ligne ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+          <div class="faq-ans"><div class="faq-ans-inner">Choisissez votre profil (élève ou parent), remplissez le formulaire, sélectionnez votre niveau, effectuez le paiement via MTN MoMo ou Moov Money, puis téléchargez votre reçu automatiquement.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="faq-qt">Quels modes de paiement sont acceptés ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+          <div class="faq-ans"><div class="faq-ans-inner">Nous acceptons <strong>MTN Mobile Money</strong> (01 96 38 92 49) et <strong>Moov Money</strong> (01 95 51 17 61), au nom de <strong>CODJO Abel Jean Eudes</strong>.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="faq-qt">Quelle est la date limite pour s'inscrire ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+          <div class="faq-ans"><div class="faq-ans-inner">Les inscriptions sont ouvertes jusqu'au <strong>22 juin 2026</strong>. Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong> réservé aux 10 premiers inscrits par classe.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span class="faq-qt">Comment contacter un professeur pour des cours à domicile ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+          <div class="faq-ans"><div class="faq-ans-inner">Rendez-vous dans la section <strong>Professeurs</strong>, choisissez le professeur souhaité, puis cliquez sur le bouton WhatsApp pour le contacter directement.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     CTA BANNER
+════════════════════════════════════ -->
 <div class="cta-banner">
   <div class="cta-inner fade-in">
     <div class="cta-pill">⏳ Clôture des inscriptions : 22 juin 2026</div>
     <h2>Prêt à rejoindre La Certitude ?</h2>
     <p>Réservez votre place — les premiers inscrits bénéficient du Pack Privilège exclusif.</p>
-    <a href="{% url 'enrollments:create' %}" class="btn-hero-primary" style="font-size:.95rem;padding:.9rem 2.5rem">S'inscrire en 2 minutes</a>
+    <a href="{% url 'enrollments:create' %}" class="btn-hero-primary" style="font-size:.92rem;padding:.88rem 2.4rem;">S'inscrire en 2 minutes</a>
   </div>
 </div>
 
-<!-- NEWSLETTER -->
+<!-- ════════════════════════════════════
+     NEWSLETTER — style Vatcho
+════════════════════════════════════ -->
 <section class="section">
   <div class="container">
-    <div class="newsletter-wrap scale-in">
+    <div class="nl-wrap scale-in">
       <div class="sec-label">Newsletter</div>
       <h2 class="sec-title">Restez informé</h2>
       <p class="sec-sub" style="margin:0 auto">Recevez chaque semaine les astuces, les dates importantes et les actualités du Groupe La Certitude.</p>
-      <form class="newsletter-form" onsubmit="return false"><input type="email" placeholder="votre@email.com" required/><button type="submit">S'abonner</button></form>
-      <p style="font-size:.75rem;color:var(--ink-lt);margin-top:.7rem">Pas de spam. Désabonnement à tout moment.</p>
+      <form class="nl-form" onsubmit="return false">
+        <input type="email" placeholder="votre@email.com" required/>
+        <button type="submit">S'abonner</button>
+      </form>
+      <p style="font-size:.73rem;color:var(--ink-lt);margin-top:.65rem">Pas de spam. Désabonnement à tout moment.</p>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ════════════════════════════════════
+     SÉPARATEUR CHEVRONS — signature Vatcho
+════════════════════════════════════ -->
+<div class="sep-wrap">
+  <div class="sep-inner">
+    <div class="sep-arrow sep-a"></div>
+    <div class="sep-arrow sep-b"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     CONTACT
+════════════════════════════════════ -->
 <section class="section section-alt" id="contact">
   <div class="container">
     <div class="sec-head text-center fade-in">
@@ -1355,23 +1449,85 @@
       <p class="sec-sub">Des questions ? Notre équipe est disponible pour vous aider.</p>
     </div>
     <div class="contact-grid fade-in">
-      <div><a href="tel:+22996389249" class="contact-card" style="margin-bottom:.9rem"><div class="contact-icon">📞</div><div><div class="contact-label">MTN MoMo</div><div class="contact-val">01 96 38 92 49</div></div></a><a href="tel:+22995511761" class="contact-card"><div class="contact-icon">📞</div><div><div class="contact-label">Moov Money</div><div class="contact-val">01 95 51 17 61</div></div></a></div>
-      <div><a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:.9rem"><div class="contact-icon" style="background:#d1fae5">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val">01 96 38 92 49</div></div></a><div class="contact-card"><div class="contact-icon">📍</div><div><div class="contact-label">Adresse</div><div class="contact-val">EPP Gbégamey Sud, Cotonou</div></div></div></div>
+      <div>
+        <a href="tel:+22996389249" class="contact-card" style="margin-bottom:.85rem">
+          <div class="con-icon">📞</div><div><div class="con-label">MTN MoMo</div><div class="con-val">01 96 38 92 49</div></div>
+        </a>
+        <a href="tel:+22995511761" class="contact-card">
+          <div class="con-icon">📞</div><div><div class="con-label">Moov Money</div><div class="con-val">01 95 51 17 61</div></div>
+        </a>
+      </div>
+      <div>
+        <a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:.85rem">
+          <div class="con-icon" style="background:#d1fae5">💬</div><div><div class="con-label">WhatsApp</div><div class="con-val">01 96 38 92 49</div></div>
+        </a>
+        <div class="contact-card">
+          <div class="con-icon">📍</div><div><div class="con-label">Adresse</div><div class="con-val">EPP Gbégamey Sud, Cotonou</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ════════════════════════════════════
+     FOOTER — style Vatcho (dark violet)
+════════════════════════════════════ -->
 <footer>
   <div class="container">
-    <div class="footer-grid">
-      <div><div class="footer-brand"><img src="{% static 'images/logo_certitude.png' %}" alt="Logo"/><span class="footer-brand-name">Groupe La Certitude</span></div><p class="footer-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou, Bénin. Discipline · Travail · Excellence.</p><div class="footer-social-btns" style="margin-top:1rem"><a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">WhatsApp</a><a href="#" class="footer-ig-btn">Instagram</a></div></div>
-      <div class="footer-col"><h4>Explorer</h4><ul><li><a href="#formations">Formations</a></li><li><a href="#professeurs">Professeurs</a></li><li><a href="#astuces">Astuces</a></li><li><a href="#galerie">Galerie</a></li><li><a href="#temoignages">Témoignages</a></li></ul></div>
-      <div class="footer-col"><h4>Niveaux</h4><ul><li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours de 3ème</a></li><li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère</a></li><li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours de Terminale</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+22996389249">01 96 38 92 49</a></li><li><a href="tel:+22995511761">01 95 51 17 61</a></li><li><a href="https://wa.me/22996389249">WhatsApp</a></li><li><a href="#">EPP Gbégamey Sud</a></li></ul></div>
+    <div class="ft-grid">
+      <div>
+        <div class="ft-brand">
+          <img src="{% static 'images/logo_certitude.png' %}" alt="Logo"/>
+          <span class="ft-brand-name">Groupe La Certitude</span>
+        </div>
+        <p class="ft-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou, Bénin.<br>Discipline · Travail · Excellence.</p>
+        <div class="ft-social">
+          <a href="https://wa.me/22996389249" target="_blank" class="ft-wa">WhatsApp</a>
+          <a href="#" class="ft-ig">Instagram</a>
+        </div>
+      </div>
+      <div class="ft-col">
+        <h4>Explorer</h4>
+        <ul>
+          <li><a href="#formations">Formations</a></li>
+          <li><a href="#professeurs">Professeurs</a></li>
+          <li><a href="#galerie">Galerie</a></li>
+          <li><a href="#temoignages">Témoignages</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Niveaux</h4>
+        <ul>
+          <li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours de 3ème</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère C</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère D</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours Terminale C</a></li>
+          <li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours Terminale D</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+22996389249">01 96 38 92 49</a></li>
+          <li><a href="tel:+22995511761">01 95 51 17 61</a></li>
+          <li><a href="https://wa.me/22996389249">WhatsApp</a></li>
+          <li><a href="#">EPP Gbégamey Sud</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-bigtext">La Certitude</div>
-    <div class="footer-bottom"><p class="footer-copy">© 2026 Groupe La Certitude — Tous droits réservés</p><div style="display:flex;gap:.6rem;flex-wrap:wrap"><a href="https://wa.me/22996389249" target="_blank" class="footer-wa-btn">Rejoindre WhatsApp</a><a href="#" class="footer-ig-btn">Instagram</a></div><span style="font-size:.72rem;opacity:.4">Fait avec ❤️ au Bénin</span></div>
+
+    <!-- Grand texte fantôme — signature Vatcho -->
+    <div class="ft-bigtext">La Certitude</div>
+
+    <div class="ft-bottom">
+      <p class="ft-copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
+      <div style="display:flex;gap:.55rem;flex-wrap:wrap;">
+        <a href="https://wa.me/22996389249" target="_blank" class="ft-wa">Rejoindre WhatsApp</a>
+        <a href="#" class="ft-ig">Instagram</a>
+      </div>
+      <span class="ft-made">Fait avec ❤️ au Bénin</span>
+    </div>
   </div>
 </footer>
 
@@ -1381,139 +1537,124 @@
 </a>
 
 <!-- VIDEO MODAL -->
-<div id="videoModal" onclick="if(event.target===this)closeVideo()" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,8,24,.9);align-items:center;justify-content:center;padding:1rem">
-  <div class="vm-inner"><button class="vm-close" onclick="closeVideo()">✕</button><div class="vm-frame"><iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe></div></div>
+<div id="videoModal" onclick="if(event.target===this)closeVideo()" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,8,24,.9);align-items:center;justify-content:center;padding:1rem;">
+  <div class="vm-inner">
+    <button class="vm-close" onclick="closeVideo()">✕</button>
+    <div class="vm-frame"><iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe></div>
+  </div>
 </div>
 
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
 <script>
-  /* SCROLL PROGRESS */
-  const scrollBar = document.getElementById('scroll-bar');
-  const backTop   = document.getElementById('back-top');
-  const nav       = document.getElementById('navbar');
+/* Scroll progress + nav shadow + back-to-top */
+const scrollBar = document.getElementById('scroll-bar');
+const backTop   = document.getElementById('back-top');
+const nav       = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  scrollBar.style.width = pct + '%';
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+  backTop.classList.toggle('show', window.scrollY > 400);
+}, { passive: true });
 
-  window.addEventListener('scroll', () => {
-    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    scrollBar.style.width = pct + '%';
-    nav.classList.toggle('scrolled', window.scrollY > 50);
-    backTop.classList.toggle('show', window.scrollY > 400);
-  }, { passive: true });
+/* Hamburger */
+const ham  = document.getElementById('hamburger');
+const mmenu = document.getElementById('mobileMenu');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  mmenu.classList.toggle('open');
+  document.body.style.overflow = mmenu.classList.contains('open') ? 'hidden' : '';
+});
+function toggleMobDrop(el) {
+  const c = el.nextElementSibling;
+  c.classList.toggle('show');
+  const ic = el.querySelector('svg');
+  if (ic) ic.style.transform = c.classList.contains('show') ? 'rotate(180deg)' : '';
+}
 
-  /* HAMBURGER */
-  const ham  = document.getElementById('hamburger');
-  const menu = document.getElementById('mobileMenu');
-  ham.addEventListener('click', () => {
-    ham.classList.toggle('open');
-    menu.classList.toggle('open');
-    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+/* Carousel */
+const track  = document.getElementById('carTrack');
+const dotsEl = document.getElementById('carDots');
+const slides = track ? track.querySelectorAll('.car-slide') : [];
+let cur = 0;
+if (slides.length && dotsEl) {
+  slides.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.addEventListener('click', ()=>goTo(i));
+    dotsEl.appendChild(d);
   });
+}
+function goTo(n) {
+  cur = (n + slides.length) % slides.length;
+  if (track) track.style.transform = `translateX(-${cur*100}%)`;
+  if (dotsEl) dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===cur));
+}
+const prev = document.getElementById('carPrev');
+const next = document.getElementById('carNext');
+if (prev) prev.addEventListener('click', ()=>goTo(cur-1));
+if (next) next.addEventListener('click', ()=>goTo(cur+1));
+let auto = setInterval(()=>goTo(cur+1), 4500);
+if (track && track.parentElement) {
+  track.parentElement.addEventListener('mouseenter', ()=>clearInterval(auto));
+  track.parentElement.addEventListener('mouseleave', ()=>{ auto = setInterval(()=>goTo(cur+1),4500); });
+}
 
-  function toggleMobileDropdown(element) {
-    const content = element.nextElementSibling;
-    content.classList.toggle('show');
-    const icon = element.querySelector('svg');
-    if (icon) icon.style.transform = content.classList.contains('show') ? 'rotate(180deg)' : '';
-  }
-
-  /* CAROUSEL */
-  const track  = document.getElementById('carouselTrack');
-  const dotsEl = document.getElementById('carouselDots');
-  const slides = track.querySelectorAll('.carousel-slide');
-  let current  = 0;
-  if (slides.length > 0 && dotsEl) {
-    slides.forEach((_, i) => {
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === 0 ? ' active' : '');
-      d.addEventListener('click', () => goTo(i));
-      dotsEl.appendChild(d);
-    });
-  }
-  function goTo(n) {
-    current = (n + slides.length) % slides.length;
-    track.style.transform = `translateX(-${current * 100}%)`;
-    if (dotsEl) dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
-  }
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
-  let autoSlide = setInterval(() => goTo(current + 1), 4500);
-  if (track && track.parentElement) {
-    track.parentElement.addEventListener('mouseenter', () => clearInterval(autoSlide));
-    track.parentElement.addEventListener('mouseleave', () => { autoSlide = setInterval(() => goTo(current + 1), 4500); });
-  }
-
-  /* FAQ */
-  document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item   = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    });
+/* FAQ */
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
   });
+});
 
-  /* VIDEO */
-  function openVideo(id) {
-    document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-    document.getElementById('videoModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-  function closeVideo() {
-    document.getElementById('videoModal').style.display = 'none';
-    document.getElementById('videoFrame').src = '';
-    document.body.style.overflow = '';
-  }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
+/* Vidéo modal */
+function openVideo(id) {
+  const frame = document.getElementById('videoFrame');
+  frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+  document.getElementById('videoModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeVideo() {
+  document.getElementById('videoFrame').src = '';
+  document.getElementById('videoModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
 
-  /* COUNTER ANIMATION */
-  function animateCounter(el, target) {
-    let start = 0;
-    const dur  = 1200;
-    const step = (timestamp) => {
-      if (!start) start = timestamp;
-      const progress = Math.min((timestamp - start) / dur, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(ease * target);
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }
+/* Counter animation */
+function animCounter(el, target) {
+  let start; const dur = 1200;
+  const step = ts => {
+    if (!start) start = ts;
+    const p = Math.min((ts-start)/dur, 1);
+    const e = 1 - Math.pow(1-p,3);
+    el.textContent = Math.round(e*target);
+    if (p<1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
 
-  /* SCROLL REVEAL */
-  const ANIMATE_CLASSES = ['.fade-in', '.slide-left', '.slide-right', '.scale-in'];
-  const animEls = document.querySelectorAll(ANIMATE_CLASSES.join(','));
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        entry.target.querySelectorAll('[data-target]').forEach(counter => animateCounter(counter, parseInt(counter.dataset.target)));
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  animEls.forEach(el => revealObserver.observe(el));
-  setTimeout(() => document.querySelectorAll('[data-target]').forEach(counter => animateCounter(counter, parseInt(counter.dataset.target))), 600);
+/* Scroll reveal */
+const animEls = document.querySelectorAll('.fade-in,.slide-left,.slide-right,.scale-in');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('[data-target]').forEach(c => animCounter(c, parseInt(c.dataset.target)));
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold:0.12, rootMargin:'0px 0px -40px 0px' });
+animEls.forEach(el => observer.observe(el));
+
+/* Déclencher les compteurs dès l'affichage si hero visible */
+setTimeout(() => {
+  document.querySelectorAll('[data-target]').forEach(c => animCounter(c, parseInt(c.dataset.target)));
+}, 500);
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1145,6 +1145,7 @@
 </section>
 
 <!-- PROFESSEURS - UNIQUEMENT M. CODJO ABEL -->
+<!-- PROFESSEURS -->
 <section class="section section-alt" id="professeurs">
   <div class="container">
     <div class="sec-head text-center fade-in">
@@ -1154,13 +1155,18 @@
     </div>
     <div class="profs-grid" style="display: flex; justify-content: center;">
       <div class="prof-card fade-in stagger-1" style="max-width: 380px; width: 100%;">
-        <div class="prof-avatar"><span>👨‍🏫</span><span class="prof-matiere-badge">Maths</span></div>
+        <div class="prof-avatar"><span>👨‍🔬</span><span class="prof-matiere-badge">PCT</span></div>
         <div class="prof-body">
           <div class="prof-mode-badges"><span class="mode-badge mode-home">À domicile</span><span class="mode-badge mode-online">En ligne</span></div>
           <div class="prof-name">M. Codjo Abel</div>
-          <div class="prof-role">Professeur de Mathématiques</div>
+          <div class="prof-role">Professeur de Physique-Chimie</div>
           <p class="prof-bio">10 ans d'expérience, spécialiste Terminale C & D. Taux de réussite au BAC de 92 %.</p>
-          <div class="prof-tags"><span class="prof-tag">Algèbre</span><span class="prof-tag">Analyse</span><span class="prof-tag">Géométrie</span><span class="prof-tag">Trigonométrie</span></div>
+          <div class="prof-tags">
+            <span class="prof-tag">Mécanique</span>
+            <span class="prof-tag">Électricité</span>
+            <span class="prof-tag">Chimie organique</span>
+            <span class="prof-tag">Thermodynamique</span>
+          </div>
           <div class="prof-contact-row">
             <a href="https://wa.me/22996389249" target="_blank" class="btn-contact-wa">WhatsApp</a>
             <a href="tel:+22996389249" class="btn-contact-call">📞</a>
@@ -1175,6 +1181,9 @@
 </section>
 
 <!-- ASTUCES -->
+
+
+<!-- ASTUCES & MÉTHODES -->
 <section class="section" id="astuces">
   <div class="container">
     <div class="sec-head text-center fade-in">
@@ -1183,26 +1192,41 @@
       <p class="sec-sub">Des astuces pratiques par matière pour booster vos résultats avant les examens.</p>
     </div>
     <div class="astuces-grid">
-      <div class="astuce-card slide-left stagger-1">
-        <div class="astuce-header"><div class="astuce-icon" style="background:#ede9fe">📐</div><div><div class="astuce-matiere">Mathématiques</div><div class="astuce-title">5 astuces pour l'Algèbre</div></div></div>
-        <div class="astuce-body">
-          <div class="astuce-tip"><div class="tip-num">1</div><div class="tip-text"><strong>Identités remarquables :</strong> Mémorisez (a+b)², (a-b)², (a+b)(a-b) avec des exemples numériques.</div></div>
-          <div class="astuce-tip"><div class="tip-num">2</div><div class="tip-text"><strong>Factorisation :</strong> Cherchez toujours le facteur commun avant toute autre méthode.</div></div>
-          <div class="astuce-tip"><div class="tip-num">3</div><div class="tip-text"><strong>Équations 2nd degré :</strong> Calculez Δ = b²-4ac en premier, systématiquement.</div></div>
+      {% for tip in tips %}
+      <div class="astuce-card slide-{% cycle 'left' 'right' %} stagger-{{ forloop.counter }}">
+        <div class="astuce-header">
+          <div class="astuce-icon" style="background:{{ tip.subject.color|default:'#ede9fe' }}">
+            {% if tip.media_type == 'image' %}🖼️{% elif tip.media_type == 'video' %}🎬{% elif tip.media_type == 'pdf' %}📄{% else %}📝{% endif %}
+          </div>
+          <div>
+            <div class="astuce-matiere">{{ tip.subject.name }} · {{ tip.level.name }}</div>
+            <div class="astuce-title">{{ tip.title }}</div>
+          </div>
         </div>
-        <a href="#" class="astuce-cta">Voir toutes les astuces Maths</a>
-      </div>
-      <div class="astuce-card slide-right stagger-1">
-        <div class="astuce-header"><div class="astuce-icon" style="background:#fef9c3">⚗️</div><div><div class="astuce-matiere" style="color:#a16207">Physique-Chimie</div><div class="astuce-title">Maîtriser les calculs PCT</div></div></div>
         <div class="astuce-body">
-          <div class="astuce-tip"><div class="tip-num" style="background:#d97706">1</div><div class="tip-text"><strong>Unités SI :</strong> Toujours convertir avant tout calcul (kJ → J, km/h → m/s).</div></div>
-          <div class="astuce-tip"><div class="tip-num" style="background:#d97706">2</div><div class="tip-text"><strong>Lois de Newton :</strong> Dessinez le bilan des forces avant les équations.</div></div>
-          <div class="astuce-tip"><div class="tip-num" style="background:#d97706">3</div><div class="tip-text"><strong>Réactions chimiques :</strong> Équilibrez les atomes puis les charges.</div></div>
+          {% if tip.media_type == 'text' and tip.content %}
+            {% for item in tip.content|slice:":3" %}
+            <div class="astuce-tip">
+              <div class="tip-num">{{ forloop.counter }}</div>
+              <div class="tip-text"><strong>{{ item.title }}</strong> {{ item.content|truncatewords:20 }}</div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p class="astuce-preview">{{ tip.summary|default:tip.detailed_content|truncatewords:30 }}</p>
+          {% endif %}
         </div>
-        <a href="#" class="astuce-cta" style="color:#a16207;background:#fef9c3">Voir toutes les astuces PCT</a>
+        <a href="{{ tip.get_absolute_url }}" class="astuce-cta">Voir l'astuce →</a>
       </div>
+      {% empty %}
+      <div style="text-align: center; padding: 3rem; color: #94a3b8;">
+           Aucune astuce pour le moment.
+      </div>
+     
+      {% endfor %}
     </div>
-    <div class="text-center"><a href="#" class="btn-voir">Voir toutes les astuces</a></div>
+    <div class="text-center">
+      <a href="{% url 'resources:astuces' %}" class="btn-voir">Voir toutes les astuces</a>
+    </div>
   </div>
 </section>
 

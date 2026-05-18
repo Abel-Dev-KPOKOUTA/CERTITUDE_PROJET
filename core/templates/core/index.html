@@ -1,997 +1,155 @@
+{% extends 'includes/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Groupe La Certitude — Plateforme Éducative 2026</title>
-  <meta name="description" content="Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou. Juillet & Août 2026."/>
-  <link rel="icon" href="{% static 'images/logo_certitude.png' %}" type="image/png"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
-  <style>
-    /* ══════════════════════════════════════════
-       TOKENS — calqués sur la palette Vatcho
-    ══════════════════════════════════════════ */
-    :root {
-      --hero-from : #d7c8ff;
-      --hero-via  : #c2b0f8;
-      --hero-to   : #b79dee;
-      --accent    : #3a2bbf;
-      --accent-10 : rgba(58,43,191,.10);
-      --accent-20 : rgba(58,43,191,.20);
-      --btn       : #635b7d;
-      --btn-hover : #4f4865;
-      --bg-lav    : #f6f4ff;
-      --bg-white  : #ffffff;
-      --bg-slate  : #f8fafc;
-      --ink       : #0f172a;
-      --ink-md    : #475569;
-      --ink-lt    : #94a3b8;
-      --border    : #e2e8f0;
-      --border-md : #cbd5e1;
-      --sh-sm : 0 4px 20px rgba(0,0,0,.06);
-      --sh-md : 0 8px 30px rgba(0,0,0,.10);
-      --sh-lg : 0 24px 60px rgba(0,0,0,.14);
-      --r-card: 20px;
-      --r-pill: 999px;
-      --font  : 'Bricolage Grotesque', sans-serif;
-      --dur   : .5s;
-      --ease  : cubic-bezier(.22,1,.36,1);
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
-    body{font-family:var(--font);background:var(--bg-white);color:var(--ink);overflow-x:hidden;line-height:1.6;}
-    img{max-width:100%;display:block;}
-    a{text-decoration:none;color:inherit;}
 
-    /* ── SCROLL PROGRESS ── */
-    #scroll-bar{
-      position:fixed;top:0;left:0;width:0%;height:3px;
-      background:linear-gradient(90deg,var(--accent),#9986f6);
-      z-index:9999;transition:width .1s linear;border-radius:0 2px 2px 0;
-    }
+{% block title %}Groupe La Certitude — Plateforme Éducative 2026{% endblock %}
+{% block meta_description %}Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou. Juillet & Août 2026.{% endblock %}
 
-    /* ── BACK TO TOP ── */
-    #back-top{
-      position:fixed;bottom:6rem;right:1.4rem;z-index:200;
-      width:44px;height:44px;border-radius:50%;
-      background:var(--btn);color:#fff;border:none;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:var(--sh-md);transition:opacity .3s,transform .3s,background .2s;
-      opacity:0;transform:translateY(10px);pointer-events:none;
-    }
-    #back-top.show{opacity:1;transform:none;pointer-events:auto;}
-    #back-top:hover{background:var(--btn-hover);transform:translateY(-3px);}
+{% block extra_css %}
+<style>
+  /* ── Stagger raccourcis (alias des .stagger-* de base.html) ── */
+  .s1{transition-delay:.07s;} .s2{transition-delay:.14s;} .s3{transition-delay:.21s;}
+  .s4{transition-delay:.28s;} .s5{transition-delay:.35s;} .s6{transition-delay:.42s;}
 
-    /* ══════════════════════════════════════════
-       NAVBAR — identique au style Vatcho
-    ══════════════════════════════════════════ */
-    .nav{
-      position:sticky;top:0;z-index:100;
-      background:rgba(255,255,255,.96);
-      backdrop-filter:blur(18px);
-      border-bottom:1px solid var(--border);
-      transition:box-shadow .3s;
-      print-color-adjust:exact;
-    }
-    .nav.scrolled{box-shadow:var(--sh-sm);}
-    .nav-inner{
-      max-width:1280px;margin:0 auto;
-      display:flex;align-items:center;gap:1.5rem;
-      padding:.85rem 1.5rem;
-    }
+  /* ══════════════════════════════════════════
+     GRILLE CATÉGORIES — spécifique à l'index
+  ══════════════════════════════════════════ */
+  .cat-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem;
+  }
+  .cat-card {
+    border: 1px solid var(--border); border-radius: var(--r-card);
+    overflow: hidden; background: var(--bg-white);
+    transition: border-color .25s, box-shadow .25s, transform .25s;
+    cursor: pointer;
+  }
+  .cat-card:hover { border-color: var(--accent); box-shadow: var(--sh-md); transform: translateY(-3px); }
+  .cat-img { aspect-ratio: 16/9; overflow: hidden; background: var(--bg-slate); }
+  .cat-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+  .cat-card:hover .cat-img img { transform: scale(1.08); }
+  .cat-body { padding: 1rem 1.1rem 1.2rem; }
+  .cat-badge {
+    display: block; width: 100%; text-align: center;
+    border-radius: var(--r-pill); padding: .38rem .8rem;
+    font-size: .82rem; font-weight: 800; margin-bottom: .55rem;
+    transition: transform .25s, filter .25s, box-shadow .25s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .cat-card:hover .cat-badge { transform: translateY(-2px); filter: brightness(.95); box-shadow: 0 4px 14px rgba(0,0,0,.12); }
+  .cat-desc { font-size: .72rem; color: var(--ink-lt); }
 
-    /* Logo */
-    .nav-logo{
-      display:flex;align-items:center;gap:.55rem;
-      font-size:1rem;font-weight:800;letter-spacing:-.02em;
-      white-space:nowrap;color:var(--ink);
-    }
-    .nav-logo img{width:32px;height:32px;border-radius:50%;object-fit:contain;flex-shrink:0;}
+  /* Palette badges catégories */
+  .cb-red    { background: #fde2e4; color: #9d174d; }
+  .cb-amber  { background: #fef3c7; color: #854d0e; }
+  .cb-green  { background: #dcfce7; color: #166534; }
+  .cb-blue   { background: #dbeafe; color: #1e40af; }
+  .cb-orange { background: #ffe4cc; color: #9a3412; }
+  .cb-teal   { background: #d1f0e8; color: #065f46; }
+  .cb-violet { background: #e2d9fd; color: #3a2bbf; }
+  .cb-pink   { background: #fce4ec; color: #9d174d; }
 
-    /* Search bar — comme Vatcho */
-    .nav-search{
-      display:flex;align-items:center;gap:.5rem;
-      border:1px solid var(--border);border-radius:var(--r-pill);
-      background:var(--bg-white);padding:.4rem 1rem;
-      box-shadow:0 1px 4px rgba(0,0,0,.06);
-      transition:border-color .2s,box-shadow .2s;
-      flex:1;max-width:360px;
-    }
-    .nav-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-10);}
-    .nav-search svg{width:14px;height:14px;stroke:var(--ink-lt);flex-shrink:0;}
-    .nav-search input{
-      border:none;outline:none;background:transparent;
-      font-size:.8rem;font-family:var(--font);color:var(--ink);
-      width:100%;
-    }
-    .nav-search input::placeholder{color:var(--ink-lt);}
+  /* ══════════════════════════════════════════
+     PROFESSEURS — vue centrée (1 seul)
+  ══════════════════════════════════════════ */
+  .profs-wrap { display: flex; justify-content: center; }
+  .profs-wrap .prof-card { max-width: 400px; width: 100%; }
 
-    /* Menu desktop */
-    .nav-menu{display:flex;align-items:center;gap:1.5rem;margin-left:auto;}
-    .nav-item{position:relative;}
-    .nav-link{
-      font-size:.8rem;font-weight:600;color:var(--ink-md);
-      padding:.45rem 0;display:flex;align-items:center;gap:.3rem;
-      transition:color .2s;cursor:pointer;
-      background:none;border:none;font-family:var(--font);
-    }
-    .nav-link:hover,.nav-link.active{color:var(--ink);}
-    .nav-link.active{text-decoration:underline;text-underline-offset:4px;}
-    .drop-icon{width:12px;height:12px;transition:transform .25s;}
-    .nav-item:hover .drop-icon{transform:rotate(180deg);}
+  /* ══════════════════════════════════════════
+     RESPONSIVE OVERRIDE index
+  ══════════════════════════════════════════ */
+  @media (max-width: 960px) {
+    .cat-grid { grid-template-columns: repeat(2,1fr); }
+    .avantages-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .cat-grid { grid-template-columns: repeat(2,1fr); }
+    .formations-grid { grid-template-columns: 1fr; }
+    .temo-grid { grid-template-columns: 1fr; }
+  }
 
-    /* Dropdown */
-    .dropdown{
-      position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(-6px);
-      min-width:220px;background:var(--bg-white);
-      border:1px solid var(--border);border-radius:var(--r-card);
-      box-shadow:var(--sh-md);padding:.5rem 0;
-      opacity:0;visibility:hidden;
-      transition:opacity .2s,transform .2s,visibility .2s;
-      z-index:110;
-    }
-    .nav-item:hover .dropdown{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
-    .drop-title{padding:.5rem 1rem .25rem;font-size:.68rem;font-weight:800;color:var(--ink-lt);text-transform:uppercase;letter-spacing:.06em;}
-    .drop-link{
-      display:flex;align-items:center;gap:.7rem;
-      padding:.65rem 1rem;font-size:.8rem;font-weight:500;color:var(--ink-md);
-      transition:background .15s,color .15s;
-    }
-    .drop-link:hover{background:var(--bg-lav);color:var(--accent);}
-    .drop-link svg{width:16px;height:16px;opacity:.65;flex-shrink:0;}
-    .drop-divider{height:1px;background:var(--border);margin:.4rem 0;}
+  .video-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(10,8,24,0.95);
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .video-modal .vm-inner {
+    width: 100%;
+    max-width: 880px;
+    position: relative;
+  }
+  .video-modal .vm-close {
+    position: absolute;
+    top: -48px;
+    right: 0;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    z-index: 10;
+  }
+  .video-modal .vm-close:hover {
+    background: rgba(255,255,255,0.25);
+  }
+  .video-modal .vm-frame {
+    position: relative;
+    padding-top: 56.25%;
+    border-radius: var(--r-card);
+    overflow: hidden;
+    background: #000;
+  }
+  .video-modal .vm-frame iframe,
+  .video-modal .vm-frame #ytplayer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  .modal-info {
+    color: white;
+    background: rgba(0,0,0,0.6);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    text-align: center;
+  }
 
-    /* Boutons auth */
-    .btn-login{
-      border:1px solid var(--border-md);border-radius:var(--r-pill);
-      padding:.42rem 1.1rem;font-size:.8rem;font-weight:600;
-      background:var(--bg-white);color:var(--ink-md);cursor:pointer;
-      font-family:var(--font);transition:background .2s,border-color .2s;
-      white-space:nowrap;
-    }
-    .btn-login:hover{background:var(--bg-slate);border-color:var(--btn);}
-    .btn-register{
-      background:var(--btn);color:#fff;border:none;border-radius:var(--r-pill);
-      padding:.42rem 1.3rem;font-size:.8rem;font-weight:700;
-      cursor:pointer;font-family:var(--font);
-      transition:background .2s,transform .15s;white-space:nowrap;
-    }
-    .btn-register:hover{background:var(--btn-hover);transform:translateY(-1px);}
+</style>
 
-    /* Hamburger */
-    .hamburger{
-      display:none;flex-direction:column;gap:5px;
-      cursor:pointer;background:none;border:none;padding:4px;margin-left:auto;
-    }
-    .hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:99px;transition:.3s;}
-    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-    .hamburger.open span:nth-child(2){opacity:0;}
-    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
-    /* Mobile menu */
-    .mobile-menu{
-      display:none;position:fixed;inset:0;z-index:99;
-      background:#fff;padding:72px 1.5rem 2rem;
-      flex-direction:column;
-      transform:translateX(100%);transition:transform .35s var(--ease);
-      overflow-y:auto;
-    }
-    .mobile-menu.open{display:flex;transform:none;}
-    .mob-item{border-bottom:1px solid var(--border);}
-    .mob-link{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:.9rem 0;font-size:.95rem;font-weight:600;color:var(--ink);cursor:pointer;
-    }
-    .mob-drop{max-height:0;overflow:hidden;transition:max-height .35s var(--ease);padding-left:1rem;}
-    .mob-drop.show{max-height:400px;}
-    .mob-drop a{display:block;padding:.7rem 0;font-size:.85rem;font-weight:500;color:var(--ink-md);}
-    .mob-auth{margin-top:2rem;display:flex;flex-direction:column;gap:.8rem;}
-    .mob-auth .btn-login,.mob-auth .btn-register{text-align:center;padding:.85rem;font-size:.9rem;}
+{% endblock %}
 
-    /* ══════════════════════════════════════════
-       HERO — style Vatcho (gradient lavande,
-       texte blanc encadré, image côté droit)
-    ══════════════════════════════════════════ */
-    .hero{
-      background:linear-gradient(135deg,var(--hero-from) 0%,var(--hero-via) 55%,var(--hero-to) 100%);
-      padding:4.5rem 1.5rem 0;overflow:hidden;position:relative;
-    }
-    /* Décos SVG flottantes — copie fidèle de Vatcho */
-    .hero-deco{position:absolute;pointer-events:none;}
-    @keyframes blob-float{
-      0%,100%{transform:translate(0,0) scale(1);}
-      40%{transform:translate(18px,-14px) scale(1.04);}
-      70%{transform:translate(-12px,8px) scale(.97);}
-    }
-    @keyframes circ-rot{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-    @keyframes badge-pulse{
-      0%,100%{box-shadow:0 0 0 0 rgba(58,43,191,.3);}
-      50%{box-shadow:0 0 0 6px rgba(58,43,191,0);}
-    }
-    .deco-blob{top:-50px;right:-60px;width:460px;opacity:.38;animation:blob-float 8s ease-in-out infinite;}
-    .deco-circle-lg{top:28px;right:56px;width:52px;opacity:.65;animation:circ-rot 22s linear infinite;}
-    .deco-wave{bottom:0;right:0;width:360px;opacity:.22;}
 
-    .hero-inner{
-      max-width:1200px;margin:0 auto;
-      display:grid;grid-template-columns:1fr 420px;
-      gap:2.5rem;align-items:flex-end;
-    }
-    .hero-text{padding-bottom:4.5rem;}
-
-    /* Badge animé */
-    .hero-badge{
-      display:inline-flex;align-items:center;gap:.5rem;
-      background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.85);
-      backdrop-filter:blur(8px);border-radius:var(--r-pill);
-      padding:.35rem .95rem;font-size:.76rem;font-weight:700;color:var(--accent);
-      margin-bottom:1.2rem;animation:badge-pulse 3s ease-in-out infinite;
-    }
-    .hero-badge::before{
-      content:'';width:7px;height:7px;border-radius:50%;
-      background:var(--accent);animation:badge-pulse 1.5s ease-in-out infinite;
-    }
-
-    /* Titre avec les word-boxes blanches — signature Vatcho */
-    .hero-h1{
-      font-size:clamp(1.9rem,4.5vw,3.2rem);font-weight:900;
-      line-height:1.1;letter-spacing:-.04em;margin-bottom:1.2rem;
-    }
-    .word-box{
-      display:inline-block;background:#fff;color:var(--ink);
-      padding:.06em .22em;box-shadow:4px 4px 0 #ddd4fc;
-      margin-bottom:.18rem;margin-right:.15rem;
-      transition:transform .2s,box-shadow .2s;
-    }
-    .word-box:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #ddd4fc;}
-
-    .hero-sub{font-size:.95rem;color:rgba(15,23,42,.72);max-width:500px;line-height:1.78;margin-bottom:1.8rem;}
-
-    /* Tagline animée — comme Vatcho */
-    .hero-tagline{
-      display:inline-flex;align-items:center;gap:.4rem;
-      font-size:.82rem;font-weight:600;color:rgba(15,23,42,.7);margin-bottom:1.6rem;
-    }
-    .hero-tagline .logo-chip{
-      background:rgba(0,0,0,.45);border-radius:6px;padding:.18rem .55rem;
-      display:inline-flex;align-items:center;
-    }
-    .hero-tagline .logo-chip img{height:14px;width:auto;object-fit:contain;}
-    @keyframes typing{
-      0%{clip-path:inset(0 100% 0 0);}
-      40%{clip-path:inset(0 0% 0 0);}
-      60%{clip-path:inset(0 0% 0 0);}
-      100%{clip-path:inset(0 100% 0 0);}
-    }
-    .typed{display:inline-block;overflow:hidden;white-space:nowrap;animation:typing 6s steps(25) infinite;}
-
-    .hero-btns{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem;}
-    .btn-hero-primary{
-      background:var(--ink);color:#fff;border-radius:var(--r-pill);
-      padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;
-      font-family:var(--font);transition:background .2s,transform .2s,box-shadow .2s;
-      box-shadow:0 4px 16px rgba(15,23,42,.22);
-    }
-    .btn-hero-primary:hover{background:#1e293b;transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,.3);}
-    .btn-hero-ghost{
-      background:rgba(255,255,255,.4);color:var(--ink);border-radius:var(--r-pill);
-      padding:.72rem 1.8rem;font-size:.88rem;font-weight:600;
-      font-family:var(--font);border:1px solid rgba(255,255,255,.7);
-      transition:background .2s;
-    }
-    .btn-hero-ghost:hover{background:rgba(255,255,255,.65);}
-
-    /* Stats pills */
-    .hero-stats{display:flex;flex-wrap:wrap;gap:.7rem;}
-    .stat-pill{
-      background:rgba(255,255,255,.52);border:1px solid rgba(255,255,255,.82);
-      border-radius:var(--r-pill);padding:.5rem 1.2rem;
-      display:flex;flex-direction:column;align-items:center;
-      backdrop-filter:blur(8px);transition:transform .2s,background .2s;
-    }
-    .stat-pill:hover{transform:translateY(-2px);background:rgba(255,255,255,.7);}
-    .stat-n{font-size:1.45rem;font-weight:900;letter-spacing:-.04em;}
-    .stat-l{font-size:.66rem;font-weight:600;color:rgba(15,23,42,.52);margin-top:1px;}
-
-    /* Panel flottant côté droit */
-    .hero-panel{position:relative;padding-bottom:0;}
-    .hero-card{
-      background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
-      border:1px solid rgba(255,255,255,.95);border-radius:var(--r-card);
-      padding:1.3rem 1.4rem;box-shadow:var(--sh-lg);
-      animation:float 5s ease-in-out infinite;
-    }
-    .hc-title{font-size:.7rem;font-weight:800;color:var(--ink-md);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.9rem;}
-    .hc-row{
-      display:flex;align-items:center;gap:.75rem;
-      padding:.55rem 0;border-bottom:1px solid rgba(0,0,0,.06);
-    }
-    .hc-row:last-of-type{border-bottom:none;}
-    .hc-icon{
-      width:32px;height:32px;border-radius:9px;
-      background:var(--bg-lav);display:flex;align-items:center;
-      justify-content:center;font-size:.9rem;flex-shrink:0;
-    }
-    .hc-label{font-size:.62rem;color:var(--ink-lt);font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
-    .hc-val{font-size:.84rem;font-weight:700;}
-    .hc-deadline{
-      margin-top:.9rem;background:var(--accent-10);border:1px solid var(--accent-20);
-      border-radius:12px;padding:.55rem .85rem;
-      font-size:.8rem;font-weight:700;color:var(--accent);
-      display:flex;align-items:center;gap:.45rem;
-    }
-
-    /* ══════════════════════════════════════════
-       SECTIONS COMMUNES
-    ══════════════════════════════════════════ */
-    .section{padding:5rem 1.5rem;}
-    .section-alt{background:var(--bg-lav);}
-    .container{max-width:1200px;margin:0 auto;}
-    .sec-head{margin-bottom:2.5rem;}
-    .sec-label{
-      display:inline-block;font-size:.7rem;font-weight:800;
-      letter-spacing:.09em;text-transform:uppercase;
-      color:var(--accent);background:var(--accent-10);
-      border-radius:var(--r-pill);padding:.28rem .9rem;margin-bottom:.75rem;
-    }
-    .sec-title{
-      font-size:clamp(1.6rem,3.2vw,2.4rem);font-weight:900;
-      letter-spacing:-.04em;line-height:1.1;margin-bottom:.45rem;
-    }
-    .sec-sub{font-size:.92rem;color:var(--ink-md);max-width:500px;line-height:1.78;}
-    .text-center{text-align:center;}
-    .text-center .sec-sub{margin:0 auto;}
-    .flex-between{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.2rem;}
-    .link-view-all{font-size:.78rem;font-weight:700;color:var(--accent);transition:opacity .2s;}
-    .link-view-all:hover{opacity:.7;}
-
-    /* Animations */
-    .fade-in{opacity:0;transform:translateY(24px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
-    .fade-in.visible{opacity:1;transform:none;}
-    .slide-left{opacity:0;transform:translateX(-28px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
-    .slide-left.visible{opacity:1;transform:none;}
-    .slide-right{opacity:0;transform:translateX(28px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
-    .slide-right.visible{opacity:1;transform:none;}
-    .scale-in{opacity:0;transform:scale(.93);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
-    .scale-in.visible{opacity:1;transform:none;}
-    .s1{transition-delay:.07s;}.s2{transition-delay:.14s;}.s3{transition-delay:.21s;}
-    .s4{transition-delay:.28s;}.s5{transition-delay:.35s;}.s6{transition-delay:.42s;}
-
-    /* ══════════════════════════════════════════
-       CATÉGORIES — grille style Vatcho
-       (image pleine + badge label arrondi)
-    ══════════════════════════════════════════ */
-    .cat-grid{
-      display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
-    }
-    .cat-card{
-      border:1px solid var(--border);border-radius:var(--r-card);
-      overflow:hidden;background:var(--bg-white);
-      transition:border-color .25s,box-shadow .25s,transform .25s;
-      cursor:pointer;
-    }
-    .cat-card:hover{border-color:var(--accent);box-shadow:var(--sh-md);transform:translateY(-3px);}
-    .cat-img{
-      aspect-ratio:16/9;overflow:hidden;background:var(--bg-slate);
-    }
-    .cat-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);}
-    .cat-card:hover .cat-img img{transform:scale(1.08);}
-    .cat-body{padding:1rem 1.1rem 1.2rem;}
-    /* Badge couleur pleine width — comme Vatcho */
-    .cat-badge{
-      display:block;width:100%;text-align:center;
-      border-radius:var(--r-pill);padding:.38rem .8rem;
-      font-size:.82rem;font-weight:800;
-      margin-bottom:.55rem;
-      transform:translateY(0);transition:transform .25s,filter .25s,box-shadow .25s;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);
-    }
-    .cat-card:hover .cat-badge{transform:translateY(-2px);filter:brightness(.95);box-shadow:0 4px 14px rgba(0,0,0,.12);}
-    .cat-desc{font-size:.72rem;color:var(--ink-lt);}
-
-    /* Couleurs des badges (palette Vatcho) */
-    .cb-red   {background:#fde2e4;color:#9d174d;}
-    .cb-amber {background:#fef3c7;color:#854d0e;}
-    .cb-green {background:#dcfce7;color:#166534;}
-    .cb-blue  {background:#dbeafe;color:#1e40af;}
-    .cb-orange{background:#ffe4cc;color:#9a3412;}
-    .cb-teal  {background:#d1f0e8;color:#065f46;}
-    .cb-violet{background:#e2d9fd;color:#3a2bbf;}
-    .cb-pink  {background:#fce4ec;color:#9d174d;}
-
-    /* ══════════════════════════════════════════
-       FORMATIONS (cards avec image top)
-    ══════════════════════════════════════════ */
-    .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
-    .form-card{
-      background:var(--bg-white);border:1px solid var(--border);
-      border-radius:var(--r-card);overflow:hidden;
-      box-shadow:var(--sh-sm);
-      transition:border-color .25s,box-shadow .25s,transform .25s;
-      display:flex;flex-direction:column;
-    }
-    .form-card::after{
-      content:'';display:block;position:absolute;top:0;left:0;right:0;height:3px;
-      background:linear-gradient(90deg,var(--accent),#9986f6);
-      transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);
-    }
-    .form-card{position:relative;}
-    .form-card:hover{border-color:var(--accent);box-shadow:var(--sh-md);transform:translateY(-4px);}
-    .form-card:hover::after{transform:scaleX(1);}
-    .form-card.featured{border-color:var(--accent);border-width:2px;}
-    .form-card.featured::after{transform:scaleX(1);}
-    .form-card-img{aspect-ratio:16/10;overflow:hidden;background:var(--bg-slate);}
-    .form-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease);}
-    .form-card:hover .form-card-img img{transform:scale(1.04);}
-    .form-card-body{padding:1.3rem 1.4rem 1.4rem;flex:1;display:flex;flex-direction:column;}
-    .badge-popular{
-      position:absolute;top:.9rem;right:.9rem;
-      background:var(--accent-10);color:var(--accent);
-      border-radius:var(--r-pill);padding:.2rem .6rem;
-      font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
-    }
-    .level-tag{
-      display:inline-block;background:var(--accent-10);color:var(--accent);
-      border-radius:var(--r-pill);padding:.25rem .8rem;
-      font-size:.7rem;font-weight:800;text-transform:uppercase;
-      letter-spacing:.05em;margin-bottom:.8rem;
-    }
-    .form-card h3{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.35rem;}
-    .form-desc{font-size:.82rem;color:var(--ink-md);line-height:1.65;margin-bottom:.9rem;flex:1;}
-    .subjects{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem;}
-    .sub-tag{
-      background:var(--bg-slate);color:var(--ink-md);font-size:.72rem;font-weight:600;
-      padding:.24rem .65rem;border-radius:8px;border:1px solid var(--border);
-      transition:background .2s,border-color .2s;
-    }
-    .form-card:hover .sub-tag{border-color:var(--accent-20);background:var(--accent-10);}
-    .price-row{display:flex;align-items:baseline;gap:.25rem;margin-bottom:1rem;}
-    .price{font-size:1.9rem;font-weight:900;letter-spacing:-.04em;}
-    .price-unit{font-size:.8rem;color:var(--ink-lt);font-weight:600;}
-    .card-foot{display:flex;align-items:center;gap:.5rem;}
-    .btn-view{
-      display:inline-flex;align-items:center;gap:.35rem;
-      background:var(--btn);color:#fff;border-radius:var(--r-pill);
-      padding:.48rem 1.1rem;font-size:.75rem;font-weight:700;
-      font-family:var(--font);transition:background .2s,transform .15s;
-    }
-    .btn-view:hover{background:var(--btn-hover);transform:translateY(-1px);}
-    .card-deadline{font-size:.7rem;font-weight:600;color:var(--ink-md);margin-left:auto;}
-
-    /* ══════════════════════════════════════════
-       PROFESSEURS
-    ══════════════════════════════════════════ */
-    .profs-wrap{display:flex;justify-content:center;}
-    .prof-card{
-      background:var(--bg-white);border:1px solid var(--border);
-      border-radius:var(--r-card);overflow:hidden;
-      box-shadow:var(--sh-sm);max-width:370px;width:100%;
-      transition:box-shadow .25s,transform .25s;
-    }
-    .prof-card:hover{box-shadow:var(--sh-md);transform:translateY(-4px);}
-    .prof-avatar{
-      aspect-ratio:16/9;
-      background:linear-gradient(135deg,var(--hero-from),var(--hero-to));
-      display:flex;align-items:center;justify-content:center;
-      font-size:2.8rem;position:relative;
-    }
-    .prof-mat-badge{
-      position:absolute;top:.7rem;left:.7rem;
-      background:var(--btn);color:#fff;border-radius:var(--r-pill);
-      padding:.24rem .7rem;font-size:.68rem;font-weight:800;
-    }
-    .prof-body{padding:1.1rem 1.25rem;}
-    .mode-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.7rem;}
-    .mode-b{font-size:.67rem;font-weight:700;padding:.18rem .5rem;border-radius:var(--r-pill);border:1px solid;}
-    .mode-home{background:#fef3c7;color:#92400e;border-color:#fde68a;}
-    .mode-online{background:#dbeafe;color:#1e40af;border-color:#bfdbfe;}
-    .prof-name{font-size:.97rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.18rem;}
-    .prof-role{font-size:.76rem;color:var(--accent);font-weight:700;margin-bottom:.5rem;}
-    .prof-bio{font-size:.8rem;color:var(--ink-md);line-height:1.65;margin-bottom:.9rem;}
-    .prof-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem;}
-    .prof-tag{background:var(--accent-10);color:var(--accent);border-radius:var(--r-pill);padding:.2rem .55rem;font-size:.7rem;font-weight:700;}
-    .prof-contact{display:flex;gap:.5rem;}
-    .btn-wa{
-      flex:1;display:flex;align-items:center;justify-content:center;gap:.35rem;
-      background:#25d366;color:#fff;border-radius:var(--r-pill);
-      padding:.52rem 1rem;font-size:.76rem;font-weight:700;
-      font-family:var(--font);transition:opacity .2s,transform .15s;
-    }
-    .btn-wa:hover{opacity:.88;transform:translateY(-1px);}
-    .btn-call{
-      display:flex;align-items:center;justify-content:center;
-      width:36px;height:36px;border-radius:50%;
-      border:1px solid var(--border);background:var(--bg-white);
-      transition:border-color .2s,transform .2s;
-    }
-    .btn-call:hover{border-color:var(--accent);transform:scale(1.1);}
-
-    /* ══════════════════════════════════════════
-       AVANTAGES / PACK PRIVILÈGE
-    ══════════════════════════════════════════ */
-    .av-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;}
-    .av-card{
-      background:var(--bg-white);border:1px solid var(--border);
-      border-radius:var(--r-card);padding:1.4rem;
-      display:flex;gap:.9rem;align-items:flex-start;
-      box-shadow:var(--sh-sm);transition:box-shadow .25s,transform .25s,border-color .25s;
-    }
-    .av-card:hover{box-shadow:var(--sh-md);transform:translateY(-3px);border-color:var(--accent-20);}
-    .av-icon{
-      width:48px;height:48px;border-radius:13px;flex-shrink:0;
-      display:flex;align-items:center;justify-content:center;font-size:1.35rem;
-      background:var(--bg-lav);transition:transform .3s;
-    }
-    .av-card:hover .av-icon{transform:scale(1.12);}
-    .av-title{font-size:.93rem;font-weight:800;margin-bottom:.25rem;}
-    .av-desc{font-size:.81rem;color:var(--ink-md);line-height:1.65;}
-
-    /* ══════════════════════════════════════════
-       GALERIE (carrousel)
-    ══════════════════════════════════════════ */
-    #galerie{background:#1e1b2e;padding:5rem 1.5rem;}
-    .carousel{position:relative;border-radius:var(--r-card);overflow:hidden;box-shadow:var(--sh-lg);}
-    .car-track{display:flex;transition:transform .55s var(--ease);}
-    .car-slide{min-width:100%;position:relative;}
-    .car-slide img{width:100%;height:420px;object-fit:cover;display:block;}
-    .car-caption{
-      position:absolute;bottom:0;left:0;right:0;padding:1.2rem;
-      background:linear-gradient(transparent,rgba(0,0,0,.68));
-      color:#fff;font-size:.85rem;font-weight:600;
-    }
-    .car-btn{
-      position:absolute;top:50%;transform:translateY(-50%);
-      width:40px;height:40px;border-radius:50%;
-      background:rgba(255,255,255,.9);border:none;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      font-size:.95rem;color:var(--ink);z-index:2;
-      transition:background .2s,transform .2s;
-    }
-    .car-btn:hover{background:#fff;transform:translateY(-50%) scale(1.1);}
-    .car-prev{left:.9rem;}.car-next{right:.9rem;}
-    .car-dots{display:flex;justify-content:center;gap:.45rem;margin-top:1rem;}
-    .dot{
-      width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);
-      cursor:pointer;transition:background .25s,transform .25s;
-    }
-    .dot.active{background:#fff;transform:scale(1.4);}
-
-    /* ══════════════════════════════════════════
-       TÉMOIGNAGES (vidéos)
-    ══════════════════════════════════════════ */
-    .temo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;}
-    .temo-card{
-      background:var(--bg-white);border:1px solid var(--border);
-      border-radius:var(--r-card);overflow:hidden;
-      box-shadow:var(--sh-sm);transition:box-shadow .25s,transform .25s;
-    }
-    .temo-card:hover{box-shadow:var(--sh-md);transform:translateY(-4px);}
-    .vid-thumb{position:relative;padding-top:56.25%;cursor:pointer;overflow:hidden;background:var(--bg-slate);}
-    .vid-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
-    .temo-card:hover .vid-thumb img{transform:scale(1.05);}
-    .play-overlay{
-      position:absolute;inset:0;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;background:rgba(30,27,46,.42);
-      transition:background .3s;
-    }
-    .temo-card:hover .play-overlay{background:rgba(30,27,46,.55);}
-    .play-circle{
-      width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.94);
-      display:flex;align-items:center;justify-content:center;
-      font-size:1.1rem;margin-bottom:.35rem;transition:transform .25s;
-    }
-    .temo-card:hover .play-circle{transform:scale(1.14);}
-    .play-overlay span{color:#fff;font-size:.73rem;font-weight:700;opacity:.9;}
-    .temo-info{padding:.9rem 1.1rem;}
-    .temo-name{font-size:.9rem;font-weight:800;margin-bottom:.22rem;}
-    .temo-meta{font-size:.73rem;color:var(--ink-lt);display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;}
-    .temo-badge{background:var(--accent-10);color:var(--accent);padding:.16rem .5rem;border-radius:var(--r-pill);font-weight:700;font-size:.68rem;}
-
-    /* ══════════════════════════════════════════
-       MODALITÉS
-    ══════════════════════════════════════════ */
-    .mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;}
-    .mod-card{border-radius:var(--r-card);padding:1.9rem 1.5rem;text-align:center;transition:transform .2s;}
-    .mod-card:hover{transform:translateY(-3px);}
-    .mc-lav{background:linear-gradient(135deg,var(--hero-from),var(--hero-via));}
-    .mc-wh{background:var(--bg-white);border:1px solid var(--border);box-shadow:var(--sh-sm);}
-    .mc-dk{background:var(--btn-hover);color:#fff;}
-    .mod-icon{font-size:1.9rem;display:block;margin-bottom:.85rem;}
-    .mod-card h3{font-size:.97rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.45rem;}
-    .mc-lav h3,.mc-wh h3{color:var(--ink);}
-    .mod-card p{font-size:.81rem;line-height:1.65;margin-bottom:.9rem;}
-    .mc-wh p,.mc-lav p{color:var(--ink-md);}
-    .mc-dk p{color:rgba(255,255,255,.72);}
-    .mod-pill{display:inline-block;font-size:.78rem;font-weight:700;padding:.42rem 1rem;border-radius:var(--r-pill);}
-    .mc-lav .mod-pill{background:rgba(255,255,255,.52);color:var(--ink);}
-    .mc-wh .mod-pill{background:var(--accent-10);color:var(--accent);}
-    .mc-dk .mod-pill{background:rgba(255,255,255,.14);color:#fff;}
-
-    /* ══════════════════════════════════════════
-       FAQ
-    ══════════════════════════════════════════ */
-    .faq-layout{display:grid;grid-template-columns:340px 1fr;gap:4rem;align-items:start;}
-    .faq-left p{font-size:.88rem;color:var(--ink-md);line-height:1.78;margin-bottom:1.6rem;}
-    .faq-item{border-bottom:1px solid var(--border);}
-    .faq-item:first-child{border-top:1px solid var(--border);}
-    .faq-q{
-      width:100%;display:flex;align-items:center;justify-content:space-between;
-      padding:1rem 0;background:none;border:none;cursor:pointer;
-      text-align:left;gap:1rem;transition:color .2s;font-family:var(--font);
-    }
-    .faq-q:hover .faq-qt{color:var(--accent);}
-    .faq-qt{font-size:.9rem;font-weight:700;color:var(--ink);transition:color .2s;}
-    .faq-icon{
-      width:26px;height:26px;border-radius:50%;background:var(--bg-slate);
-      display:flex;align-items:center;justify-content:center;flex-shrink:0;
-      transition:background .25s,transform .35s var(--ease);
-    }
-    .faq-icon svg{stroke:var(--ink-md);transition:stroke .2s;}
-    .faq-item.open .faq-icon{background:var(--btn);transform:rotate(180deg);}
-    .faq-item.open .faq-icon svg{stroke:#fff;}
-    .faq-ans{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
-    .faq-ans-inner{padding:.15rem 0 1.2rem;font-size:.86rem;color:var(--ink-md);line-height:1.8;}
-    .faq-item.open .faq-ans{max-height:500px;}
-
-    /* ══════════════════════════════════════════
-       NEWSLETTER — style Vatcho
-    ══════════════════════════════════════════ */
-    .nl-wrap{
-      background:var(--bg-lav);border-radius:var(--r-card);
-      padding:3.2rem 2rem;text-align:center;max-width:660px;margin:0 auto;
-    }
-    .nl-form{display:flex;gap:.55rem;max-width:460px;margin:1.4rem auto 0;flex-wrap:wrap;}
-    .nl-form input{
-      flex:1;min-width:190px;border:1px solid var(--border);
-      border-radius:var(--r-pill);padding:.72rem 1.2rem;
-      font-size:.86rem;font-family:var(--font);outline:none;
-      transition:border-color .2s,box-shadow .2s;
-    }
-    .nl-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-10);}
-    .nl-form button{
-      background:var(--btn-hover);color:#fff;border:none;
-      border-radius:var(--r-pill);padding:.72rem 1.5rem;
-      font-size:.86rem;font-weight:700;font-family:var(--font);cursor:pointer;
-      transition:background .2s,transform .15s;
-    }
-    .nl-form button:hover{background:var(--accent);transform:translateY(-1px);}
-
-    /* ══════════════════════════════════════════
-       SÉPARATEUR chevrons — comme Vatcho
-    ══════════════════════════════════════════ */
-    .sep-wrap{padding:.5rem 1.5rem;}
-    .sep-inner{max-width:1200px;margin:0 auto;}
-    .sep-arrow{
-      height:28px;width:100%;
-      clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%,14px 50%);
-    }
-    .sep-a{background:linear-gradient(90deg,#ece7f3 0%,#cabfdb 30%,#9b8eb6 65%,#6f6390 90%,#463e5c 100%);}
-    .sep-b{background:linear-gradient(90deg,#463e5c 0%,#6f6390 10%,#9b8eb6 35%,#cabfdb 70%,#ece7f3 100%);margin-top:-1px;}
-
-    /* ══════════════════════════════════════════
-       CTA BANNER
-    ══════════════════════════════════════════ */
-    .cta-banner{
-      background:linear-gradient(140deg,var(--hero-from),var(--hero-via),var(--hero-to));
-      padding:4.5rem 1.5rem;text-align:center;position:relative;overflow:hidden;
-    }
-    .cta-banner::before{
-      content:'';position:absolute;inset:0;
-      background:radial-gradient(circle at 30% 50%,rgba(255,255,255,.18),transparent 55%),
-                  radial-gradient(circle at 70% 50%,rgba(58,43,191,.12),transparent 55%);
-    }
-    .cta-inner{max-width:620px;margin:0 auto;position:relative;z-index:1;}
-    .cta-pill{
-      display:inline-flex;align-items:center;gap:.4rem;
-      background:rgba(255,255,255,.52);border:1px solid rgba(255,255,255,.88);
-      border-radius:var(--r-pill);padding:.38rem 1rem;
-      font-size:.76rem;font-weight:700;margin-bottom:1.1rem;
-    }
-    .cta-banner h2{font-size:clamp(1.7rem,3.8vw,2.5rem);font-weight:900;letter-spacing:-.04em;margin-bottom:.5rem;}
-    .cta-banner p{font-size:.92rem;color:rgba(15,23,42,.68);margin-bottom:1.7rem;}
-
-    /* ══════════════════════════════════════════
-       CONTACT
-    ══════════════════════════════════════════ */
-    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
-    .contact-card{
-      background:var(--bg-white);border:1px solid var(--border);
-      border-radius:var(--r-card);padding:1.2rem 1.3rem;
-      display:flex;align-items:center;gap:.9rem;
-      box-shadow:var(--sh-sm);transition:box-shadow .2s,border-color .2s,transform .2s;
-    }
-    .contact-card:hover{box-shadow:var(--sh-md);border-color:var(--btn);transform:translateY(-2px);}
-    .con-icon{
-      width:42px;height:42px;border-radius:12px;flex-shrink:0;
-      display:flex;align-items:center;justify-content:center;
-      font-size:1.15rem;background:var(--bg-lav);
-    }
-    .con-label{font-size:.66rem;font-weight:800;color:var(--ink-lt);text-transform:uppercase;letter-spacing:.07em;}
-    .con-val{font-size:.97rem;font-weight:900;margin-top:.08rem;}
-
-    /* ══════════════════════════════════════════
-       FOOTER — style Vatcho (dark violet)
-    ══════════════════════════════════════════ */
-    footer{
-      background:linear-gradient(180deg,#3d3658 0%,#4f486d 45%,#635b7d 100%);
-      color:rgba(255,255,255,.68);padding:4rem 1.5rem 1.5rem;
-      position:relative;overflow:hidden;
-    }
-    .ft-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:2rem;margin-bottom:3rem;}
-    .ft-brand{display:flex;align-items:center;gap:.65rem;margin-bottom:.9rem;}
-    .ft-brand img{width:34px;height:34px;border-radius:50%;background:#fff;padding:2px;object-fit:contain;}
-    .ft-brand-name{font-size:.97rem;font-weight:800;color:#fff;}
-    .ft-desc{font-size:.78rem;line-height:1.8;margin-bottom:1.1rem;}
-    .ft-col h4{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.9rem;}
-    .ft-col ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
-    .ft-col ul li a{font-size:.76rem;color:rgba(255,255,255,.58);transition:color .2s;}
-    .ft-col ul li a:hover{color:#fff;}
-    .ft-social{display:flex;gap:.55rem;flex-wrap:wrap;}
-    .ft-wa{
-      display:inline-flex;align-items:center;gap:.4rem;
-      background:rgba(37,211,102,.14);border:1px solid rgba(37,211,102,.32);
-      border-radius:var(--r-pill);padding:.38rem .9rem;
-      font-size:.73rem;font-weight:700;color:#6ee7a0;transition:background .2s;
-    }
-    .ft-wa:hover{background:rgba(37,211,102,.24);}
-    .ft-ig{
-      display:inline-flex;align-items:center;gap:.4rem;
-      background:rgba(255,100,130,.11);border:1px solid rgba(255,100,130,.26);
-      border-radius:var(--r-pill);padding:.38rem .9rem;
-      font-size:.73rem;font-weight:700;color:#fca5b9;transition:background .2s;
-    }
-    .ft-ig:hover{background:rgba(255,100,130,.2);}
-    /* Grand texte fantôme — signature Vatcho */
-    .ft-bigtext{
-      text-align:center;margin:1rem 0;
-      font-size:clamp(52px,12vw,160px);font-weight:900;
-      letter-spacing:-.04em;color:rgba(255,255,255,.055);
-      user-select:none;line-height:1;
-    }
-    .ft-bottom{
-      border-top:1px solid rgba(255,255,255,.1);padding-top:1.4rem;
-      display:flex;align-items:center;justify-content:space-between;
-      flex-wrap:wrap;gap:.7rem;
-    }
-    .ft-copy{font-size:.71rem;opacity:.4;}
-    .ft-made{font-size:.71rem;opacity:.4;}
-
-    /* ══════════════════════════════════════════
-       WA FLOAT
-    ══════════════════════════════════════════ */
-    .wa-float{
-      position:fixed;bottom:1.4rem;right:1.4rem;z-index:99;
-      width:50px;height:50px;border-radius:50%;background:#25d366;
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:0 4px 20px rgba(37,211,102,.42);transition:transform .2s;
-    }
-    .wa-float:hover{transform:scale(1.1);}
-    .wa-float svg{width:24px;height:24px;fill:#fff;}
-
-    /* ══════════════════════════════════════════
-       BOUTON "Voir tout" / BTN VOIR
-    ══════════════════════════════════════════ */
-    .btn-voir{
-      display:inline-flex;align-items:center;gap:.45rem;
-      background:var(--accent-10);color:var(--accent);
-      border-radius:var(--r-pill);padding:.7rem 1.9rem;
-      font-size:.85rem;font-weight:700;font-family:var(--font);
-      margin-top:1.6rem;transition:background .2s,color .2s,transform .15s;
-    }
-    .btn-voir:hover{background:var(--btn);color:#fff;transform:translateY(-2px);}
-    .btn-voir-dk{
-      background:rgba(255,255,255,.1);color:rgba(255,255,255,.82);
-      border:1px solid rgba(255,255,255,.2);
-    }
-    .btn-voir-dk:hover{background:rgba(255,255,255,.2);color:#fff;}
-
-    /* VIDEO MODAL */
-    #videoModal{
-      display:none;position:fixed;inset:0;z-index:999;
-      background:rgba(10,8,24,.92);align-items:center;justify-content:center;padding:1rem;
-    }
-    .vm-inner{width:100%;max-width:860px;position:relative;}
-    .vm-close{
-      position:absolute;top:-46px;right:0;
-      background:rgba(255,255,255,.12);border:none;color:#fff;
-      width:38px;height:38px;border-radius:50%;font-size:1.1rem;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;
-      transition:background .2s;
-    }
-    .vm-close:hover{background:rgba(255,255,255,.25);}
-    .vm-frame{padding-top:56.25%;position:relative;border-radius:var(--r-card);overflow:hidden;}
-    .vm-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-
-    /* ══════════════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════════════ */
-    @media(max-width:1100px){
-      .ft-grid{grid-template-columns:1fr 1fr 1fr;}
-      .ft-grid>div:first-child{grid-column:1/-1;}
-    }
-    @media(max-width:960px){
-      .nav-menu{display:none;}
-      .nav-search{display:none;}
-      .hamburger{display:flex;}
-      .hero-inner{grid-template-columns:1fr;}
-      .hero-panel{display:none;}
-      .hero-text{padding-bottom:3rem;}
-      .cat-grid{grid-template-columns:repeat(2,1fr);}
-      .form-grid{grid-template-columns:repeat(2,1fr);}
-      .av-grid{grid-template-columns:1fr;}
-      .temo-grid{grid-template-columns:repeat(2,1fr);}
-      .mod-grid{grid-template-columns:1fr;}
-      .contact-grid{grid-template-columns:1fr;}
-      .faq-layout{grid-template-columns:1fr;gap:2rem;}
-      .ft-grid{grid-template-columns:1fr 1fr;}
-    }
-    @media(max-width:640px){
-      .cat-grid{grid-template-columns:repeat(2,1fr);}
-      .form-grid{grid-template-columns:1fr;}
-      .temo-grid{grid-template-columns:1fr;}
-      .hero-h1{font-size:1.85rem;}
-      .hero-stats{gap:.55rem;}
-      .stat-pill{padding:.42rem .95rem;}
-      .stat-n{font-size:1.25rem;}
-      .hero-btns{flex-direction:column;}
-      .hero-btns a{text-align:center;justify-content:center;}
-      .car-slide img{height:220px;}
-      .section{padding:3.5rem 1.2rem;}
-      .ft-grid{grid-template-columns:1fr;}
-      .nl-form{flex-direction:column;}
-      .nl-form input,.nl-form button{width:100%;}
-    }
-    @media(max-width:400px){
-      .hero-h1{font-size:1.6rem;}
-      .sec-title{font-size:1.5rem;}
-    }
-  </style>
-</head>
-<body>
-
-<!-- SCROLL PROGRESS -->
-<div id="scroll-bar"></div>
-
-<!-- BACK TO TOP -->
-<button id="back-top" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
-</button>
+{% block content %}
 
 <!-- ════════════════════════════════════
-     NAVBAR — fidèle à Vatcho
-════════════════════════════════════ -->
-<header class="nav" id="navbar">
-  <div class="nav-inner">
-
-    <!-- Logo -->
-    <a class="nav-logo" href="{% url 'core:index' %}">
-      <img src="{% static 'images/logo_certitude.png' %}" alt="La Certitude"/>
-      LA CERTITUDE
-    </a>
-
-    <!-- Barre de recherche centrale (style Vatcho) -->
-    <div class="nav-search">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input type="text" placeholder="Rechercher des cours, ressources..."/>
-    </div>
-
-    <!-- Menu Desktop -->
-    <nav class="nav-menu">
-
-      <div class="nav-item">
-        <a href="{% url 'core:index' %}" class="nav-link active">Accueil</a>
-      </div>
-
-      <div class="nav-item">
-        <a href="{% url 'core:about' %}" class="nav-link">À propos</a>
-      </div>
-
-      <!-- Cours + dropdown -->
-      <div class="nav-item">
-        <button class="nav-link">
-          Cours
-          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="dropdown">
-          <div class="drop-title">Édition actuelle</div>
-          <a href="{% url 'core:programme_2026' %}" class="drop-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            Programme 2026
-          </a>
-          <a href="{% url 'enrollments:create' %}" class="drop-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            S'inscrire
-          </a>
-          <div class="drop-divider"></div>
-          <div class="drop-title">Éditions passées</div>
-          <a href="{% url 'core:edition_2025' %}" class="drop-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M4 7h16M7 4v3M17 4v3"/></svg>
-            Édition 2025
-          </a>
-        </div>
-      </div>
-
-      <!-- Ressources + dropdown -->
-      <div class="nav-item">
-        <button class="nav-link">
-          Ressources
-          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="dropdown">
-          <a href="{% url 'resources:astuces' %}" class="drop-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-            Astuces & Méthodes
-          </a>
-          <a href="{% url 'resources:cours' %}" class="drop-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            Cours & Résumés
-          </a>
-        </div>
-      </div>
-
-      <div class="nav-item"><a href="{% url 'core:soutien_scolaire' %}" class="nav-link">Soutien scolaire</a></div>
-      <div class="nav-item"><a href="{% url 'core:epreuves' %}" class="nav-link">Épreuves</a></div>
-      <div class="nav-item"><a href="{% url 'announcements:annonces' %}" class="nav-link">Annonces</a></div>
-    </nav>
-
-    <!-- Auth buttons -->
-    <div class="nav-menu" style="margin-left:0;">
-      <button class="btn-login" onclick="location.href=''">Connexion</button>
-      <button class="btn-register" onclick="location.href=''">Inscription</button>
-    </div>
-
-    <button class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
-
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mob-item"><div class="mob-link" onclick="location.href='{% url 'core:index' %}'">Accueil</div></div>
-  <div class="mob-item"><div class="mob-link" onclick="location.href='{% url 'core:about' %}'">À propos</div></div>
-  <div class="mob-item">
-    <div class="mob-link" onclick="toggleMobDrop(this)">Cours <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-    <div class="mob-drop">
-      <a href="{% url 'core:programme_2026' %}">Programme 2026</a>
-      <a href="{% url 'enrollments:create' %}">S'inscrire</a>
-      <a href="{% url 'core:edition_2025' %}">Édition 2025</a>
-    </div>
-  </div>
-  <div class="mob-item">
-    <div class="mob-link" onclick="toggleMobDrop(this)">Ressources <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-    <div class="mob-drop">
-      <a href="{% url 'resources:astuces' %}">Astuces & Méthodes</a>
-      <a href="{% url 'resources:cours' %}">Cours & Résumés</a>
-    </div>
-  </div>
-  <div class="mob-item"><div class="mob-link" onclick="location.href='{% url 'core:soutien_scolaire' %}'">Soutien scolaire</div></div>
-  <div class="mob-item"><div class="mob-link" onclick="location.href='{% url 'core:epreuves' %}'">Épreuves</div></div>
-  <div class="mob-item"><div class="mob-link" onclick="location.href='{% url 'announcements:annonces' %}'">Annonces</div></div>
-  <div class="mob-auth">
-    <button class="btn-login" onclick="location.href=''">Connexion</button>
-    <button class="btn-register" onclick="location.href=''">Inscription</button>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════
-     HERO — gradient lavande + word-boxes
+     HERO
 ════════════════════════════════════ -->
 <section class="hero">
-  <!-- Décos SVG (reprise fidèle de Vatcho) -->
-  <svg class="hero-deco deco-blob" aria-hidden="true" viewBox="0 0 884 578" fill="white">
+  <!-- Décors SVG -->
+  <svg class="hero-deco hero-deco-blob" aria-hidden="true" viewBox="0 0 884 578" fill="white">
     <path d="M77.978 55.4516C245.177 -111.529 296.923 154.357 535.599 128.113C909.567 87.0169 938.305 347.546 826.648 525.777C714.974 704.007 550.407 814.987 320.862 731.954C54.1102 635.466 -103.473 236.656 77.978 55.4516Z"/>
   </svg>
-  <svg class="hero-deco deco-circle-lg" aria-hidden="true" viewBox="0 0 152 152" fill="none">
+  <svg class="hero-deco hero-deco-circle" aria-hidden="true" viewBox="0 0 152 152" fill="none">
     <circle cx="76" cy="76" r="63.74" stroke="#D6CCE9" stroke-width="18"/>
   </svg>
 
   <div class="hero-inner">
-    <!-- Texte gauche -->
+
+    <!-- ── Texte gauche ── -->
     <div class="hero-text">
       <div class="hero-badge">Inscriptions 2026 ouvertes</div>
 
@@ -1002,8 +160,9 @@
       </h1>
 
       <p class="hero-sub">
-        Cours intensifs de renforcement — Juillet & Août 2026.
-        Mathématiques, Physique-Chimie, SVT, Anglais pour les classes de 3ème, 1ère et Terminale C & D. Des professeurs expérimentés, un programme complet.
+        Cours intensifs de renforcement — Juillet &amp; Août 2026.
+        Mathématiques, Physique-Chimie, SVT, Anglais pour les classes
+        de 3ème, 1ère et Terminale C &amp; D.
       </p>
 
       <div class="hero-tagline">
@@ -1027,23 +186,178 @@
       </div>
     </div>
 
-    <!-- Carte flottante droite -->
-    <div class="hero-panel">
-      <div class="hero-card">
-        <div class="hc-title">Informations pratiques</div>
-        <div class="hc-row"><div class="hc-icon">📅</div><div><div class="hc-label">Période</div><div class="hc-val">1er juillet — 31 août 2026</div></div></div>
-        <div class="hc-row"><div class="hc-icon">📍</div><div><div class="hc-label">Lieu</div><div class="hc-val">EPP Gbégamey Sud, Cotonou</div></div></div>
-        <div class="hc-row"><div class="hc-icon">⏰</div><div><div class="hc-label">Horaires</div><div class="hc-val">Lun–Ven · 08h30 – 13h00</div></div></div>
-        <div class="hc-row"><div class="hc-icon">📞</div><div><div class="hc-label">Contact</div><div class="hc-val">01 96 38 92 49</div></div></div>
-        <div class="hc-deadline">⏳ Date limite : 22 juin 2026</div>
+    <!-- ── Panneau droit : illustration + card ── -->
+    <div class="hero-img-panel">
+
+      <!-- Illustration SVG éducative avec badges flottants -->
+      <div class="hero-illus" aria-hidden="true">
+
+        <div class="hi-badge hi-b1">
+          <span class="hi-bi">🏆</span>
+          <div><div class="hi-bt">92 % de réussite</div><div class="hi-bs">au BAC · édition 2025</div></div>
+        </div>
+        <div class="hi-badge hi-b2">
+          <span class="hi-bi">📚</span>
+          <div><div class="hi-bt">4 matières couvertes</div><div class="hi-bs">Maths · PCT · SVT · Anglais</div></div>
+        </div>
+        <div class="hi-badge hi-b3">
+          <span class="hi-bi">⭐</span>
+          <div><div class="hi-bt">Pack Privilège</div><div class="hi-bs">10 premiers / classe</div></div>
+        </div>
+
+        <svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="pgL" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#f0edff"/></linearGradient>
+            <linearGradient id="pgR" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f0edff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+            <linearGradient id="cvL" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3a2bbf"/><stop offset="100%" stop-color="#2d1fa8"/></linearGradient>
+            <linearGradient id="cvR" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9986f6"/><stop offset="100%" stop-color="#7c6ef0"/></linearGradient>
+            <filter id="bshadow" x="-20%" y="-10%" width="140%" height="140%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="rgba(58,43,191,0.18)"/></filter>
+          </defs>
+          <!-- Ambient glow -->
+          <ellipse cx="210" cy="175" rx="130" ry="90" fill="rgba(153,134,246,0.08)"/>
+          <ellipse cx="210" cy="175" rx="90" ry="60" fill="rgba(58,43,191,0.05)"/>
+          <!-- Book C — back -->
+          <g transform="rotate(-7 210 260)" filter="url(#bshadow)">
+            <rect x="88" y="237" width="180" height="28" rx="6" fill="#2d1fa8"/>
+            <rect x="88" y="237" width="22" height="28" rx="5" fill="#1e1560"/>
+            <rect x="122" y="246" width="90" height="3" rx="2" fill="rgba(255,255,255,.22)"/>
+            <rect x="122" y="253" width="70" height="3" rx="2" fill="rgba(255,255,255,.16)"/>
+          </g>
+          <!-- Book B — middle -->
+          <g transform="rotate(5 210 240)" filter="url(#bshadow)">
+            <rect x="98" y="210" width="170" height="26" rx="6" fill="#635b7d"/>
+            <rect x="98" y="210" width="20" height="26" rx="5" fill="#4f486d"/>
+            <rect x="130" y="219" width="85" height="3" rx="2" fill="rgba(255,255,255,.22)"/>
+            <rect x="130" y="226" width="65" height="3" rx="2" fill="rgba(255,255,255,.16)"/>
+          </g>
+          <!-- Book A — front -->
+          <g transform="rotate(-2 210 218)" filter="url(#bshadow)">
+            <rect x="108" y="184" width="158" height="24" rx="6" fill="#9986f6"/>
+            <rect x="108" y="184" width="18" height="24" rx="5" fill="#7c6ef0"/>
+            <rect x="244" y="183" width="13" height="26" rx="2" fill="#fde68a" opacity=".9"/>
+            <polygon points="244,209 250.5,203 257,209" fill="#fde68a" opacity=".9"/>
+            <rect x="138" y="193" width="80" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
+            <rect x="138" y="200" width="62" height="3" rx="2" fill="rgba(255,255,255,.20)"/>
+          </g>
+          <!-- Open book (main) -->
+          <g filter="url(#bshadow)">
+            <ellipse cx="210" cy="183" rx="88" ry="9" fill="rgba(58,43,191,0.14)"/>
+            <path d="M210,82 C192,78 150,81 125,88 L122,176 C147,170 190,173 210,178 Z" fill="url(#cvL)"/>
+            <path d="M210,82 C228,78 270,81 295,88 L298,176 C273,170 230,173 210,178 Z" fill="url(#cvR)"/>
+            <path d="M210,84 C193,80 153,83 129,90 L126,174 C150,168 192,171 210,176 Z" fill="url(#pgL)"/>
+            <path d="M210,84 C227,80 267,83 291,90 L294,174 C270,168 228,171 210,176 Z" fill="url(#pgR)"/>
+            <line x1="210" y1="82" x2="210" y2="178" stroke="rgba(58,43,191,0.15)" stroke-width="2.5"/>
+            <line x1="138" y1="103" x2="203" y2="102" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <line x1="136" y1="114" x2="202" y2="113" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <line x1="137" y1="125" x2="200" y2="124" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <line x1="136" y1="136" x2="203" y2="135" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <line x1="137" y1="147" x2="200" y2="146" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <line x1="136" y1="158" x2="202" y2="157" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <text x="252" y="106" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#9986f6" font-weight="700" font-style="italic">E = mc²</text>
+            <line x1="218" y1="118" x2="288" y2="117" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <line x1="218" y1="129" x2="283" y2="128" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <text x="252" y="145" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#635b7d" font-weight="600" font-style="italic">a² + b² = c²</text>
+            <line x1="218" y1="156" x2="286" y2="155" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+            <line x1="218" y1="167" x2="281" y2="166" stroke="#ddd8f8" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <!-- Graduation cap -->
+          <g filter="url(#bshadow)">
+            <ellipse cx="210" cy="74" rx="48" ry="9" fill="#1e1b2e"/>
+            <rect x="172" y="46" width="76" height="10" rx="2" fill="#1e1b2e" transform="rotate(-1 210 51)"/>
+            <path d="M175,48 L245,48 L241,22 L179,22 Z" fill="#2d2460"/>
+            <circle cx="210" cy="25" r="4.5" fill="#fde68a" opacity=".9"/>
+            <path d="M245,48 Q262,58 264,73" stroke="#fde68a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+            <circle cx="264" cy="76" r="5.5" fill="#fde68a"/>
+            <line x1="261" y1="82" x2="256" y2="96" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round" opacity=".9"/>
+            <line x1="264" y1="82" x2="264" y2="98" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round" opacity=".9"/>
+            <line x1="267" y1="82" x2="272" y2="96" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round" opacity=".9"/>
+          </g>
+          <!-- Math symbols -->
+          <circle cx="62" cy="108" r="26" fill="rgba(58,43,191,.06)" stroke="#3a2bbf" stroke-width="1.6" stroke-dasharray="4,3"/>
+          <text x="62" y="116" text-anchor="middle" font-family="Georgia,serif" font-size="22" fill="#3a2bbf" font-weight="700">π</text>
+          <circle cx="356" cy="220" r="24" fill="rgba(99,91,125,.07)" stroke="#635b7d" stroke-width="1.6" stroke-dasharray="4,3"/>
+          <text x="356" y="228" text-anchor="middle" font-family="Georgia,serif" font-size="20" fill="#635b7d" font-weight="700">∑</text>
+          <circle cx="58" cy="218" r="22" fill="rgba(153,134,246,.08)" stroke="#9986f6" stroke-width="1.6" stroke-dasharray="4,3"/>
+          <text x="58" y="226" text-anchor="middle" font-family="Georgia,serif" font-size="19" fill="#9986f6" font-weight="700">Δ</text>
+          <circle cx="358" cy="88" r="22" fill="rgba(58,43,191,.06)" stroke="#3a2bbf" stroke-width="1.6" stroke-dasharray="4,3"/>
+          <text x="358" y="96" text-anchor="middle" font-family="Georgia,serif" font-size="20" fill="#3a2bbf" font-weight="700">∫</text>
+          <!-- Stars -->
+          <g transform="translate(310,42)"><path d="M0,-11 L2.8,-2.8 L11,0 L2.8,2.8 L0,11 L-2.8,2.8 L-11,0 L-2.8,-2.8 Z" fill="#9986f6" opacity=".82"/></g>
+          <g transform="translate(40,52)"><path d="M0,-8 L2,-2 L8,0 L2,2 L0,8 L-2,2 L-8,0 L-2,-2 Z" fill="#3a2bbf" opacity=".55"/></g>
+          <g transform="translate(375,160)"><path d="M0,-5.5 L1.4,-1.4 L5.5,0 L1.4,1.4 L0,5.5 L-1.4,1.4 L-5.5,0 L-1.4,-1.4 Z" fill="#635b7d" opacity=".5"/></g>
+          <!-- Floating dots -->
+          <circle cx="92" cy="168" r="3.5" fill="#9986f6" opacity=".35"/>
+          <circle cx="325" cy="155" r="3" fill="#3a2bbf" opacity=".30"/>
+          <circle cx="155" cy="298" r="2" fill="#3a2bbf" opacity=".28"/>
+          <circle cx="255" cy="296" r="2" fill="#635b7d" opacity=".28"/>
+          <!-- Pencil -->
+          <g transform="translate(324,268) rotate(-42)">
+            <rect x="-5.5" y="-40" width="11" height="7" rx="2.5" fill="#fca5b9" opacity=".88"/>
+            <rect x="-5.5" y="-33" width="11" height="4.5" fill="#d1d5db"/>
+            <rect x="-5.5" y="-28.5" width="11" height="52" rx="1.5" fill="#fde68a"/>
+            <rect x="-3" y="-27" width="2.5" height="50" rx="1" fill="rgba(255,255,255,.28)"/>
+            <polygon points="-5.5,23.5 5.5,23.5 0,37" fill="#d97706" opacity=".9"/>
+            <circle cx="0" cy="37" r="2" fill="#1e1b2e" opacity=".6"/>
+          </g>
+          <!-- Ruler -->
+          <g transform="translate(44,258) rotate(-18)">
+            <rect x="0" y="0" width="78" height="15" rx="3" fill="rgba(58,43,191,.10)" stroke="#9986f6" stroke-width="1.2"/>
+            <line x1="10" y1="0" x2="10" y2="7" stroke="#9986f6" stroke-width="1.2" opacity=".5"/>
+            <line x1="20" y1="0" x2="20" y2="4.5" stroke="#9986f6" stroke-width="1.2" opacity=".4"/>
+            <line x1="30" y1="0" x2="30" y2="7" stroke="#9986f6" stroke-width="1.2" opacity=".5"/>
+            <line x1="40" y1="0" x2="40" y2="4.5" stroke="#9986f6" stroke-width="1.2" opacity=".4"/>
+            <line x1="50" y1="0" x2="50" y2="7" stroke="#9986f6" stroke-width="1.2" opacity=".5"/>
+            <line x1="60" y1="0" x2="60" y2="4.5" stroke="#9986f6" stroke-width="1.2" opacity=".4"/>
+            <line x1="70" y1="0" x2="70" y2="7" stroke="#9986f6" stroke-width="1.2" opacity=".5"/>
+          </g>
+          <!-- Atoms -->
+          <g transform="translate(356,38)">
+            <circle cx="0" cy="0" r="4.5" fill="rgba(58,43,191,.22)"/>
+            <ellipse cx="0" cy="0" rx="18" ry="7" fill="none" stroke="#3a2bbf" stroke-width="1.2" opacity=".25"/>
+            <ellipse cx="0" cy="0" rx="18" ry="7" fill="none" stroke="#3a2bbf" stroke-width="1.2" opacity=".20" transform="rotate(60)"/>
+            <ellipse cx="0" cy="0" rx="18" ry="7" fill="none" stroke="#3a2bbf" stroke-width="1.2" opacity=".20" transform="rotate(120)"/>
+          </g>
+          <g transform="translate(58,282)">
+            <circle cx="0" cy="0" r="3.5" fill="rgba(153,134,246,.20)"/>
+            <ellipse cx="0" cy="0" rx="14" ry="5.5" fill="none" stroke="#9986f6" stroke-width="1.2" opacity=".22"/>
+            <ellipse cx="0" cy="0" rx="14" ry="5.5" fill="none" stroke="#9986f6" stroke-width="1.2" opacity=".18" transform="rotate(60)"/>
+            <ellipse cx="0" cy="0" rx="14" ry="5.5" fill="none" stroke="#9986f6" stroke-width="1.2" opacity=".18" transform="rotate(120)"/>
+          </g>
+        </svg>
       </div>
+      <!-- end hero-illus -->
+
+      <!-- Carte info pratique -->
+      <div class="hero-card">
+        <div class="hero-card-title">Informations pratiques</div>
+        <div class="hero-card-row">
+          <div class="hero-card-icon">📅</div>
+          <div><div class="hero-card-label">Période</div><div class="hero-card-val">1er juillet — 31 août 2026</div></div>
+        </div>
+        <div class="hero-card-row">
+          <div class="hero-card-icon">📍</div>
+          <div><div class="hero-card-label">Lieu</div><div class="hero-card-val">EPP Gbégamey Sud, Cotonou</div></div>
+        </div>
+        <div class="hero-card-row">
+          <div class="hero-card-icon">⏰</div>
+          <div><div class="hero-card-label">Horaires</div><div class="hero-card-val">Lun–Ven · 08h30 – 13h00</div></div>
+        </div>
+        <div class="hero-card-row">
+          <div class="hero-card-icon">📞</div>
+          <div><div class="hero-card-label">Contact</div><div class="hero-card-val">01 96 38 92 49</div></div>
+        </div>
+        <div class="hero-deadline">⏳ Date limite : 22 juin 2026</div>
+      </div>
+
     </div>
+    <!-- end hero-img-panel -->
+
   </div>
 </section>
 
+
 <!-- ════════════════════════════════════
-     PARCOURIR PAR CATÉGORIE — style Vatcho
-     (grille 4 colonnes, image + badge)
+     CATÉGORIES
 ════════════════════════════════════ -->
 <section class="section" id="categories">
   <div class="container">
@@ -1052,77 +366,45 @@
       <p class="sec-sub">Trouvez ce qui correspond à vos objectifs — programme complet, matières au choix.</p>
     </div>
     <div class="cat-grid">
-
       <a class="cat-card fade-in s1" href="{% url 'enrollments:create' %}?niveau=3eme">
         <div class="cat-img"><img src="{% static 'images/affiche5.png' %}" alt="3ème" loading="lazy"/></div>
-        <div class="cat-body">
-          <span class="cat-badge cb-red">3ème</span>
-          <p class="cat-desc">Réussir le BEPC et préparer le lycée.</p>
-        </div>
+        <div class="cat-body"><span class="cat-badge cb-red">3ème</span><p class="cat-desc">Réussir le BEPC et préparer le lycée.</p></div>
       </a>
-
       <a class="cat-card fade-in s2" href="{% url 'enrollments:create' %}?niveau=1ere">
         <div class="cat-img"><img src="{% static 'images/affiche1.png' %}" alt="1ère C" loading="lazy"/></div>
-        <div class="cat-body">
-          <span class="cat-badge cb-amber">1ère C</span>
-          <p class="cat-desc">Avancer sur le programme de Terminale.</p>
-        </div>
+        <div class="cat-body"><span class="cat-badge cb-amber">1ère C</span><p class="cat-desc">Avancer sur le programme de Terminale.</p></div>
       </a>
-
       <a class="cat-card fade-in s3" href="{% url 'enrollments:create' %}?niveau=1ere">
         <div class="cat-img"><img src="{% static 'images/affiche2.png' %}" alt="1ère D" loading="lazy"/></div>
-        <div class="cat-body">
-          <span class="cat-badge cb-green">1ère D</span>
-          <p class="cat-desc">Consolider les bases scientifiques.</p>
-        </div>
+        <div class="cat-body"><span class="cat-badge cb-green">1ère D</span><p class="cat-desc">Consolider les bases scientifiques.</p></div>
       </a>
-
       <a class="cat-card fade-in s4" href="{% url 'enrollments:create' %}?niveau=tle">
         <div class="cat-img"><img src="{% static 'images/affiche2.png' %}" alt="Terminale C" loading="lazy"/></div>
-        <div class="cat-body">
-          <span class="cat-badge cb-blue">Terminale C</span>
-          <p class="cat-desc">Préparation intensive au BAC.</p>
-        </div>
+        <div class="cat-body"><span class="cat-badge cb-blue">Terminale C</span><p class="cat-desc">Préparation intensive au BAC.</p></div>
       </a>
-
       <a class="cat-card fade-in s1" href="{% url 'enrollments:create' %}?niveau=tle">
         <div class="cat-img"><img src="{% static 'images/affiche2.png' %}" alt="Terminale D" loading="lazy"/></div>
-        <div class="cat-body">
-          <span class="cat-badge cb-violet">Terminale D</span>
-          <p class="cat-desc">100 % du programme couvert en profondeur.</p>
-        </div>
+        <div class="cat-body"><span class="cat-badge cb-violet">Terminale D</span><p class="cat-desc">100 % du programme couvert en profondeur.</p></div>
       </a>
-
       <a class="cat-card fade-in s2" href="{% url 'resources:astuces' %}">
         <div class="cat-img"><img src="{% static 'images/affiche5.png' %}" alt="Astuces" loading="lazy"/></div>
-        <div class="cat-body">
-          <span class="cat-badge cb-orange">Astuces</span>
-          <p class="cat-desc">Méthodes et conseils pour mieux réviser.</p>
-        </div>
+        <div class="cat-body"><span class="cat-badge cb-orange">Astuces</span><p class="cat-desc">Méthodes et conseils pour mieux réviser.</p></div>
       </a>
-
       <a class="cat-card fade-in s3" href="{% url 'resources:cours' %}">
         <div class="cat-img"><img src="{% static 'images/affiche1.png' %}" alt="Cours" loading="lazy"/></div>
-        <div class="cat-body">
-          <span class="cat-badge cb-teal">Cours & PDF</span>
-          <p class="cat-desc">Résumés et fiches téléchargeables.</p>
-        </div>
+        <div class="cat-body"><span class="cat-badge cb-teal">Cours &amp; PDF</span><p class="cat-desc">Résumés et fiches téléchargeables.</p></div>
       </a>
-
       <a class="cat-card fade-in s4" href="#">
         <div class="cat-img"><img src="{% static 'images/affiche5.png' %}" alt="Épreuves" loading="lazy"/></div>
-        <div class="cat-body">
-          <span class="cat-badge cb-pink">Épreuves</span>
-          <p class="cat-desc">BEPC, BAC, examens blancs corrigés.</p>
-        </div>
+        <div class="cat-body"><span class="cat-badge cb-pink">Épreuves</span><p class="cat-desc">BEPC, BAC, examens blancs corrigés.</p></div>
       </a>
-
     </div>
   </div>
 </section>
 
+
 <!-- ════════════════════════════════════
-     DERNIÈRES FORMATIONS (like "Latest opportunities")
+     FORMATIONS
 ════════════════════════════════════ -->
 <section class="section section-alt" id="formations">
   <div class="container">
@@ -1133,25 +415,23 @@
       </div>
       <a href="#" class="link-view-all">Voir tout →</a>
     </div>
-    <div class="form-grid">
+    <div class="formations-grid">
 
       <!-- 3ème -->
-      <a class="form-card fade-in s1" href="{% url 'enrollments:create' %}?niveau=3eme">
-        <div class="form-card-img">
-          <img src="{% static 'images/affiche5.png' %}" alt="3ème" loading="lazy"/>
-        </div>
-        <div class="form-card-body">
+      <a class="formation-card fade-in s1" href="{% url 'enrollments:create' %}?niveau=3eme">
+        <div class="formation-card-img"><img src="{% static 'images/affiche5.png' %}" alt="3ème" loading="lazy"/></div>
+        <div class="formation-card-body">
           <div class="level-tag">3ème</div>
           <h3>Cours de 3ème</h3>
-          <p class="form-desc">Programme complet pour réussir le BEPC et intégrer le lycée en toute confiance.</p>
+          <p class="formation-desc">Programme complet pour réussir le BEPC et intégrer le lycée en toute confiance.</p>
           <div class="subjects">
-            <span class="sub-tag">Mathématiques</span>
-            <span class="sub-tag">Physique-Chimie</span>
-            <span class="sub-tag">SVT</span>
-            <span class="sub-tag">Anglais</span>
+            <span class="subject-tag">Mathématiques</span>
+            <span class="subject-tag">Physique-Chimie</span>
+            <span class="subject-tag">SVT</span>
+            <span class="subject-tag">Anglais</span>
           </div>
           <div class="price-row"><span class="price">11 500</span><span class="price-unit">FCFA</span></div>
-          <div class="card-foot">
+          <div class="card-foot-row">
             <span class="btn-view">S'inscrire →</span>
             <span class="card-deadline">Limite : 22 juin</span>
           </div>
@@ -1159,23 +439,21 @@
       </a>
 
       <!-- 1ère — Populaire -->
-      <a class="form-card featured fade-in s2" href="{% url 'enrollments:create' %}?niveau=1ere">
-        <span class="badge-popular">Populaire</span>
-        <div class="form-card-img">
-          <img src="{% static 'images/affiche1.png' %}" alt="1ère" loading="lazy"/>
-        </div>
-        <div class="form-card-body">
-          <div class="level-tag">1ères C & D</div>
+      <a class="formation-card featured fade-in s2" href="{% url 'enrollments:create' %}?niveau=1ere">
+        <span class="badge-pop">Populaire</span>
+        <div class="formation-card-img"><img src="{% static 'images/affiche1.png' %}" alt="1ère" loading="lazy"/></div>
+        <div class="formation-card-body">
+          <div class="level-tag">1ères C &amp; D</div>
           <h3>Cours de 1ère</h3>
-          <p class="form-desc">Maîtrisez les bases de Terminale avec de l'avance sur tout le programme.</p>
+          <p class="formation-desc">Maîtrisez les bases de Terminale avec de l'avance sur tout le programme.</p>
           <div class="subjects">
-            <span class="sub-tag">Mathématiques</span>
-            <span class="sub-tag">Physique-Chimie</span>
-            <span class="sub-tag">SVT</span>
-            <span class="sub-tag">Anglais</span>
+            <span class="subject-tag">Mathématiques</span>
+            <span class="subject-tag">Physique-Chimie</span>
+            <span class="subject-tag">SVT</span>
+            <span class="subject-tag">Anglais</span>
           </div>
           <div class="price-row"><span class="price">12 500</span><span class="price-unit">FCFA</span></div>
-          <div class="card-foot">
+          <div class="card-foot-row">
             <span class="btn-view">S'inscrire →</span>
             <span class="card-deadline">Limite : 22 juin</span>
           </div>
@@ -1183,30 +461,27 @@
       </a>
 
       <!-- Terminale -->
-      <a class="form-card fade-in s3" href="{% url 'enrollments:create' %}?niveau=tle">
-        <div class="form-card-img">
-          <img src="{% static 'images/affiche2.png' %}" alt="Terminale" loading="lazy"/>
-        </div>
-        <div class="form-card-body">
-          <div class="level-tag">Terminales C & D</div>
+      <a class="formation-card fade-in s3" href="{% url 'enrollments:create' %}?niveau=tle">
+        <div class="formation-card-img"><img src="{% static 'images/affiche2.png' %}" alt="Terminale" loading="lazy"/></div>
+        <div class="formation-card-body">
+          <div class="level-tag">Terminales C &amp; D</div>
           <h3>Cours de Terminale</h3>
-          <p class="form-desc">Préparation intensive au BAC — 100 % du programme couvert en profondeur.</p>
+          <p class="formation-desc">Préparation intensive au BAC — 100 % du programme couvert en profondeur.</p>
           <div class="subjects">
-            <span class="sub-tag">Mathématiques</span>
-            <span class="sub-tag">Physique-Chimie</span>
-            <span class="sub-tag">SVT</span>
-            <span class="sub-tag">Anglais</span>
+            <span class="subject-tag">Mathématiques</span>
+            <span class="subject-tag">Physique-Chimie</span>
+            <span class="subject-tag">SVT</span>
+            <span class="subject-tag">Anglais</span>
           </div>
           <div class="price-row"><span class="price">15 500</span><span class="price-unit">FCFA</span></div>
-          <div class="card-foot">
-            <span class="btn-view">S'inscrire →</span>
-          </div>
+          <div class="card-foot-row"><span class="btn-view">S'inscrire →</span></div>
         </div>
       </a>
 
     </div>
   </div>
 </section>
+
 
 <!-- ════════════════════════════════════
      PROFESSEURS
@@ -1220,21 +495,27 @@
     </div>
     <div class="profs-wrap">
       <div class="prof-card fade-in">
-        <div class="prof-avatar"><span>👨‍🔬</span><span class="prof-mat-badge">PCT</span></div>
+        <div class="prof-avatar">
+          <span>👨‍🔬</span>
+          <span class="prof-matiere-badge">PCT</span>
+        </div>
         <div class="prof-body">
-          <div class="mode-badges"><span class="mode-b mode-home">À domicile</span><span class="mode-b mode-online">En ligne</span></div>
+          <div class="prof-mode-badges">
+            <span class="mode-badge mode-home">À domicile</span>
+            <span class="mode-badge mode-online">En ligne</span>
+          </div>
           <div class="prof-name">M. Codjo Abel</div>
           <div class="prof-role">Professeur de Physique-Chimie</div>
-          <p class="prof-bio">10 ans d'expérience, spécialiste Terminale C & D. Taux de réussite au BAC de 92 %.</p>
+          <p class="prof-bio">10 ans d'expérience, spécialiste Terminale C &amp; D. Taux de réussite au BAC de 92 %.</p>
           <div class="prof-tags">
             <span class="prof-tag">Mécanique</span>
             <span class="prof-tag">Électricité</span>
             <span class="prof-tag">Chimie organique</span>
             <span class="prof-tag">Thermodynamique</span>
           </div>
-          <div class="prof-contact">
-            <a href="https://wa.me/22996389249" target="_blank" class="btn-wa">WhatsApp</a>
-            <a href="tel:+22996389249" class="btn-call">📞</a>
+          <div class="prof-contact-row">
+            <a href="https://wa.me/22996389249" target="_blank" class="btn-contact-wa">WhatsApp</a>
+            <a href="tel:+22996389249" class="btn-contact-call">📞</a>
           </div>
         </div>
       </div>
@@ -1245,8 +526,9 @@
   </div>
 </section>
 
+
 <!-- ════════════════════════════════════
-     AVANTAGES / PACK PRIVILÈGE
+     PACK PRIVILÈGE
 ════════════════════════════════════ -->
 <section class="section section-alt" id="avantages">
   <div class="container">
@@ -1255,17 +537,30 @@
       <h2 class="sec-title">Les 10 premiers inscrits par classe</h2>
       <p class="sec-sub">Des avantages exclusifs réservés aux premiers inscrits.</p>
     </div>
-    <div class="av-grid">
-      <div class="av-card scale-in s1"><div class="av-icon">📦</div><div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements du Bénin.</p></div></div>
-      <div class="av-card scale-in s2"><div class="av-icon" style="background:#d1fae5">📄</div><div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div></div>
-      <div class="av-card scale-in s3"><div class="av-icon" style="background:#fef9c3">🏆</div><div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div></div>
-      <div class="av-card scale-in s4"><div class="av-icon" style="background:#dbeafe">🚗</div><div><div class="av-title">Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div></div>
+    <div class="avantages-grid">
+      <div class="avantage-card scale-in s1">
+        <div class="av-icon">📦</div>
+        <div><div class="av-title">Pack 50+ épreuves corrigées</div><p class="av-desc">Par matière scientifique — devoirs de prestigieux établissements du Bénin.</p></div>
+      </div>
+      <div class="avantage-card scale-in s2">
+        <div class="av-icon" style="background:#d1fae5">📄</div>
+        <div><div class="av-title">Sujets d'examens blancs</div><p class="av-desc">Accès exclusif aux sujets départementaux 2023 à 2026.</p></div>
+      </div>
+      <div class="avantage-card scale-in s3">
+        <div class="av-icon" style="background:#fef9c3">🏆</div>
+        <div><div class="av-title">Récompenses meilleurs élèves</div><p class="av-desc">Prix offerts aux meilleurs apprenants en fin de cours.</p></div>
+      </div>
+      <div class="avantage-card scale-in s4">
+        <div class="av-icon" style="background:#dbeafe">🚗</div>
+        <div><div class="av-title">Code de la Route gratuit</div><p class="av-desc">Bonus spécial offert aux premiers inscrits de chaque classe.</p></div>
+      </div>
     </div>
   </div>
 </section>
 
+
 <!-- ════════════════════════════════════
-     GALERIE
+     GALERIE (carousel)
 ════════════════════════════════════ -->
 <section id="galerie">
   <div class="container">
@@ -1275,27 +570,29 @@
       <p class="sec-sub" style="color:rgba(255,255,255,.45)">Cours, ambiance et remise de prix.</p>
     </div>
     <div class="carousel fade-in">
-      <div class="car-track" id="carTrack">
-        <div class="car-slide"><img src="{% static 'images/1.jpg' %}" alt="Cours"/><div class="car-caption">Nos apprenants en plein cours</div></div>
-        <div class="car-slide"><img src="{% static 'images/2.jpg' %}" alt="Groupe"/><div class="car-caption">Photo de famille — Groupe La Certitude</div></div>
-        <div class="car-slide"><img src="{% static 'images/10.jpg' %}" alt="Profs"/><div class="car-caption">Les professeurs et les élèves</div></div>
-        <div class="car-slide"><img src="{% static 'images/4.jpg' %}" alt="TP"/><div class="car-caption">Séance de travaux pratiques</div></div>
-        <div class="car-slide"><img src="{% static 'images/5.jpg' %}" alt="Prix"/><div class="car-caption">Remise de prix</div></div>
-        <div class="car-slide"><img src="{% static 'images/7.jpg' %}" alt="Maths"/><div class="car-caption">Cours de mathématiques intensif</div></div>
+      <div class="carousel-track" id="carTrack">
+        <div class="carousel-slide"><img src="{% static 'images/1.jpg' %}" alt="Cours"/><div class="slide-caption">Nos apprenants en plein cours</div></div>
+        <div class="carousel-slide"><img src="{% static 'images/2.jpg' %}" alt="Groupe"/><div class="slide-caption">Photo de famille — Groupe La Certitude</div></div>
+        <div class="carousel-slide"><img src="{% static 'images/10.jpg' %}" alt="Profs"/><div class="slide-caption">Les professeurs et les élèves</div></div>
+        <div class="carousel-slide"><img src="{% static 'images/4.jpg' %}" alt="TP"/><div class="slide-caption">Séance de travaux pratiques</div></div>
+        <div class="carousel-slide"><img src="{% static 'images/5.jpg' %}" alt="Prix"/><div class="slide-caption">Remise de prix</div></div>
+        <div class="carousel-slide"><img src="{% static 'images/7.jpg' %}" alt="Maths"/><div class="slide-caption">Cours de mathématiques intensif</div></div>
       </div>
-      <button class="car-btn car-prev" id="carPrev">‹</button>
-      <button class="car-btn car-next" id="carNext">›</button>
+      <button class="carousel-btn carousel-prev" id="carPrev">‹</button>
+      <button class="carousel-btn carousel-next" id="carNext">›</button>
     </div>
-    <div class="car-dots" id="carDots"></div>
+    <div class="carousel-dots" id="carDots"></div>
     <div class="text-center">
-      <a href="{% url 'core:galerie' %}" class="btn-voir btn-voir-dk">Voir toutes les photos</a>
+      <a href="{% url 'core:galerie' %}" class="btn-voir btn-voir-dark">Voir toutes les photos</a>
     </div>
   </div>
 </section>
 
+
 <!-- ════════════════════════════════════
      TÉMOIGNAGES
 ════════════════════════════════════ -->
+<!-- TÉMOIGNAGES -->
 <section class="section" id="temoignages">
   <div class="container">
     <div class="sec-head text-center fade-in">
@@ -1304,20 +601,28 @@
       <p class="sec-sub">Découvrez ce que nos anciens apprenants pensent de La Certitude.</p>
     </div>
     <div class="temo-grid">
+      <!-- Carte 1 -->
       <div class="temo-card slide-left">
-        <div class="vid-thumb" onclick="openVideo('FPDlX2tcvR8')">
-          <img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Koffi Emmanuel"/>
-          <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
+        <div class="video-thumb" data-video-id="FPDlX2tcvR8" data-video-name="Koffi Emmanuel" data-video-level="1ère C" data-video-school="CEG Zogbo">
+          <img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Koffi Emmanuel">
+          <div class="play-overlay">
+            <div class="play-circle">▶</div>
+            <span>Regarder le témoignage</span>
+          </div>
         </div>
         <div class="temo-info">
           <div class="temo-name">Koffi Emmanuel</div>
           <div class="temo-meta"><span class="temo-badge">1ère C</span> CEG Zogbo · Édition 2025</div>
         </div>
       </div>
+      <!-- Carte 2 -->
       <div class="temo-card slide-right">
-        <div class="vid-thumb" onclick="openVideo('FPDlX2tcvR8')">
-          <img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Adjoua Marie"/>
-          <div class="play-overlay"><div class="play-circle">▶</div><span>Regarder le témoignage</span></div>
+        <div class="video-thumb" data-video-id="FPDlX2tcvR8" data-video-name="Adjoua Marie" data-video-level="Terminale D" data-video-school="Lycée Béhanzin">
+          <img src="https://img.youtube.com/vi/FPDlX2tcvR8/hqdefault.jpg" alt="Adjoua Marie">
+          <div class="play-overlay">
+            <div class="play-circle">▶</div>
+            <span>Regarder le témoignage</span>
+          </div>
         </div>
         <div class="temo-info">
           <div class="temo-name">Adjoua Marie</div>
@@ -1331,6 +636,7 @@
   </div>
 </section>
 
+
 <!-- ════════════════════════════════════
      MODALITÉS
 ════════════════════════════════════ -->
@@ -1341,28 +647,29 @@
       <h2 class="sec-title">Comment s'inscrire ?</h2>
       <p class="sec-sub">3 façons simples pour rejoindre le programme.</p>
     </div>
-    <div class="mod-grid fade-in">
-      <div class="mod-card mc-lav">
-        <span class="mod-icon">🌐</span>
+    <div class="modalites-grid fade-in">
+      <div class="modalite-card mc-lavender">
+        <span class="modalite-icon">🌐</span>
         <h3>En ligne</h3>
         <p>Formulaire + paiement MTN MoMo ou Moov Money en quelques clics.</p>
-        <a href="{% url 'enrollments:create' %}" class="mod-pill">Commencer</a>
+        <a href="{% url 'enrollments:create' %}" class="mc-pill">Commencer</a>
       </div>
-      <div class="mod-card mc-wh">
-        <span class="mod-icon">🏫</span>
+      <div class="modalite-card mc-white">
+        <span class="modalite-icon">🏫</span>
         <h3>Sur place</h3>
         <p>EPP Gbégamey Sud, tous les samedis de l'après-midi.</p>
-        <span class="mod-pill">Samedis 14h – 18h30</span>
+        <span class="mc-pill">Samedis 14h – 18h30</span>
       </div>
-      <div class="mod-card mc-dk">
-        <span class="mod-icon">💬</span>
+      <div class="modalite-card mc-dark">
+        <span class="modalite-icon">💬</span>
         <h3>WhatsApp</h3>
-        <p>Envoyez Nom, Établissement & Contact au 01 96 38 92 49 après paiement.</p>
-        <a href="https://wa.me/22996389249" target="_blank" class="mod-pill">Envoyer</a>
+        <p>Envoyez Nom, Établissement &amp; Contact au 01 96 38 92 49 après paiement.</p>
+        <a href="https://wa.me/22996389249" target="_blank" class="mc-pill">Envoyer</a>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- ════════════════════════════════════
      FAQ
@@ -1370,33 +677,46 @@
 <section class="section" id="faq">
   <div class="container">
     <div class="faq-layout">
-      <div class="slide-left">
+      <div class="slide-left faq-left">
         <div class="sec-label">FAQ</div>
         <h2 class="sec-title">Tout savoir sur l'inscription</h2>
-        <p style="font-size:.88rem;color:var(--ink-md);line-height:1.78;margin-bottom:1.6rem;">Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses ici.</p>
-        <a href="{% url 'enrollments:create' %}" class="btn-register" style="font-size:.88rem;padding:.72rem 1.7rem;">S'inscrire maintenant</a>
+        <p>Paiement, niveaux, horaires, inscription en ligne ou sur place — toutes les réponses ici.</p>
+        <a href="{% url 'enrollments:create' %}" class="btn-register" style="font-size:.88rem;padding:.72rem 1.7rem;display:inline-block;margin-top:1rem">S'inscrire maintenant</a>
       </div>
       <div class="slide-right" id="faqList">
         <div class="faq-item open">
-          <button class="faq-q"><span class="faq-qt">Comment se déroule l'inscription en ligne ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button>
-          <div class="faq-ans"><div class="faq-ans-inner">Choisissez votre profil (élève ou parent), remplissez le formulaire, sélectionnez votre niveau, effectuez le paiement via MTN MoMo ou Moov Money, puis téléchargez votre reçu automatiquement.</div></div>
+          <button class="faq-question">
+            <span class="faq-q-text">Comment se déroule l'inscription en ligne ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Choisissez votre profil (élève ou parent), remplissez le formulaire, sélectionnez votre niveau, effectuez le paiement via MTN MoMo ou Moov Money, puis téléchargez votre reçu automatiquement.</div></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q"><span class="faq-qt">Quels modes de paiement sont acceptés ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button>
-          <div class="faq-ans"><div class="faq-ans-inner">Nous acceptons <strong>MTN Mobile Money</strong> (01 96 38 92 49) et <strong>Moov Money</strong> (01 95 51 17 61), au nom de <strong>CODJO Abel Jean Eudes</strong>.</div></div>
+          <button class="faq-question">
+            <span class="faq-q-text">Quels modes de paiement sont acceptés ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Nous acceptons <strong>MTN Mobile Money</strong> (01 96 38 92 49) et <strong>Moov Money</strong> (01 95 51 17 61), au nom de <strong>CODJO Abel Jean Eudes</strong>.</div></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q"><span class="faq-qt">Quelle est la date limite pour s'inscrire ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button>
-          <div class="faq-ans"><div class="faq-ans-inner">Les inscriptions sont ouvertes jusqu'au <strong>22 juin 2026</strong>. Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong> réservé aux 10 premiers inscrits par classe.</div></div>
+          <button class="faq-question">
+            <span class="faq-q-text">Quelle est la date limite pour s'inscrire ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Les inscriptions sont ouvertes jusqu'au <strong>22 juin 2026</strong>. Inscrivez-vous tôt pour bénéficier du <strong>Pack Privilège</strong> réservé aux 10 premiers inscrits par classe.</div></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q"><span class="faq-qt">Comment contacter un professeur pour des cours à domicile ?</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></button>
-          <div class="faq-ans"><div class="faq-ans-inner">Rendez-vous dans la section <strong>Professeurs</strong>, choisissez le professeur souhaité, puis cliquez sur le bouton WhatsApp pour le contacter directement.</div></div>
+          <button class="faq-question">
+            <span class="faq-q-text">Comment contacter un professeur pour des cours à domicile ?</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Rendez-vous dans la section <strong>Professeurs</strong>, choisissez le professeur souhaité, puis cliquez sur le bouton WhatsApp pour le contacter directement.</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- ════════════════════════════════════
      CTA BANNER
@@ -1410,16 +730,17 @@
   </div>
 </div>
 
+
 <!-- ════════════════════════════════════
-     NEWSLETTER — style Vatcho
+     NEWSLETTER
 ════════════════════════════════════ -->
 <section class="section">
   <div class="container">
-    <div class="nl-wrap scale-in">
+    <div class="newsletter-wrap scale-in">
       <div class="sec-label">Newsletter</div>
       <h2 class="sec-title">Restez informé</h2>
       <p class="sec-sub" style="margin:0 auto">Recevez chaque semaine les astuces, les dates importantes et les actualités du Groupe La Certitude.</p>
-      <form class="nl-form" onsubmit="return false">
+      <form class="newsletter-form" onsubmit="return false">
         <input type="email" placeholder="votre@email.com" required/>
         <button type="submit">S'abonner</button>
       </form>
@@ -1428,8 +749,9 @@
   </div>
 </section>
 
+
 <!-- ════════════════════════════════════
-     SÉPARATEUR CHEVRONS — signature Vatcho
+     SÉPARATEUR
 ════════════════════════════════════ -->
 <div class="sep-wrap">
   <div class="sep-inner">
@@ -1438,6 +760,7 @@
   </div>
 </div>
 
+
 <!-- ════════════════════════════════════
      CONTACT
 ════════════════════════════════════ -->
@@ -1445,216 +768,266 @@
   <div class="container">
     <div class="sec-head text-center fade-in">
       <div class="sec-label">Contact</div>
+
       <h2 class="sec-title">Nous contacter</h2>
       <p class="sec-sub">Des questions ? Notre équipe est disponible pour vous aider.</p>
     </div>
     <div class="contact-grid fade-in">
       <div>
         <a href="tel:+22996389249" class="contact-card" style="margin-bottom:.85rem">
-          <div class="con-icon">📞</div><div><div class="con-label">MTN MoMo</div><div class="con-val">01 96 38 92 49</div></div>
+          <div class="contact-icon">📞</div>
+          <div><div class="contact-label">MTN MoMo</div><div class="contact-val">01 96 38 92 49</div></div>
         </a>
         <a href="tel:+22995511761" class="contact-card">
-          <div class="con-icon">📞</div><div><div class="con-label">Moov Money</div><div class="con-val">01 95 51 17 61</div></div>
+          <div class="contact-icon">📞</div>
+          <div><div class="contact-label">Moov Money</div><div class="contact-val">01 95 51 17 61</div></div>
         </a>
       </div>
       <div>
         <a href="https://wa.me/22996389249" target="_blank" class="contact-card" style="margin-bottom:.85rem">
-          <div class="con-icon" style="background:#d1fae5">💬</div><div><div class="con-label">WhatsApp</div><div class="con-val">01 96 38 92 49</div></div>
+          <div class="contact-icon" style="background:#d1fae5">💬</div>
+          <div><div class="contact-label">WhatsApp</div><div class="contact-val">01 96 38 92 49</div></div>
         </a>
         <div class="contact-card">
-          <div class="con-icon">📍</div><div><div class="con-label">Adresse</div><div class="con-val">EPP Gbégamey Sud, Cotonou</div></div>
+          <div class="contact-icon">📍</div>
+          <div><div class="contact-label">Adresse</div><div class="contact-val">EPP Gbégamey Sud, Cotonou</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════════
-     FOOTER — style Vatcho (dark violet)
-════════════════════════════════════ -->
-<footer>
-  <div class="container">
-    <div class="ft-grid">
-      <div>
-        <div class="ft-brand">
-          <img src="{% static 'images/logo_certitude.png' %}" alt="Logo"/>
-          <span class="ft-brand-name">Groupe La Certitude</span>
-        </div>
-        <p class="ft-desc">Cours intensifs de renforcement pour les classes de 3ème, 1ère et Terminale C & D à Cotonou, Bénin.<br>Discipline · Travail · Excellence.</p>
-        <div class="ft-social">
-          <a href="https://wa.me/22996389249" target="_blank" class="ft-wa">WhatsApp</a>
-          <a href="#" class="ft-ig">Instagram</a>
-        </div>
-      </div>
-      <div class="ft-col">
-        <h4>Explorer</h4>
-        <ul>
-          <li><a href="#formations">Formations</a></li>
-          <li><a href="#professeurs">Professeurs</a></li>
-          <li><a href="#galerie">Galerie</a></li>
-          <li><a href="#temoignages">Témoignages</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="ft-col">
-        <h4>Niveaux</h4>
-        <ul>
-          <li><a href="{% url 'enrollments:create' %}?niveau=3eme">Cours de 3ème</a></li>
-          <li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère C</a></li>
-          <li><a href="{% url 'enrollments:create' %}?niveau=1ere">Cours de 1ère D</a></li>
-          <li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours Terminale C</a></li>
-          <li><a href="{% url 'enrollments:create' %}?niveau=tle">Cours Terminale D</a></li>
-        </ul>
-      </div>
-      <div class="ft-col">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="tel:+22996389249">01 96 38 92 49</a></li>
-          <li><a href="tel:+22995511761">01 95 51 17 61</a></li>
-          <li><a href="https://wa.me/22996389249">WhatsApp</a></li>
-          <li><a href="#">EPP Gbégamey Sud</a></li>
-        </ul>
-      </div>
-    </div>
+{% endblock %}
 
-    <!-- Grand texte fantôme — signature Vatcho -->
-    <div class="ft-bigtext">La Certitude</div>
-
-    <div class="ft-bottom">
-      <p class="ft-copy">© 2026 Groupe La Certitude — Tous droits réservés</p>
-      <div style="display:flex;gap:.55rem;flex-wrap:wrap;">
-        <a href="https://wa.me/22996389249" target="_blank" class="ft-wa">Rejoindre WhatsApp</a>
-        <a href="#" class="ft-ig">Instagram</a>
-      </div>
-      <span class="ft-made">Fait avec ❤️ au Bénin</span>
-    </div>
-  </div>
-</footer>
-
-<!-- WA FLOAT -->
-<a href="https://wa.me/22996389249" target="_blank" class="wa-float" aria-label="WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
-
-<!-- VIDEO MODAL -->
-<div id="videoModal" onclick="if(event.target===this)closeVideo()" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,8,24,.9);align-items:center;justify-content:center;padding:1rem;">
-  <div class="vm-inner">
-    <button class="vm-close" onclick="closeVideo()">✕</button>
-    <div class="vm-frame"><iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════ -->
+{% block extra_js %}
 <script>
-/* Scroll progress + nav shadow + back-to-top */
-const scrollBar = document.getElementById('scroll-bar');
-const backTop   = document.getElementById('back-top');
-const nav       = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-  scrollBar.style.width = pct + '%';
-  nav.classList.toggle('scrolled', window.scrollY > 50);
-  backTop.classList.toggle('show', window.scrollY > 400);
-}, { passive: true });
+/* ══════════════════════════════════════════
+   CAROUSEL
+══════════════════════════════════════════ */
+const carTrack  = document.getElementById('carTrack');
+const carDots   = document.getElementById('carDots');
+const carSlides = carTrack ? carTrack.querySelectorAll('.carousel-slide') : [];
+let carCur = 0;
 
-/* Hamburger */
-const ham  = document.getElementById('hamburger');
-const mmenu = document.getElementById('mobileMenu');
-ham.addEventListener('click', () => {
-  ham.classList.toggle('open');
-  mmenu.classList.toggle('open');
-  document.body.style.overflow = mmenu.classList.contains('open') ? 'hidden' : '';
-});
-function toggleMobDrop(el) {
-  const c = el.nextElementSibling;
-  c.classList.toggle('show');
-  const ic = el.querySelector('svg');
-  if (ic) ic.style.transform = c.classList.contains('show') ? 'rotate(180deg)' : '';
-}
-
-/* Carousel */
-const track  = document.getElementById('carTrack');
-const dotsEl = document.getElementById('carDots');
-const slides = track ? track.querySelectorAll('.car-slide') : [];
-let cur = 0;
-if (slides.length && dotsEl) {
-  slides.forEach((_,i) => {
+if (carSlides.length && carDots) {
+  carSlides.forEach((_, i) => {
     const d = document.createElement('div');
-    d.className = 'dot' + (i===0?' active':'');
-    d.addEventListener('click', ()=>goTo(i));
-    dotsEl.appendChild(d);
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => carGoTo(i));
+    carDots.appendChild(d);
   });
 }
-function goTo(n) {
-  cur = (n + slides.length) % slides.length;
-  if (track) track.style.transform = `translateX(-${cur*100}%)`;
-  if (dotsEl) dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===cur));
-}
-const prev = document.getElementById('carPrev');
-const next = document.getElementById('carNext');
-if (prev) prev.addEventListener('click', ()=>goTo(cur-1));
-if (next) next.addEventListener('click', ()=>goTo(cur+1));
-let auto = setInterval(()=>goTo(cur+1), 4500);
-if (track && track.parentElement) {
-  track.parentElement.addEventListener('mouseenter', ()=>clearInterval(auto));
-  track.parentElement.addEventListener('mouseleave', ()=>{ auto = setInterval(()=>goTo(cur+1),4500); });
+
+function carGoTo(n) {
+  carCur = (n + carSlides.length) % carSlides.length;
+  if (carTrack) carTrack.style.transform = `translateX(-${carCur * 100}%)`;
+  if (carDots) carDots.querySelectorAll('.dot').forEach((d, i) =>
+    d.classList.toggle('active', i === carCur)
+  );
 }
 
-/* FAQ */
-document.querySelectorAll('.faq-q').forEach(btn => {
+const carPrev = document.getElementById('carPrev');
+const carNext = document.getElementById('carNext');
+if (carPrev) carPrev.addEventListener('click', () => carGoTo(carCur - 1));
+if (carNext) carNext.addEventListener('click', () => carGoTo(carCur + 1));
+
+let carAuto = setInterval(() => carGoTo(carCur + 1), 4500);
+const carEl = carTrack?.closest('.carousel');
+if (carEl) {
+  carEl.addEventListener('mouseenter', () => clearInterval(carAuto));
+  carEl.addEventListener('mouseleave', () => {
+    carAuto = setInterval(() => carGoTo(carCur + 1), 4500);
+  });
+}
+
+let carTouchX = 0;
+if (carEl) {
+  carEl.addEventListener('touchstart', e => { carTouchX = e.touches[0].clientX; }, { passive: true });
+  carEl.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - carTouchX;
+    if (Math.abs(dx) > 40) carGoTo(carCur + (dx < 0 ? 1 : -1));
+  });
+}
+
+/* ══════════════════════════════════════════
+   FAQ ACCORDION
+══════════════════════════════════════════ */
+document.querySelectorAll('.faq-question').forEach(btn => {
   btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
+    const item   = btn.closest('.faq-item');
     const isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
   });
 });
 
-/* Vidéo modal */
-function openVideo(id) {
-  const frame = document.getElementById('videoFrame');
-  frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+/* ══════════════════════════════════════════
+   TÉMOIGNAGES — MODAL VIDÉO
+══════════════════════════════════════════ */
+let currentYtId    = '';
+let embedCheckTimer = null;
+
+function ensureModal() {
+  if (document.getElementById('videoModal')) return;
+
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div id="videoModal" class="video-modal" onclick="if(event.target===this)closeVideoModal()">
+      <div class="vm-inner">
+        <button class="vm-close" onclick="closeVideoModal()">✕</button>
+        <div id="modalInfo" class="modal-info"></div>
+        <div class="vm-frame" style="position:relative;padding-top:56.25%;border-radius:var(--r-card,16px);overflow:hidden;background:#000">
+
+          <!-- Loader -->
+          <div id="vmLoader" style="position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:2">
+            <div style="width:40px;height:40px;border-radius:50%;border:3px solid rgba(255,255,255,.15);border-top-color:#fff;animation:vmSpin .8s linear infinite"></div>
+          </div>
+
+          <!-- IFrame -->
+          <iframe
+            id="vmFrame"
+            src=""
+            style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1"
+            allowfullscreen
+            allow="autoplay; encrypted-media; picture-in-picture"
+            onload="document.getElementById('vmLoader').style.display='none'"
+          ></iframe>
+
+          <!-- Fallback -->
+          <div id="vmFallback" style="display:none;position:absolute;inset:0;background:linear-gradient(145deg,#1a1630,#2d2050);flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;text-align:center;border-radius:var(--r-card,16px);z-index:3">
+            <div style="font-size:3rem">🎬</div>
+            <div style="color:#fff;font-weight:800;font-size:1rem">Vidéo non intégrable ici</div>
+            <p style="color:rgba(255,255,255,.65);font-size:.82rem;max-width:300px;line-height:1.6">
+              YouTube a bloqué la lecture intégrée. Regardez directement sur YouTube.
+            </p>
+            <a id="vmYtBtn" href="#" target="_blank" rel="noopener"
+               style="background:#ff0000;color:#fff;padding:.7rem 1.8rem;border-radius:999px;font-weight:700;font-size:.9rem;text-decoration:none">
+              ▶ Ouvrir sur YouTube
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <style>@keyframes vmSpin { to { transform: rotate(360deg); } }</style>
+  `;
+  document.body.appendChild(div);
+}
+
+function openVideoWithFallback(ytId, nom, niveau, ecole) {
+  ensureModal();
+  currentYtId = ytId;
+
+  document.getElementById('modalInfo').innerHTML =
+    `<strong>${escapeHtml(nom)}</strong> · ${escapeHtml(niveau)} · ${escapeHtml(ecole)} · Édition 2025`;
+
+  const frame    = document.getElementById('vmFrame');
+  const loader   = document.getElementById('vmLoader');
+  const fallback = document.getElementById('vmFallback');
+  const ytBtn    = document.getElementById('vmYtBtn');
+
+  frame.style.display    = 'block';
+  loader.style.display   = 'flex';
+  fallback.style.display = 'none';
+  ytBtn.href = 'https://www.youtube.com/watch?v=' + ytId;
+
+  const origin = encodeURIComponent(window.location.origin);
+  frame.src = 'https://www.youtube-nocookie.com/embed/' + ytId
+    + '?autoplay=1&rel=0&modestbranding=1&origin=' + origin;
+
   document.getElementById('videoModal').style.display = 'flex';
   document.body.style.overflow = 'hidden';
+
+  clearTimeout(embedCheckTimer);
+  embedCheckTimer = setTimeout(() => {
+    if (ytId !== currentYtId) return;
+    fetch('https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D'
+      + ytId + '&format=json')
+      .then(r => { if (!r.ok) showVideoFallback(); })
+      .catch(() => {});
+  }, 4000);
 }
-function closeVideo() {
-  document.getElementById('videoFrame').src = '';
-  document.getElementById('videoModal').style.display = 'none';
+
+function showVideoFallback() {
+  const frame    = document.getElementById('vmFrame');
+  const loader   = document.getElementById('vmLoader');
+  const fallback = document.getElementById('vmFallback');
+  if (!fallback) return;
+  frame.src              = '';
+  frame.style.display    = 'none';
+  loader.style.display   = 'none';
+  fallback.style.display = 'flex';
+  document.getElementById('vmYtBtn').href =
+    'https://www.youtube.com/watch?v=' + currentYtId;
+}
+
+function closeVideoModal() {
+  clearTimeout(embedCheckTimer);
+  currentYtId = '';
+  const modal    = document.getElementById('videoModal');
+  const frame    = document.getElementById('vmFrame');
+  const loader   = document.getElementById('vmLoader');
+  const fallback = document.getElementById('vmFallback');
+  if (!modal) return;
+  frame.src              = '';
+  frame.style.display    = 'block';
+  loader.style.display   = 'flex';
+  fallback.style.display = 'none';
+  modal.style.display    = 'none';
   document.body.style.overflow = '';
 }
 
-/* Counter animation */
-function animCounter(el, target) {
-  let start; const dur = 1200;
-  const step = ts => {
-    if (!start) start = ts;
-    const p = Math.min((ts-start)/dur, 1);
-    const e = 1 - Math.pow(1-p,3);
-    el.textContent = Math.round(e*target);
-    if (p<1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
+window.addEventListener('message', function(e) {
+  if (!e.data) return;
+  try {
+    const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+    if (d?.info?.error === 150 || d?.info?.error === 101) showVideoFallback();
+    if (d?.event === 'infoDelivery' && d?.info?.error)    showVideoFallback();
+  } catch(_) {}
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeVideoModal();
+});
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"]/g, m =>
+    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[m])
+  );
 }
 
-/* Scroll reveal */
-const animEls = document.querySelectorAll('.fade-in,.slide-left,.slide-right,.scale-in');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      e.target.querySelectorAll('[data-target]').forEach(c => animCounter(c, parseInt(c.dataset.target)));
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold:0.12, rootMargin:'0px 0px -40px 0px' });
-animEls.forEach(el => observer.observe(el));
 
-/* Déclencher les compteurs dès l'affichage si hero visible */
-setTimeout(() => {
-  document.querySelectorAll('[data-target]').forEach(c => animCounter(c, parseInt(c.dataset.target)));
-}, 500);
+
+
+
+
+
+
+
+// APRÈS — attend que le DOM soit prêt
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.video-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      openVideoWithFallback(
+        thumb.dataset.videoId,
+        thumb.dataset.videoName,
+        thumb.dataset.videoLevel,
+        thumb.dataset.videoSchool
+      );
+    });
+  });
+
+  // FAQ accordion aussi dans le DOMContentLoaded
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+  const item   = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+    });
+  });
+});
+
+
 </script>
-</body>
-</html>
+{% endblock %}

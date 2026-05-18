@@ -1,0 +1,61 @@
+{% extends 'includes/base.html' %}
+{% load static %}
+
+{% block title %}Annonces — Groupe La Certitude{% endblock %}
+
+{% block extra_css %}
+<style>
+  .construction-hero {
+    background: linear-gradient(140deg, var(--hero-from) 0%, var(--hero-via) 50%, var(--hero-to) 100%);
+    padding: 6rem 1.5rem;
+    text-align: center;
+  }
+  .construction-card {
+    max-width: 700px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(12px);
+    border-radius: var(--r-card);
+    padding: 3rem 2rem;
+    box-shadow: var(--sh-lg);
+  }
+  .spinner {
+    width: 70px; height: 70px;
+    border: 5px solid var(--accent-20);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .construction-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .construction-title { font-size: 2rem; font-weight: 900; margin-bottom: 1rem; }
+  .construction-message { font-size: 1rem; color: var(--ink-md); margin-bottom: 2rem; }
+  .btn-retour {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--btn); color: white; padding: 0.7rem 1.6rem;
+    border-radius: var(--r-pill); font-weight: 700;
+    transition: background 0.2s;
+  }
+  .btn-retour:hover { background: var(--btn-hover); }
+  @media (max-width: 640px) {
+    .construction-card { padding: 2rem 1.2rem; }
+    .construction-title { font-size: 1.5rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="construction-hero">
+  <div class="construction-card fade-in">
+    <div class="spinner"></div>
+    <div class="construction-icon">📢</div>
+    <h1 class="construction-title">Annonces & Actualités</h1>
+    <p class="construction-message">
+      Le centre d’informations est en préparation.<br>
+      Vous y trouverez bientôt les promotions, les nouvelles sessions, les événements et les actualités du groupe.
+    </p>
+    <a href="{% url 'core:index' %}" class="btn-retour">← Retour à l’accueil</a>
+  </div>
+</section>
+{% endblock %}

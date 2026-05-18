@@ -158,3 +158,17 @@ def temoignages(request):
     return render(request, 'core/temoignages.html', {'videos': videos})
 
 
+def programme_2026(request):
+    return render(request, 'core/programme_2026.html')
+
+def edition_2025(request):
+    return render(request, 'core/edition_2025.html')
+
+def epreuves(request):
+    return render(request, 'core/epreuves.html')
+
+def annonces(request):
+    return render(request, 'core/annonces.html')
+
+def soutien_scolaire(request):
+    return render(request, 'core/soutien_scolaire.html')

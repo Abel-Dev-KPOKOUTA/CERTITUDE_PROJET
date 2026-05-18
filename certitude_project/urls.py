@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('enrollments.urls')),
     path('', include('payments.urls')),
     path('', include('resources.urls')),
+    path('', include('announcements.urls')),
 ]
 
 if settings.DEBUG:
